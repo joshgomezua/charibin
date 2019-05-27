@@ -1,0 +1,51 @@
+@import 'rc';
+
+@mixin respond($breakpoint) {
+  @if $breakpoint == bigger {
+    @media (max-width: 75em) {
+      @content;
+    }
+  }
+  @if $breakpoint == big {
+    @media (max-width: 65em) {
+      @content;
+    }
+  }
+  @if $breakpoint == tab {
+    @media (max-width: 55em) {
+      @content;
+    }
+  }
+  @if $breakpoint == mobile {
+    @media (max-width: 45em) {
+      @content;
+    }
+  }
+
+  @if $breakpoint == mobile-min {
+    @media (min-width: 45em) {
+      @content;
+    }
+  }
+}
+
+@mixin media($breakpoiont) {
+  @media (max-width: $breakpoint) {
+    @content;
+  }
+}
+
+@mixin placeholder {
+  ::-webkit-input-placeholder {
+    @content;
+  }
+  :-moz-placeholder {
+    @content;
+  }
+  ::-moz-placeholder {
+    @content;
+  }
+  :-ms-input-placeholder {
+    @content;
+  }
+}

@@ -1,0 +1,115 @@
+@import '../../../Common/Utils/Styles/mixin.scss';
+@import '../../../Common/Utils/Styles/colors.scss';
+
+.billing_status {
+  background-color: $white;
+  width: 100%;
+  max-width: 100%;
+  border-radius: 3px;
+  border: 1px solid $gray;
+
+  &-title.title {
+    color: $black;
+    padding: rc(30) rc(30) !important;
+    font-size: rc(18);
+    text-align: left;
+    font-weight: 500;
+    color: $input;
+    width: auto;
+    border-bottom: 1px solid $gray;
+    margin: 0;
+
+    @include respond(mobile) {
+      font-size: 2.4rem !important;
+      line-height: 1.7 !important;
+      text-align: center;
+    }
+  }
+
+  &-tours {
+    padding: rc(20) rc(30);
+  }
+  &-tour {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: rc(20);
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    span {
+      font-size: rc(14);
+
+      &:first-child {
+        color: $input;
+        width: 40%;
+      }
+
+      @include respond(mobile) {
+        font-size: 1.2rem !important;
+      }
+
+      &:last-of-type {
+        color: $gray-dark;
+      }
+    }
+  }
+
+  &-deselected {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem 0;
+    border-top: 1px solid $gray;
+    border-bottom: 1px solid $gray;
+    color: $red;
+  }
+  &-total {
+    padding: 1rem 0;
+    display: flex;
+    justify-content: space-between;
+    span:last-of-type {
+      color: $violet;
+    }
+  }
+  &-info {
+    border-radius: 3px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(18, 180, 89, 0.16);
+    border: 1px solid $green-light;
+    padding: 0.5rem 1rem;
+    margin-top: 1rem;
+    color: $green;
+  }
+
+  &-submit {
+    display: none;
+    justify-content: center;
+    margin-top: rc(20);
+    padding: 2rem;
+    background: $white;
+    border: 1px solid $gray;
+
+    @media screen and (max-width: 64em) {
+      display: flex;
+    }
+
+    .button {
+      max-width: 100%;
+    }
+  }
+
+  @include respond(mobile) {
+    &,
+    &-title.title {
+      font-size: 1.5rem;
+    }
+  }
+}

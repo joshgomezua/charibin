@@ -1,0 +1,67 @@
+@import '../../../Common/Utils/Styles/mixin.scss';
+@import '../../../Common/Utils/Styles/colors.scss';
+
+.deselect-cnt {
+  background-color: $bg;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  &-block {
+    padding-bottom: 3rem;
+    @include respond(tab) {
+      padding-bottom: 0;
+    }
+  }
+  &-info {
+    width: 100%;
+    max-width: 76rem;
+    margin-top: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 9rem;
+    @include respond(tab) {
+      margin-top: 0;
+      justify-content: center;
+      flex-direction: column;
+    }
+    p {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: $input;
+
+      @include respond(tab) {
+        font-size: 2rem;
+
+        &:last-child {
+          margin-top: 0;
+        }
+      }
+
+      span {
+        color: $violet;
+      }
+    }
+    button {
+      margin-top: 0;
+      margin-right: 1rem;
+      width: 18rem;
+      @include respond(tab) {
+        margin-bottom: 2.5rem;
+      }
+    }
+  }
+  &-destinations {
+    display: flex;
+    width: 100%;
+    max-width: 76rem;
+    flex-wrap: wrap;
+    padding-bottom: 5rem;
+    @include respond(tab) {
+      width: 90%;
+      max-width: unset;
+      justify-content: space-between;
+    }
+  }
+}

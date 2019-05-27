@@ -1,0 +1,61 @@
+.main-container {
+  background: $sponteous-bg !important;
+}
+
+.content {
+  .wrapper-inner {
+    padding: 0 50px;
+    text-align: left;
+    box-shadow: 0 2px 8px 4px rgba(35, 85, 178, 0.2);
+  }
+}
+
+.text {
+  font-size: 14px;
+  line-height: 18px;
+  color: $white;
+
+  strong,
+  b {
+    font-weight: 600;
+  }
+
+  a {
+    color: $white;
+    text-decoration: underline;
+  }
+}
+
+.logo {
+  width: 136px;
+  height: 43px;
+  object-fit: contain;
+  margin: 0 auto;
+}
+
+.footer {
+  .wrapper-inner {
+    box-shadow: none;
+  }
+
+  &__copyright {
+    margin: 0;
+    font-size: 14px;
+    color: lighten(
+      $color: (
+        $sponteous-bg
+      ),
+      $amount: 35
+    );
+    text-align: center;
+
+    a {
+      color: lighten(
+        $color: (
+          $sponteous-bg
+        ),
+        $amount: 35
+      );
+    }
+  }
+}

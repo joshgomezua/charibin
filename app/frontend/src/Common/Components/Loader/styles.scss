@@ -1,0 +1,98 @@
+@import '../../../Common/Utils/Styles/mixin.scss';
+@import '../../../Common/Utils/Styles/colors.scss';
+
+.spon-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  &--static {
+    position: static;
+    width: 100%;
+    height: initial;
+
+    .spon-loader__backdrop {
+      display: none;
+    }
+  }
+
+  &__backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    background: rgba($color: #000000, $alpha: 0.3);
+  }
+
+  &__container {
+    position: relative;
+    display: inline-block;
+    width: rc(64);
+    height: rc(64);
+
+    div {
+      position: absolute;
+      top: 27px;
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: $violet-dark;
+      animation-timing-function: cubic-bezier(0, 1, 1, 0);
+
+      &:nth-child(1) {
+        left: 6px;
+        animation: loader-animation1 0.6s infinite;
+      }
+
+      &:nth-child(2) {
+        left: 6px;
+        animation: loader-animation2 0.6s infinite;
+      }
+
+      &:nth-child(3) {
+        left: 26px;
+        animation: loader-animation2 0.6s infinite;
+      }
+      &:nth-child(4) {
+        left: 45px;
+        animation: loader-animation3 0.6s infinite;
+      }
+    }
+  }
+}
+
+@keyframes loader-animation1 {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes loader-animation3 {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+
+@keyframes loader-animation2 {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(19px, 0);
+  }
+}

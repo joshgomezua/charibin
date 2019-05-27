@@ -1,0 +1,45 @@
+---
+# Define Docker Compose version.
+version: "3"
+
+# Define all the containers.
+services:
+  # API documenation container.
+  api-documentation:
+    build: ./app/backend/docs
+    volumes:
+      - ./app/backend/docs:/usr/src/docs
+    ports:
+      - ${API_DOCUMENTATION_PORT}:4567
+    command:  bash -c "cd ./docs && bundle install && bundle exec middleman server"
+  # Backend Container.
+  backend:
+    expose:
+      - 3001
+  # Frontend Container.
+  frontend:
+    expose:
+      - 3000
+  # Maildev container.
+  maildev:
+    image: djfarrelly/maildev:latest
+    expose:
+      - 3002
+    ports:
+      - ${MAILDEV_PORT}:3003
+    command:  bin/maildev --web 3003 --smtp 3002 -v
+  # Nginx Container.
+  nginx:
+    build: ./nginx
+    depends_on:
+    - backend
+    - frontend
+    ports:
+    - ${APP_PORT}:80
+  # Nosqlclient client container.
+  nosqlclient-client:
+    image: mongoclient/mongoclient:latest
+    depends_on:
+     - mongo
+    ports:
+      - ${NOSQLCLIENT_PORT}:3000

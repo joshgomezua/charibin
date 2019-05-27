@@ -1,0 +1,99 @@
+@import '../../../Common/Utils/Styles/mixin.scss';
+@import '../../../Common/Utils/Styles/colors.scss';
+
+.spon-switch {
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  width: rc(44);
+  height: rc(22);
+  line-height: rc(20);
+  vertical-align: middle;
+  border-radius: rc(16);
+  border: 1px solid $switch-gray;
+  background-color: $switch-gray;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.35, 0, 0.25, 1);
+
+  &:after {
+    content: ' ';
+    position: absolute;
+    width: rc(18);
+    height: rc(18);
+    left: rc(2);
+    top: rc(1);
+    border-radius: 50% 50%;
+    background-color: $white;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.18);
+    transform: scale(1);
+    transition: left 0.3s cubic-bezier(0.35, 0, 0.25, 1);
+    animation-timing-function: cubic-bezier(0.35, 0, 0.25, 1);
+    animation-duration: 0.3s;
+    animation-name: rcSwitchOff;
+    cursor: pointer;
+  }
+
+  &:hover:after {
+    transform: scale(1.1);
+    animation-name: rcSwitchOn;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 2px $switch-gray;
+    outline: none;
+  }
+
+  &-inner {
+    display: block;
+    color: $white;
+    font-size: rc(12);
+    position: absolute;
+    left: rc(24);
+  }
+
+  &-checked {
+    border: 1px solid $violet;
+    background-color: $violet;
+
+    &:after {
+      left: rc(22);
+    }
+
+    .spon-switch-inner {
+      left: rc(6);
+    }
+  }
+
+  &-disabled {
+    cursor: no-drop;
+    background: $switch-gray;
+    border-color: $switch-gray;
+
+    &:after {
+      background: $switch-gray;
+      animation-name: none;
+      cursor: no-drop;
+    }
+  }
+}
+
+@keyframes rcSwitchOn {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes rcSwitchOff {
+  0% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}

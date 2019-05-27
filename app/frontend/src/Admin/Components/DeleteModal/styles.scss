@@ -1,0 +1,32 @@
+@import '../../../Common/Utils/Styles/colors.scss';
+@import '../../../Common/Utils/Styles/mixin.scss';
+
+.spon-delete-modal {
+  padding: rc(20) rc(120) rc(40) rc(120);
+  color: $input;
+
+  &__heading {
+    font-size: rc(20);
+    font-weight: 500;
+    margin: 0 0 rc(14) 0;
+  }
+
+  &__text {
+    font-size: rc(14);
+    margin-bottom: rc(36);
+  }
+
+  &__buttons {
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      width: rc(170);
+      max-width: auto;
+    }
+
+    .spon-btn.adminPrimary {
+      background: $red;
+    }
+  }
+}

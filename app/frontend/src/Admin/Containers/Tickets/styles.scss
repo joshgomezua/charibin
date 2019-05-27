@@ -1,0 +1,11 @@
+.spon-tickets {
+  &__content {
+    display: flex;
+    height: calc(100vh - 7rem);
+  }
+
+  &__cnt {
+    position: relative;
+    width: 100%;
+  }
+}

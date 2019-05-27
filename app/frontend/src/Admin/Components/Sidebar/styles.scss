@@ -1,0 +1,214 @@
+@import '../../../Common/Utils/Styles/mixin.scss';
+@import '../../../Common/Utils/Styles/colors.scss';
+
+.spon-sidebar {
+  width: calc(20rem - 1px);
+  height: 100%;
+  border-right: 1px solid $inactive;
+
+  h4 {
+    margin: 0;
+    padding-bottom: rc(15);
+    font-size: rc(14);
+    font-weight: 600;
+    color: $inactive;
+  }
+
+  &__filters {
+    padding: rc(20) rc(20) 0 rc(20);
+  }
+
+  &__buttons {
+    display: flex;
+    justify-content: space-between;
+
+    &--first {
+      margin-bottom: rc(20);
+    }
+  }
+
+  &__button {
+    width: calc(50% - 10px);
+    height: rc(40);
+    padding: 0;
+    background: rgba(194, 202, 216, 0.14);
+
+    &:disabled {
+      opacity: 0.5;
+    }
+
+    &:hover:disabled {
+      background: rgba(194, 202, 216, 0.14);
+    }
+
+    &--selected {
+      background: $violet !important;
+      color: $white !important;
+    }
+
+    span {
+      font-size: rc(11);
+    }
+  }
+
+  .spon-multiswitch__items {
+    width: 100%;
+    margin-top: rc(20);
+    padding: 0 0 rc(30) 0;
+    height: 40vh;
+    overflow: auto;
+  }
+
+  // REACT CALENDAR STYLES
+
+  .react-calendar {
+    border: none;
+    width: 100%;
+
+    &__month-view {
+      display: none;
+    }
+
+    button {
+      height: rc(48);
+      width: rc(48);
+      border-radius: 50%;
+      &:hover:not(:disabled) {
+        time {
+          color: $violet-dark;
+        }
+      }
+    }
+    time {
+      text-transform: uppercase;
+    }
+    &__navigation {
+      position: relative;
+      align-items: center;
+      height: rc(100);
+      background: lighten($color: $violet, $amount: 45);
+      color: $white;
+      margin: 0 !important;
+
+      @include respond(phone) {
+        height: rc(50);
+        padding-top: rc(15);
+      }
+
+      &:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: -1px;
+        width: 1px;
+        height: 100%;
+        background: lighten($color: $violet, $amount: 45);
+      }
+
+      &__label {
+        font-weight: 600;
+        letter-spacing: 1px;
+        color: $dark-deep-blue !important;
+        font-size: rc(14) !important;
+        cursor: default;
+        pointer-events: none;
+
+        &:focus {
+          background: transparent !important;
+        }
+
+        &:hover {
+          background: transparent !important;
+        }
+      }
+
+      button {
+        background: transparent;
+        min-width: auto;
+
+        &:focus {
+          background: transparent;
+        }
+
+        &:hover {
+          background: transparent;
+        }
+      }
+    }
+    &__navigation__arrow {
+      &:focus {
+        background-color: transparent !important;
+      }
+    }
+    &__tile {
+      &:hover {
+        background: transparent !important;
+      }
+      &:disabled {
+        background-color: transparent !important;
+        cursor: default;
+      }
+    }
+    &__tile--active {
+      background: $dark-blue;
+      &:focus {
+        background: $dark-blue !important;
+      }
+      &:hover {
+        background: lighten($color: $dark-blue, $amount: 10%) !important;
+      }
+    }
+    &__tile--hasActive {
+      background: transparent;
+      time {
+        color: $violet-dark;
+      }
+    }
+
+    &__navigation__prev-button {
+      display: block;
+      position: relative;
+      margin-left: rc(20) !important;
+
+      img {
+        transform: rotate(90deg);
+      }
+    }
+
+    &__navigation__next-button {
+      display: block;
+      position: relative;
+      margin-right: rc(20) !important;
+
+      img {
+        transform: rotate(-90deg);
+      }
+    }
+
+    &__navigation__prev-button,
+    &__navigation__next-button {
+      height: rc(30) !important;
+      width: rc(30) !important;
+      background: $violet !important;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-width: auto;
+      &:focus {
+        background: $violet !important;
+      }
+
+      &:hover {
+        background: rgba(black, 0.3) !important;
+      }
+    }
+
+    &__navigation__prev2-button,
+    &__navigation__next2-button {
+      display: none;
+    }
+    &__navigation__label {
+      font-size: rc(17);
+    }
+  }
+}

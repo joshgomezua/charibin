@@ -1,0 +1,240 @@
+@import '../../../Common/Utils/Styles/mixin.scss';
+@import '../../../Common/Utils/Styles/colors.scss';
+
+.spon-btn {
+  width: 100%;
+  max-width: 25rem;
+  height: 3rem;
+  border: none;
+  border-radius: 3px;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  outline: none;
+
+  @include respond(tab) {
+    max-width: inherit;
+    height: 4rem;
+  }
+
+  span {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.8rem;
+
+    @include respond(tab) {
+      font-size: 1.2rem;
+    }
+  }
+
+  div {
+    display: flex;
+    justify-content: center;
+    height: 1.6rem;
+    width: 1.6rem;
+    background-color: $blue;
+    border-radius: 50%;
+  }
+
+  &.loading {
+    opacity: 0.35;
+  }
+
+  &.blue {
+    background-color: $blue-light;
+    padding: 0 1rem 0 2rem;
+
+    span {
+      color: $white;
+    }
+
+    div {
+      margin-left: auto;
+    }
+
+    &:disabled {
+      background-color: $inactive;
+      cursor: not-allowed;
+      div {
+        background-color: $label;
+      }
+    }
+  }
+
+  &.green {
+    background-color: $green;
+    padding: 0 1rem;
+
+    span {
+      width: 100%;
+      text-align: center;
+      color: $white;
+    }
+
+    &:disabled {
+      background-color: $inactive;
+      cursor: not-allowed;
+    }
+  }
+
+  &.next {
+    background-color: $green;
+    padding: 0 1rem;
+
+    span {
+      color: $white;
+      font-weight: bold;
+    }
+
+    div {
+      background-color: $green-dark;
+    }
+
+    &:disabled {
+      background-color: $green;
+      cursor: not-allowed;
+
+      div {
+        background-color: $green;
+      }
+    }
+  }
+
+  &.prev {
+    background-color: transparent;
+    padding: 0 1rem;
+    flex-direction: row-reverse;
+    justify-content: center;
+
+    span {
+      color: $label;
+      font-weight: bold;
+    }
+
+    div {
+      background-color: transparent;
+      transform: rotate(180deg);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+  }
+
+  &.blue-select {
+    background-color: $blue-light;
+    padding: 0 1rem;
+
+    span {
+      width: 100%;
+      text-align: center;
+      color: $white;
+    }
+
+    &:disabled {
+      background-color: $inactive;
+      cursor: not-allowed;
+    }
+  }
+
+  &.white {
+    background-color: $white;
+    border: 1px solid $gray;
+    padding: 0 1rem;
+
+    span {
+      width: 100%;
+      text-align: center;
+      color: $input;
+    }
+
+    &:disabled {
+      background-color: $inactive;
+      cursor: not-allowed;
+    }
+  }
+
+  &.gray {
+    background-color: $white;
+    border: 1px solid $gray;
+    padding: 0 1rem;
+    justify-content: center;
+    flex-direction: row-reverse;
+
+    span {
+      color: $input;
+      font-weight: bold;
+      margin-right: auto;
+    }
+
+    div {
+      margin-left: auto;
+      height: auto;
+      width: auto;
+      margin-right: 1rem;
+      background-color: transparent;
+    }
+
+    &:disabled {
+      background-color: $inactive;
+      cursor: not-allowed;
+      div {
+        background-color: $label;
+      }
+    }
+  }
+
+  &.red {
+    background-color: $red;
+    padding: 0 1rem;
+    justify-content: center;
+    flex-direction: row-reverse;
+
+    span {
+      color: $white;
+      font-weight: bold;
+      margin-right: auto;
+    }
+
+    div {
+      margin-left: auto;
+      height: auto;
+      width: auto;
+      margin-right: 1rem;
+      background-color: transparent;
+    }
+
+    &:disabled {
+      background-color: $inactive;
+      cursor: not-allowed;
+
+      div {
+        background-color: transparent;
+      }
+    }
+  }
+
+  &.adminPrimary {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 10rem;
+    color: $white;
+    background-color: $blue;
+  }
+
+  &.adminSecondary {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 10rem;
+    color: $dark-blue;
+    background: transparent;
+    border: 1px solid $dark-blue;
+  }
+}

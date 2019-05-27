@@ -1,0 +1,192 @@
+@import '../../../Common/Utils/Styles/mixin.scss';
+@import '../../../Common/Utils/Styles/colors.scss';
+
+.support {
+  color: $black;
+  background-color: $gray-light;
+
+  &-title {
+    @include respond(mobile) {
+      padding: 0 0 2rem 0;
+    }
+  }
+
+  &-smallTitle {
+    @include respond(mobile) {
+      text-align: left;
+      font-weight: bold;
+      line-height: 1.63;
+      font-style: normal;
+      font-stretch: normal;
+      letter-spacing: normal;
+      width: 100% !important;
+      font-size: 2.4rem !important;
+      text-align: center !important;
+      margin: 0 0 2rem 0 !important;
+    }
+  }
+
+  &__wrapper {
+    width: 50rem;
+    max-width: 100%;
+    padding: 4rem 2rem;
+    margin: 0 auto;
+
+    .title {
+      text-align: left;
+      color: $gray-deep-dark;
+      margin-top: 0;
+    }
+  }
+
+  &__info {
+    color: $gray-dark;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+
+    @include respond(mobile) {
+      font-size: 1.6rem;
+      font-weight: normal;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: 1.38;
+      letter-spacing: normal;
+    }
+
+    span {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+
+      @include respond(mobile) {
+        margin-bottom: 2rem;
+      }
+    }
+  }
+
+  &__info-bold {
+    color: $gray-deep-dark;
+    text-decoration: none;
+    word-break: break-word;
+  }
+
+  &__form {
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 2rem;
+  }
+
+  &__field {
+    input,
+    textarea {
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: 3px;
+      border: 1px solid $gray;
+
+      @include respond(mobile) {
+        padding: 1.5rem;
+      }
+    }
+    .asterisk {
+      color: $red;
+    }
+    .ant {
+      &-input {
+        &-group {
+          &-addon {
+            font-size: 12px;
+          }
+        }
+      }
+      &-select {
+        &-arrow {
+          &::before {
+            content: '\2193';
+            color: $black;
+          }
+        }
+      }
+    }
+    label {
+      color: $gray-dark;
+      font-size: 12px;
+
+      @include respond(mobile) {
+        font-size: 1.2rem;
+        font-weight: 500;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: normal;
+        letter-spacing: 1px;
+      }
+    }
+  }
+
+  &__form-error {
+    color: $error-red;
+    font-size: rc(12);
+    margin-top: 0.5rem;
+
+    @include respond(mobile) {
+      font-size: 1.2rem !important;
+    }
+  }
+
+  &__input-cnt {
+    width: 20%;
+
+    &--messanger {
+      width: 100%;
+      margin: 2rem 0;
+
+      textarea {
+        width: 100%;
+        resize: none;
+        height: 120px;
+      }
+    }
+  }
+
+  @media screen and (min-width: 501px) and (max-width: 748px) {
+    .support__form-error {
+      font-size: rc(14);
+    }
+
+    .support__input-cnt {
+      margin-bottom: 1rem;
+    }
+
+    .support__input-cnt--name,
+    .support__input-cnt--email {
+      width: 45%;
+      &:first-of-type {
+        margin-right: 5%;
+      }
+    }
+    .support__input-cnt--phone {
+      width: 45%;
+    }
+  }
+  @media screen and (max-width: 500px) {
+    .support__form-error {
+      font-size: rc(14);
+    }
+
+    .support__input-cnt {
+      margin-bottom: 1rem;
+    }
+
+    .support__input-cnt--name,
+    .support__input-cnt--email,
+    .support__input-cnt--phone {
+      width: 100%;
+    }
+  }
+}

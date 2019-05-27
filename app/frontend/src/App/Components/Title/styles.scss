@@ -1,0 +1,27 @@
+@import '../../../Common/Utils/Styles/mixin.scss';
+@import '../../../Common/Utils/Styles/colors.scss';
+
+.title {
+  font-weight: bold;
+  color: $white;
+  text-align: center;
+  max-width: 100%;
+  word-break: break-word;
+  @include respond(mobile) {
+    margin-top: 0;
+    line-height: 1.17;
+    margin-bottom: 3rem;
+    font-size: 3.6rem !important;
+  }
+  &.left {
+    text-align: left;
+  }
+  &.right {
+    text-align: right;
+  }
+  font-size: 3rem;
+  width: 35rem;
+  span {
+    color: $main-blue;
+  }
+}

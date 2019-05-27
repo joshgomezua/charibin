@@ -1,0 +1,128 @@
+{
+  "400": {
+    "ERROR": {
+      "NOT": {
+        "MONGOID": "Parameter is not MongoDB ID"
+      },
+      "INVALID_TOKEN": "Token invalid",
+      "HEADERS_EXPECT_JSON_TYPE": "Header 'content-type: application/json' are required"
+    },
+    "VALIDATION": {
+      "PAGINATION": {
+        "PARAMS": "Wrong parameters in pagination"
+      },
+      "JSON_INVALID": "JSON invalid",
+      "PATTERN_INVALID%": "Pattern '%s' was not found",
+      "NOT_MONGOID": "The ID of resource is not MongoDB ID",
+      "NOT_MONGOID%": "The ID of %s key is not MongoDB ID",
+      "FIELD_REQUIRED%": "To create resource you need to provide %s field",
+      "FIELD_REQUIRED_NESTED%": "To create resource you need to provide %s.%s field",
+      "EXPECT_TYPE_FAIL%": "Expected %s type on %s key, got %s",
+      "EXPECT_PATTERN_MATCH_FAIL%": "%s key should match with pattern: %s",
+      "EXPECT_NUMBER_FAIL%": "Expected number and finite value on %s key, got %s",
+      "EXPECT_MAX_FAIL%": "Expected value should be at most %s on %s key, got %s",
+      "EXPECT_MIN_FAIL%": "Expected value should be at least %s on %s key, got %s",
+      "EXPECT_MAXLENGTH_FAIL%": "Expected maxLength should be at most %s on %s, now is %s",
+      "EXPECT_MINLENGTH_FAIL%": "Expected minLength should be at least %s on %s, now is %s",
+      "EXPECT_DATE_FAIL%": "Expected value should allow to create Date object based on it, got %s",
+      "EXPECT_STRING_AND_MATCH%": "Value on %s key - %s - is not a string or does not match pattern: %s",
+      "TYPE_NOT_RECOGNIZED%": "Could not recognize %s type",
+      "EXPECT_ARRAY_LENGTH%": "Expected array length on key %s is at %s %s. Got %s instead."
+    },
+    "TICKET": {
+      "REPEAT": {
+        "BAD": {
+          "DATEEND": "End date in repeat can not be less than start date",
+          "DATESTART": "Start date must be one of week day in days array"
+        }
+      },
+      "DATE": {
+        "START": {
+          "INVALID%": "The start date of selected trips must be %s minimum"
+        },
+        "END": {
+          "INVALID%": "The start date of selected trips must be %s minimum"
+        }
+      }
+    }
+  },
+  "401": {
+    "USER": {
+      "PASSWORD": {
+        "INVALID": "Password not match"
+      },
+      "HASH": {
+        "FAIL": "Hash missmatch"
+      }
+    }
+  },
+  "403": {
+    "USER": {
+      "EMAIL": {
+        "NOT_CONFIRM": "Email was not confirmed"
+      }
+    },
+    "TRIP": {
+      "FAKE": {
+        "LIMIT": "Limit of existing fake trips are exhausted"
+      }
+    },
+    "ACCESS": {
+      "DENIED": "Access denied"
+    }
+  },
+  "404": {
+    "USER": {
+      "NOT": {
+        "FOUND": "User not found"
+      }
+    },
+    "TRIP": {
+      "NOT": {
+        "EXIST": "Trip not exist"
+      }
+    },
+    "BUY": {
+      "OWNER": {
+        "NOT": {
+          "EXIST": "Your selected trips are expired"
+        }
+      }
+    },
+    "TICKET": {
+      "ARRIVAL": {
+        "NOT": {
+          "EXIST": "Arrival ticket in this day are not exist",
+          "EXIST%": "Arrival ticket in %s day are not exist"
+        }
+      },
+      "UNBOOK": {
+        "NOT": {
+          "EXIST": "You must first book these trips to able to unbook them"
+        }
+      },
+      "OWNER": {
+        "NOT": {
+          "EXIST": "You must first book some trips"
+        }
+      },
+      "DEPARTURE": {
+        "NOT": {
+          "EXIST": "Departure ticket in this day are not exist",
+          "EXIST%": "Departure ticket in %s day are not exist"
+        }
+      },
+      "NOT": {
+        "EXIST": "Ticket not exist"
+      }
+    }
+  },
+  "409": {
+    "TRIP": {
+      "EXIST": "Trip with that desittion already exist",
+      "NAME": {
+        "EXIST": "Name of trip already in use"
+      }
+    }
+  }
+}

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+ssh sponteous@217.182.76.91 -p 13579 -o StrictHostKeyChecking=no <<EOF
+  cd ~/application
+  git checkout staging
+  git pull
+  docker-compose -f docker-compose.yml -f docker-compose.staging.yml -p sponteous  stop
+  docker-compose -f docker-compose.yml -f docker-compose.staging.yml -p sponteous up --build -d
+  exit
+EOF

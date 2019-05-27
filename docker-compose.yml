@@ -1,0 +1,51 @@
+---
+# Define Docker Compose version.
+version: "3"
+
+# Define all the containers.
+services:
+  # Backend Container.
+  backend:
+    build:
+      context: ./app/backend
+      dockerfile: Dockerfile.${APP_ENV}
+    volumes:
+      - ./app/backend:/usr/src/app
+    depends_on:
+      - mongo
+      - redis
+    environment:
+      NODE_ENV: ${APP_ENV}
+    command: /usr/src/app/bin/${APP_ENV}-entrypoint.sh
+  # Frontend Container.
+  frontend:
+    build:
+      context: ./app/frontend
+      dockerfile: Dockerfile.${APP_ENV}
+    volumes:
+      - ./app/frontend:/usr/src/app
+    environment:
+      NODE_ENV: ${APP_ENV}
+    command: /usr/src/app/bin/${APP_ENV}-entrypoint.sh
+  # Mongo Container.
+  mongo:
+    image: mongo:4
+    volumes:
+      - mongo-data:/data/db
+    expose:
+      - 27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+  # Redis Container.
+  redis:
+    image: redis:3
+    volumes:
+      - redis-data:/data
+    expose:
+      - 6379
+
+# Define all the external volumes.
+volumes:
+  mongo-data: ~
+  redis-data: ~

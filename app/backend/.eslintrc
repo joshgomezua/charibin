@@ -1,0 +1,50 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 9,
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
+  },
+
+  "env": {
+    "node": true,
+    "es6": true,
+    "atomtest": true,
+    "mocha": true,
+    "mongo": true
+  },
+
+  "globals": {
+    "describe": true,
+    "before": true,
+    "beforeEach": true,
+    "after": true,
+    "afterEach": true,
+    "should": true,
+    "it": true
+  },
+
+  "rules": {
+    "camelcase":                    [1, {"properties": "always"}],
+    "comma-style":                  [2, "last"],
+    "eqeqeq":                       [2, "always"],
+    "eol-last":                     [1],
+    "handle-callback-err":          [2],
+    "indent":                       [2, 2, {"SwitchCase": 1}],
+    "linebreak-style":              [2, "unix"],
+    "no-mixed-spaces-and-tabs":     [2, "smart-tabs"],
+    "no-return-assign":             [2, "always"],
+    "no-sequences":                 [2],
+    "no-trailing-spaces":           [1],
+    "no-undef":                     ["error"],
+    "quotes":                       [2, "single", "avoid-escape"],
+    "strict":                       ["error", "global"],
+    "no-unexpected-multiline":      [1],
+    "no-unused-vars":               [1],
+    "semi":                         [2, "always"],
+    "object-curly-spacing":         ["error", "always"],
+    "space-before-function-paren":  ["error", "always"],
+    "no-console": "warn"
+  }
+
+}

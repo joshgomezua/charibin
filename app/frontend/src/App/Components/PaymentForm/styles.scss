@@ -1,0 +1,45 @@
+@import '../../../Common/Utils/Styles/mixin.scss';
+
+.form.payment {
+  justify-content: flex-start;
+  width: 100%;
+  > * {
+    margin-bottom: 1rem;
+  }
+  .payment {
+    &-country {
+      width: 60%;
+      margin-right: 10%;
+    }
+    &-address {
+      width: 100%;
+    }
+    &-city,
+    &-code {
+      width: calc(50% - #{rc(10)});
+    }
+
+    &-city {
+      margin-right: rc(20);
+    }
+  }
+
+  @media screen and (max-width: 748px) {
+    .payment {
+      &-country {
+        width: 100%;
+        margin: 0;
+      }
+    }
+  }
+
+  @include respond(mobile) {
+    .payment {
+      &-city,
+      &-code {
+        width: 100%;
+        margin-right: 0;
+      }
+    }
+  }
+}

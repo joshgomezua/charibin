@@ -1,0 +1,24 @@
+@import '../../../Common/Utils/Styles/colors.scss';
+@import '../../../Common/Utils/Styles/mixin.scss';
+
+.landing-cnt {
+  .mainblock {
+    height: 100vh;
+
+    @media screen and (max-width: 767px) and (orientation: landscape) {
+      height: auto;
+      padding: 10rem 0 0 0;
+    }
+  }
+
+  .title {
+    @include respond(tab) {
+      font-size: 56px;
+      width: 90%;
+    }
+
+    @include respond(mobile) {
+      font-size: 36px;
+    }
+  }
+}

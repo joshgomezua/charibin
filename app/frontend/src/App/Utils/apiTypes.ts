@@ -1,0 +1,41 @@
+import { IFormValues } from '../Containers/Support/types'
+
+interface ISelectedTrips {
+  id: string
+  dateStart: number
+  dateEnd: number
+}
+
+interface ISelectedTickets {
+  arrivalTicket: string
+  departureTicket: string
+}
+
+export interface IBookedData {
+  quantity: number
+  ownerHash?: string
+  trips: Array<ISelectedTrips | ISelectedTickets>
+}
+
+export interface IUnbookedData {
+  owner: string
+  trips: string[]
+}
+
+export interface ISupportData extends IFormValues {}
+
+export interface IBuyData {
+  owner: string
+  creditCardToken: string
+  buyerInfo: {
+    email: string
+    firstName: string
+    middleName: string
+    lastName: string
+    birthDate: number
+    phone: string
+    address: string
+    city: string
+    zipCode: string
+  }
+}

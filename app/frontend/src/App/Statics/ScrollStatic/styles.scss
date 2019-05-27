@@ -1,0 +1,20 @@
+@import '../../../Common/Utils/Styles/colors.scss';
+@import '../../../Common/Utils/Styles/mixin.scss';
+
+.scroll {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+
+  @include respond(mobile) {
+    transform: translateY(5rem);
+  }
+
+  span {
+    color: $violet-light;
+    text-align: center;
+    font-size: 0.8rem;
+    margin-bottom: 3rem;
+    margin-top: 1rem;
+  }
+}

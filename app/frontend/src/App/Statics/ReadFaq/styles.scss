@@ -1,0 +1,107 @@
+@import '../../../Common/Utils/Styles/mixin.scss';
+@import '../../../Common/Utils/Styles/colors.scss';
+
+.read_faq {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5rem;
+  background-color: $gray-light;
+  @include respond(mobile) {
+    padding: 0 1rem;
+    width: 100%;
+    flex-direction: column-reverse;
+    // transform: translateY(-10rem);
+  }
+  > div:first-of-type {
+    height: 27rem;
+    width: 35rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 5rem;
+    @include respond(mobile) {
+      width: 80%;
+      height: auto;
+      min-height: 17rem;
+      max-height: 27rem;
+      max-width: 40rem;
+      margin: rc(30) 0 1rem 0;
+    }
+    img {
+      max-height: 100%;
+      max-width: 100%;
+    }
+  }
+  &-paragraph {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    @include respond(mobile) {
+      width: 100%;
+      text-align: center;
+      align-items: center;
+    }
+  }
+  &-label {
+    color: $label;
+    font-size: 1.1rem;
+    width: 23rem;
+
+    @include respond(mobile) {
+      font-size: 1.6rem !important;
+      font-weight: normal;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: 1.75;
+      letter-spacing: normal;
+      margin: 1rem 0 2rem 0;
+    }
+  }
+  &-title {
+    &.title {
+      font-weight: bold;
+      font-size: 0.9rem;
+      color: $black;
+      width: auto;
+      @include respond(mobile) {
+        font-size: 1.4rem !important;
+        font-weight: 600;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: normal;
+        letter-spacing: 1.2px;
+        margin: 0 0 1rem 0;
+      }
+    }
+    &.title span {
+      color: $violet;
+    }
+  }
+  &-header {
+    color: $input;
+    font-size: 2.2rem;
+    width: 26rem;
+    line-height: 2.8rem;
+    margin: 0.8rem 0;
+    @include respond(mobile) {
+      text-align: center !important;
+      line-height: 4rem;
+
+      font-size: 2.4rem !important;
+      font-weight: bold;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: 1.42;
+      letter-spacing: normal;
+    }
+  }
+  &-button {
+    width: 200px;
+
+    @include respond(mobile) {
+      margin-bottom: 1.5rem;
+    }
+  }
+}

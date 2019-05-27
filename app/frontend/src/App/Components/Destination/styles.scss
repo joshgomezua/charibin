@@ -1,0 +1,419 @@
+@import '../../../Common/Utils/Styles/mixin.scss';
+@import '../../../Common/Utils/Styles/colors.scss';
+
+.react-calendar__month-view__weekdays__weekday {
+  @include respond(mobile) {
+    font-size: 1.2rem !important;
+  }
+}
+
+.react-calendar__navigation__label {
+  @include respond(mobile) {
+    font-size: 1.2rem !important;
+  }
+}
+
+.destination {
+  width: 18rem;
+  height: 25rem;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  background-color: $white;
+  margin-bottom: 2rem;
+  margin-right: 1rem;
+
+  &:nth-of-type(3n) {
+    margin-right: auto;
+
+    @include respond(big) {
+      margin-right: 1rem;
+    }
+    @include respond(mobile) {
+      margin: 0 auto 4rem auto;
+    }
+  }
+
+  @include respond(tab) {
+    width: 300px;
+    margin-right: 0;
+    height: 35rem;
+  }
+
+  @include respond(mobile) {
+    width: 100%;
+    height: 36rem;
+    margin: 0 auto 4rem auto;
+  }
+  &.overlay {
+    & * {
+      z-index: 6;
+    }
+  }
+  &-top {
+    position: relative;
+    height: 11rem;
+    width: 100%;
+
+    @include respond(tab) {
+      height: 18rem;
+    }
+
+    @include respond(hone) {
+      height: 16rem;
+    }
+
+    &.short {
+      height: 7rem;
+
+      @include respond(tab) {
+        height: 13rem;
+      }
+    }
+
+    &.shortest {
+      height: 4rem;
+      @include respond(tab) {
+        height: 7rem;
+      }
+    }
+    span {
+      position: absolute;
+      color: $white;
+      background-color: $red;
+      border: 1px $red solid;
+      border-radius: 3px;
+      padding: 0.3rem 1rem;
+      font-size: 0.75rem;
+      top: 1rem;
+      left: 1rem;
+      @include respond(tab) {
+        font-size: 1.25rem;
+      }
+    }
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  &-bottom {
+    width: 100%;
+    height: 25rem;
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid;
+    border-right: 1px solid;
+    border-left: 1px solid;
+    border-radius: 3px;
+    border-color: $gray;
+    padding: 0 1rem;
+    background-color: $white;
+    position: relative;
+
+    @include respond(mobile) {
+      height: 30rem;
+      padding-bottom: 1rem;
+    }
+
+    .spon-btn {
+      @include respond(tab) {
+        justify-content: center;
+      }
+
+      @include respond(mobile) {
+        height: 50px;
+        font-size: rc(12);
+      }
+
+      div {
+        @include respond(mobile) {
+          width: 30px;
+          height: 30px;
+        }
+      }
+    }
+
+    &-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    &-type {
+      padding: 0.3rem 1rem;
+      border: 1px solid;
+      width: max-content;
+      border-radius: 3px;
+      font-size: 0.75rem;
+
+      font-weight: bold;
+      margin: 1rem 0;
+
+      @include respond(tab) {
+        font-size: 1.3rem;
+        font-weight: 500;
+      }
+
+      &:not(:last-child) {
+        margin-right: 1rem;
+      }
+
+      &--left {
+        border-color: $violet-dark !important;
+        color: $violet-dark !important;
+      }
+
+      &--right {
+        border-color: $red !important;
+        color: $red !important;
+      }
+    }
+
+    &-types {
+      display: flex;
+    }
+
+    &-title {
+      color: $input;
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin: 0;
+
+      @include respond(tab) {
+        font-size: 1.65rem;
+      }
+    }
+
+    &-duration {
+      color: $label;
+      font-weight: 500;
+      font-size: rc(12);
+
+      @include respond(mobile) {
+        font-size: rc(18);
+      }
+    }
+
+    &-luggage {
+      margin: 0;
+      color: $label;
+      font-weight: 400;
+      font-size: rc(14);
+
+      @include respond(mobile) {
+        font-size: rc(18);
+      }
+    }
+
+    &-departure {
+      color: $label;
+      font-size: 0.85rem;
+      margin: 0.5rem 0;
+      @include respond(tab) {
+        font-size: 1.3rem;
+      }
+    }
+    &-price {
+      color: $violet;
+      font-size: 1rem;
+      font-weight: 600;
+      margin: 1rem 0 0.5rem 0;
+      @include respond(tab) {
+        font-size: 1.4rem;
+      }
+    }
+  }
+  &-calendar {
+    z-index: 7 !important;
+    background-color: white;
+    position: absolute;
+    left: -1px;
+    right: -1px;
+    top: 135px;
+    border-bottom: 1px solid;
+    border-right: 1px solid;
+    border-left: 1px solid;
+    border-radius: 3px;
+    border-color: $gray;
+
+    @include respond(bigger) {
+      top: 100px;
+    }
+
+    @include respond(mobile) {
+      top: 118px;
+    }
+
+    .calendar {
+      display: flex;
+      justify-content: center;
+      padding: 0 1rem;
+    }
+    &-bottom {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1rem;
+      padding: 0 1rem;
+    }
+
+    &-error {
+      padding: 1rem 1rem 0 1rem;
+      color: $error-red;
+      font-size: rc(12);
+    }
+
+    &-dropdowns {
+      position: relative;
+      z-index: 9 !important;
+      margin-top: 1rem;
+      padding: 0 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+
+      p.heading {
+        margin: rc(10) 0;
+        font-size: rc(14);
+
+        @include respond(mobile) {
+          margin: rc(20) 0;
+          font-size: rc(20);
+        }
+      }
+
+      .spon-dropdown {
+        width: 100%;
+
+        &:first-of-type {
+          margin-bottom: 1rem;
+        }
+      }
+
+      .spon-dropdown__element {
+        height: 2rem;
+
+        @include respond(mobile) {
+          height: 4rem;
+        }
+      }
+
+      .spon-dropdown__placeholder {
+        font-size: rc(12);
+
+        @include respond(mobile) {
+          padding: 0 1rem;
+        }
+      }
+
+      .spon-dropdown__list-item {
+        @include respond(mobile) {
+          min-height: 4rem;
+        }
+
+        p {
+          margin: 0;
+        }
+      }
+    }
+  }
+  &-btn {
+    height: 3rem;
+    border: none;
+    border-radius: 3px;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    outline: none;
+    span {
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 0.8rem;
+    }
+    div {
+      display: flex;
+      justify-content: center;
+      height: 1.6rem;
+      width: 1.6rem;
+      background-color: $blue;
+      border-radius: 50%;
+    }
+
+    &.blue {
+      background-color: $blue-light;
+      padding: 0 1rem 0 2rem;
+      span {
+        color: $white;
+      }
+      &:disabled {
+        background-color: $inactive;
+        cursor: not-allowed;
+        div {
+          background-color: $label;
+        }
+      }
+    }
+    &.green {
+      background-color: $green;
+      padding: 0 1rem;
+      span {
+        width: 100%;
+        text-align: center;
+        color: $white;
+      }
+    }
+    &.blue-select {
+      background-color: $blue-light;
+      padding: 0 1rem;
+      span {
+        width: 100%;
+        text-align: center;
+        color: $white;
+      }
+    }
+    &.white {
+      background-color: $white;
+      border: 1px solid $gray;
+      padding: 0 1rem;
+      span {
+        width: 100%;
+        text-align: center;
+        color: $input;
+      }
+    }
+    &.gray {
+      background-color: $white;
+      border: 1px solid $gray;
+      padding: 0 1rem;
+      justify-content: center;
+      span {
+        color: $input;
+        font-weight: bold;
+      }
+      div {
+        height: auto;
+        width: auto;
+        margin-right: 1rem;
+        background-color: transparent;
+      }
+    }
+    &.red {
+      background-color: $red;
+      padding: 0 1rem;
+      justify-content: center;
+      span {
+        color: $white;
+        font-weight: bold;
+      }
+      div {
+        height: auto;
+        width: auto;
+        margin-right: 1rem;
+        background-color: transparent;
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+@import '../../../Common/Utils/Styles/mixin.scss';
+@import '../../../Common/Utils/Styles/colors.scss';
+
+.spon-file-input {
+  input {
+    display: none;
+  }
+
+  label {
+    font-size: rc(14);
+    color: $blue;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  p {
+    margin: 0;
+    font-size: rc(10);
+    color: $label;
+  }
+}

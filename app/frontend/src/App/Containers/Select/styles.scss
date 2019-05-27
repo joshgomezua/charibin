@@ -1,0 +1,96 @@
+@import '../../../Common/Utils/Styles/mixin.scss';
+@import '../../../Common/Utils/Styles/colors.scss';
+
+.select-cnt {
+  background-color: $bg;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  &.calendar {
+    &::before {
+      content: '';
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      top: 0;
+      background-color: $input;
+      z-index: 5;
+      opacity: 0.3;
+    }
+  }
+  &-block {
+    padding-top: 10rem !important;
+    padding-bottom: 3rem;
+    @include respond(tab) {
+      padding-bottom: 0;
+    }
+  }
+  &-inner {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    padding: 8rem 0 10rem 0;
+
+    @include respond(tab) {
+      flex-direction: column;
+      align-items: center;
+      padding: 3rem 0 30rem 0;
+    }
+
+    &-title {
+      margin-top: 0;
+      margin-bottom: rc(30);
+      font-size: rc(20);
+      font-weight: 600;
+      text-align: left;
+      color: $input;
+
+      @include respond(mobile) {
+        text-align: center;
+        margin: 0 0 2rem 0 !important;
+        padding: 0 1.2rem;
+        width: 100%;
+        font-size: 2.4rem !important;
+        line-height: 1.42;
+      }
+
+      span {
+        color: $violet;
+      }
+    }
+
+    &-filters {
+      margin-right: 1rem;
+      @include respond(tab) {
+        width: 90%;
+        margin: 0 0 3rem 0;
+      }
+    }
+    &-destinations {
+    }
+
+    &-destination-list {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      width: 57rem;
+
+      @include respond(big) {
+        width: 57.5rem;
+      }
+
+      @include respond(tab) {
+        max-width: unset;
+        width: 90%;
+        justify-content: space-between;
+      }
+
+      @include respond(mobile) {
+        margin: 0 auto;
+      }
+    }
+  }
+}

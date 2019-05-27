@@ -1,0 +1,21 @@
+@import '../../../Common/Utils/Styles/colors.scss';
+@import '../../../Common/Utils/Styles/mixin.scss';
+
+.mainblock {
+  background-image: radial-gradient(circle at 50% 50%, $violet-dark, $violet);
+  position: relative;
+  &.padding {
+    padding-top: 10rem;
+
+    @include respond(mobile) {
+      padding-top: 10rem;
+    }
+  }
+  &.flex {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}

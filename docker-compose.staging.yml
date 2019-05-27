@@ -1,0 +1,19 @@
+---
+# Define Docker Compose version.
+version: "3"
+
+# Define all the containers.
+services:
+  # Backend Container.
+  backend:
+    ports:
+    - ${APP_PORT}:3001
+  # Nosqlclient client.
+  nosqlclient-client:
+    image: mongoclient/mongoclient:latest
+    depends_on:
+    - mongo
+    ports:
+    - ${NOSQLCLIENT_PORT}:3000
+    environment:
+      ROOT_URL: http://localhost:3000/nosqlclient

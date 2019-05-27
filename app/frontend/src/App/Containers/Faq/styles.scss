@@ -1,0 +1,18 @@
+@import '../../../Common/Utils/Styles/colors.scss';
+@import '../../../Common/Utils/Styles/mixin.scss';
+
+.faq {
+  &-title {
+    // padding-top: 10rem;
+    padding-bottom: 2rem;
+  }
+  &-cnt {
+    color: $black;
+  }
+  &-wrapper {
+    padding: 4rem 2rem;
+    width: 50rem;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+}

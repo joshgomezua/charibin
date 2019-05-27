@@ -1,0 +1,22 @@
+@import '../../../Common/Utils/Styles/colors.scss';
+
+.spon-info {
+  position: relative;
+  display: flex;
+  width: 100%;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  background-color: $success-green;
+  padding: 15px 0px;
+  margin-bottom: 3rem;
+  color: $white;
+  font-weight: 400;
+  letter-spacing: 0.7px;
+  font-size: 1rem;
+  animation-duration: 300ms;
+
+  &--error {
+    background-color: $error-red;
+  }
+}

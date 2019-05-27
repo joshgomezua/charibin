@@ -1,0 +1,132 @@
+@import '../../../Common/Utils/Styles/mixin.scss';
+@import '../../../Common/Utils/Styles/colors.scss';
+
+.selectpanel {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: $white;
+  border-top: 1px solid $gray;
+  height: 5rem;
+  padding: 0 5rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  @include respond(mobile) {
+    padding: 0 0 0 1rem;
+    height: 6.5rem;
+  }
+
+  &--select {
+    @include respond(mobile) {
+      padding: 0 0 0 1rem;
+    }
+  }
+
+  &-images {
+    width: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    @include respond(mobile) {
+      padding-left: 1rem;
+    }
+    &-img {
+      height: 3.2rem;
+      width: 2.5rem;
+      border-radius: 3px;
+      margin-right: 0.5rem;
+      @include respond(tab) {
+        display: none;
+      }
+      img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 3px;
+      }
+    }
+    span {
+      font-size: 1.1rem;
+      font-weight: 500;
+      letter-spacing: 1px;
+      margin-left: 2rem;
+      @include respond(mobile) {
+        font-size: 1.2rem;
+        margin-left: 0;
+      }
+    }
+    &-text {
+      display: flex;
+      flex-direction: column;
+      &-red {
+        font-size: 0.8rem;
+        color: $red;
+      }
+    }
+  }
+  &-buttons {
+    width: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+
+    &-invisible {
+      // display: none;
+    }
+
+    &-btn {
+      margin-top: 0;
+      width: max-content;
+      min-width: 13rem;
+
+      @include respond(mobile) {
+        min-width: 5rem;
+        width: 6.5rem;
+        height: 6.5rem;
+        border-radius: 0;
+        justify-content: center;
+
+        span {
+          display: none;
+        }
+      }
+
+      &:disabled {
+        background-color: #e7e8ee !important;
+
+        span {
+          color: $label !important;
+        }
+
+        div {
+          background-color: $disable-span !important;
+        }
+      }
+
+      &--prev {
+        @include respond(mobile) {
+          display: none;
+        }
+      }
+
+      &--prev-mobile {
+        display: none;
+
+        @include respond(mobile) {
+          display: flex;
+          border-right: 1px solid $gray;
+        }
+      }
+
+      div {
+        @include respond(mobile) {
+          background-color: transparent !important;
+        }
+      }
+    }
+  }
+}

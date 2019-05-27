@@ -1,0 +1,68 @@
+@import '../../../Common/Utils/Styles/mixin.scss';
+@import '../../../Common/Utils/Styles/colors.scss';
+
+.spon-input {
+  width: 100%;
+
+  &--prefix {
+    span {
+      padding: 0 rc(3) 0 rc(10);
+    }
+
+    input {
+      padding-right: rc(10) !important;
+      padding-left: 0 !important;
+    }
+  }
+
+  &--suffix {
+    input {
+      padding-left: rc(10) !important;
+      padding-right: 0 !important;
+    }
+
+    span {
+      padding: 0 rc(10) 0 rc(3);
+    }
+  }
+
+  &__cnt {
+    display: flex;
+    width: 100%;
+    height: 3rem;
+    border: solid 1px $input;
+
+    span {
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
+  }
+
+  input {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 0 1rem;
+    color: $input;
+    border: none;
+    -webkit-appearance: none;
+
+    &:focus,
+    &:active {
+      outline: none;
+    }
+
+    @include placeholder {
+      font-size: 1.4rem;
+      color: $input;
+    }
+  }
+
+  &__label {
+    display: block;
+    margin-bottom: rc(10);
+    font-size: 1rem;
+    color: $input;
+  }
+}

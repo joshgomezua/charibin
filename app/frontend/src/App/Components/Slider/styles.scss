@@ -1,0 +1,191 @@
+@import '../../../Common/Utils/Styles/mixin.scss';
+@import '../../../Common/Utils/Styles/colors.scss';
+
+.slider {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  // justify-content: center;
+  padding: 5rem;
+  @include respond(mobile) {
+    flex-direction: column;
+    padding: 5rem 1rem 1rem 1rem;
+    width: 100%;
+    height: 85vh;
+  }
+
+  &-animation {
+    &-enter {
+      opacity: 0.01;
+      &-active {
+        opacity: 1;
+        transition: opacity 500ms ease-in;
+      }
+    }
+    &-leave {
+      opacity: 1;
+      &-active {
+        opacity: 0.01;
+        transition: opacity 300ms ease-in;
+      }
+    }
+  }
+
+  &-img {
+    height: 27rem;
+    width: 35rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @include respond(mobile) {
+      width: 85%;
+    }
+    img {
+      max-height: 100%;
+      max-width: 100%;
+    }
+  }
+
+  &-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 5rem;
+    @include respond(mobile) {
+      margin: 0;
+      width: 100%;
+      text-align: center;
+      align-items: center;
+    }
+    p:first-of-type {
+      text-transform: uppercase;
+      color: $input;
+      font-weight: bold;
+      font-size: 0.9rem;
+      @include respond(mobile) {
+        width: 174px;
+        font-size: 1.4rem;
+        font-weight: 600;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: normal;
+        margin: 0 0 1.5rem 0;
+        letter-spacing: 1.2px;
+      }
+      span {
+        color: $violet;
+      }
+    }
+    p:last-of-type {
+      color: $label;
+      width: 23rem;
+
+      @include respond(mobile) {
+        width: 27rem;
+        font-size: 1.6rem;
+        font-weight: normal;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.75;
+        letter-spacing: normal;
+        text-align: center;
+        margin: 0 0 1.5rem 0;
+      }
+    }
+    &-title {
+      color: $input;
+      font-size: 2.2rem;
+      width: 26rem;
+      line-height: 2.8rem;
+      margin: 0.8rem 0;
+      @include respond(mobile) {
+        margin: 0 0 3rem 0;
+        font-size: 2.4rem !important;
+        text-align: center !important;
+        width: 258px;
+        font-size: 2.4rem;
+        font-weight: bold;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.42;
+        letter-spacing: normal;
+      }
+    }
+    &-buttons {
+      display: flex;
+      flex-direction: row;
+
+      @include respond(mobile) {
+        display: none;
+      }
+
+      button {
+        cursor: pointer;
+        font-size: 1.3rem;
+        color: $border;
+        margin-top: 1rem;
+        margin-right: 2rem;
+        outline: none;
+        background-color: transparent;
+        border: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        height: 70px;
+        width: 70px;
+        padding: 0;
+        @include respond(mobile) {
+          &:last-of-type {
+            margin-right: 0;
+          }
+        }
+        span {
+          position: absolute;
+          left: 44%;
+          bottom: 32%;
+          font-size: 17px;
+        }
+        svg {
+          transform: rotate(-90deg);
+          .slider-info-button-normal {
+            stroke: $border;
+            fill: transparent;
+          }
+          .slider-info-button-progress {
+            stroke: $blue-light;
+            fill: transparent;
+          }
+        }
+      }
+    }
+  }
+
+  &-dots {
+    display: none;
+    margin-top: 3rem;
+    justify-content: center;
+    align-items: center;
+    height: 1.2rem;
+    width: 100%;
+
+    @include respond(mobile) {
+      display: flex;
+    }
+  }
+
+  &-dot {
+    width: 1.2rem;
+    height: 1.2rem;
+    border-radius: 50%;
+    background: $gray;
+
+    &:not(:last-child) {
+      margin-right: 1rem;
+    }
+
+    &--active {
+      background: $blue-light;
+    }
+  }
+}

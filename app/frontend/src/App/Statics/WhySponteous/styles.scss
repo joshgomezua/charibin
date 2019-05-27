@@ -1,0 +1,92 @@
+@import '../../../Common/Utils/Styles/mixin.scss';
+@import '../../../Common/Utils/Styles/colors.scss';
+
+.why_static {
+  padding: 5rem 0;
+  @include respond(mobile) {
+    width: 100%;
+    padding: 0;
+  }
+  &-title {
+    color: $input;
+    font-size: 2.2rem;
+    width: 26rem;
+    line-height: 2.8rem;
+    text-align: center;
+    width: 100%;
+
+    @include respond(mobile) {
+      font-weight: bold;
+      line-height: 1.92;
+      font-style: normal;
+      font-stretch: normal;
+      letter-spacing: normal;
+      width: 100% !important;
+      font-size: 2.4rem !important;
+    }
+  }
+  &-list {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    @include respond(mobile) {
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+  &-item {
+    width: 25rem;
+    padding: 0 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &.border {
+      border-left: 1px solid $gray;
+      border-right: 1px solid $gray;
+      @include respond(mobile) {
+        border: none;
+      }
+    }
+    img {
+      width: 13rem;
+
+      @include respond(mobile) {
+        width: 17rem;
+      }
+    }
+
+    p {
+      text-align: center;
+    }
+
+    p:first-of-type {
+      color: $input;
+      font-weight: bold;
+      font-size: 1.1rem;
+      @include respond(mobile) {
+        margin: 3rem 0 1rem 0 !important;
+        font-weight: 500;
+        font-size: 1.8rem;
+        font-style: normal;
+        line-height: normal;
+        font-stretch: normal;
+        letter-spacing: normal;
+      }
+    }
+    p:last-of-type {
+      color: $label;
+      font-size: 0.9rem;
+      text-align: center;
+      @include respond(mobile) {
+        margin: 0 0 4.5rem 0 !important;
+        font-size: 1.4rem;
+        line-height: 1.57;
+        font-style: normal;
+        font-weight: normal;
+        font-stretch: normal;
+        letter-spacing: normal;
+      }
+    }
+  }
+}

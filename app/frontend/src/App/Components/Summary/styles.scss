@@ -1,0 +1,117 @@
+@import '../../../Common/Utils/Styles/mixin.scss';
+@import '../../../Common/Utils/Styles/colors.scss';
+
+.trip {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 5rem;
+  @include respond(mobile) {
+    flex-direction: column;
+  }
+  &-left {
+    @include respond(mobile) {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    &-order {
+      color: $violet-light;
+      font-size: 0.9rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    &-title {
+      font-size: 2.5rem;
+      width: 30rem;
+      @include respond(mobile) {
+        text-align: center !important;
+      }
+    }
+    &-confirmation {
+      color: $white;
+      margin-bottom: 0;
+      font-size: 1rem;
+      letter-spacing: 1px;
+
+      &.last {
+        margin-top: 0;
+      }
+    }
+    &-email {
+      color: $blue-light;
+      margin-top: 0;
+      font-size: 1rem;
+      letter-spacing: 1px;
+    }
+  }
+  &-right {
+    box-shadow: 0 9px 31px 0 $shadow;
+    background-color: $white;
+    border-radius: 3px;
+    width: 28rem;
+    margin-left: 8rem;
+    @include respond(mobile) {
+      margin-left: 0;
+      margin-top: 2rem;
+    }
+    &-img {
+      height: 11rem;
+      overflow: hidden;
+      border-top-left-radius: 3px;
+      border-top-right-radius: 3px;
+      img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+      }
+    }
+    &-details {
+      font-size: 1.1rem;
+      font-weight: bold;
+      padding: 2rem 3rem;
+      border-bottom: 1px solid $gray;
+      margin: 0;
+    }
+    &-name {
+      margin: 1rem 3rem 0 3rem;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      span {
+        margin: 1.5rem 0;
+      }
+      span:last-child {
+        color: $label;
+      }
+    }
+    &-deselect {
+      margin: 0 3rem;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      border-top: 1px solid $gray;
+      border-bottom: 1px solid $gray;
+      span {
+        margin: 1.5rem 0;
+        color: $red;
+      }
+    }
+    &-total {
+      margin: 0 3rem 1rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      span {
+        margin: 1.5rem 0;
+      }
+      span:last-child {
+        color: $violet;
+        font-weight: bold;
+      }
+    }
+  }
+}

@@ -1,0 +1,108 @@
+@import '../../../Common/Utils/Styles/mixin.scss';
+@import '../../../Common/Utils/Styles/colors.scss';
+
+.form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 2rem;
+  color: $gray-dark;
+  > div {
+    width: 20%;
+  }
+  input,
+  textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 3px;
+    border: 1px solid $gray;
+    color: $gray-dark;
+  }
+  .asterisk {
+    color: $red;
+  }
+}
+
+.name-input {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 3px;
+  border: 1px solid $gray;
+  color: $gray-dark;
+  height: 3rem;
+  margin-bottom: 2rem;
+  border-radius: 0;
+  font-size: 0.875rem;
+  &:focus,
+  &:active {
+    outline: none;
+  }
+}
+
+.name-input-label {
+  display: block;
+  margin-bottom: rc(10);
+  font-weight: 500;
+  font-size: rc(12);
+  color: $label;
+  letter-spacing: 1px;
+
+  &-required {
+    color: red;
+  }
+}
+
+.card {
+  &-wrapper {
+    color: $gray-dark;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  &-expiry,
+  &-cvc,
+  &-number {
+    > label {
+      display: block;
+      margin-bottom: rc(10);
+      font-weight: 500;
+      font-size: rc(12);
+      color: $label;
+      letter-spacing: 1px;
+    }
+
+    .StripeElement {
+      padding: 1rem 0.5rem;
+      border: 1px solid $gray;
+      font-size: rc(14);
+      color: $input;
+    }
+  }
+  &-expiry,
+  &-cvc,
+  &-number {
+    width: calc(33.3333% - 0.9rem);
+    margin-bottom: 3rem;
+  }
+  &-number,
+  &-expiry {
+    margin-right: rc(20);
+  }
+}
+
+@include respond(mobile) {
+  .card {
+    &-number {
+      width: 100%;
+      margin-right: 0;
+      margin-left: 0;
+    }
+    &-expiry,
+    &-cvc {
+      width: 100%;
+      margin-right: 0;
+    }
+  }
+}

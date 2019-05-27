@@ -1,0 +1,78 @@
+'use strict';
+
+const ROLE = global.config.custom.roles;
+
+module.exports = {
+  user: {
+    _id: {
+      type: 'string',
+      required: false,
+      permission: {
+        create: [],
+        update: [],
+        find: [ROLE.ADMINISTRATOR],
+        destroy: [],
+      },
+    },
+
+    __v: {
+      type: 'number',
+      required: false,
+      permission: {
+        create: [],
+        update: [],
+        find: [ROLE.ADMINISTRATOR],
+        destroy: [],
+      },
+    },
+
+    email: {
+      type: 'email',
+      required: true,
+      permission: {
+        create: [],
+        update: [ROLE.ADMINISTRATOR],
+        find: [ROLE.ADMINISTRATOR],
+        destroy: [],
+      },
+      minLength: 5,
+      maxLength: 40,
+      pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,10}))$/
+    },
+
+    role: {
+      type: 'string',
+      required: false,
+      permission: {
+        create: [],
+        update: [],
+        find: [ROLE.ADMINISTRATOR],
+        destroy: [],
+      },
+      pattern: /^(Administrator)$/
+    },
+
+    password: {
+      type: 'password',
+      required: true,
+      permission: {
+        create: [],
+        update: [],
+        find: [],
+        destroy: [],
+      },
+      pattern: /^(?=.*[A-Z])[\w~@#$%^&*+=`|{}:;!.?\"()\[\]-](?=.*[0-9])(?=.*[a-z]).{7,}$/
+    },
+
+    createdAt: {
+      type: 'timestamp',
+      required: false,
+      permission: {
+        create: [],
+        update: [],
+        find: [ROLE.ADMINISTRATOR],
+        destroy: []
+      }
+    }
+  }
+};

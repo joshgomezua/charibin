@@ -1,0 +1,53 @@
+@import '../../../Common/Utils/Styles/mixin.scss';
+@import '../../../Common/Utils/Styles/colors.scss';
+
+.spon-multiswitch {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+
+  &-heading {
+    font-size: rc(14);
+    font-weight: 400;
+    color: $gray-dark;
+  }
+
+  &__items {
+    height: max-content;
+
+    &::-webkit-scrollbar {
+      width: rc(4);
+    }
+
+    &::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+      border-radius: 5px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: lighten($violet, 20%);
+      outline: 1px solid slategrey;
+      border-radius: 5px;
+    }
+
+    p {
+      font-size: rc(12);
+    }
+  }
+
+  &-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: rc(10) 0;
+
+    &__checkbox {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      min-height: rc(20);
+    }
+  }
+}

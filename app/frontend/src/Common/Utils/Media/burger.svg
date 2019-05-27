@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="27px" height="23px" viewBox="0 0 27 23" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.1 (51147) - http://www.bohemiancoding.com/sketch -->
+    <title>burger button</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="📱📝-MVP-Mobile" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="M.-FAQ" transform="translate(-278.000000, -100.000000)" fill="#FFFFFF" fill-rule="nonzero">
+            <g id="Group-11" transform="translate(0.000000, 70.000000)">
+                <g id="burger-button" transform="translate(278.000000, 30.000000)">
+                    <path d="M25.242282,2.8 L1.07749341,2.8 C0.507952938,2.8 0.0197753906,2.2 0.0197753906,1.5 C0.0197753906,0.8 0.507952938,0.2 1.07749341,0.2 L25.242282,0.2 C25.8118225,0.2 26.3,0.8 26.3,1.5 C26.3,2.2 25.8118225,2.8 25.242282,2.8 Z" id="Shape"></path>
+                    <path d="M25.242282,12.5 L1.07749341,12.5 C0.507952938,12.5 0.0197753906,12 0.0197753906,11.2 C0.0197753906,10.5 0.507952938,10 1.07749341,10 L25.242282,10 C25.8118225,10 26.3,10.6 26.3,11.3 C26.2186371,12 25.8118225,12.5 25.242282,12.5 Z" id="Shape"></path>
+                    <path d="M25.242282,22.2 L1.07749341,22.2 C0.507952938,22.2 0.0197753906,21.7 0.0197753906,21 C0.0197753906,20.3 0.507952938,19.7 1.07749341,19.7 L25.242282,19.7 C25.8118225,19.7 26.3,20.3 26.3,21 C26.2186371,21.7 25.8118225,22.2 25.242282,22.2 Z" id="Shape"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

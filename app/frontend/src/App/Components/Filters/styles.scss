@@ -1,0 +1,142 @@
+@import '../../../Common/Utils/Styles/mixin.scss';
+@import '../../../Common/Utils/Styles/colors.scss';
+
+.filters {
+  width: 18rem;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  background-color: $white;
+  border: 1px solid $gray;
+
+  @include respond(tab) {
+    width: 100%;
+  }
+
+  &-inner {
+    display: flex;
+    align-items: center;
+  }
+
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &-button {
+    color: $red;
+    border: 0;
+    background: transparent;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-size: rc(12);
+
+    @include respond(mobile) {
+      font-size: 1.2rem !important;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &-calendar {
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+
+    @include respond(tab) {
+      display: flex;
+      justify-content: center;
+    }
+
+    .calendar {
+      @include respond(mobile) {
+        width: 100%;
+      }
+    }
+  }
+
+  &-title {
+    margin: 0;
+    @include respond(mobile) {
+      font-size: 1.2rem !important;
+    }
+  }
+  &-filter {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 3px;
+    padding: 1rem;
+    background-color: $white;
+    border: 1px solid $gray;
+    outline: none;
+    margin-top: 1rem;
+
+    &-value {
+      margin-left: 0.75rem;
+      font-size: 0.9rem;
+
+      @include respond(phone) {
+        font-size: 1.4rem;
+      }
+
+      @include respond(mobile) {
+        font-size: 1.2rem !important;
+      }
+    }
+
+    &:hover,
+    &:focus {
+      border-color: $violet;
+      .filters-filter-prefix {
+        fill: $violet;
+      }
+    }
+
+    &-prefix {
+      width: 20px;
+      height: 20px;
+      overflow: hidden;
+      fill: $gray-icon;
+    }
+
+    &-suffix {
+      &.open {
+        transform: rotateZ(180deg);
+      }
+    }
+  }
+
+  &-slider {
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+    &.ant-slider {
+      &:hover {
+        .ant-slider {
+          &-rail {
+            background-color: rgba($violet, 0.5);
+          }
+          &-handle {
+            border-color: $violet-dark;
+          }
+        }
+      }
+      .ant-slider {
+        &-rail {
+          background-color: rgba($violet, 0.3);
+        }
+        &-track {
+          background-color: $violet;
+        }
+        &-handle {
+          background-color: $white;
+          border-color: $violet-dark;
+        }
+      }
+    }
+  }
+}

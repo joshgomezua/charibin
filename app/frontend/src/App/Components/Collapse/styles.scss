@@ -1,0 +1,84 @@
+@import '../../../Common/Utils/Styles/colors.scss';
+@import '../../../Common/Utils/Styles/mixin.scss';
+
+.collapse {
+  width: 100%;
+  padding: 2rem 0;
+  border-bottom: 2px solid $gray;
+  &.top-border {
+    border-top: 2px solid $gray;
+  }
+  &-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    @include respond(mobile) {
+      font-size: 1.8rem;
+      font-weight: bold;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      text-align: left;
+      color: #2e333b;
+    }
+    &-wrapper {
+      width: 90%;
+    }
+  }
+  &-content {
+    display: none;
+    transition: all 0.5s;
+
+    @include respond(mobile) {
+      font-size: 1.6rem;
+      font-weight: normal;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: 1.75;
+      letter-spacing: normal;
+      text-align: left;
+      color: #7b899f;
+    }
+    &.open {
+      display: block;
+      padding-top: 1rem;
+    }
+  }
+  &-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: none;
+    position: relative;
+    background-color: $blue-light;
+    outline: none;
+    &:focus {
+      background-color: $blue;
+    }
+    &.open {
+      background-color: $red;
+      &:focus {
+        background-color: darken($red, 15%);
+      }
+    }
+  }
+  &-bar {
+    display: block;
+    width: 15px;
+    height: 4px;
+    background-color: $white;
+    position: absolute;
+    top: calc(50% - 2px);
+    left: calc(50% - 7.5px);
+    transform-origin: 50%;
+    transition: all 0.2s;
+    &.vertical {
+      transform: rotateZ(90deg);
+      &.open {
+        transform: rotateZ(0);
+      }
+    }
+  }
+}

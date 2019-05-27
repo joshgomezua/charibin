@@ -1,0 +1,38 @@
+@import '../../../Common/Utils/Styles/mixin.scss';
+@import '../../../Common/Utils/Styles/colors.scss';
+
+.spon-gdpr {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: rc(80);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: $violet;
+  color: $white;
+  font-size: rc(16);
+  z-index: 9999;
+
+  @include respond(mobile) {
+    flex-direction: column;
+    padding: 0 1rem;
+    height: rc(200);
+    font-size: rc(20);
+    text-align: center;
+  }
+
+  p {
+    margin: 0 rc(20) 0 0;
+
+    @include respond(mobile) {
+      margin: 0 0 rc(20) 0;
+    }
+  }
+
+  button {
+    width: 10rem;
+    margin: 0;
+  }
+}

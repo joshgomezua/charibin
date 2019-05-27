@@ -1,0 +1,58 @@
+@import '../../../Common/Utils/Styles/mixin.scss';
+@import '../../../Common/Utils/Styles/colors.scss';
+
+.preloader {
+  &.mainblock.flex {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-between;
+  }
+  &-title {
+    margin-top: 0;
+  }
+  &-thumbnails {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+
+    img {
+      pointer-events: none;
+      width: 90px;
+
+      &:not(:last-child) {
+        margin-right: rc(40);
+      }
+    }
+  }
+  &-cancel {
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 1px;
+    text-align: left;
+    text-decoration: underline;
+    color: $violet-light;
+    border: 0;
+    background-color: inherit;
+    padding: 0.5rem;
+  }
+  &-dice {
+    margin-top: 5rem;
+    position: relative;
+
+    &-wrapper {
+      width: 30px;
+      height: 30px;
+      transform-style: preserve-3d;
+      position: relative;
+      perspective: 2000;
+      animation: rotate 2s infinite;
+    }
+  }
+}

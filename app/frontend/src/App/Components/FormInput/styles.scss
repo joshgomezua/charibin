@@ -1,0 +1,50 @@
+@import '../../../Common/Utils/Styles/colors.scss';
+@import '../../../Common/Utils/Styles/mixin.scss';
+
+.input_error {
+  font-size: rc(12);
+  color: $red;
+
+  @include respond(mobile) {
+    font-size: 1.2rem !important;
+  }
+}
+
+.required-label {
+  @include respond(mobile) {
+    font-size: 1.2rem !important;
+  }
+}
+
+.input-label {
+  display: block;
+  margin-bottom: rc(10);
+  font-weight: 500;
+  font-size: rc(12);
+  color: $label;
+  letter-spacing: 1px;
+
+  @include respond(mobile) {
+    font-size: 1.2rem !important;
+  }
+}
+
+.input {
+  height: 50px;
+  font-size: rc(14);
+  color: $input;
+
+  @include respond(mobile) {
+    font-size: 1.2rem;
+  }
+
+  &::placeholder {
+    @include respond(mobile) {
+      font-size: 1.2rem !important;
+    }
+  }
+}
+
+.asterisk {
+  color: $red;
+}

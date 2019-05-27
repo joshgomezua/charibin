@@ -1,0 +1,195 @@
+@import '../../../Common/Utils/Styles/mixin.scss';
+@import '../../../Common/Utils/Styles/colors.scss';
+
+.spon-agenda {
+  width: calc(100% - 20rem);
+  height: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  position: relative;
+
+  &__error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    width: 100%;
+    top: 50%;
+
+    @include respond(phone) {
+      width: 100vw;
+      height: calc(100vh - 14rem);
+      position: relative;
+      top: 0;
+    }
+
+    svg {
+      fill: $error-red !important;
+      width: 8rem !important;
+      height: 8rem !important;
+    }
+
+    p {
+      color: $gray-dark;
+      font-size: rc(17);
+    }
+
+    button {
+      width: auto;
+      padding: 0 rc(10);
+    }
+  }
+
+  &__add-button {
+    width: 10rem;
+    margin: 0;
+  }
+
+  &__thead {
+    display: flex;
+    align-items: center;
+    height: rc(100);
+    text-align: left;
+    background-color: lighten($color: $violet, $amount: 45);
+
+    @include respond(phone) {
+      display: none;
+    }
+  }
+
+  &__tbody {
+    display: block;
+    width: 100%;
+    overflow: auto;
+    height: calc(100% - 6.25rem);
+    background: $white;
+
+    @include respond(phone) {
+      overflow: unset;
+      height: auto;
+    }
+  }
+
+  &__cell {
+    box-sizing: border-box;
+    padding: 0;
+    display: block;
+    color: $brown-dark;
+    font-weight: 500;
+    font-size: rc(12);
+    white-space: pre-wrap;
+    width: 20%;
+
+    &--head {
+      color: $dark-deep-blue;
+      font-weight: 600;
+      font-size: rc(14);
+      letter-spacing: 1px;
+      border-style: hidden;
+      padding: rc(14) rc(10) rc(14) 0;
+
+      &:first-child {
+        padding-left: rc(40);
+      }
+
+      &:nth-child(2) {
+        padding-left: rc(20);
+      }
+    }
+
+    &--body {
+      padding: rc(14) rc(10) rc(14) 0;
+      border-bottom: solid 1px $border;
+      font-size: rc(14);
+
+      @include respond(phone) {
+        padding: 0;
+        width: 60%;
+        border: 0;
+      }
+    }
+
+    &--first-item {
+      padding-left: rc(40);
+      width: 200px;
+    }
+
+    &--date {
+      vertical-align: baseline;
+      color: $gray-dark;
+
+      p {
+        margin: 0;
+      }
+    }
+
+    &--hours {
+      padding-left: rc(20);
+    }
+
+    &--edit {
+      display: flex;
+    }
+  }
+
+  &__row {
+    $row: &;
+    display: flex;
+    background-color: $white;
+
+    &:hover {
+      .spon-agenda__cell--titel,
+      .spon-agenda__cell--sted,
+      .spon-agenda__cell--arrangor,
+      .spon-agenda__cell--kategori {
+        background-color: rgba(208, 208, 208, 0.09);
+      }
+    }
+
+    &--head {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      width: 100%;
+      background: transparent;
+    }
+  }
+
+  &-flex {
+    display: flex;
+  }
+
+  &__button {
+    width: 4rem;
+    height: 1.8rem;
+    margin-right: rc(20) !important;
+    font-size: rc(12);
+  }
+
+  &__delete-btn {
+    position: relative;
+    width: rc(20);
+    height: rc(20);
+    margin-top: 5px;
+    cursor: pointer;
+
+    span {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100%;
+      height: rc(2px);
+      background: $error-red;
+      display: block;
+
+      &:first-child {
+        transform: translate(-50%, -50%) rotate(-45deg);
+      }
+
+      &:last-child {
+        transform: translate(-50%, -50%) rotate(45deg);
+      }
+    }
+  }
+}

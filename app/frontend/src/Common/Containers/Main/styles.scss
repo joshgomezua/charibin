@@ -1,0 +1,58 @@
+@import '../../Utils/Styles/mixin.scss';
+
+* {
+  font-family: Poppins;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+}
+
+.spon-main {
+  width: 100%;
+
+  &__popup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 5rem;
+
+    button {
+      &:first-child {
+        margin-right: 1rem;
+      }
+    }
+  }
+}
+
+html {
+  font-size: 100%;
+
+  @include respond(bigger) {
+    font-size: 80%;
+  }
+  @include respond(big) {
+    font-size: 70%;
+  }
+  @include respond(tab) {
+    font-size: 65%;
+  }
+  @include respond(mobile) {
+    font-size: 60%;
+  }
+}
+
+.spon-toast {
+  font-family: Poppins;
+  font-size: rc(14);
+
+  .Toastify__toast {
+    padding-left: rc(20);
+  }
+
+  .Toastify__close-button {
+    display: none;
+  }
+}

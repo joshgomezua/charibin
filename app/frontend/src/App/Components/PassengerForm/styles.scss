@@ -1,0 +1,136 @@
+@import '../../../Common/Utils/Styles/colors.scss';
+@import '../../../Common/Utils/Styles/mixin.scss';
+
+.form input::placeholder {
+  color: $gray-dark;
+}
+
+.form.primary_pass {
+  justify-content: flex-start;
+  width: 100%;
+  color: $gray-dark;
+  > * {
+    margin-bottom: 1rem;
+  }
+  .primary_pass,
+  .additional_pass {
+    &-name {
+      width: calc(33.3333% - 0.9rem);
+
+      &:first-of-type,
+      &:nth-of-type(2) {
+        margin-right: rc(20);
+      }
+    }
+
+    &-country {
+      width: 26%;
+
+      @include respond(mobile) {
+        width: 35%;
+      }
+
+      .spon-dropdown__label {
+        display: block;
+        font-weight: 500;
+        font-size: rc(12);
+        color: $label;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+
+        @include respond(mobile) {
+          font-size: 1.2rem !important;
+        }
+      }
+
+      .spon-dropdown__placeholder {
+        p {
+          font-size: rc(12);
+          color: $label;
+
+          @include respond(mobile) {
+            font-size: 0.8rem !important;
+          }
+        }
+      }
+    }
+
+    &-email {
+      width: calc(37% - #{rc(10)});
+
+      @include respond(mobile) {
+        width: 100%;
+      }
+    }
+
+    &-phone {
+      margin-left: -1px;
+      margin-right: rc(20);
+      width: calc(37% - #{rc(10)});
+
+      @include respond(mobile) {
+        width: calc(100% - 35%);
+        margin-right: 0;
+      }
+
+      label {
+        opacity: 0;
+      }
+    }
+
+    &-gender {
+      width: 100%;
+      &_option {
+        display: flex;
+        justify-content: flex-end;
+        align-content: center;
+        flex-direction: row-reverse;
+        > input {
+          width: 3rem;
+        }
+        > label {
+          margin-right: 1.5rem;
+        }
+        > .input_error {
+          order: -10;
+        }
+      }
+    }
+    &-date {
+      width: auto;
+      justify-self: flex-start;
+      width: calc(33.3333% - 0.9rem);
+
+      &:first-of-type,
+      &:nth-of-type(2) {
+        margin-right: rc(20);
+      }
+
+      > input {
+        color: $gray-dark;
+      }
+      &-wrapper {
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        width: 100%;
+        > p {
+          font-weight: 500;
+          font-size: rc(12);
+          width: 100%;
+        }
+      }
+    }
+  }
+  @media screen and (max-width: 500px) {
+    .primary_pass {
+      &-name,
+      &-name:first-of-type,
+      &-name:nth-of-type(2),
+      &-email {
+        margin-right: 0;
+        width: 100%;
+      }
+    }
+  }
+}
