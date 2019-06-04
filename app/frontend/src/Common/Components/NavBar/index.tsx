@@ -80,7 +80,7 @@ class NavBar extends Component<IProps, IState> {
               <NavLink
                 className={classWithBurger('navbar__link')}
                 to={`${ADMIN_ROUTING.MAIN}${ADMIN_ROUTING.TRIPS}`}>
-                TRIPS
+                ROUTES & PRICES
               </NavLink>
 
               <NavLink
