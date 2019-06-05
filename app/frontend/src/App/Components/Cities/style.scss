@@ -13,9 +13,8 @@
 
 .grid-item {
     background-color: rgba(255, 255, 255, 0.8);
-    border: 1px solid rgba(0, 0, 0, 0.8);
-    padding: 20px;
-    font-size: 30px;
+    padding: 10px;
+    font-size: 20px;
     text-align: center;
   }
 
@@ -45,18 +44,11 @@
     padding: 10px;
 }
 
-/* .search-btn{
-    position: relative;
-    top: -100%;
-    float: right;
-    width: 40px;
-    height: 0px;
-    border-radius: 50%;
-    background: black;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-} */
+
+.AddCity {
+    padding: 90%
+    
+}
 
 .search-txt{
     border: none;
@@ -68,22 +60,19 @@
     font-size: 16px;
     transition: 0.4s;
     line-height: 10px;
-    width: 300px;
+    width: 240px;
 }
 
-button {
-    border: none;
-    background-color: gray;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 10px 2px;
-    cursor: pointer;
-} 
-
-button:disabled {
-    background-color: gray;
+.modify-Btn {
+    position: relative;
+    left: 25%;
+    top: -15%;
+    width: 100px;  
+    height: 40px;
 }
+
+.modify-Btn:disabled {
+    background-color: white;
+    text-decoration-color: gray
+}
+

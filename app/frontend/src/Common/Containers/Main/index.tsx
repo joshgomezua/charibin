@@ -17,6 +17,7 @@ import Login from '../../../Admin/Containers/Login'
 import Destinations from '../../../App/Containers/Destinations'
 import NavBar from '../../Components/NavBar'
 import Button from '../../../Common/Components/Button'
+import Cities from '../../../App/Components/Cities'
 import Modal from '../../../Admin/Components/Modal'
 import GDPRBar from '../../../App/Components/GDPRBar'
 
@@ -72,6 +73,7 @@ class MainContainer extends Component<
             component={Login}
           />
           <Route path={ADMIN_ROUTING.MAIN} component={withAuth(Admin)} />
+          <Route path="/cities" component = {Cities}/>
 
           <Redirect to="/" />
         </Switch>

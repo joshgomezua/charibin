@@ -1,37 +1,41 @@
-import React, { Component } from 'react'
-import './index.css'
+import React from 'react'
+import './style.scss'
+import {ICities} from './types'
+import Button from '../../../Common/Components/Button'
+import Switch from 'src/Admin/Components/Switch'
 
-export class index extends Component {
-    state = {
-        cities: [
+export class Index extends React.Component<ICities> {
+         cities: ICities[] =  [
             {
+                _id:'1',
                 name:'London',
                 country:'England',
                 picture:'Lala',
                 tags:'city',
                 isEnable:false,
-                modify:false,
+                isModify:false,
             },
 
             {
+                _id:'2',
                 name:'Berlin',
                 country:'Germany',
                 picture:'L',
                 tags:'city',
                 isEnable:false,
-                modify:false,
+                isModify:false,
             },
 
             {
+                _id:'3',
                 name:'Paris',
                 country:'France',
                 picture:'La',
                 tags:'city',
                 isEnable:false,
-                modify:false,
+                isModify:false,
             },
         ]
-    }
 
     render() {
         return (
@@ -41,10 +45,10 @@ export class index extends Component {
                             <div className= 'gridItemHeader'>Destination&depature database</div>
                             <div className = 'gridItemHeader'>Sponteous</div>
                     </div>
-                    <div className="search-box">
-                        <input className ="search-txt" type ="text" placeholder = "Type to search"/>
-                        {/* <button className="search-btn">search</button> */}
+                    <div >
+                        <input className="search-box" type ="text" placeholder = "Type to search"/>
                     </div>
+                    <button className = "addCity">Add City</button> 
                     <div className ="grid-container" >
                         <div className ="grid-item" >City</div>
                         <div className ="grid-item" >Country</div>
@@ -52,17 +56,26 @@ export class index extends Component {
                         <div className ="grid-item" >Key Words</div>
                         <div className ="grid-item" >Modify</div> 
                         <div className ="grid-item" >Enable</div>
-                        {this.state.cities.map(cities => 
-                            <React.Fragment>
-                                <div className ="grid-item"> {cities.name} </div>
+                        {this.cities.map(cities => 
+                            <React.Fragment key = {cities._id}>
+                                <div className ="grid-item" > {cities.name} </div>
                                 <div className ="grid-item"> {cities.country} </div> 
                                 <div className ="grid-item"> {cities.picture} </div>
                                 <div className ="grid-item"> {cities.tags} </div>
                                 <div className ="grid-item">
-                                    <button disabled = {!cities.modify}> Modify </button>
+                                    <Button
+                                        className = "modify-Btn"
+                                        variant ="white"
+                                        text = "Modify"
+                                    />
                                 </div>
-                                <div className ="grid-item"> {cities.isEnable}
-                                    <button disabled = {!cities.isEnable}> Enable </button>
+                                <div className ="grid-item"> 
+                                    <Switch
+                                        checked = {!cities.isEnable}
+                                        onChange={ () =>
+                                                console.log("allo")
+                                        }
+                                    />
                                 </div>
                             </React.Fragment>
                         )}                           
@@ -73,5 +86,5 @@ export class index extends Component {
     }
 }
 
-export default index
+export default Index
 
