@@ -8,6 +8,8 @@ import './styles.scss'
 const Header: React.SFC<IProps> = ({
   title,
   query,
+  heading,
+  modal,
   handleSearch,
   handleOpenModal
 }) => {
@@ -17,15 +19,23 @@ const Header: React.SFC<IProps> = ({
         <h1 className="spon-admin-header__heading">{title}</h1>
       </div>
 
-      {handleOpenModal ? (
+      {(handleOpenModal&&heading&&modal) ? (
         <Button
           className="spon-admin-header__add-button"
           variant="blue"
           icon="plus"
           text="ADD NEW"
-          onClick={() => handleOpenModal(MODAL_TYPE.ADD_TRIP, 'Create trip')}
+          onClick={() => handleOpenModal(modal,heading)}
         />
-      ) : null}
+      ) : handleOpenModal ? (
+          <Button
+            className="spon-admin-header__add-button"
+            variant="blue"
+            icon="plus"
+            text="ADD NEW"
+            onClick={() => handleOpenModal(MODAL_TYPE.ADD_TRIP, 'create trip')}
+          />
+      ):null}
     </div>
   )
 }

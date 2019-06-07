@@ -14,6 +14,16 @@ export const addTrip = (data: Types.ITrip, token: string) =>
     headers: { 'Content-type': 'application/json', token }
   })
 
+export const addCity = (data: Types.ICity, token: string) =>
+  axios.post(`${API_URL}/trip`, data, {
+    headers: { 'Content-type': 'application/json', token }
+})
+
+export const updateCity = (id: string, data: Types.ICity, token: string) =>
+  axios.put(`${API_URL}/trip/${id}`, data, {
+    headers: { 'Content-type': 'application/json', token }
+})
+
 export const getTrips = (page: number, limit: number, token: string) =>
   axios.get(`${API_URL}/trip/${page}/${limit}`, {
     headers: {

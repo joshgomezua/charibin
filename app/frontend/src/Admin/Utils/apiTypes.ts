@@ -14,6 +14,13 @@ export interface ITrip {
   type: string
 }
 
+export interface ICity {
+  name: string
+  country?:string
+  tags?: string[]
+  photo?: string
+}
+
 export interface ITicket {
   trip: string
   direction: string

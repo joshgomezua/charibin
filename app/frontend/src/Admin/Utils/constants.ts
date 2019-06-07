@@ -3,7 +3,8 @@ export enum ADMIN_ROUTING {
   LOGIN = '/login',
   TRIPS = '/trips',
   TICKETS = '/tickets',
-  ORDERS = '/orders'
+  ORDERS = '/orders',
+  CITIES = '/cities'
 }
 
 export const ERRORS = {
@@ -15,6 +16,10 @@ export const ERRORS = {
   TICKET_FETCH: `Can't fetch tickets list`,
   TICKET_DELETE: 'Error when delete ticket',
   TICKET_EDIT: 'Error when edit ticket',
+  CITY_FETCH: `Cant't fetch city list`,
+  CITY_DELETE: 'Error when delete city ',
+  CITY_ADD: 'Error when submit form',
+  CITY_EDIT: 'Error when edit city',
   ORDERS_FETCH: `Can't fetch orders list`,
   ORDERS_EDIT: 'Error when edit order',
   DEFAULT: 'Error'
@@ -28,6 +33,9 @@ export const SUCCESS = {
   TICKET_EDIT: 'Trip edited successfully',
   TICKET_DELETE: 'Ticket deleted successfully',
   ORDER_UPDATE: 'Order update successfully',
+  CITY_ADD: 'City added successfully',
+  CITY_EDIT: 'City edited successfully',
+  CITY_DELETE: 'City deleted successfully',
   DEFAULT: 'Success'
 }
 
@@ -55,4 +63,12 @@ export const DEFAULT_TRIP_DATA = {
   photo: '',
   price: 0,
   type: ''
+}
+
+export const DEFAULT_CITY_DATA = {
+    _id: '',
+    name: 'London',
+    country: 'United Kingdom',
+    tags: ["beach"],
+    photo: ''
 }

@@ -13,11 +13,11 @@ import Admin from '../../../Admin/Containers/Main'
 import Landing from '../../../App/Containers/Landing'
 import Faq from '../../../App/Containers/Faq'
 import Support from '../../../App/Containers/Support'
-import Login from '../../../Admin/Containers/Login'
+// import Login from '../../../Admin/Containers/Login'
 import Destinations from '../../../App/Containers/Destinations'
+import Cities from '../../../Admin/Containers/City'
 import NavBar from '../../Components/NavBar'
 import Button from '../../../Common/Components/Button'
-import Cities from '../../../App/Components/Cities'
 import Modal from '../../../Admin/Components/Modal'
 import GDPRBar from '../../../App/Components/GDPRBar'
 
@@ -69,11 +69,11 @@ class MainContainer extends Component<
           <Route path="/destinations" component={Destinations} />
           <Route
             exact
-            path={`${ADMIN_ROUTING.MAIN}${ADMIN_ROUTING.LOGIN}`}
-            component={Login}
+            path={`${ADMIN_ROUTING.MAIN}${ADMIN_ROUTING.CITIES}`}
+            component={Cities}
           />
           <Route path={ADMIN_ROUTING.MAIN} component={withAuth(Admin)} />
-          <Route path="/cities" component = {Cities}/>
+          
 
           <Redirect to="/" />
         </Switch>

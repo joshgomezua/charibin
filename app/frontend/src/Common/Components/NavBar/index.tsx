@@ -111,7 +111,8 @@ class NavBar extends Component<IProps, IState> {
               LOGOUT
             </button>
           </div>
-        ) : null}
+        ) : null} 
+        
       </div>
     )
   }
