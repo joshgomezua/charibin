@@ -12,7 +12,7 @@ export interface IState {
     type: MODAL_TYPE | null
     heading: string
     data: ITicket
-    trip: { _id: string; name: string } | null
+    trip: { _id: string; destination: string; departure: string} | null
   }
 }
 export interface IProps {

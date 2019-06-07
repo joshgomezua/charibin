@@ -74,7 +74,8 @@ class TicketModal extends React.Component<IProps, IState> {
               : {
                   trip: {
                     _id: tripSelected ? tripSelected._id : '',
-                    name: tripSelected ? tripSelected.name : ''
+                    departure: tripSelected ? tripSelected.departure : '',
+                    destination: tripSelected ? tripSelected.destination : ''
                   },
                   type: 'Train',
                   quantity: 0,
@@ -186,13 +187,13 @@ class TicketModal extends React.Component<IProps, IState> {
                     label="Select the trip"
                     placeholder="Select trip"
                     className="spon-ticket-modal__dropdown"
-                    selectedValue={values.trip ? values.trip.name : ''}
+                    selectedValue={values.trip ? values.trip.destination : ''}
                     options={destinations}
                     onChange={handleChange}
                   />
 
                   <ErrorMessage
-                    name="trip.name"
+                    name="trip.destination"
                     component="div"
                     className="spon-ticket-modal__error"
                   />

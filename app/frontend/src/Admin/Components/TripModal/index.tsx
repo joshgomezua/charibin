@@ -30,7 +30,8 @@ const TripModal: React.SFC<IProps> = ({
 
   if (editDate) {
     editableData = {
-      name: editDate.name,
+      destination: editDate.destination,
+      departure: editDate.departure,
       price: editDate.price,
       discount: editDate.discount,
       duration: editDate.duration,
@@ -50,7 +51,8 @@ const TripModal: React.SFC<IProps> = ({
           editableData
             ? editableData
             : {
-                name: '',
+                departure: '',
+                destination: '',
                 price: 0,
                 discount: 0,
                 duration: 0,
@@ -62,7 +64,10 @@ const TripModal: React.SFC<IProps> = ({
               }
         }
         validationSchema={Yup.object().shape({
-          name: Yup.string()
+          destination: Yup.string()
+            .min(3)
+            .required(),
+          departure: Yup.string()
             .min(3)
             .required(),
           price: Yup.number().required(),
@@ -73,6 +78,7 @@ const TripModal: React.SFC<IProps> = ({
             .max(100000)
             .required(),
           deselectionPrice: Yup.number().required(),
+          timeSelection: Yup.number().required(),
           fake: Yup.bool().required(),
           active: Yup.bool().required(),
           photo: Yup.string().required()
@@ -112,14 +118,14 @@ const TripModal: React.SFC<IProps> = ({
                 <Field
                   type="text"
                   placeholder="Type name"
-                  name="name"
+                  name="destination"
                   label="Name of trip"
                   className="spon-trip-modal__input"
                   component={Input}
                 />
 
                 <ErrorMessage
-                  name="name"
+                  name="destination"
                   component="div"
                   className="spon-trip-modal__error"
                 />
