@@ -5,23 +5,25 @@ import Table from '../../Components/Table'
 import Modal from '../../Components/Modal'
 import TripModal from '../../Components/TripModal'
 import DeleteModal from '../../Components/DeleteModal'
+import TimeSelectionModal from '../../Components/TimeSelectionModal'
 
 import withToast from '../../../Common/HOC/withToast'
 import { RouteComponentProps } from 'react-router-dom'
-import { MODAL_TYPE, ITrip } from '../../Utils/adminTypes'
+import { MODAL_TYPE, ITrip, ISchedule } from '../../Utils/adminTypes'
 import { getToken } from '../../../Common/Utils/helpers'
 import {
   ADMIN_ROUTING,
   ERRORS,
   SUCCESS,
-  DEFAULT_TRIP_DATA
+  DEFAULT_TRIP_DATA,
 } from '../../Utils/constants'
 import {
   getTrips,
   addTrip,
   deleteTrip,
   getSingleTrip,
-  updateTrip
+  updateTrip,
+  updateTimeSelection
 } from '../../Utils/api'
 import { IState, IProps } from './types'
 import { columns } from './columns'
@@ -32,11 +34,62 @@ class TripsContainer extends React.Component<
 > {
   private modal = React.createRef<Modal>()
 
+  readonly mockSchedule: ISchedule = {
+    defaultPrice: 5,
+    time1: 2,
+    time2: 2,
+    time3: 2,
+    time4: 2,
+    time5: 2,
+    time6: 2,
+    time7: 2,
+    time8: 2,
+    time9: 2,
+    time10: 2,
+    bidirectionalChange: false,
+  }
+  
+  readonly firstTrip: ITrip = {
+    _id: 'sdslkd',
+    active: true,
+    deselectionPrice: 3,
+    timeSelection: 2,
+    schedule: this.mockSchedule,
+    discount: 30,
+    duration: 90,
+    fake: false,
+    carrier: "Flixbus",
+    departure: "Londres",
+    destination: "Dublin",
+    photo: "mockPhoto.png",
+    price: 90,
+    type: "train"
+  }
+
+  readonly secondTrip: ITrip = {
+    _id: 'sdsl3kd',
+    active: true,
+    deselectionPrice: 2,
+    schedule: this.mockSchedule,
+    timeSelection: 3,
+    discount: 25,
+    duration: 55,
+    fake: true,
+    carrier: "Flixbus",
+    departure: "Londres",
+    destination: "Paris",
+    photo: "mockPhoto.png",
+    price: 45,
+    type: "train"
+  }
+  
+  readonly arrayTrip: ITrip[] = [this.firstTrip, this.secondTrip]
+
   readonly state: IState = {
-    trips: [],
+    trips: this.arrayTrip, //default is []
     total: 0,
     currentPage: 0,
-    isLoading: true,
+    isLoading: false, //default is true
     isModalLoading: false,
     editData: DEFAULT_TRIP_DATA,
     modal: {
@@ -60,6 +113,11 @@ class TripsContainer extends React.Component<
 
   handleOpenDeleteModal = (id: string) => {
     this.handleOpenModal(MODAL_TYPE.DELETE_TRIP, 'Delete trip', id)
+  }
+
+  handleOpenTimeSelectionModal = (id: string) => {
+    this.handleOpenModal(MODAL_TYPE.EDIT_TIME_SELECTION, 'Edit time selection price settings', id)
+    this.handleFetchTripData(id)
   }
 
   handleOpenEditModal = (id: string) => {
@@ -156,6 +214,7 @@ class TripsContainer extends React.Component<
       modal: { id }
     } = this.state
 
+    
     this.setState({ isModalLoading: true })
     return updateTrip(id, data, token)
       .then(res => {
@@ -174,7 +233,33 @@ class TripsContainer extends React.Component<
       })
   }
 
-  handleRedirectToCreateTicket = (trip: { _id: string; name: string }) => {
+  handleEditTimeSelection = (data: ISchedule) => {
+    const token = getToken()
+    const { currentPage } = this.state
+    const {
+      modal: { id }
+    } = this.state
+
+    
+    this.setState({ isModalLoading: true })
+    return updateTimeSelection(id, data, token)
+      .then(res => {
+        this.modal.current!.close()
+        this.handleFetchItems(currentPage, 10)
+        this.props.showSuccess(SUCCESS.TRIP_EDIT)
+        this.handleRestartModalType()
+
+        return Promise.resolve()
+      })
+      .catch(err => {
+        this.setState({ isModalLoading: false })
+        this.props.showError(err, ERRORS.TRIP_EDIT)
+
+        return Promise.reject()
+      })
+  }
+
+  handleRedirectToCreateTicket = (trip: { _id: string; departure: string; destination: string }) => {
     this.props.history.push({
       pathname: `${ADMIN_ROUTING.MAIN}${ADMIN_ROUTING.TICKETS}`,
       state: { trip }
@@ -214,6 +299,7 @@ class TripsContainer extends React.Component<
           columns={columns(
             this.handleOpenDeleteModal,
             this.handleOpenEditModal,
+            this.handleOpenTimeSelectionModal,
             this.handleRedirectToCreateTicket
           )}
           loading={isLoading}
@@ -245,6 +331,15 @@ class TripsContainer extends React.Component<
             <DeleteModal
               closeModal={this.handleCloseModal}
               deleteItem={this.handleDeleteTrip}
+            />
+          ) : null}
+
+          {modalType === MODAL_TYPE.EDIT_TIME_SELECTION ? (
+            <TimeSelectionModal
+              isLoading={isModalLoading}
+              editSchedule={editData.schedule}
+              closeModal={this.handleCloseModal}
+              handleEditTimeSelection={this.handleEditTimeSelection}
             />
           ) : null}
         </Modal>

@@ -1,7 +1,7 @@
 @import '../../../Common/Utils/Styles/mixin.scss';
 @import '../../../Common/Utils/Styles/colors.scss';
 
-.spon-trip-modal {
+.spon-seltime-modal {
   padding: rc(14) rc(68);
 
   &__row {
@@ -21,10 +21,10 @@
 
   &__input-cnt {
     width: rc(140);
-    margin-right: 3rem;
+    margin-right: 4rem;
 
     &--small {
-      width: rc(75);
+      width: 6rem;
     }
 
     &--big {
@@ -33,7 +33,7 @@
 
     &--last {
       position: relative;
-      margin-left: 1rem;
+      margin-left: auto;
 
       &::before {
         content: '';
@@ -55,6 +55,7 @@
     }
 
     label {
+      width: 7.5rem;
       color: $label;
       font-size: rc(12);
     }
@@ -81,14 +82,14 @@
   }
 
   &__toggles {
-    margin-left: rc(20);
+    margin-bottom: 1rem;
     margin-top: rc(25);
   }
 
   &__toggle-item {
     display: flex;
     justify-content: space-between;
-    width: rc(120);
+    width: 12.5rem;
     margin-bottom: rc(7);
 
     p {

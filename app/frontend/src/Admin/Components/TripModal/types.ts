@@ -7,12 +7,15 @@ export interface IProps {
 }
 
 export interface IFormValues {
-  name: string
+  departure: string
+  destination: string
+  carrier: string
   price: number
   discount: number
   duration: number
   type: string
   deselectionPrice: number
+  timeSelection: number
   fake: boolean
   active: boolean
   photo: string
