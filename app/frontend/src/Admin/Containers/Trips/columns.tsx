@@ -8,11 +8,16 @@ import 'moment-duration-format'
 export const columns = (
   openDeleteModal: (id: string) => void,
   openEditModal: (id: string) => void,
-  redirectToCreateTicket: (trip: { _id: string; name: string }) => void
+  openTimeSelectionModal: (id: string) => void,
+  redirectToCreateTicket: (trip: { _id: string; departure: string; destination: string }) => void
 ) => [
   {
-    Header: 'Trip',
-    accessor: 'name'
+    Header: 'From',
+    accessor: 'departure'
+  },
+  {
+    Header: 'To',
+    accessor: 'destination'
   },
   {
     Header: 'Fake',
@@ -31,32 +36,62 @@ export const columns = (
     )
   },
   {
+    Header: 'Carrier',
+    accessor: 'carrier',
+    width: 120,
+  },
+  {
+    Header: 'Type',
+    accessor: 'type',
+    width: 90,
+  },
+  {
     Header: 'Price',
     accessor: 'price',
+    width: 100,
     Cell: (props: RowRenderProps) => `£ ${props.value}`
   },
   {
     Header: 'Offer',
     accessor: 'discount',
+    width: 80,
     Cell: (props: RowRenderProps) => `-${props.value}%`
   },
   {
     Header: 'Deselection Price',
-    accessor: 'deselectionPrice',
+    accessor: 'schedule.defaultPrice',
     Cell: (props: RowRenderProps) => `£ ${props.value}`
   },
   {
-    Header: 'Photo',
-    accessor: 'photo',
+    Header: 'Time Selection',
+    accessor: 'timeSelection',
+    width: 150,
     Cell: (props: RowRenderProps) => (
-      <div className="spon-table__photo">
-        <img src={props.value} alt="Avatar photo" />
-      </div>
+      <> 
+        <div className="spon-table__actions">
+          £ {props.value} 
+          <button onClick={() => openTimeSelectionModal(props.row._original._id)}>
+            Advanced
+          </button>
+        </div>
+      </>
     )
+    
   },
+  // {
+  //   Header: 'Photo',
+  //   accessor: 'photo',
+  //   width: 80,
+  //   Cell: (props: RowRenderProps) => (
+  //     <div className="spon-table__photo">
+  //       <img src={props.value} alt="Avatar photo" />
+  //     </div>
+  //   )
+  // },
   {
     Header: 'Duration',
     accessor: 'duration',
+    width: 90,
     Cell: (props: RowRenderProps) => {
       const duration = moment.duration({ minutes: props.value }) as IDuration
       return `${duration.format('h[h]mm')}`
@@ -65,7 +100,7 @@ export const columns = (
   {
     Header: '',
     accessor: 'actions',
-    width: 200,
+    width: 210,
     Cell: (props: RowRenderProps) => (
       <>
         <div className="spon-table__actions">
@@ -73,7 +108,8 @@ export const columns = (
             onClick={() =>
               redirectToCreateTicket({
                 _id: props.row._original._id,
-                name: props.row.name
+                departure: props.row.departure,
+                destination: props.row.destination,
               })
             }>
             Schedule
