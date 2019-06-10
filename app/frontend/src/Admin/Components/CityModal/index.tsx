@@ -96,13 +96,13 @@ const CityModal: React.SFC<IProps> = ({
               <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--big">
                 <Field
                   type="text"
-                  placeholder="Type city"
+                  placeholder="Enter your city"
                   name="name"
                   label="Name of city"
                   className="spon-trip-modal__input"
                   component={Input}
                 />
-
+              
                 <ErrorMessage
                   name="name"
                   component="div"
@@ -110,7 +110,7 @@ const CityModal: React.SFC<IProps> = ({
                 />
               </div>
 
-              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--small">
+              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--big">
                 <Field
                   type="text"
                   name="country"
@@ -164,7 +164,7 @@ const CityModal: React.SFC<IProps> = ({
                         key = {tags}
                         className="spon-trip-modal__button"
                         type = "button"
-                        variant = "blue"
+                        variant="adminPrimary"
                         text = {tags}/>
                 )})}
               </div>
