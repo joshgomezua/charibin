@@ -1,10 +1,12 @@
 import React from 'react'
 import { RowRenderProps } from 'react-table'
+import Switch from 'src/Admin/Components/Switch';
+import Button from 'src/Common/Components/Button';
+
 
 export const columns = (
   openDeleteModal: (id: string) => void,
   openEditModal: (id: string) => void,
-  redirectToCreateTicket: (trip: { _id: string; name: string }) => void
 ) => [
   {
     Header: 'City',
@@ -13,12 +15,11 @@ export const columns = (
   {
     Header: 'Country',
     accessor: 'country',
-    Cell: (props: RowRenderProps) => `£ ${props.value}`
+   
   },
   {
     Header: 'Key words',
     accessor: 'tags',
-    Cell: (props: RowRenderProps) => `£ ${props.value}`
   },
   {
     Header: 'Photo',
@@ -30,29 +31,36 @@ export const columns = (
     )
   },
   {
-    Header: '',
-    accessor: 'actions',
-    width: 200,
+    Header: 'Modify',
+    accessor: 'modify',
     Cell: (props: RowRenderProps) => (
-      <>
-        <div className="spon-table__actions">
-          <button
-            onClick={() =>
-              redirectToCreateTicket({
-                _id: props.row._original._id,
-                name: props.row.name
-              })
-            }>
-            Schedule
-          </button>
-          <button onClick={() => openEditModal(props.row._original._id)}>
-            Modify
-          </button>
-          <button onClick={() => openDeleteModal(props.row._original._id)}>
-            Delete
-          </button>
-        </div>
-      </>
+        <Button
+          text = "modify"
+          variant = "adminPrimary"
+          onClick={() => openEditModal(props.row._original._id)}
+        />
+      )
+  },
+
+  {
+    Header: 'Enable',
+    accessor: 'enable',
+    Cell:  (
+        <Switch
+          checked = {true}
+          onChange = {() => {console.log("allo")}}
+        />)
+  },
+
+  {
+    Header: 'Delete',
+    accessor: 'delete',
+    Cell: (props: RowRenderProps) => (
+      <Button
+        text = "delete"
+        variant = "adminPrimary"
+        onClick={() => openDeleteModal(props.row._original._id)}
+      />
     )
-  }
+  },
 ]

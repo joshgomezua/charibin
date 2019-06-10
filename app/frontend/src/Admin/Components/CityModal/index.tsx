@@ -45,7 +45,7 @@ const CityModal: React.SFC<IProps> = ({
           editableData
             ? editableData
             : {
-                name: 'allo',
+                name: '',
                 country: '',
                 tags: [ 'Train',
                         'Beach',
@@ -113,6 +113,7 @@ const CityModal: React.SFC<IProps> = ({
               <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--big">
                 <Field
                   type="text"
+                  placeholder="Enter your country"
                   name="country"
                   label="country"
                   className="spon-trip-modal__input"

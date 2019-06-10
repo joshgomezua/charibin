@@ -11,7 +11,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import { MODAL_TYPE, ICity } from '../../Utils/adminTypes'
 import { getToken } from '../../../Common/Utils/helpers'
 import {
-  ADMIN_ROUTING,
+  // ADMIN_ROUTING,
   ERRORS,
   SUCCESS,
   DEFAULT_CITY_DATA
@@ -33,10 +33,16 @@ class CityContainer extends React.Component<
   private modal = React.createRef<Modal>()
 
   readonly state: IState = {
-    cities: [],
+    cities: [{
+      _id: '0',
+      name: 'Paris',
+      country: 'France',
+      tags:['Beach ', 'Nightlife '],
+      photo:''
+    }],
     total: 0,
     currentPage: 0,
-    isLoading: true,
+    isLoading: false,
     isModalLoading: false,
     editData: DEFAULT_CITY_DATA,
     modal: {
@@ -174,12 +180,12 @@ class CityContainer extends React.Component<
       })
   }
 
-  handleRedirectToCreateCity = (city: { _id: string; name: string }) => {
-    this.props.history.push({
-      pathname: `${ADMIN_ROUTING.MAIN}${ADMIN_ROUTING.CITIES}`,
-      state: { city }
-    })
-  }
+  // handleRedirectToCreateCity = (city: { _id: string; name: string }) => {
+  //   this.props.history.push({
+  //     pathname: `${ADMIN_ROUTING.MAIN}${ADMIN_ROUTING.CITIES}`,
+  //     state: { city }
+  //   })
+  // }
 
   handleRestartModalType = () => {
     this.setState({
@@ -216,7 +222,6 @@ class CityContainer extends React.Component<
           columns={columns(
             this.handleOpenDeleteModal,
             this.handleOpenEditModal,
-            this.handleRedirectToCreateCity
           )}
           loading={isLoading}
           pages={Math.ceil(total / 10)}
