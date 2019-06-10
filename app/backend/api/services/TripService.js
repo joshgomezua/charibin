@@ -24,7 +24,7 @@ module.exports = {
 
     if(data.photo)
       data.photo = await Utilities.upload(data.photo, 'png');
-
+    //data.destination puis data.departure
     if(data.name) {
       trip = await Trip.findOne({ name: data.name, deleted: false });
       if(trip) throw { status: 409, message: 'TRIP.NAME.EXIST' };
@@ -40,6 +40,7 @@ module.exports = {
     return trip;
   },
 
+  //Changer pour liste des villes de départs, ou liste selon les id ?
   async getListOfTripsNames () {
     const names = await Trip.find({ deleted: false }).select('name');
 

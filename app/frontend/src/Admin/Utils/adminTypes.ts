@@ -11,13 +11,33 @@ export interface ITrip {
   _id: string
   active: boolean
   deselectionPrice: number
+  timeSelection: number
+  schedule: ISchedule
   discount: number
   duration: number
   fake: boolean
-  name: string
+  departure: string
+  destination: string
+  carrier: string
   photo: string
   price: number
   type: string
+}
+
+export interface ISchedule {
+  defaultPrice: number
+  time1: number
+  time2: number
+  time3: number
+  time4: number
+  time5: number
+  time6: number
+  time7: number
+  time8: number
+  time9: number
+  time10: number
+  bidirectionalChange: boolean
+
 }
 
 export interface IOrder {
@@ -56,5 +76,6 @@ export enum MODAL_TYPE {
   'DELETE_TRIP',
   'ADD_TICKET',
   'EDIT_TICKET',
-  'DELETE_TICKET'
+  'DELETE_TICKET',
+  'EDIT_TIME_SELECTION'
 }

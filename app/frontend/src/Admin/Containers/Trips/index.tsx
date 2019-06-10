@@ -296,6 +296,7 @@ class TripsContainer extends React.Component<
         <Table
           data={trips}
           handleFetchData={this.handleFetchTableData}
+        
           columns={columns(
             this.handleOpenDeleteModal,
             this.handleOpenEditModal,

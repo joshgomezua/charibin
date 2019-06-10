@@ -35,6 +35,11 @@ export const updateTrip = (id: string, data: Types.ITrip, token: string) =>
     headers: { 'Content-type': 'application/json', token }
   })
 
+export const updateTimeSelection = (id: string, data: Types.ISchedule, token: string) =>
+  axios.put(`${API_URL}/trip/${id}`, data, {
+    headers: { 'Content-type': 'application/json', token }
+  })
+
 export const getTickets = (startDate: string, endDate: string, token: string) =>
   axios.get(`${API_URL}/ticket/${startDate}/${endDate}`, {
     headers: {

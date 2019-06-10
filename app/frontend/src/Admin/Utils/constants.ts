@@ -1,3 +1,5 @@
+// import { min } from "moment";
+
 export enum ADMIN_ROUTING {
   MAIN = '/admin',
   LOGIN = '/login',
@@ -33,7 +35,7 @@ export const SUCCESS = {
 
 export const DEFULT_TICKET_DATA = {
   _id: '',
-  trip: { _id: '', name: '' },
+  trip: { _id: '', destination: '', departure: '' },
   direction: '',
   quantity: 0,
   type: '',
@@ -43,16 +45,36 @@ export const DEFULT_TICKET_DATA = {
   },
   active: false
 }
+export const DEFAULT_TIME_SELECTION_DATA = {
+  defaultPrice: 0,
+  time1: 0,
+  time2: 0,
+  time3: 0,
+  time4: 0,
+  time5: 0,
+  time6: 0,
+  time7: 0,
+  time8: 0,
+  time9: 0,
+  time10: 0,
+  bidirectionalChange: false
+
+}
 
 export const DEFAULT_TRIP_DATA = {
   _id: '',
   active: false,
   deselectionPrice: 0,
+  timeSelection: 0,
+  schedule: DEFAULT_TIME_SELECTION_DATA,
   discount: 0,
   duration: 0,
   fake: false,
-  name: '',
+  departure: '',
+  destination: '',
+  carrier: '',
   photo: '',
   price: 0,
   type: ''
 }
+
