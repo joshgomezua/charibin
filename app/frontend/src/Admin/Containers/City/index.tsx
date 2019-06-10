@@ -5,6 +5,7 @@ import Table from '../../Components/Table'
 import Modal from '../../Components/Modal'
 import CityModal from '../../Components/CityModal'
 import DeleteModal from '../../Components/DeleteModal'
+ 
 
 import withToast from '../../../Common/HOC/withToast'
 import { RouteComponentProps } from 'react-router-dom'
@@ -38,7 +39,7 @@ class CityContainer extends React.Component<
       name: 'Paris',
       country: 'France',
       tags:['Beach ', 'Nightlife '],
-      photo:''
+      photo: "https://s3.eu-west-2.amazonaws.com/spon-staging/staging_5c91210fb4f0e3003452a581.png"
     }],
     total: 0,
     currentPage: 0,

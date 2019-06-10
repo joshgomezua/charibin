@@ -25,8 +25,9 @@ export const columns = (
     Header: 'Photo',
     accessor: 'photo',
     Cell: (props: RowRenderProps) => (
-      <div className="spon-table__photo">
-        <img src={props.value} alt="Avatar photo" />
+      <div className="spon-table__photo">  
+        {console.log(props.value)}      
+        <img src={props.value} alt="Avatar photo"/>
       </div>
     )
   },
