@@ -2,7 +2,7 @@ export interface IProps {
   isLoading?: boolean
   disabled?: boolean
   text?: string
-  icon?: 'plus' | 'cross' | 'crossWhite' | 'arrowRight' | 'arrowLeft' | 'undo'
+  icon?: 'plus' | 'cross' | 'crossWhite' | 'arrowRight' | 'arrowLeft' | 'trash'|'pencil'|'undo'
   className?: string
   type?: 'button' | 'submit'
   variant?:

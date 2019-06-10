@@ -37,6 +37,7 @@ export const columns = (
         <Button
           text = "modify"
           variant = "adminPrimary"
+          icon = "pencil"
           onClick={() => openEditModal(props.row._original._id)}
         />
       )
@@ -58,6 +59,7 @@ export const columns = (
     Cell: (props: RowRenderProps) => (
       <Button
         text = "delete"
+        icon = "trash"
         variant = "adminPrimary"
         onClick={() => openDeleteModal(props.row._original._id)}
       />
