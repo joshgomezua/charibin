@@ -72,3 +72,9 @@ export const DEFAULT_CITY_DATA = {
     tags: ["beach"],
     photo: ''
 }
+
+
+
+export const TAGS = ['City', 'Beach', 'Nightlife'
+            , 'Art & Culture', 'Family', 'Nature',
+            'History']

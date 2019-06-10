@@ -14,6 +14,8 @@ import Input from '../Input'
 import Button from '../../../Common/Components/Button'
 import photoSvg from '../../../Common/Utils/Media/photo.svg'
 
+import {TAGS} from '../../Utils/constants'
+
 import { IProps, IFormValues, IEditValues } from './types'
 import './styles.scss'    // creer mes propres styles pour cette partie plus tard!!
 
@@ -43,9 +45,12 @@ const CityModal: React.SFC<IProps> = ({
           editableData
             ? editableData
             : {
-                name: '',
+                name: 'allo',
                 country: '',
-                tags: ['Train'],
+                tags: [ 'Train',
+                        'Beach',
+                        'City',
+                                ],
                 photo: ''
             }
         }
@@ -92,14 +97,14 @@ const CityModal: React.SFC<IProps> = ({
                 <Field
                   type="text"
                   placeholder="Type city"
-                  name="city"
+                  name="name"
                   label="Name of city"
                   className="spon-trip-modal__input"
                   component={Input}
                 />
 
                 <ErrorMessage
-                  name="city"
+                  name="name"
                   component="div"
                   className="spon-trip-modal__error"
                 />
@@ -116,22 +121,6 @@ const CityModal: React.SFC<IProps> = ({
 
                 <ErrorMessage
                   name="country"
-                  component="div"
-                  className="spon-trip-modal__error"
-                />
-              </div>
-
-              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--small spon-trip-modal__input-cnt--last">
-                <Field
-                  type="text"
-                  name="tags"
-                  label="tags"
-                  className="spon-trip-modal__input"
-                  component={Input}
-                />
-
-                <ErrorMessage
-                  name="tags"
                   component="div"
                   className="spon-trip-modal__error"
                 />
@@ -167,6 +156,24 @@ const CityModal: React.SFC<IProps> = ({
                 <div className="spon-trip-modal__error">{errors.photo}</div>
               ) : null}
             </div>
+            <div className="spon-trip-modal__row">
+              <div className="spon-trip-modal__tagsbtn">
+                {TAGS.map(tags => {
+                    return( 
+                      <Button
+                        key = {tags}
+                        className="spon-trip-modal__button"
+                        type = "button"
+                        variant = "blue"
+                        text = {tags}/>
+                )})}
+              </div>
+                <ErrorMessage
+                  name="tags"
+                  component="div"
+                  className="spon-trip-modal__error"
+                />
+              </div>
             <div className="spon-trip-modal__row">
               <div className="spon-trip-modal__buttons">
                 <Button

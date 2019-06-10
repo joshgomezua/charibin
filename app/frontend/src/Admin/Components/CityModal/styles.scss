@@ -110,6 +110,13 @@
     width: 100%;
   }
 
+  &__tagsbtn {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-column-gap: 1em;
+    width: 100%;
+  }
+
   &__button {
     width: rc(170);
     height: rc(50);
