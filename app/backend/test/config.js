@@ -10,7 +10,8 @@ const dataTemplate = {
   },
 
   trip: {
-    name: faker.address.city,
+    departure: faker.address.city,
+    destination: faker.address.city,
     photo: getImage,
     price: () => faker.random.number({ min: 100, max: 200 }) + 0.99,
     discount: () => faker.random.number({ min: 5, max: 40 }) + 0.95,

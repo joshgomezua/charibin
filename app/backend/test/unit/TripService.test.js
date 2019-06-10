@@ -26,7 +26,7 @@ module.exports = function (globals) {
 
     describe('.create()', () => {
       it('it should return created trip without tickets', async () => {
-        const newTrip = await TripService.create({ ...trip, name: `${trip.name} East` });
+        const newTrip = await TripService.create({ ...trip, name: `${trip.destination} East` });
 
         newTrip.toObject().should.have.all.keys(...Object.keys(global.patterns.Trip));
       });
@@ -47,7 +47,7 @@ module.exports = function (globals) {
         const newTrip = await TripService.update(`${tripEntry._id}`, { name: mockName });
 
         newTrip.toObject().should.have.all.keys(...Object.keys(global.patterns.Trip));
-        newTrip.name.should.be.equal(mockName);
+        newTrip.destination.should.be.equal(mockName);
       });
 
       it('it should throw 404 status for not existing trip', async () => {
@@ -62,10 +62,10 @@ module.exports = function (globals) {
       it('it should throw 409 already used name', async () => {
         try {
           const secondTrip = await helpers.createTrip(helpers.dataClone(tripTemplate));
-          await TripService.update(`${tripEntry._id}`, { name: secondTrip.name });
+          await TripService.update(`${tripEntry._id}`, { name: secondTrip.destination });
         } catch (err) {
           err.should.have.property('status', 409);
-          err.should.have.property('message', 'TRIP.NAME.EXIST');
+          err.should.have.property('message', 'TRIP.DESTINATION.EXIST');
         }
       });
     });

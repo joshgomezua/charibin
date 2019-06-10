@@ -380,10 +380,10 @@ module.exports = {
         zipCode: buyerInfo.zipCode,
       },
       stripeChargeId: charge.id,
-      selected: ownerInfo.trips.filter(x => !x.deselected).map(x => x.trip.name).join(', '),
-      deselected: ownerInfo.trips.filter(x => x.deselected).map(x => x.trip.name).join(', '),
-      finalSelection: selectedTrip.trip.name,
-      finalDestination: selectedTrip.trip.name,
+      selected: ownerInfo.trips.filter(x => !x.deselected).map(x => x.trip.destination).join(', '),
+      deselected: ownerInfo.trips.filter(x => x.deselected).map(x => x.trip.destination).join(', '),
+      finalSelection: selectedTrip.trip.destination,
+      finalDestination: selectedTrip.trip.destination,
       date: {
         arrival: {
           start: selectedTrip.arrivalTicket.date.start,
@@ -407,7 +407,7 @@ module.exports = {
 
 
     return {
-      name: selectedTrip.trip.name,
+      name: selectedTrip.trip.destination,
       photo: selectedTrip.trip.photo,
       email: buyerInfo.email,
       arrivalTicket: {

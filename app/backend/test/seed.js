@@ -56,7 +56,9 @@ loadModels();
   // Create trips and tickets
   for (let i = 0; i < 20; i++) {
     trips.push(await helpers.createTrip(helpers.dataClone(globals.dataTemplate.trip)));
-    console.log(`Creating Trips: ${i + 1}/${20}`);
+    let str = JSON.stringify(trips[0]);
+    console.log(`Creating Trips: ${i + 1}/${20} \n
+    ${str}`);
 
     // Create tickets
     for (let j = 0; j < 10; j++) {

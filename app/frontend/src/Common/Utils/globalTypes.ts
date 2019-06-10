@@ -33,7 +33,11 @@ export interface IResponseError {
 
 export interface ITicket {
   _id: string
-  trip: { _id: string; name: string }
+  trip: { 
+    _id: string;
+    departure: string
+    destination: string
+   }
   direction: string
   quantity: number
   type: string

@@ -22,14 +22,15 @@ const Agenda: React.SFC<IProps> = ({
   openEditModal
 }) => {
   const getFilteredTickets = () => {
+    //console.log("tickets in getFilteredTickets", tickets)
     if (filters.length > 0 && direction !== null) {
       return tickets.filter(
         (ticket: ITicket) =>
-          filters.includes(ticket.trip.name) && ticket.direction === direction
+          filters.includes(ticket.trip.destination) && ticket.direction === direction
       )
     } else if (filters.length > 0) {
       return tickets.filter((ticket: ITicket) =>
-        filters.includes(ticket.trip.name)
+        filters.includes(ticket.trip.destination)
       )
     } else {
       return tickets
@@ -38,20 +39,27 @@ const Agenda: React.SFC<IProps> = ({
 
   const prepareRows = () => {
     const filtered = getFilteredTickets()
+    //console.log("filtered", filtered)
     const segregated = filtered.reduce((acc, ticket: ITicket) => {
+      //console.log("acc", acc)
+      //console.log("ticket", ticket)
       const day = moment(ticket.date.start).format('D')
+      //console.log("ticket", ticket)
       if (day in acc) {
         acc[day].push(ticket)
       } else {
         acc[day] = [ticket]
+        //console.log("[ticket]", [ticket])
       }
+      //console.log("acc end", acc)
       return acc
     }, {})
-
+    //console.log("segregated", segregated)
     if (filters.length === 0) {
       return null
     } else {
       return Object.keys(segregated).map(key => {
+        console.log("key", key)
         return segregated[key].map((ticket: ITicket, index: number) => (
           <AgendaItem
             key={index}
@@ -75,6 +83,8 @@ const Agenda: React.SFC<IProps> = ({
             Date
           </th>
           <th className="spon-agenda__cell spon-agenda__cell--head">Trip</th>
+          <th className="spon-agenda__cell spon-agenda__cell--head">From</th>
+          <th className="spon-agenda__cell spon-agenda__cell--head">To</th>
           <th className="spon-agenda__cell spon-agenda__cell--head">
             Quantity
           </th>

@@ -33,7 +33,7 @@ export const SUCCESS = {
 
 export const DEFULT_TICKET_DATA = {
   _id: '',
-  trip: { _id: '', name: '' },
+  trip: { _id: '', name: '', departure: '', destination: '' },
   direction: '',
   quantity: 0,
   type: '',
@@ -54,5 +54,7 @@ export const DEFAULT_TRIP_DATA = {
   name: '',
   photo: '',
   price: 0,
-  type: ''
+  type: '',
+  departure: '',
+  destination: ''
 }

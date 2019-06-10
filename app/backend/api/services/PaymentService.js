@@ -10,7 +10,7 @@ module.exports = {
         currency: 'GBP',
         source: creditCardToken,
         receipt_email: email,// eslint-disable-line
-        description: `Fee for a trip to ${selectedTrip.trip.name} scheduled for ${new Date(+selectedTrip.arrivalTicket.date.start).toDateString()}`,
+        description: `Fee for a trip to ${selectedTrip.trip.destination} scheduled for ${new Date(+selectedTrip.arrivalTicket.date.start).toDateString()}`,
         metadata: {
           'First name': firstName, // eslint-disable-line
           'Middle name': middleName, // eslint-disable-line
