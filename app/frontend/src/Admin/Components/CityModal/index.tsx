@@ -55,9 +55,7 @@ const CityModal: React.SFC<IProps> = ({
             }
         }
         validationSchema={Yup.object().shape({
-          city: Yup.string()
-            .min(3)
-            .required(),
+          name: Yup.string().required(),
           country: Yup.string().required(),
           tags: Yup.string().required(),
           photo: Yup.string().required()
@@ -151,6 +149,7 @@ const CityModal: React.SFC<IProps> = ({
                     handleChange={handleChange}
                     handleSetError={(name, msg) => setFieldError(name, msg)}
                   />
+
                 </div>
               </div>
               {errors.photo && touched.photo ? (

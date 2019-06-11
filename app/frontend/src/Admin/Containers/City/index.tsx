@@ -18,14 +18,15 @@ import {
   DEFAULT_CITY_DATA
 } from '../../Utils/constants'
 import {
-  getTrips,
-  deleteTrip,
-  getSingleTrip,
+  getCities,
+  deleteCity,
+  getSingleCity,
   addCity,
   updateCity
 } from '../../Utils/api'
 import { IState, IProps } from './types'
 import { columns } from './columns'
+
 
 class CityContainer extends React.Component<
   RouteComponentProps<{}> & IProps,
@@ -38,7 +39,7 @@ class CityContainer extends React.Component<
       _id: '0',
       name: 'Paris',
       country: 'France',
-      tags:['Beach ', 'Nightlife '],
+      tags:['Beach', 'Nightlife'],
       photo: "https://s3.eu-west-2.amazonaws.com/spon-staging/staging_5c91210fb4f0e3003452a581.png"
     }],
     total: 0,
@@ -78,7 +79,7 @@ class CityContainer extends React.Component<
     const token = getToken()
 
     if (token) {
-      getSingleTrip(id, token)
+      getSingleCity(id, token)
         .then(res => {
           this.setState({ editData: res.data })
         })
@@ -93,7 +94,7 @@ class CityContainer extends React.Component<
     const token = getToken()
 
     if (token) {
-      getTrips(page, limit, token)
+      getCities(page, limit, token)
         .then(res =>
           this.setState({
             isLoading: false,
@@ -120,7 +121,7 @@ class CityContainer extends React.Component<
     const token = getToken()
 
     if (token) {
-      deleteTrip(id, token)
+      deleteCity(id, token)
         .then(() => {
           this.handleFetchItems(currentPage, 10)
           this.handleCloseModal()

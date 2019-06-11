@@ -117,5 +117,10 @@ function loadModels () {
 function connect () {
   const options = { keepAlive: 1, useNewUrlParser: true };
   const { user, password, host, port, name } = global.config.connection.database;
-  return mongoose.connect(`mongodb://${user}:${password}@${host}:${port}/${name}`, options);
+  return mongoose.connect(`mongodb://mongo:27017/db?authSource=admin`, {
+  useNewUrlParser: true,
+  user: 'username',
+  pass: 'password',
+  keepAlive: true,
+});
 }
