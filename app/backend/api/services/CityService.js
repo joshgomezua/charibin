@@ -1,7 +1,7 @@
 'use strict';
 
 const { City } = require('../models');
-//const Aggregate = require('./Aggregate');
+const Aggregate = require('./Aggregate');
 const Utilities = require('./Utilities');
 
 module.exports = {
@@ -15,9 +15,27 @@ module.exports = {
     }
 
     data.photo = await Utilities.upload(data.photo, 'png');
-    return city.create(data);
+    return City.create(data);
   },
-
+  
+  async findCRM (page, limit) {
+    return City.aggregate([
+      {
+        $facet: {
+          results: [
+            { $match: { deleted: false } },
+            { $sort: { _id: -1 } },
+            ...Aggregate.skipAndLimit(page, limit)
+          ],
+          status: Aggregate.getStatusWithSimpleMatch(
+            { deleted: false },
+            page,
+            limit
+          )
+        }
+      }
+    ]).then(Aggregate.parseResults);
+  },
   /*async update (id, data) {
     let city = await City.findOne({ _id: id, deleted: false });
     if(!city) throw { status: 404, message: 'CITY.NOT.EXIST' };
@@ -46,24 +64,6 @@ module.exports = {
     return names;
   },
 
-  async findCRM (page, limit) {
-    return Trip.aggregate([
-      {
-        $facet: {
-          results: [
-            { $match: { deleted: false } },
-            { $sort: { _id: -1 } },
-            ...Aggregate.skipAndLimit(page, limit)
-          ],
-          status: Aggregate.getStatusWithSimpleMatch(
-            { deleted: false },
-            page,
-            limit
-          )
-        }
-      }
-    ]).then(Aggregate.parseResults);
-  },
 
   async destroy (id) {
     const trip = await Trip.findById(id);
