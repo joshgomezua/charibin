@@ -24,28 +24,29 @@ const Agenda: React.SFC<IProps> = ({
   openEditModal
 }) => {
 
-  const isFilterFromUsed = filterFrom !== '' || filterFrom !== undefined
-  const isFilterToUsed = filterTo !== '' || filterTo !== undefined
+  const isFilterFromUsed = filterFrom !== '' &&  filterFrom !== undefined
+  const isFilterToUsed = filterTo !== '' && filterTo !== undefined
 
   const getFilteredTickets = () => {
-    //console.log("tickets in getFilteredTickets", tickets)
+    console.log("tickets", tickets)
 
     console.log("filterFrom", filterFrom)
-    console.log("tickets", tickets)
+    console.log("filterTo", filterTo)
 
     const areFromToFiltersUsed = (
        (isFilterFromUsed) ||
         (isFilterToUsed) 
        )
 
+    console.log(areFromToFiltersUsed)
+
     if (areFromToFiltersUsed){
       let newFiltered = []
       newFiltered.push(...getFilteredFromTickets())
       return getFilteredToTickets(newFiltered)
     } else {
-      getFilteredCitiesTickets()
+      return getFilteredCitiesTickets()
     }
-    return []
   }
 
   const getFilteredFromTickets = () => {
@@ -61,16 +62,20 @@ const Agenda: React.SFC<IProps> = ({
   }
 
   const getFilteredCitiesTickets =  () => {
+    console.log("test")
     if (filters.length > 0 && direction !== null) {
+      console.log("test1")
       return tickets.filter(
         (ticket: ITicket) =>
           filters.includes(ticket.trip.destination) && ticket.direction === direction
       )
     } else if (filters.length > 0) {
+      console.log("test2")
       return tickets.filter((ticket: ITicket) =>
         filters.includes(ticket.trip.destination)
       )
     } else {
+      console.log("test3")
       return tickets
     }
   }
