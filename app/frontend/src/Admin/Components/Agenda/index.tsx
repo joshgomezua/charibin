@@ -38,8 +38,6 @@ const Agenda: React.SFC<IProps> = ({
         (isFilterToUsed) 
        )
 
-    console.log(areFromToFiltersUsed)
-
     if (areFromToFiltersUsed){
       let newFiltered = []
       newFiltered.push(...getFilteredFromTickets())
@@ -62,20 +60,16 @@ const Agenda: React.SFC<IProps> = ({
   }
 
   const getFilteredCitiesTickets =  () => {
-    console.log("test")
     if (filters.length > 0 && direction !== null) {
-      console.log("test1")
       return tickets.filter(
         (ticket: ITicket) =>
           filters.includes(ticket.trip.destination) && ticket.direction === direction
       )
     } else if (filters.length > 0) {
-      console.log("test2")
       return tickets.filter((ticket: ITicket) =>
         filters.includes(ticket.trip.destination)
       )
     } else {
-      console.log("test3")
       return tickets
     }
   }
@@ -84,25 +78,18 @@ const Agenda: React.SFC<IProps> = ({
     const filtered = getFilteredTickets()
     console.log("filtered", filtered)
     const segregated = filtered.reduce((acc, ticket: ITicket) => {
-      //console.log("acc", acc)
-      //console.log("ticket", ticket)
       const day = moment(ticket.date.start).format('D')
-      //console.log("ticket", ticket)
       if (day in acc) {
         acc[day].push(ticket)
       } else {
         acc[day] = [ticket]
-        //console.log("[ticket]", [ticket])
       }
-      //console.log("acc end", acc)
       return acc
     }, {})
-    //console.log("segregated", segregated)
     if (filters.length === 0) {
       return null
     } else {
       return Object.keys(segregated).map(key => {
-        console.log("key", key)
         return segregated[key].map((ticket: ITicket, index: number) => (
           <AgendaItem
             key={index}
