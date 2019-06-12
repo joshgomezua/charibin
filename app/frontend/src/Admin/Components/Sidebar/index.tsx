@@ -31,6 +31,14 @@ class Sidebar extends React.Component<IProps> {
     this.props.changeFilters(newFilters)
   }
 
+  handleFilterFromChange = (event: any) => {
+    this.props.changeFilterFrom(event.target.value)
+  }
+
+  handleFilterToChange = (event: any) => {
+    this.props.changeFilterTo(event.target.value)
+  }
+
   handleMarkAll = (selectAll: boolean) => {
     if (selectAll) {
       const filters = this.props.cities.map((city: ICity) => city.name)
@@ -77,39 +85,20 @@ class Sidebar extends React.Component<IProps> {
           onActiveDateChange={debouncedChange}
         />
         <div className="spon-sidebar__filters">
-          <h4>Types</h4>
+          <h4>Filtres</h4>
 
-          <div className="spon-sidebar__buttons spon-sidebar__buttons--first">
-            <Button
-              variant="adminSecondary"
-              className={`spon-sidebar__button ${
-                this.props.direction === DIRECTION_TYPE.ARRIVALS
-                  ? 'spon-sidebar__button--selected'
-                  : ''
-              }`}
-              onClick={() => {
-                this.props.direction === DIRECTION_TYPE.ARRIVALS
-                  ? this.handleSwitchType(null)
-                  : this.handleSwitchType(DIRECTION_TYPE.ARRIVALS)
-              }}
-              text="Arrivals"
-            />
+          <div className="spon-sidebar__input">
+            <label>
+              From
+              <input type="text" value={this.props.filterFrom} onChange={this.handleFilterFromChange}/>
+            </label>
 
-            <Button
-              variant="adminSecondary"
-              className={`spon-sidebar__button ${
-                this.props.direction === DIRECTION_TYPE.DEPARTURES
-                  ? 'spon-sidebar__button--selected'
-                  : ''
-              }`}
-              onClick={() => {
-                this.props.direction === DIRECTION_TYPE.DEPARTURES
-                  ? this.handleSwitchType(null)
-                  : this.handleSwitchType(DIRECTION_TYPE.DEPARTURES)
-              }}
-              text="Departures"
-            />
+            <label>
+              To
+              <input type="text" value={this.props.filterTo} onChange={this.handleFilterToChange}/>
+            </label>
           </div>
+          
 
           <h4>Cities</h4>
 

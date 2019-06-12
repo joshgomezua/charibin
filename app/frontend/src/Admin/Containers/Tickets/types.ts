@@ -18,8 +18,12 @@ export interface IState {
 export interface IProps {
   selectedDate: Date
   filters: string[]
+  filterFrom: string
+  filterTo: string 
   direction: DIRECTION_TYPE | null
   changeFilters: (filters: string[]) => void
+  changeFilterFrom: (filterFrom: string) => void
+  changeFilterTo: (filterTo: string) => void
   changeSelectedDate: (date: Date) => void
   changeTicketType: (type: DIRECTION_TYPE | null) => void
   showError: (err: IResponseError, defaultText?: string) => void

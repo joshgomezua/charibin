@@ -27,6 +27,7 @@ import { IStore } from '../../../Common/Redux/types'
 import { IState, IProps, IEditedData } from './types'
 import './styles.scss'
 
+
 class TicketsContainer extends React.Component<
   RouteComponentProps<{ tripName: string }> & IProps,
   IState
@@ -288,9 +289,13 @@ class TicketsContainer extends React.Component<
     } = this.state
     const {
       filters,
+      filterFrom,
+      filterTo,
       selectedDate,
       direction,
       changeFilters,
+      changeFilterFrom,
+      changeFilterTo,
       changeTicketType,
       changeSelectedDate
     } = this.props
@@ -301,15 +306,21 @@ class TicketsContainer extends React.Component<
           <Sidebar
             cities={destinations}
             filters={filters}
+            filterFrom={filterFrom}
+            filterTo={filterTo}
             selectedDate={selectedDate}
             direction={direction}
             changeFilters={changeFilters}
+            changeFilterFrom={changeFilterFrom}
+            changeFilterTo={changeFilterTo}
             changeSelectedDate={changeSelectedDate}
             changeDirectionType={changeTicketType}
           />
           <Agenda
             tickets={tickets}
             direction={direction}
+            filterFrom={filterFrom}
+            filterTo={filterTo}
             openEditModal={this.handleOpenEditModal}
             openModal={this.handleOpenModal}
             loading={isLoading}
@@ -358,6 +369,8 @@ class TicketsContainer extends React.Component<
 
 const mapStateToProps = (state: IStore) => ({
   filters: Selectors.selectFilters(state),
+  filterFrom: Selectors.selectFilterFrom(state),
+  filterTo: Selectors.selectFilterTo(state),
   selectedDate: Selectors.selectSelectedDate(state),
   direction: Selectors.selectDirection(state)
 })

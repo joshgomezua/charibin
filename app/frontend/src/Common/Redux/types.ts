@@ -25,5 +25,7 @@ interface ITips {
 interface IAdminTickets {
   direction: DIRECTION_TYPE | null
   filters: string[]
+  filterFrom: string
+  filterTo: string
   selectedDate: Date
 }

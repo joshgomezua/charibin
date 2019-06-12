@@ -17,12 +17,50 @@ const Agenda: React.SFC<IProps> = ({
   error,
   retry,
   filters,
+  filterFrom,
+  filterTo,
   direction,
   changeActiveState,
   openEditModal
 }) => {
+
+  const isFilterFromUsed = filterFrom !== '' || filterFrom !== undefined
+  const isFilterToUsed = filterTo !== '' || filterTo !== undefined
+
   const getFilteredTickets = () => {
     //console.log("tickets in getFilteredTickets", tickets)
+
+    console.log("filterFrom", filterFrom)
+    console.log("tickets", tickets)
+
+    const areFromToFiltersUsed = (
+       (isFilterFromUsed) ||
+        (isFilterToUsed) 
+       )
+
+    if (areFromToFiltersUsed){
+      let newFiltered = []
+      newFiltered.push(...getFilteredFromTickets())
+      return getFilteredToTickets(newFiltered)
+    } else {
+      getFilteredCitiesTickets()
+    }
+    return []
+  }
+
+  const getFilteredFromTickets = () => {
+    if (filterFrom !== '' || filterFrom !== undefined)
+      return tickets.filter((ticket: ITicket) => ticket.trip.departure.indexOf(filterFrom) !== -1)
+    return []
+  }
+
+  const getFilteredToTickets = (tickets: ITicket[]) => {
+    if (filterTo !== '' || filterTo !== undefined)
+      return tickets.filter((ticket: ITicket) => ticket.trip.destination.indexOf(filterTo) !== -1)
+    return []
+  }
+
+  const getFilteredCitiesTickets =  () => {
     if (filters.length > 0 && direction !== null) {
       return tickets.filter(
         (ticket: ITicket) =>
@@ -39,7 +77,7 @@ const Agenda: React.SFC<IProps> = ({
 
   const prepareRows = () => {
     const filtered = getFilteredTickets()
-    //console.log("filtered", filtered)
+    console.log("filtered", filtered)
     const segregated = filtered.reduce((acc, ticket: ITicket) => {
       //console.log("acc", acc)
       //console.log("ticket", ticket)
@@ -82,7 +120,6 @@ const Agenda: React.SFC<IProps> = ({
           <th className="spon-agenda__cell spon-agenda__cell--head spon-agenda__cell--first-item">
             Date
           </th>
-          <th className="spon-agenda__cell spon-agenda__cell--head">Trip</th>
           <th className="spon-agenda__cell spon-agenda__cell--head">From</th>
           <th className="spon-agenda__cell spon-agenda__cell--head">To</th>
           <th className="spon-agenda__cell spon-agenda__cell--head">
