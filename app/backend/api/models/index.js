@@ -5,5 +5,6 @@ module.exports = {
   Order: require('./Order'),
   Ticket: require('./Ticket'),
   TicketOwner: require('./TicketOwner'),
-  Trip: require('./Trip')
+  Trip: require('./Trip'),
+  City: require('./City')
 };

@@ -13,9 +13,9 @@ import Admin from '../../../Admin/Containers/Main'
 import Landing from '../../../App/Containers/Landing'
 import Faq from '../../../App/Containers/Faq'
 import Support from '../../../App/Containers/Support'
-// import Login from '../../../Admin/Containers/Login'
+import Login from '../../../Admin/Containers/Login'
 import Destinations from '../../../App/Containers/Destinations'
-import Cities from '../../../Admin/Containers/City'
+//import Cities from '../../../Admin/Containers/City'
 import NavBar from '../../Components/NavBar'
 import Button from '../../../Common/Components/Button'
 import Modal from '../../../Admin/Components/Modal'
@@ -69,8 +69,8 @@ class MainContainer extends Component<
           <Route path="/destinations" component={Destinations} />
           <Route
             exact
-            path={`${ADMIN_ROUTING.MAIN}${ADMIN_ROUTING.CITIES}`}
-            component={Cities}
+            path={`${ADMIN_ROUTING.MAIN}${ADMIN_ROUTING.LOGIN}`}
+            component={Login}
           />
           <Route path={ADMIN_ROUTING.MAIN} component={withAuth(Admin)} />
           

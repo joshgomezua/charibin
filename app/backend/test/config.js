@@ -18,6 +18,14 @@ const dataTemplate = {
     deselectionPrice: () => faker.random.number({ min: 3, max: 10 }) + 0.93
   },
 
+  city: {
+    name: faker.address.city,
+    country: () => faker.name.lastName(),
+    photo: getImage,
+    tags: () => [faker.name.firstName()]
+
+  },
+
   ticket: {
     direction: 'arrival',
     quantity: () => faker.random.number({ min: 5, max: 20 }),

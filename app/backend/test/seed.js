@@ -71,6 +71,7 @@ loadModels();
         trip: trips[i]._id
       });
 
+
       process.stdout.clearLine();
       process.stdout.cursorTo(0);
       process.stdout.write(`\tCreating Tickets: ${j + 1}/${10}`);
@@ -81,6 +82,11 @@ loadModels();
   for (let i = 0; i < 20; i++) {
     console.log(`Creating Orders: ${i + 1}/${20}`);
     await helpers.createOrder(helpers.dataClone(globals.dataTemplate.order));
+  }
+
+  for (let i = 0; i < 20; i++) {
+    console.log(`Creating Cities: ${i + 1}/${20}`);
+    await helpers.createCity(helpers.dataClone(globals.dataTemplate.city));
   }
 
   process.exit(0);
