@@ -93,17 +93,18 @@ class CityContainer extends React.Component<
 
   handleFetchItems = (page: number, limit: number) => {
     const token = getToken()
+    console.log(token)
     console.log('get cities')
     if (token) {
       getCities(page, limit, token)
-        .then(res =>
+        .then(res =>{
           this.setState({
             isLoading: false,
             cities: res.data.results,
             total: res.data.status.total
           })
-
-        )
+          console.log("res.data: ", res.data.results)
+        })
         .catch(err => {
           this.props.showError(err, ERRORS.CITY_FETCH)
         })

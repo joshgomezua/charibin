@@ -8,7 +8,7 @@ module.exports = app => {
     if (!Utilities.isInt(page) || !Utilities.isPosInt(limit))
       return res.error({ status: 400, message: 'VALIDATION.PAGINATION.PARAMS' });
 
-    CityService.findCRM(+page, +limit)
+      CityService.findCRM(+page, +limit)
       .then(res.ok)
       .catch(res.error);
   });

@@ -107,7 +107,7 @@ export const editOrderState = (id: string, value: boolean, token: string) =>
       }
     }
   )
-export const addCity = (data: Types.ICity, token: string) =>
+export const addCity = (data: Types.ICity, token: string) => 
   axios.post(`${API_URL}/city`, data, {
     headers: { 'Content-type': 'application/json', token }
 })
