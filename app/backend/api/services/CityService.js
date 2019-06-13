@@ -57,34 +57,20 @@ module.exports = {
     return City.findByIdAndUpdate(id, data, { new: true });
   },
 
+  async destroy (id) {
+    const city = await City.findById(id);
+    if(!city) throw { status: 404, message: 'CITY.NOT.EXIST' };
+
+    await City.findByIdAndDelete(id)
+
+    return;
+  },
   /*
   async getListOfTripsNames () {
     const names = await Trip.find({ deleted: false }).select('name');
 
     return names;
   },
+  */
 
-
-  async destroy (id) {
-    const trip = await Trip.findById(id);
-    if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
-
-    await Ticket.deleteMany({ trip: id, blockedQuantity: { $size: 0 } });
-    await Ticket.updateMany({
-      trip: id,
-      'blockedQuantity.0': { $exists: true }
-    }, {
-      quantity: 0,
-      deleted: true
-    });
-
-    const ticketsCount = await Ticket.countDocuments({ trip: id });
-    if(ticketsCount) {
-      await Trip.updateOne({ _id: id }, { deleted: true });
-    } else {
-      await Trip.findByIdAndDelete(id);
-    }
-
-    return;
-  },*/
 };
