@@ -28,13 +28,19 @@ module.exports = {
             ...Aggregate.skipAndLimit(page, limit)
           ],
           status: Aggregate.getStatusWithSimpleMatch(
-            { name: '' },
+            { name: '$name' },
             page,
             limit
           )
         }
       }
     ]).then(Aggregate.parseResults);
+  },
+  async findOne (id) {
+    const city = await City.findOne({ _id: id })
+    if(!city) throw { status: 404, message: 'CITY.NOT.EXIST' };
+
+    return city;
   },
   /*async update (id, data) {
     let trip = await Trip.findOne({ _id: id, deleted: false });
@@ -51,12 +57,6 @@ module.exports = {
     return Trip.findByIdAndUpdate(id, data, { new: true });
   },
 
-  async findOne (id) {
-    const trip = await Trip.findOne({ _id: id, deleted: false }).populate('tickets');
-    if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
-
-    return trip;
-  },
 
   async getListOfTripsNames () {
     const names = await Trip.find({ deleted: false }).select('name');

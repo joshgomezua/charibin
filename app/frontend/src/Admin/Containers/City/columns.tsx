@@ -9,6 +9,7 @@ let count: number = 0;
 export const columns = (
   openDeleteModal: (id: string) => void,
   openEditModal: (id: string) => void,
+  //redirectToCreateCity: (city: { _id: string; name: string }) => void
 ) => [
   {
     Header: 'City',
