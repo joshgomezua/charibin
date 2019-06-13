@@ -1,11 +1,7 @@
 import React from 'react'
-import ReactCalendar from 'react-calendar'
-import moment from 'moment'
-import { debounce } from 'lodash'
 
 import Button from '../../../Common/Components/Button'
 import MultiSwitch from '../../Components/MultiSwitch'
-import arrow from '../../../Common/Utils/Media/arrowDown.svg'
 
 import { DIRECTION_TYPE, ICity } from '../../Utils/adminTypes'
 import { IProps } from './types'
@@ -58,33 +54,9 @@ class Sidebar extends React.Component<IProps> {
   }
 
   render() {
-    const debouncedChange = debounce(
-      ({ activeStartDate, view }: { activeStartDate: Date; view: string }) => {
-        if (view === 'month') {
-          this.handleChangeDate(activeStartDate)
-        }
-      },
-      300
-    )
 
     return (
       <div className="spon-sidebar">
-        <ReactCalendar
-          calendarType="ISO 8601"
-          formatMonthYear={value =>
-            moment(value)
-              .format('MMMM YYYY')
-              .toUpperCase()
-          }
-          minDetail="year"
-          minDate={moment().toDate()}
-          nextLabel={<img src={arrow} />}
-          prevLabel={<img src={arrow} />}
-          value={this.props.selectedDate}
-          activeStartDate={this.props.selectedDate}
-          onClickMonth={this.handleChangeDate}
-          onActiveDateChange={debouncedChange}
-        />
         <CalendarDoubleFilter 
           selectedDate={this.props.selectedDate}
           handleChangeDate={this.handleChangeDate}

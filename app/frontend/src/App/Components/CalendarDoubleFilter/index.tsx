@@ -55,6 +55,7 @@ export default class CalendarDoubleFilter extends React.Component<IProps, IState
       <div className="calendar">
         <div className="spon-sidebar">
         <ReactCalendar
+          locale="en-GB"
           calendarType="ISO 8601"
           formatMonthYear={value =>
             moment(value)
@@ -62,13 +63,17 @@ export default class CalendarDoubleFilter extends React.Component<IProps, IState
               .toUpperCase()
           }
           minDetail="year"
-          minDate={moment().toDate()}
-          nextLabel={<img src={arrow} />}
-          prevLabel={<img src={arrow} />}
+          nextLabel={<img src={arrow} className="calendar-arrow_next" />}
+          prevLabel={<img src={arrow} className="calendar-arrow_prev" />}
           value={this.props.selectedDate}
           activeStartDate={this.props.selectedDate}
           onClickMonth={this.props.handleChangeDate}
           onActiveDateChange={debouncedChange}
+
+          //value={this.props.value}
+          //onClickDay={this.handleClickSelectRange}
+          //onChange={this.handleChangeEvent}
+          selectRange={this.props.selectRange}
         />
          </div>
       </div>

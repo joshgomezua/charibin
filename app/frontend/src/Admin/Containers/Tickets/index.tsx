@@ -108,14 +108,16 @@ class TicketsContainer extends React.Component<
       })
   }
 
-  handleFetchTicketsByDate = (date: Date) => {
+  handleFetchTicketsByDate = (initialDate: Date, finalDate?: Date) => {
     console.log("handleFetchTicketsByDate")
     const token = getToken()
 
-    const startDate = moment(date)
+    const startDate = finalDate ? moment(initialDate).format('x') : 
+      moment(initialDate)
       .startOf('month')
       .format('x')
-    const endDate = moment(date)
+    const endDate = finalDate ? moment(finalDate).format('x') : 
+      moment(initialDate)
       .endOf('month')
       .format('x')
 

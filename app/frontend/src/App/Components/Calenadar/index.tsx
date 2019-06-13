@@ -12,14 +12,12 @@ export default class Calendar extends React.Component<IProps, IState> {
   }
 
   handleClickSelectRange = (date: Date) => {
-    console.log("handleClickSelectRange")
     if (!this.state.startFillingEndRange) {
       this.setState({ startFillingEndRange: true, startDate: date })
     }
   }
 
   handleChangeEvent = (v: [Date, Date]) => {
-    console.log("handleChangeEvent")
     this.props.onChange && this.props.onChange(v)
     this.setState({ startFillingEndRange: false })
   }
