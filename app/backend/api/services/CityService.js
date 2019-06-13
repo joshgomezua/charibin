@@ -42,22 +42,22 @@ module.exports = {
 
     return city;
   },
-  /*async update (id, data) {
-    let trip = await Trip.findOne({ _id: id, deleted: false });
-    if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
+  async update (id, data) {
+    let city = await City.findOne({ _id: id });
+    if(!city) throw { status: 404, message: 'CITY.NOT.EXIST' };
 
     if(data.photo)
       data.photo = await Utilities.upload(data.photo, 'png');
 
     if(data.name) {
-      trip = await Trip.findOne({ name: data.name, deleted: false });
-      if(trip) throw { status: 409, message: 'TRIP.NAME.EXIST' };
+      city = await City.findOne({ name: data.name});
+      if(city) throw { status: 409, message: 'CITY.NAME.EXIST' };
     }
 
-    return Trip.findByIdAndUpdate(id, data, { new: true });
+    return City.findByIdAndUpdate(id, data, { new: true });
   },
 
-
+  /*
   async getListOfTripsNames () {
     const names = await Trip.find({ deleted: false }).select('name');
 
