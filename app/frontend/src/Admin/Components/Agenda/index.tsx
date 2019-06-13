@@ -28,10 +28,6 @@ const Agenda: React.SFC<IProps> = ({
   const isFilterToUsed = filterTo !== '' && filterTo !== undefined
 
   const getFilteredTickets = () => {
-    console.log("tickets", tickets)
-
-    console.log("filterFrom", filterFrom)
-    console.log("filterTo", filterTo)
 
     const areFromToFiltersUsed = (
        (isFilterFromUsed) ||
@@ -76,7 +72,6 @@ const Agenda: React.SFC<IProps> = ({
 
   const prepareRows = () => {
     const filtered = getFilteredTickets()
-    console.log("filtered", filtered)
     const segregated = filtered.reduce((acc, ticket: ITicket) => {
       const day = moment(ticket.date.start).format('D')
       if (day in acc) {

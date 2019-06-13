@@ -95,6 +95,7 @@ class SelectContainer extends Component<
   }
 
   handleFetchInitialTripsWithFilter = () => {
+    console.log("handleFetchInitialTripsWithFilter")
     this.setState(
       {
         page: 0,
@@ -231,18 +232,24 @@ class SelectContainer extends Component<
   }
 
   handleFilterChange = (filters: IFiltersChange, callback?: () => void) => {
+    console.log("handleFilterChange")
+    console.log("filters", filters)
+    console.log("state before", this.state)
     this.setState(
       (state: IState) => ({
         filters: {
           ...state.filters,
           ...filters
         }
-      }),
+      })
+      ,
       () => callback && callback()
     )
+    
   }
 
   handleClearFilterDates = () => {
+    console.log("handleClearFilterDates")
     const {
       filters: { start, end }
     } = this.state

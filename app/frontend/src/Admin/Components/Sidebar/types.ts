@@ -6,6 +6,10 @@ export interface IProps {
   filterTo: string
   cities: ICity[]
   selectedDate: Date
+  calendarFilter:{
+    start: Date | undefined
+    end: Date | undefined
+  }
   direction: DIRECTION_TYPE | null
   changeFilters: (filters: string[]) => void
   changeFilterFrom: (filterFrom: string) => void

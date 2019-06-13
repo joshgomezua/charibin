@@ -4,8 +4,9 @@ import moment from 'moment'
 import arrow from '../../../Common/Utils/Media/arrow.svg'
 import './styles.scss'
 import { IProps, IState } from './types'
+import { debounce } from 'lodash';
 
-export default class Calendar extends React.Component<IProps, IState> {
+export default class CalendarDoubleFilter extends React.Component<IProps, IState> {
   readonly state: IState = {
     startDate: new Date(),
     startFillingEndRange: false
@@ -39,25 +40,38 @@ export default class Calendar extends React.Component<IProps, IState> {
     return false
   }
 
+
+
   render() {
+    const debouncedChange = debounce(
+        ({ activeStartDate, view }: { activeStartDate: Date; view: string }) => {
+          if (view === 'month') {
+            this.props.handleChangeDate(activeStartDate)
+          }
+        },
+        300
+      )
     return (
       <div className="calendar">
+        <div className="spon-sidebar">
         <ReactCalendar
-          locale="en-GB"
-          formatShortWeekday={value => moment.utc(value).format('dd')}
-          showNeighboringMonth={false}
-          value={this.props.value}
-          onClickDay={this.handleClickSelectRange}
-          onChange={this.handleChangeEvent}
-          selectRange={this.props.selectRange}
-          nextLabel={<img src={arrow} className="calendar-arrow_next" />}
-          prevLabel={<img src={arrow} className="calendar-arrow_prev" />}
-          next2Label={null}
-          prev2Label={null}
-          tileDisabled={this.handleDisableDays}
+          calendarType="ISO 8601"
+          formatMonthYear={value =>
+            moment(value)
+              .format('MMMM YYYY')
+              .toUpperCase()
+          }
+          minDetail="year"
+          minDate={moment().toDate()}
+          nextLabel={<img src={arrow} />}
+          prevLabel={<img src={arrow} />}
+          value={this.props.selectedDate}
+          activeStartDate={this.props.selectedDate}
+          onClickMonth={this.props.handleChangeDate}
+          onActiveDateChange={debouncedChange}
         />
+         </div>
       </div>
-      
     )
   }
 }

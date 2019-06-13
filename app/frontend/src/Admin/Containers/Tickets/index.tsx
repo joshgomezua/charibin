@@ -44,18 +44,25 @@ class TicketsContainer extends React.Component<
       heading: '',
       data: DEFULT_TICKET_DATA,
       trip: null
+    },
+    calendarFilter: {
+      start: undefined,
+      end: undefined
     }
+
   }
 
   private modal = React.createRef<Modal>()
 
   componentDidUpdate(prevProps: IProps) {
+    console.log("componentDidUpdate")
     if (prevProps.selectedDate !== this.props.selectedDate) {
       this.handleFetchTicketsByDate(this.props.selectedDate)
     }
   }
 
   componentDidMount() {
+    console.log("componentDidMount")
     const { selectedDate } = this.props
     const { state } = this.props.location
 
@@ -102,6 +109,7 @@ class TicketsContainer extends React.Component<
   }
 
   handleFetchTicketsByDate = (date: Date) => {
+    console.log("handleFetchTicketsByDate")
     const token = getToken()
 
     const startDate = moment(date)
@@ -239,6 +247,7 @@ class TicketsContainer extends React.Component<
   }
 
   handleChangeActiveState = (id: string, isActive: boolean) => {
+    console.log("handleChangeActivateState")
     const token = getToken()
 
     editTicket({ active: isActive }, id, token)
@@ -285,7 +294,8 @@ class TicketsContainer extends React.Component<
       isLoading,
       isModalLoading,
       isError,
-      destinations
+      destinations,
+      calendarFilter
     } = this.state
     const {
       filters,
@@ -315,6 +325,7 @@ class TicketsContainer extends React.Component<
             changeFilterTo={changeFilterTo}
             changeSelectedDate={changeSelectedDate}
             changeDirectionType={changeTicketType}
+            calendarFilter={calendarFilter}
           />
           <Agenda
             tickets={tickets}

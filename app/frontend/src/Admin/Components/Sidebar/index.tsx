@@ -10,6 +10,7 @@ import arrow from '../../../Common/Utils/Media/arrowDown.svg'
 import { DIRECTION_TYPE, ICity } from '../../Utils/adminTypes'
 import { IProps } from './types'
 import './styles.scss'
+import CalendarDoubleFilter from 'src/App/Components/CalendarDoubleFilter';
 
 class Sidebar extends React.Component<IProps> {
   componentDidMount() {
@@ -83,6 +84,11 @@ class Sidebar extends React.Component<IProps> {
           activeStartDate={this.props.selectedDate}
           onClickMonth={this.handleChangeDate}
           onActiveDateChange={debouncedChange}
+        />
+        <CalendarDoubleFilter 
+          selectedDate={this.props.selectedDate}
+          handleChangeDate={this.handleChangeDate}
+          changeSelectedDate={this.props.changeSelectedDate}
         />
         <div className="spon-sidebar__filters">
           <h4>Filtres</h4>

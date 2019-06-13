@@ -14,6 +14,10 @@ export interface IState {
     data: ITicket
     trip: { _id: string; destination: string } | null
   }
+  calendarFilter: {
+    start: Date | undefined
+    end: Date | undefined
+  }
 }
 export interface IProps {
   selectedDate: Date
