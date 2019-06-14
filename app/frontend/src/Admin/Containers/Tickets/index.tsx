@@ -333,6 +333,7 @@ class TicketsContainer extends React.Component<
             changeDirectionType={changeTicketType}
             calendarFilter={calendarFilter}
             onChange={this.handleFetchTicketsByTwoDates}
+            handleFetchTicketsByDate={this.handleFetchTicketsByDate}
           />
           <Agenda
             tickets={tickets}

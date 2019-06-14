@@ -14,5 +14,6 @@ export interface IProps {
     startDate: Date
     startFillingEndRange: boolean
     isSelectRange: boolean
+    //tempDate: Date
   }
   

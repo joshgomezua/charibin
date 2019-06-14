@@ -17,6 +17,7 @@ export interface IProps {
   changeSelectedDate: (date: Date) => void
   changeDirectionType: (type: DIRECTION_TYPE | null) => void
   onChange?: (v: [Date, Date]) => void
+  handleFetchTicketsByDate: (date: Date, date2?: Date) => void
 }
 
 export interface IState {

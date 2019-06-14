@@ -11,18 +11,17 @@ export default class CalendarDoubleFilter extends React.Component<IProps, IState
   readonly state: IState = {
     startDate: new Date(),
     startFillingEndRange: false,
-    isSelectRange: true
+    isSelectRange: true,
+    //tempDate: new Date()
   }
 
   handleClickSelectRange = (date: Date) => {
-    console.log("handleClickSelectRange")
     if (!this.state.startFillingEndRange) {
       this.setState({ startFillingEndRange: true, startDate: date, isSelectRange: true })
     }
   }
 
   handleChangeEvent = (v: [Date, Date]) => {
-    console.log("handleChangeEvent")
     this.props.onChange && this.props.onChange(v)
     this.setState({ startFillingEndRange: false })
   }
@@ -49,8 +48,10 @@ export default class CalendarDoubleFilter extends React.Component<IProps, IState
   render() {
     const debouncedChange = debounce(
         ({ activeStartDate, view }: { activeStartDate: Date; view: string }) => {
-          
+          console.log("activeStartDate\n", activeStartDate, 
+          "this.state.startFillingEndRange", this.state.startFillingEndRange)
           if (view === 'month' && !this.state.startFillingEndRange) {
+            console.log("in")
             this.props.handleChangeDate(activeStartDate)
           }
         },

@@ -7,6 +7,7 @@ import { DIRECTION_TYPE, ICity } from '../../Utils/adminTypes'
 import { IProps, IState } from './types'
 import './styles.scss'
 import CalendarDoubleFilter from 'src/App/Components/CalendarDoubleFilter';
+import moment from 'moment'
 
 class Sidebar extends React.Component<IProps, IState> {
 
@@ -63,7 +64,7 @@ class Sidebar extends React.Component<IProps, IState> {
   } 
 
   resetCalendar = () => {
-    this.setState({calendarVisible: true})
+    this.setState({calendarVisible: true}, ()=>this.props.handleFetchTicketsByDate(moment().toDate()))
   }
 
   render() {
