@@ -60,11 +60,13 @@ class Sidebar extends React.Component<IProps, IState> {
   }
 
   clearCalendar = () => {
+    console.log("test1")
     this.setState({calendarVisible: false}, this.resetCalendar)
   } 
 
   resetCalendar = () => {
-    this.setState({calendarVisible: true}, ()=>this.props.handleFetchTicketsByDate(moment().toDate()))
+    console.log("test2")
+    this.setState({calendarVisible: true}, ()=> this.props.handleFetchTicketsByDate(moment().toDate()))
   }
 
   render() {
@@ -80,6 +82,7 @@ class Sidebar extends React.Component<IProps, IState> {
           changeSelectedDate={this.props.changeSelectedDate}
           onChange={this.props.onChange}
           clearCalendar={this.clearCalendar}
+          selectRange
         />
         )}
 

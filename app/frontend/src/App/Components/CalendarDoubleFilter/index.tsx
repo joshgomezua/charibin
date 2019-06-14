@@ -11,13 +11,12 @@ export default class CalendarDoubleFilter extends React.Component<IProps, IState
   readonly state: IState = {
     startDate: new Date(),
     startFillingEndRange: false,
-    isSelectRange: true,
-    //tempDate: new Date()
+    rangeIsDisplayed: false,
   }
 
   handleClickSelectRange = (date: Date) => {
     if (!this.state.startFillingEndRange) {
-      this.setState({ startFillingEndRange: true, startDate: date, isSelectRange: true })
+      this.setState({ startFillingEndRange: true, startDate: date, rangeIsDisplayed: true })
     }
   }
 
@@ -42,23 +41,25 @@ export default class CalendarDoubleFilter extends React.Component<IProps, IState
   }
 
   setSelectRange = (value: boolean) => {
-    this.setState({isSelectRange: value})
+    this.setState({rangeIsDisplayed: value})
+  }
+
+  clearCalendar = () => {
+    this.props.clearCalendar()
   }
 
   render() {
     const debouncedChange = debounce(
         ({ activeStartDate, view }: { activeStartDate: Date; view: string }) => {
           console.log("activeStartDate\n", activeStartDate, 
-          "this.state.startFillingEndRange", this.state.startFillingEndRange)
-          if (view === 'month' && !this.state.startFillingEndRange) {
+          "this.state.rangeIsDisplayed", this.state.rangeIsDisplayed)
+          if (view === 'month' && !this.state.rangeIsDisplayed) {
             console.log("in")
             this.props.handleChangeDate(activeStartDate)
           }
         },
         300
     )
-    
-    const {isSelectRange} = this.state
 
     return (
       <div className="calendar">
@@ -78,11 +79,10 @@ export default class CalendarDoubleFilter extends React.Component<IProps, IState
           //activeStartDate={this.props.selectedDate}
           //onClickMonth={this.props.handleChangeDate}
           onActiveDateChange={debouncedChange}
-
+          selectRange={true}
           value={this.props.value}
           onClickDay={this.handleClickSelectRange}
           onChange={this.handleChangeEvent}
-          selectRange={isSelectRange}
           tileDisabled={this.handleDisableDays}
         />
          </div>
@@ -90,7 +90,7 @@ export default class CalendarDoubleFilter extends React.Component<IProps, IState
             text="clear dates"
             variant="gray"
             icon="cross"
-            onClick={this.props.clearCalendar}
+            onClick={this.clearCalendar}
           />
       </div>
     )

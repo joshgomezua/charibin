@@ -55,14 +55,12 @@ class TicketsContainer extends React.Component<
   private modal = React.createRef<Modal>()
 
   componentDidUpdate(prevProps: IProps) {
-    console.log("componentDidUpdate")
     if (prevProps.selectedDate !== this.props.selectedDate) {
       this.handleFetchTicketsByDate(this.props.selectedDate)
     }
   }
 
   componentDidMount() {
-    console.log("componentDidMount")
     const { selectedDate } = this.props
     const { state } = this.props.location
 

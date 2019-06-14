@@ -13,7 +13,6 @@ export interface IProps {
   export interface IState {
     startDate: Date
     startFillingEndRange: boolean
-    isSelectRange: boolean
-    //tempDate: Date
+    rangeIsDisplayed: boolean
   }
   
