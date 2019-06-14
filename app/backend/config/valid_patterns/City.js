@@ -55,7 +55,7 @@ module.exports = {
       permission: {
         create: [ROLE.ADMINISTRATOR],
         update: [ROLE.ADMINISTRATOR],
-        find: [ROLE.ADMINISTRATOR, ROLE.GUEST]
+        find: [ROLE.ADMINISTRATOR, ROLE.GUEST],
       }
     }
   }
