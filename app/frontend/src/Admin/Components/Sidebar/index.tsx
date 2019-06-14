@@ -81,21 +81,23 @@ class Sidebar extends React.Component<IProps, IState> {
           clearCalendar={this.clearCalendar}
         />
         )}
+
+        <div className="spon-sidebar__input">
+
+        <input type="text" 
+        value={this.props.filterFrom} 
+        onChange={this.handleFilterFromChange}
+        placeholder="From"/>
+        <br/>
+        <input type="text" 
+        value={this.props.filterTo} 
+        onChange={this.handleFilterToChange}
+        placeholder="To"/>
+        </div>
         
         <div className="spon-sidebar__filters">
-          <h4>Filtres</h4>
 
-          <div className="spon-sidebar__input">
-            <label>
-              From
-              <input type="text" value={this.props.filterFrom} onChange={this.handleFilterFromChange}/>
-            </label>
-
-            <label>
-              To
-              <input type="text" value={this.props.filterTo} onChange={this.handleFilterToChange}/>
-            </label>
-          </div>
+          
           
 
           <h4>Cities</h4>

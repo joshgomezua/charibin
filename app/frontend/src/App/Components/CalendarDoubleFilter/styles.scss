@@ -7,6 +7,22 @@
   &-arrow_prev {
     transform: rotateZ(90deg);
   }
+
+  &-clear {
+    width: 100%;
+  max-width: 25rem;
+  height: 3rem;
+  border: none;
+  border-radius: 3px;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  outline: none;
+  }
+
   .react-calendar {
     border: none;
     color: $gray-dark;

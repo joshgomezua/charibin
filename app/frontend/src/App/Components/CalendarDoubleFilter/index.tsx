@@ -5,6 +5,7 @@ import arrow from '../../../Common/Utils/Media/arrow.svg'
 import './styles.scss'
 import { IProps, IState } from './types'
 import { debounce } from 'lodash';
+import Button from 'src/Common/Components/Button';
 
 export default class CalendarDoubleFilter extends React.Component<IProps, IState> {
   readonly state: IState = {
@@ -84,7 +85,12 @@ export default class CalendarDoubleFilter extends React.Component<IProps, IState
           tileDisabled={this.handleDisableDays}
         />
          </div>
-         <button onClick={this.props.clearCalendar}>Clear Filter</button>
+         <Button
+            text="clear dates"
+            variant="gray"
+            icon="cross"
+            onClick={this.props.clearCalendar}
+          />
       </div>
     )
   }
