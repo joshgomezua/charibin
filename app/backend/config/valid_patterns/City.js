@@ -57,6 +57,16 @@ module.exports = {
         update: [ROLE.ADMINISTRATOR],
         find: [ROLE.ADMINISTRATOR, ROLE.GUEST],
       }
+    },
+
+    isModify: {
+      type: 'Boolean',
+      required: false,
+      permission: {
+        create:[],
+        update: [],
+        find: [ROLE.ADMINISTRATOR, ROLE.GUEST],
+      }
     }
   }
 };

@@ -33,7 +33,7 @@ const CityModal: React.SFC<IProps> = ({
       name: editDate.name,
       country: editDate.country,
       tags: editDate.tags,
-      photo: editDate.photo
+      photo: editDate.photo,
     }
   }
 
@@ -48,14 +48,15 @@ const CityModal: React.SFC<IProps> = ({
                 name: '',
                 country: '',
                 tags: [],
-                photo: ''
+                photo: '',
+                isModify: false,
             }
         }
         validationSchema={Yup.object().shape({
           name: Yup.string().required(),
           country: Yup.string().required(),
           tags: Yup.string().required(),
-          photo: Yup.string().required()
+          photo: Yup.string().required(),
         })}
         onSubmit={(
           values: IFormValues,

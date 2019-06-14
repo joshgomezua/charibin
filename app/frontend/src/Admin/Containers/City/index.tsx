@@ -40,7 +40,8 @@ class CityContainer extends React.Component<
       name: 'Paris',
       country: 'France',
       tags:['Beach', 'Nightlife'],
-      photo: "https://s3.eu-west-2.amazonaws.com/spon-staging/staging_5c91210fb4f0e3003452a581.png"
+      photo: "https://s3.eu-west-2.amazonaws.com/spon-staging/staging_5c91210fb4f0e3003452a581.png",
+      isModify: false,
     }],
     total: 0,
     currentPage: 0,
@@ -187,6 +188,11 @@ class CityContainer extends React.Component<
       })
   }
 
+  handleToggleButton = (id:string, value:boolean) => {
+      console.log(id)
+      console.log(value)
+  }
+
 /*  handleRedirectToCreateCity = (city: { _id: string; name: string }) => {
     this.props.history.push({
       pathname: `${ADMIN_ROUTING.MAIN}${ADMIN_ROUTING.CITIES}`,
@@ -229,6 +235,7 @@ class CityContainer extends React.Component<
           columns={columns(
             this.handleOpenDeleteModal,
             this.handleOpenEditModal,
+            this.handleToggleButton
           )}
           loading={isLoading}
           pages={Math.ceil(total / 10)}

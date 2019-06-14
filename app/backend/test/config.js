@@ -22,7 +22,8 @@ const dataTemplate = {
     name: faker.address.city,
     country: () => faker.name.lastName(),
     photo: getImage,
-    tags: () => [faker.name.firstName()]
+    tags: () => [faker.name.firstName()],
+    isModify: false
 
   },
 

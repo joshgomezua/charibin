@@ -9,6 +9,7 @@ let count: number = 0;
 export const columns = (
   openDeleteModal: (id: string) => void,
   openEditModal: (id: string) => void,
+  changeActiveState: (id: string, checkend: boolean) => void
   //redirectToCreateCity: (city: { _id: string; name: string }) => void
 ) => [
   {
@@ -47,24 +48,27 @@ export const columns = (
   },
   {
     Header: 'Modify',
-    accessor: 'modify',
+    accessor: 'isModify',
     Cell: (props: RowRenderProps) => (
+ 
         <Button
           text = "modify"
           variant = "adminPrimary"
           icon = "pencil"
+          disabled = {!(props.value)}
           onClick={() => openEditModal(props.row._original._id)}
         />
+     
       )
   },
 
   {
     Header: 'Enable',
     accessor: 'enable',
-    Cell:  (
+    Cell: (props: RowRenderProps) => (
         <Switch
           checked = {true}
-          onChange = {() => {console.log("allo")}}
+          onChange = {() => changeActiveState(props.row._original.id,props.value)}
         />)
   },
 
