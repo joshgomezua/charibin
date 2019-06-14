@@ -47,8 +47,8 @@ module.exports = {
     let city = await City.findOne({ _id: id });
     if(!city) throw { status: 404, message: 'CITY.NOT.EXIST' };
 
-    if(data.photo)
-      data.photo = await Utilities.upload(data.photo, 'png');
+    /*if(data.photo)
+      data.photo = await Utilities.upload(data.photo, 'png');*/
 
     if(data.name) {
       city = await City.findOne({ name: data.name});

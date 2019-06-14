@@ -169,6 +169,7 @@ class CityContainer extends React.Component<
       modal: { id }
     } = this.state
 
+    console.log(data)
     this.setState({ isModalLoading: true })
     return updateCity(id, data, token)
       .then(res => {

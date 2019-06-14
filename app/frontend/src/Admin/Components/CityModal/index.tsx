@@ -166,7 +166,9 @@ const CityModal: React.SFC<IProps> = ({
                         variant="adminPrimary"
                         text = {tag}
                         onClick = {() => {
-                          (values['tags'] as string[]).push(tag)
+                            if (!((values['tags'] as string[]).includes(tag))){
+                              (values['tags'] as string[]).push(tag)
+                            }
                         }}/>
                 )})}
               </div>
