@@ -4,19 +4,19 @@
 
 const { City } = require('../models');
 const Aggregate = require('./Aggregate');
-const Utilities = require('./Utilities');
+//const Utilities = require('./Utilities');
 
 module.exports = {
   async create (data) {
     const city = await City.findOne({ name: data.name});
     if(city) throw { status: 409, message: 'CITY.EXIST' };
 
-    if(data.fake) {
+    /*if(data.fake) {
       const feakedCitiesCount = await City.countDocuments({ fake: true });
       if(feakedCitiesCount === 2) throw { status: 403, message: 'CITY.FAKE.LIMIT' };
-    }
+    }*/
 
-    data.photo = await Utilities.upload(data.photo, 'png');
+   /* data.photo = await Utilities.upload(data.photo, 'png');*/
     return City.create(data);
   },
 
@@ -46,9 +46,6 @@ module.exports = {
   async update (id, data) {
     let city = await City.findOne({ _id: id });
     if(!city) throw { status: 404, message: 'CITY.NOT.EXIST' };
-
-    /*if(data.photo)
-      data.photo = await Utilities.upload(data.photo, 'png');*/
 
     if(data.name) {
       city = await City.findOne({ name: data.name});

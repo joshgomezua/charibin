@@ -47,10 +47,7 @@ const CityModal: React.SFC<IProps> = ({
             : {
                 name: '',
                 country: '',
-                tags: [ 'Train',
-                        'Beach',
-                        'City',
-                                ],
+                tags: [],
                 photo: ''
             }
         }
