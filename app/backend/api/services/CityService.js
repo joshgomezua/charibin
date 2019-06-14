@@ -11,12 +11,6 @@ module.exports = {
     const city = await City.findOne({ name: data.name});
     if(city) throw { status: 409, message: 'CITY.EXIST' };
 
-    /*if(data.fake) {
-      const feakedCitiesCount = await City.countDocuments({ fake: true });
-      if(feakedCitiesCount === 2) throw { status: 403, message: 'CITY.FAKE.LIMIT' };
-    }*/
-
-   /* data.photo = await Utilities.upload(data.photo, 'png');*/
     return City.create(data);
   },
 
@@ -28,7 +22,7 @@ module.exports = {
             ...Aggregate.skipAndLimit(page, limit)
           ],
           status: Aggregate.getStatusWithSimpleMatch(
-            { name: '$name' },
+            {},
             page,
             limit
           )
