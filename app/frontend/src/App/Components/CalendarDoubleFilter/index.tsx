@@ -9,13 +9,14 @@ import { debounce } from 'lodash';
 export default class CalendarDoubleFilter extends React.Component<IProps, IState> {
   readonly state: IState = {
     startDate: new Date(),
-    startFillingEndRange: false
+    startFillingEndRange: false,
+    isSelectRange: true
   }
 
   handleClickSelectRange = (date: Date) => {
     console.log("handleClickSelectRange")
     if (!this.state.startFillingEndRange) {
-      this.setState({ startFillingEndRange: true, startDate: date })
+      this.setState({ startFillingEndRange: true, startDate: date, isSelectRange: true })
     }
   }
 
@@ -40,17 +41,23 @@ export default class CalendarDoubleFilter extends React.Component<IProps, IState
     return false
   }
 
-
+  setSelectRange = (value: boolean) => {
+    this.setState({isSelectRange: value})
+  }
 
   render() {
     const debouncedChange = debounce(
         ({ activeStartDate, view }: { activeStartDate: Date; view: string }) => {
-          if (view === 'month') {
+          
+          if (view === 'month' && !this.state.startFillingEndRange) {
             this.props.handleChangeDate(activeStartDate)
           }
         },
         300
-      )
+    )
+    
+    const {isSelectRange} = this.state
+
     return (
       <div className="calendar">
         <div className="spon-sidebar">
@@ -65,17 +72,19 @@ export default class CalendarDoubleFilter extends React.Component<IProps, IState
           minDetail="year"
           nextLabel={<img src={arrow} className="calendar-arrow_next" />}
           prevLabel={<img src={arrow} className="calendar-arrow_prev" />}
-          value={this.props.selectedDate}
-          activeStartDate={this.props.selectedDate}
-          onClickMonth={this.props.handleChangeDate}
+          //value={this.props.selectedDate}
+          //activeStartDate={this.props.selectedDate}
+          //onClickMonth={this.props.handleChangeDate}
           onActiveDateChange={debouncedChange}
 
-          //value={this.props.value}
-          //onClickDay={this.handleClickSelectRange}
-          //onChange={this.handleChangeEvent}
-          selectRange={this.props.selectRange}
+          value={this.props.value}
+          onClickDay={this.handleClickSelectRange}
+          onChange={this.handleChangeEvent}
+          selectRange={isSelectRange}
+          tileDisabled={this.handleDisableDays}
         />
          </div>
+         <button onClick={this.props.clearCalendar}>Clear Filter</button>
       </div>
     )
   }

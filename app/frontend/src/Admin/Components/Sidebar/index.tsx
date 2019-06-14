@@ -4,11 +4,16 @@ import Button from '../../../Common/Components/Button'
 import MultiSwitch from '../../Components/MultiSwitch'
 
 import { DIRECTION_TYPE, ICity } from '../../Utils/adminTypes'
-import { IProps } from './types'
+import { IProps, IState } from './types'
 import './styles.scss'
 import CalendarDoubleFilter from 'src/App/Components/CalendarDoubleFilter';
 
-class Sidebar extends React.Component<IProps> {
+class Sidebar extends React.Component<IProps, IState> {
+
+  readonly state: IState = {
+    calendarVisible: true,
+  }
+
   componentDidMount() {
     const filters = this.props.cities.map((city: ICity) => city.name)
     this.props.changeFilters(filters)
@@ -53,15 +58,30 @@ class Sidebar extends React.Component<IProps> {
     this.props.changeDirectionType(type)
   }
 
+  clearCalendar = () => {
+    this.setState({calendarVisible: false}, this.resetCalendar)
+  } 
+
+  resetCalendar = () => {
+    this.setState({calendarVisible: true})
+  }
+
   render() {
+
+    const {calendarVisible} = this.state
 
     return (
       <div className="spon-sidebar">
-        <CalendarDoubleFilter 
+        {calendarVisible && (
+          <CalendarDoubleFilter 
           selectedDate={this.props.selectedDate}
           handleChangeDate={this.handleChangeDate}
           changeSelectedDate={this.props.changeSelectedDate}
+          onChange={this.props.onChange}
+          clearCalendar={this.clearCalendar}
         />
+        )}
+        
         <div className="spon-sidebar__filters">
           <h4>Filtres</h4>
 

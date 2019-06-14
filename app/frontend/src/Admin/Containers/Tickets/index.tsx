@@ -108,6 +108,10 @@ class TicketsContainer extends React.Component<
       })
   }
 
+  handleFetchTicketsByTwoDates = ([startDate, endDate] : [Date, Date]) => {
+    this.handleFetchTicketsByDate(startDate, endDate)
+  }
+
   handleFetchTicketsByDate = (initialDate: Date, finalDate?: Date) => {
     console.log("handleFetchTicketsByDate")
     const token = getToken()
@@ -328,6 +332,7 @@ class TicketsContainer extends React.Component<
             changeSelectedDate={changeSelectedDate}
             changeDirectionType={changeTicketType}
             calendarFilter={calendarFilter}
+            onChange={this.handleFetchTicketsByTwoDates}
           />
           <Agenda
             tickets={tickets}

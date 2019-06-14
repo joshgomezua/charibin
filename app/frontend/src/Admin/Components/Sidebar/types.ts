@@ -16,4 +16,9 @@ export interface IProps {
   changeFilterTo: (filterTo: string) => void
   changeSelectedDate: (date: Date) => void
   changeDirectionType: (type: DIRECTION_TYPE | null) => void
+  onChange?: (v: [Date, Date]) => void
+}
+
+export interface IState {
+  calendarVisible: boolean
 }
