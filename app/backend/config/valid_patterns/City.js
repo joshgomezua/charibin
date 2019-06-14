@@ -37,18 +37,6 @@ module.exports = {
         minLength: 1,
         maxLength: 40,
       },
-
-
-    isModifiable: {
-      type: 'boolean',
-      required: false,
-      permission: {
-        create: [ROLE.ADMINISTRATOR],
-        update: [ROLE.ADMINISTRATOR],
-        find: [ROLE.ADMINISTRATOR]
-      }
-    },
-
     photo: {
       type: 'string',
       required: true,
@@ -62,12 +50,13 @@ module.exports = {
 
     tags: {
       type: 'array',
-      required: false,
+      required: true,
+      subType: 'string',
       permission: {
-        create: [],
-        update: [],
+        create: [ROLE.ADMINISTRATOR],
+        update: [ROLE.ADMINISTRATOR],
         find: [ROLE.ADMINISTRATOR, ROLE.GUEST]
       }
-    },
+    }
   }
 };

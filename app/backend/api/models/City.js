@@ -7,7 +7,7 @@ const citySchema = new Schema({
   name: String,
   country: String,
   photo: String,
-  tags: Array
+  tags: [String]
 });
 
 module.exports = mongoose.model('City', citySchema);

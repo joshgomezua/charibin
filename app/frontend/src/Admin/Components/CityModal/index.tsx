@@ -69,10 +69,10 @@ const CityModal: React.SFC<IProps> = ({
             for (const key in values) {
               if (
                 values.hasOwnProperty(key) &&
-                values[key] !== editDate![key]
+                values[key] !== editDate![key] || (key === "tags")
               ) {
                 dataToUpdate[key] = values[key]
-              }
+              } 
             }
           }
 
@@ -158,14 +158,16 @@ const CityModal: React.SFC<IProps> = ({
             </div>
             <div className="spon-trip-modal__row">
               <div className="spon-trip-modal__tagsbtn">
-                {TAGS.map(tags => {
+                {TAGS.map(tag => {
                     return( 
                       <Button
-                        key = {tags}
                         className="spon-trip-modal__button"
                         type = "button"
                         variant="adminPrimary"
-                        text = {tags}/>
+                        text = {tag}
+                        onClick = {() => {
+                          (values['tags'] as string[]).push(tag)
+                        }}/>
                 )})}
               </div>
                 <ErrorMessage
