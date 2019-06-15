@@ -27,12 +27,13 @@ export const columns = (
     Cell: (props: RowRenderProps) => (
       props.value.map((tag: string) => {
           const length: number = props.value.length
-          if ( count < length) {
+          if ( count < length-1) {
               count++
               console.log('je suis dans le if')
-              return(<>{tag + "; "}</>)
+              return(<div key = {tag}>{tag.concat(";")}</div>)
           } else {
-            return(<>{tag}</>)
+            console.log("je suis dans le else")
+            return(<>{tag.concat('   ')}</>)
           }
       })
     )
@@ -49,6 +50,7 @@ export const columns = (
   },
   {
     Header: 'Modify',
+    width: 90,
     accessor: 'isModify',
     Cell: (props: RowRenderProps) => (
  
@@ -65,6 +67,7 @@ export const columns = (
 
   {
     Header: 'Enable',
+    width: 90,
     accessor: 'isModify',
     Cell: (props: RowRenderProps) => (
       <Switch
@@ -78,6 +81,7 @@ export const columns = (
   {
     Header: 'Delete',
     accessor: 'delete',
+    width: 90,
     Cell: (props: RowRenderProps) => (
       <Button
         text = "delete"

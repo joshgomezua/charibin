@@ -155,7 +155,7 @@ class CityContainer extends React.Component<
         this.handleFetchItems(currentPage, 10)
         this.props.showSuccess(SUCCESS.CITY_ADD)
         this.handleRestartModalType()
-        console.log(res.data)
+
         return Promise.resolve()
       })
       .catch(err => {
