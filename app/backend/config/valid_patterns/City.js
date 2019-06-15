@@ -59,11 +59,11 @@ module.exports = {
       }
     },
 
-    sent: {
+    isModify: {
       type: 'boolean',
-      required: true,
+      required: false,
       permission: {
-        create: [],
+        create: [ROLE.ADMINISTRATOR],
         update: [ROLE.ADMINISTRATOR],
         find: [ROLE.ADMINISTRATOR]
       }

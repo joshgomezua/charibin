@@ -56,7 +56,7 @@ export const columns = (
           text = "modify"
           variant = "adminPrimary"
           icon = "pencil"
-          //disabled = {!(props.value)}
+          disabled = {!(props.value)}
           onClick={() => openEditModal(props.row._original._id)}
         />
      

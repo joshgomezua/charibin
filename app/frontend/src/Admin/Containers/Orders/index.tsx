@@ -51,11 +51,9 @@ class OrdersContainer extends React.Component<IProps, IState> {
       .then(({ data }) => {
         const updatedOrders = this.state.orders.map((order: IOrder) => {
           if (order._id === data._id) {
-            console.log('data,', data)
             return data
           }
 
-          console.log('order ', order)
           return order
         })
 
