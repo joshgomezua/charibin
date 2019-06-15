@@ -57,6 +57,10 @@ module.exports = {
 
     return;
   },
+
+  updateOne (id, data) {
+    return City.findByIdAndUpdate(id, data, { new: true });
+  },
   /*
   async getListOfTripsNames () {
     const names = await Trip.find({ deleted: false }).select('name');

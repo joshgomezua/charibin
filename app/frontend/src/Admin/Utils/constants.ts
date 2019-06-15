@@ -36,6 +36,7 @@ export const SUCCESS = {
   CITY_ADD: 'City added successfully',
   CITY_EDIT: 'City edited successfully',
   CITY_DELETE: 'City deleted successfully',
+  CITY_UPDATE: 'city update successfully',
   DEFAULT: 'Success'
 }
 

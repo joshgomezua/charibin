@@ -1,15 +1,15 @@
 import React from 'react'
 import { RowRenderProps } from 'react-table'
-import Switch from 'src/Admin/Components/Switch';
+import Switch from '../../Components/Switch'
 import Button from 'src/Common/Components/Button';
 import './style.scss'
 
-let count: number = 0;
 
+let count: number = 0
 export const columns = (
   openDeleteModal: (id: string) => void,
   openEditModal: (id: string) => void,
-  changeActiveState: (id: string, checkend: boolean) => void
+  onSwitchChange: ((id: string, value: boolean) => void),
   //redirectToCreateCity: (city: { _id: string; name: string }) => void
 ) => [
   {
@@ -25,17 +25,18 @@ export const columns = (
     Header: 'Key words',
     accessor: 'tags',
     Cell: (props: RowRenderProps) => (
-     
-      props.value.map((tag: any) => {
-          const length: number = props.value.length;
-          if (count <= length) {
-            count++;
-            return (<React.Fragment key ={tag}>{tag + '; '}</React.Fragment >);
+      props.value.map((tag: string) => {
+          const length: number = props.value.length
+          if ( count < length) {
+              count++
+              console.log('je suis dans le if')
+              return(<>{tag + "; "}</>)
           } else {
-            return (<React.Fragment key ={tag}>{tag}</React.Fragment >);
+            return(<>{tag}</>)
           }
       })
     )
+  
   },
   {
     Header: 'Photo',
@@ -55,7 +56,7 @@ export const columns = (
           text = "modify"
           variant = "adminPrimary"
           icon = "pencil"
-          disabled = {!(props.value)}
+          //disabled = {!(props.value)}
           onClick={() => openEditModal(props.row._original._id)}
         />
      
@@ -64,12 +65,14 @@ export const columns = (
 
   {
     Header: 'Enable',
-    accessor: 'enable',
+    accessor: 'isModify',
     Cell: (props: RowRenderProps) => (
-        <Switch
-          checked = {true}
-          onChange = {() => changeActiveState(props.row._original.id,props.value)}
-        />)
+      <Switch
+      onChange={() => {
+        onSwitchChange(props.row._original._id, !props.value)
+      }}
+      checked={props.value}
+    />)
   },
 
   {

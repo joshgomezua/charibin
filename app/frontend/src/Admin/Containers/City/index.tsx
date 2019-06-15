@@ -8,6 +8,7 @@ import DeleteModal from '../../Components/DeleteModal'
  
 
 import withToast from '../../../Common/HOC/withToast'
+import { debounce } from 'lodash'
 import { RouteComponentProps } from 'react-router-dom'
 import { MODAL_TYPE, ICity } from '../../Utils/adminTypes'
 import { getToken } from '../../../Common/Utils/helpers'
@@ -22,10 +23,12 @@ import {
   deleteCity,
   getSingleCity,
   addCity,
-  updateCity
+  updateCity,
+  editCityState
 } from '../../Utils/api'
 import { IState, IProps } from './types'
 import { columns } from './columns'
+
 
 
 class CityContainer extends React.Component<
@@ -188,9 +191,24 @@ class CityContainer extends React.Component<
       })
   }
 
-  handleToggleButton = (id:string, value:boolean) => {
+  handleToggleButton = (id: string, value:boolean) => {
       console.log(id)
-      console.log(value)
+    const token = getToken()
+
+    editCityState(id, value, token)
+      .then(({ data }) => {
+        const updatedCities = this.state.cities.map((city: ICity) => {
+          if (city._id === data._id) {
+            return data
+          }
+
+          return city
+        })
+
+        this.setState({ cities: updatedCities })
+        this.props.showSuccess(SUCCESS.CITY_UPDATE)
+      })
+      .catch(err => this.props.showError(err, ERRORS.CITY_EDIT))
   }
 
 /*  handleRedirectToCreateCity = (city: { _id: string; name: string }) => {
@@ -235,7 +253,7 @@ class CityContainer extends React.Component<
           columns={columns(
             this.handleOpenDeleteModal,
             this.handleOpenEditModal,
-            this.handleToggleButton
+            debounce(this.handleToggleButton,300)
           )}
           loading={isLoading}
           pages={Math.ceil(total / 10)}

@@ -59,13 +59,13 @@ module.exports = {
       }
     },
 
-    isModify: {
-      type: 'Boolean',
-      required: false,
+    sent: {
+      type: 'boolean',
+      required: true,
       permission: {
-        create:[],
-        update: [],
-        find: [ROLE.ADMINISTRATOR, ROLE.GUEST],
+        create: [],
+        update: [ROLE.ADMINISTRATOR],
+        find: [ROLE.ADMINISTRATOR]
       }
     }
   }
