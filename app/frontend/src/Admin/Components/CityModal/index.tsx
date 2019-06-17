@@ -17,7 +17,7 @@ import photoSvg from '../../../Common/Utils/Media/photo.svg'
 import {TAGS} from '../../Utils/constants'
 
 import { IProps, IFormValues, IEditValues } from './types'
-import './styles.scss'    // creer mes propres styles pour cette partie plus tard!!
+import './styles.scss' 
 
 const CityModal: React.SFC<IProps> = ({
   isLoading,

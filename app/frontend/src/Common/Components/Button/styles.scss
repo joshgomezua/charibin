@@ -225,6 +225,10 @@
     max-width: 10rem;
     color: $white;
     background-color: $blue;
+
+    &:hover {
+      background-color: $gray;
+    }
   }
 
   &.adminSecondary {
@@ -236,5 +240,7 @@
     color: $dark-blue;
     background: transparent;
     border: 1px solid $dark-blue;
+
+
   }
 }

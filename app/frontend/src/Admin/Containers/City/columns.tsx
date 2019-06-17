@@ -1,16 +1,14 @@
 import React from 'react'
 import { RowRenderProps } from 'react-table'
 import Switch from '../../Components/Switch'
-import Button from 'src/Common/Components/Button';
-import './style.scss'
+import Button from 'src/Common/Components/Button'
 
 
-let count: number = 0
+
 export const columns = (
   openDeleteModal: (id: string) => void,
   openEditModal: (id: string) => void,
   onSwitchChange: ((id: string, value: boolean) => void),
-  //redirectToCreateCity: (city: { _id: string; name: string }) => void
 ) => [
   {
     Header: 'City',
@@ -26,15 +24,19 @@ export const columns = (
     accessor: 'tags',
     Cell: (props: RowRenderProps) => (
       props.value.map((tag: string) => {
-          const length: number = props.value.length
-          if ( count < length-1) {
-              count++
-              console.log('je suis dans le if')
-              return(<div key = {tag}>{tag.concat(";")}</div>)
-          } else {
-            console.log("je suis dans le else")
-            return(<>{tag.concat('   ')}</>)
-          }
+        let count: number = 0
+        console.log("count ", count)
+        console.log("length ", props.value.length)
+        if (count < (props.value.length -1) ) {
+          count ++
+          console.log("incrementation", count)
+          console.log("je suis dans le if ")
+          return (<>{tag.concat("; ")}</>)
+        }
+        else {
+          console.log("je suis dans else ")
+          return (<>{tag.concat(" ")}</>)
+        }
       })
     )
   
