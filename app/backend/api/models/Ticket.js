@@ -7,6 +7,8 @@ const ticketSchema = new Schema({
   trip: { type: Schema.Types.ObjectId, ref: 'Trip' },
   direction: { type: String, enum: ['arrival', 'departure'] },
   quantity: Number,
+  availableQuantity: Number,
+  soldTickets: Number,
   type: { type: String, enum: global.config.custom.ticket.type },
   date: {
     start: Date,

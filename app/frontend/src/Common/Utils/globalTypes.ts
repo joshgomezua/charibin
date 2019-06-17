@@ -36,6 +36,8 @@ export interface ITicket {
   trip: { _id: string; name: string }
   direction: string
   quantity: number
+  availableQuantity: number,
+  soldTickets: number,
   type: string
   hours?: string
   date: {

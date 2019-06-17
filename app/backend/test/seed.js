@@ -60,20 +60,27 @@ loadModels();
 
     // Create tickets
     for (let j = 0; j < 10; j++) {
-      const ticket = await helpers.createTicket({ ...helpers.dataClone(globals.dataTemplate.ticket), direction: 'arrival', trip: trips[i]._id });
-      await helpers.createTicket({
+      //const ticket = await helpers.createTicket({ ...helpers.dataClone(globals.dataTemplate.ticket), direction: 'arrival', trip: trips[i]._id});
+    const ticketArrivalTemp = { ...helpers.dataClone(globals.dataTemplate.ticket), direction: 'arrival', trip: trips[i]._id};
+    ticketArrivalTemp.availableQuantity = getQuantity(ticketArrivalTemp);
+    const ticketArrival = await helpers.createTicket(ticketArrivalTemp);
+    const ticketDepartureTemp = {
         ...helpers.dataClone(globals.dataTemplate.ticket),
         date: {
-          start: new Date(ticket.date.start.getTime() + global.config.custom.time.day7).getTime(),
-          end: new Date(ticket.date.end.getTime() + global.config.custom.time.day7).getTime()
+          start: new Date(ticketArrival.date.start.getTime() + global.config.custom.time.day7).getTime(),
+          end: new Date(ticketArrival.date.end.getTime() + global.config.custom.time.day7).getTime()
         },
         direction: 'departure',
         trip: trips[i]._id
-      });
+      };
+    ticketDepartureTemp.availableQuantity = getQuantity(ticketDepartureTemp);
+    const ticketDeparture = await helpers.createTicket(ticketDepartureTemp)
+
 
       process.stdout.clearLine();
       process.stdout.cursorTo(0);
       process.stdout.write(`\tCreating Tickets: ${j + 1}/${10}`);
+      //console.log(JSON.stringify(ticket))
     }
     process.stdout.write('\n');
   }
@@ -85,6 +92,10 @@ loadModels();
 
   process.exit(0);
 })();
+
+function getQuantity(ticket) {
+  return ticket.quantity;
+}
 
 function loadServices () {
   const dirPath = './api/services/';
