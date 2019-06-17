@@ -22,7 +22,6 @@ const dataTemplate = {
     direction: 'arrival',
     quantity: () => faker.random.number({ min: 5, max: 20 }),
     soldTickets: 0,
-    availableQuantity: 0,
     type: () => randomOneWord('type'),
     date: {
       __tmpStart: 0,

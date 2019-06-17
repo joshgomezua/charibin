@@ -62,7 +62,6 @@ loadModels();
     for (let j = 0; j < 10; j++) {
       //const ticket = await helpers.createTicket({ ...helpers.dataClone(globals.dataTemplate.ticket), direction: 'arrival', trip: trips[i]._id});
     const ticketArrivalTemp = { ...helpers.dataClone(globals.dataTemplate.ticket), direction: 'arrival', trip: trips[i]._id};
-    ticketArrivalTemp.availableQuantity = getQuantity(ticketArrivalTemp);
     const ticketArrival = await helpers.createTicket(ticketArrivalTemp);
     const ticketDepartureTemp = {
         ...helpers.dataClone(globals.dataTemplate.ticket),
@@ -73,7 +72,6 @@ loadModels();
         direction: 'departure',
         trip: trips[i]._id
       };
-    ticketDepartureTemp.availableQuantity = getQuantity(ticketDepartureTemp);
     const ticketDeparture = await helpers.createTicket(ticketDepartureTemp)
 
 

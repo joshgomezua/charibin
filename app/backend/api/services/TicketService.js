@@ -13,6 +13,7 @@ const subscriber1 = redis.createClient({ host: global.config.connection.redis.ho
 client1.send_command('config', ['set','notify-keyspace-events','Ex'], onExpiredTicket);
 
 function onExpiredTicket (err, res) {
+  console.log('onExpiredTicket')
   return new Promise((resolve, reject) => {
     if(err) return reject(err);
 
@@ -94,6 +95,7 @@ function setMonday (date) {
 }
 
 async function createManyTickets (data) {
+  console.log('createManyTickets')
   if(data.repeat.dateEnd <= data.date.start) throw { status: 400, message: 'TICKET.REPEAT.BAD.DATEEND' };
   if(!data.repeat.days.includes(new Date(data.date.start).getDay())) throw { status: 400, message: 'TICKET.REPEAT.BAD.DATESTART' };
 
@@ -135,7 +137,6 @@ async function createManyTickets (data) {
 }
 
 async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
-  console.log('bookWithOutTime')
   if(new Date(selectedTrip.dateStart).setHours(0,0,0,0) < Date.now() + global.config.custom.time.day)
     throw { status: 400, message: 'TICKET.DATE.START.INVALID%', args: [new Date(Date.now() + global.config.custom.time.day).toDateString()] };
   if(new Date(selectedTrip.dateEnd).setHours(0,0,0,0) < Date.now() + global.config.custom.time.day)
@@ -148,39 +149,35 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
     trip: trip._id,
     active: true,
     deleted: false,
-    availableQuantity: { $gte: quantity },
+    quantity: { $gte: quantity },
     direction: 'arrival',
     'date.start': { $gte: new Date(selectedTrip.dateStart).setHours(0,0,0,0), $lte: new Date(selectedTrip.dateStart).setHours(23,59,59,999) }
   }).limit(1);
   if(!arrivalTicket) throw { status: 404, message: 'TICKET.ARRIVAL.NOT.EXIST%', args: [new Date(selectedTrip.dateStart).toDateString()] };
-  console.log('arrivalTicket', arrivalTicket)
 
   const [departureTicket] = await Ticket.find({
     trip: trip._id,
     active: true,
     deleted: false,
-    availableQuantity: { $gte: quantity },
+    quantity: { $gte: quantity },
     direction: 'departure',
     'date.start': { $gte: new Date(selectedTrip.dateEnd).setHours(0,0,0,0), $lte: new Date(selectedTrip.dateEnd).setHours(23,59,59,999) }
   }).limit(1);
   if(!departureTicket) throw { status: 404, message: 'TICKET.DEPARTURE.NOT.EXIST%', args: [new Date(selectedTrip.dateEnd).toDateString()] };
-  console.log('departureTicket', departureTicket)
 
-  const reservedArrivalTicket = await Ticket.findOneAndUpdate({ _id: arrivalTicket._id, active: true, deleted: false, availableQuantity: { $gte: quantity } }, {
-    availableQuantity: arrivalTicket.availableQuantity - quantity,
-    soldTicket: arrivalTicket.soldTicket + quantity,
+  const reservedArrivalTicket = await Ticket.findOneAndUpdate({ _id: arrivalTicket._id, active: true, deleted: false, quantity: { $gte: quantity } }, {
+    quantity: arrivalTicket.quantity - quantity,
+    soldTickets: arrivalTicket.soldTickets + quantity,
     $addToSet: { blockedQuantity: { owner, quantity } }
   }, { new: true });
   if(!reservedArrivalTicket) throw { status: 404, message: 'TICKET.ARRIVAL.NOT.EXIST%', args: [new Date(selectedTrip.dateStart).toDateString()] };
-  console.log('reservedArrivalTicket', reservedArrivalTicket)
 
-  const reservedDepartureTicket = await Ticket.findOneAndUpdate({ _id: departureTicket._id, active: true, deleted: false, availableQuantity: { $gte: quantity } }, {
-    availableQuantity: departureTicket.availableQuantity - quantity,
-    soldTicket: departureTicket.soldTicket + quantity,
+  const reservedDepartureTicket = await Ticket.findOneAndUpdate({ _id: departureTicket._id, active: true, deleted: false, quantity: { $gte: quantity } }, {
+    quantity: departureTicket.quantity - quantity,
+    soldTickets: departureTicket.soldTickets + quantity,
     $addToSet: { blockedQuantity: { owner, quantity } }
   }, { new: true });
   if(!reservedDepartureTicket) throw { status: 404, message: 'TICKET.DEPARTURE.NOT.EXIST%', args: [new Date(selectedTrip.dateEnd).toDateString()] };
-  console.log('reservedDepartureTicket', reservedDepartureTicket)
 
   await TicketOwner.findOneAndUpdate({
     owner
@@ -206,6 +203,7 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
 }
 
 async function unbook ({ owner, selectedTrip }) {
+  console.log('unbook big')
   const trip = await Trip.findOne({ _id: selectedTrip });
   if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
 
@@ -258,11 +256,13 @@ async function bookWithTime ({ quantity, selectedTrip, owner }) {
 
   const reservedArrivalTicket = await Ticket.findOneAndUpdate({ _id: selectedTrip.arrivalTicket, active: true, deleted: false, quantity: { $gte: quantity } }, {
     $inc: { quantity:  -quantity },
+    $inc: { soldTickets:  quantity },
     $addToSet: { blockedQuantity: { owner, quantity } }
   }, { new: true });
 
   const reservedDepartureTicket = await Ticket.findOneAndUpdate({ _id: selectedTrip.departureTicket, active: true, deleted: false, quantity: { $gte: quantity } }, {
     $inc: { quantity:  -quantity },
+    $inc: { soldTickets:  quantity },
     $addToSet: { blockedQuantity: { owner, quantity } }
   }, { new: true });
 
@@ -307,6 +307,7 @@ async function bookWithTime ({ quantity, selectedTrip, owner }) {
 
 module.exports = {
   async create (data) {
+    console.log('create')
     const trip = await Trip.findOne({ _id: data.trip, deleted: false });
     if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
 
