@@ -13,8 +13,10 @@ import * as Yup from 'yup'
 import Input from '../Input'
 import Button from '../../../Common/Components/Button'
 import photoSvg from '../../../Common/Utils/Media/photo.svg'
+import Dropdown from '../Dropdown'
 
 import {TAGS} from '../../Utils/constants'
+import {COUNTRIES} from '../../Utils/constants'
 
 import { IProps, IFormValues, IEditValues } from './types'
 import './styles.scss' 
@@ -107,14 +109,16 @@ const CityModal: React.SFC<IProps> = ({
               </div>
 
               <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--big">
-                <Field
-                  type="text"
-                  placeholder="Enter your country"
-                  name="country"
-                  label="country"
-                  className="spon-trip-modal__input"
-                  component={Input}
-                />
+               <Dropdown
+                    id="country"
+                    label="Select the country"
+                    placeholder="Select country"
+                    className="spon-trip-modal__dropdown"
+                    selectedValue={(values.country as string) ? values.country as string : ''}
+                    options={COUNTRIES}
+                    onChange={handleChange}
+                  />
+
 
                 <ErrorMessage
                   name="country"
