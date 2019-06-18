@@ -1,8 +1,6 @@
 @import '../../../Common/Utils/Styles/mixin.scss';
 @import '../../../Common/Utils/Styles/colors.scss';
 .spon-table {
-  border: 1px solid rgba(0, 0, 0, 0.1);
-
   &--transactions {
     .rt-td,
     .rt-th {
@@ -30,11 +28,6 @@
       &:focus {
         outline: none;
       }
-
-      &:disabled {
-        color: $disabled;
-        cursor: not-allowed;
-      }
     }
   }
 
@@ -52,9 +45,9 @@
 
   .ReactTable {
     .rt-noData {
-      top: initial;
-      bottom: rc(50);
+      top: 8%;
       transform: translate(-50%, 0);
+      bottom: 5.15rem;
     }
     .rt-thead {
       padding-top: rc(55);
@@ -84,6 +77,14 @@
 
       &:nth-child(2n + 1) {
         background: $row;
+      }
+    }
+
+    .rt-tfoot {
+      height: 70px;
+    
+      .rt-td {
+        border-right: none;
       }
     }
 

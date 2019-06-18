@@ -75,6 +75,14 @@ loadModels();
       process.stdout.cursorTo(0);
       process.stdout.write(`\tCreating Tickets: ${j + 1}/${10}`);
     }
+    // Create scheduled trips
+    for (let j = 0; j < 2; j++) {
+      await helpers.createScheduledTrip({ ...helpers.dataClone(globals.dataTemplate.scheduledTrip), trip: trips[i]._id });
+
+      process.stdout.clearLine();
+      process.stdout.cursorTo(0);
+      process.stdout.write(`\tCreating ScheduledTrips: ${j + 1}/${2}`);
+    }
     process.stdout.write('\n');
   }
 

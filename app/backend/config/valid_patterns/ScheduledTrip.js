@@ -3,7 +3,7 @@
 const ROLE = global.config.custom.roles;
 
 module.exports = {
-  trip: {
+  scheduledtrip: {
     _id: {
       type: 'string',
       required: false,
@@ -22,30 +22,6 @@ module.exports = {
         update: [],
         find: [ROLE.ADMINISTRATOR, ROLE.GUEST]
       },
-    },
-
-    destination: {
-      type: 'string',
-      required: true,
-      permission: {
-        create: [ROLE.ADMINISTRATOR],
-        update: [ROLE.ADMINISTRATOR],
-        find: [ROLE.ADMINISTRATOR, ROLE.GUEST]
-      },
-      minLength: 1,
-      maxLength: 40,
-    },
-
-    departure: {
-      type: 'string',
-      required: true,
-      permission: {
-        create: [ROLE.ADMINISTRATOR],
-        update: [ROLE.ADMINISTRATOR],
-        find: [ROLE.ADMINISTRATOR, ROLE.GUEST]
-      },
-      minLength: 1,
-      maxLength: 40,
     },
 
     fake: {
@@ -67,17 +43,6 @@ module.exports = {
         find: [ROLE.ADMINISTRATOR]
       }
     },
-
-    // photo: {
-    //   type: 'string',
-    //   required: true,
-    //   permission: {
-    //     create: [ROLE.ADMINISTRATOR],
-    //     update: [ROLE.ADMINISTRATOR],
-    //     find: [ROLE.ADMINISTRATOR, ROLE.GUEST]
-    //   },
-    //   maxLength: 7340032, // 5MB image in binary
-    // },
 
     price: {
       type: 'number',
@@ -137,25 +102,37 @@ module.exports = {
       max: 1000000,
     },
 
-    scheduledTrips: {
-      type: 'array',
-      required: false,
-      permission: {
-        create: [],
-        update: [],
-        find: [ROLE.ADMINISTRATOR, ROLE.GUEST]
-      }
-    },
-
-    tickets: {
-      type: 'array',
-      required: false,
-      permission: {
-        create: [],
-        update: [],
-        find: [ROLE.ADMINISTRATOR, ROLE.GUEST]
-      }
-    },
+    date: {
+        type: 'object',
+        required: true,
+        permission: {
+          create: [ROLE.ADMINISTRATOR],
+          update: [ROLE.ADMINISTRATOR],
+          find: [ROLE.ADMINISTRATOR, ROLE.GUEST]
+        },
+  
+        attributes: {
+          start: {
+            type: 'timestamp',
+            required: true,
+            permission: {
+              create: [ROLE.ADMINISTRATOR],
+              update: [ROLE.ADMINISTRATOR],
+              find: [ROLE.ADMINISTRATOR, ROLE.GUEST]
+            }
+          },
+  
+          end: {
+            type: 'timestamp',
+            required: true,
+            permission: {
+              create: [ROLE.ADMINISTRATOR],
+              update: [ROLE.ADMINISTRATOR],
+              find: [ROLE.ADMINISTRATOR, ROLE.GUEST]
+            }
+          }
+        }
+      },
 
     createdAt: {
       type: 'timestamp',

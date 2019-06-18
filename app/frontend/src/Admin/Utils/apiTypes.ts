@@ -11,26 +11,90 @@ export interface ITrip {
   price: number
   discount: number
   deselectionPrice: number
-  timeSelection: number
+  timeSelection: {
+    defaultPrice: number
+    time1: number
+    time2: number
+    time3: number
+    time4: number
+    time5: number
+    time6: number
+    time7: number
+    time8: number
+    time9: number
+    time10: number
+  }
   fake: boolean
   active: boolean
   type: string
 }
 
-export interface ISchedule {
-  time1: number
-  time2: number
-  time3: number
-  time4: number
-  time5: number
-  time6: number
-  time7: number
-  time8: number
-  time9: number
-  time10: number
-  bidirectionalChange: boolean
-
+export interface INewTrip {
+  destination: string
+  departure: string
+  carrier: string
+  photo: string
+  price: number
+  discount: number
+  deselectionPrice: number
+  timeSelection: {
+    defaultPrice: number
+    time1?: number
+    time2?: number
+    time3?: number
+    time4?: number
+    time5?: number
+    time6?: number
+    time7?: number
+    time8?: number
+    time9?: number
+    time10?: number
+  }
+  fake: boolean
+  active: boolean
+  type: string
 }
+
+export interface IEditTimeSelect {
+  destination?: string
+  departure?: string
+  carrier?: string
+  photo?: string
+  price?: number
+  discount?: number
+  deselectionPrice?: number
+  timeSelection: {
+    defaultPrice?: number
+    time1: number
+    time2: number
+    time3: number
+    time4: number
+    time5: number
+    time6: number
+    time7: number
+    time8: number
+    time9: number
+    time10: number
+  }
+  fake?: boolean
+  active?: boolean
+  type?: string
+}
+
+// export interface ITimeSelectSchedule {
+//   defaultPrice: number
+//   time1: number
+//   time2: number
+//   time3: number
+//   time4: number
+//   time5: number
+//   time6: number
+//   time7: number
+//   time8: number
+//   time9: number
+//   time10: number
+
+// }
 
 export interface ITicket {
   trip: string

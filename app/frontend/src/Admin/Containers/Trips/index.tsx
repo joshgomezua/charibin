@@ -9,7 +9,7 @@ import TimeSelectionModal from '../../Components/TimeSelectionModal'
 
 import withToast from '../../../Common/HOC/withToast'
 import { RouteComponentProps } from 'react-router-dom'
-import { MODAL_TYPE, ITrip, ISchedule } from '../../Utils/adminTypes'
+import { MODAL_TYPE } from '../../Utils/adminTypes'
 import { getToken } from '../../../Common/Utils/helpers'
 import {
   ADMIN_ROUTING,
@@ -23,10 +23,12 @@ import {
   deleteTrip,
   getSingleTrip,
   updateTrip,
-  updateTimeSelection
+  updateTimeSelection,
+  deleteScheduledTrip
 } from '../../Utils/api'
-import { IState, IProps } from './types'
+import { IState, IProps, INewData, IEditTimeSchedule } from './types'
 import { columns } from './columns'
+import { rangeColumns } from './rangeColumns';
 
 class TripsContainer extends React.Component<
   RouteComponentProps<{}> & IProps,
@@ -34,62 +36,11 @@ class TripsContainer extends React.Component<
 > {
   private modal = React.createRef<Modal>()
 
-  readonly mockSchedule: ISchedule = {
-    defaultPrice: 5,
-    time1: 2,
-    time2: 2,
-    time3: 2,
-    time4: 2,
-    time5: 2,
-    time6: 2,
-    time7: 2,
-    time8: 2,
-    time9: 2,
-    time10: 2,
-    bidirectionalChange: false,
-  }
-  
-  readonly firstTrip: ITrip = {
-    _id: 'sdslkd',
-    active: true,
-    deselectionPrice: 3,
-    timeSelection: 2,
-    schedule: this.mockSchedule,
-    discount: 30,
-    duration: 90,
-    fake: false,
-    carrier: "Flixbus",
-    departure: "Londres",
-    destination: "Dublin",
-    photo: "mockPhoto.png",
-    price: 90,
-    type: "train"
-  }
-
-  readonly secondTrip: ITrip = {
-    _id: 'sdsl3kd',
-    active: true,
-    deselectionPrice: 2,
-    schedule: this.mockSchedule,
-    timeSelection: 3,
-    discount: 25,
-    duration: 55,
-    fake: true,
-    carrier: "Flixbus",
-    departure: "Londres",
-    destination: "Paris",
-    photo: "mockPhoto.png",
-    price: 45,
-    type: "train"
-  }
-  
-  readonly arrayTrip: ITrip[] = [this.firstTrip, this.secondTrip]
-
   readonly state: IState = {
-    trips: this.arrayTrip, //default is []
+    trips: [], //default is []
     total: 0,
     currentPage: 0,
-    isLoading: false, //default is true
+    isLoading: true, //default is true
     isModalLoading: false,
     editData: DEFAULT_TRIP_DATA,
     modal: {
@@ -111,7 +62,7 @@ class TripsContainer extends React.Component<
     })
   }
 
-  handleOpenDeleteModal = (id: string) => {
+  handleOpenDeleteTripModal = (id: string) => {
     this.handleOpenModal(MODAL_TYPE.DELETE_TRIP, 'Delete trip', id)
   }
 
@@ -123,6 +74,14 @@ class TripsContainer extends React.Component<
   handleOpenEditModal = (id: string) => {
     this.handleOpenModal(MODAL_TYPE.EDIT_TRIP, 'Edit trip', id)
     this.handleFetchTripData(id)
+  }
+
+  handleOpenScheduleModal = (id: string) => {
+    this.handleOpenModal(MODAL_TYPE.ADD_TRIP, 'Add schedule', id)
+  }
+
+  handleOpenDeleteScheduleModal = (id: string) => {
+    this.handleOpenModal(MODAL_TYPE.DELETE_SCHEDULE, 'Delete schedule', id)
   }
 
   handleFetchTripData = (id: string) => {
@@ -156,6 +115,7 @@ class TripsContainer extends React.Component<
           this.props.showError(err, ERRORS.TRIP_FETCH)
         })
     }
+    console.log(this.state.trips);
   }
 
   handleFetchTableData = (boardState: any) => {
@@ -185,12 +145,28 @@ class TripsContainer extends React.Component<
     }
   }
 
-  handleAddTrip = (data: ITrip) => {
+  handleAddTrip = (data: INewData) => {
     const token = getToken()
     const { currentPage } = this.state
-
+    const newTrip: INewData = {
+      ...data,
+      timeSelection: {
+        defaultPrice: data.timeSelection.defaultPrice,
+        time1: data.timeSelection.defaultPrice,
+        time2: data.timeSelection.defaultPrice,
+        time3: data.timeSelection.defaultPrice,
+        time4: data.timeSelection.defaultPrice,
+        time5: data.timeSelection.defaultPrice,
+        time6: data.timeSelection.defaultPrice,
+        time7: data.timeSelection.defaultPrice,
+        time8: data.timeSelection.defaultPrice,
+        time9: data.timeSelection.defaultPrice,
+        time10: data.timeSelection.defaultPrice,
+      },
+      isFromAPI: false,
+    }
     this.setState({ isModalLoading: true })
-    return addTrip(data, token)
+    return addTrip(newTrip, token)
       .then(res => {
         this.modal.current!.close()
         this.handleFetchItems(currentPage, 10)
@@ -207,7 +183,7 @@ class TripsContainer extends React.Component<
       })
   }
 
-  handleEditTrip = (data: ITrip) => {
+  handleEditTrip = (data: INewData) => {
     const token = getToken()
     const { currentPage } = this.state
     const {
@@ -233,7 +209,7 @@ class TripsContainer extends React.Component<
       })
   }
 
-  handleEditTimeSelection = (data: ISchedule) => {
+  handleEditTimeSelection = (data: IEditTimeSchedule) => {
     const token = getToken()
     const { currentPage } = this.state
     const {
@@ -257,6 +233,29 @@ class TripsContainer extends React.Component<
 
         return Promise.reject()
       })
+  }
+
+  handleDeleteSchedule = () => {
+    const {
+      modal: { id },
+      currentPage
+    } = this.state
+    const token = getToken()
+
+    if (token) {
+      deleteScheduledTrip(id, token)
+        .then(() => {
+          this.handleFetchItems(currentPage, 10)
+          this.handleCloseModal()
+          this.props.showSuccess(SUCCESS.DEFAULT)
+          this.handleRestartModalType()
+        })
+        .catch(err => {
+          this.handleCloseModal()
+          this.props.showError(err, ERRORS.DEFAULT)
+        })
+    }
+    console.log(this.state.trips)
   }
 
   handleRedirectToCreateTicket = (trip: { _id: string; departure: string; destination: string }) => {
@@ -289,22 +288,29 @@ class TripsContainer extends React.Component<
     return (
       <div className="spon-container">
         <Header
-          title="Destination control"
+          title="Routes & Prices"
           handleOpenModal={this.handleOpenModal}
         />
 
         <Table
           data={trips}
           handleFetchData={this.handleFetchTableData}
-        
           columns={columns(
-            this.handleOpenDeleteModal,
+            this.handleOpenDeleteTripModal,
             this.handleOpenEditModal,
             this.handleOpenTimeSelectionModal,
-            this.handleRedirectToCreateTicket
+            this.handleRedirectToCreateTicket,
           )}
           loading={isLoading}
           pages={Math.ceil(total / 10)}
+          subComponentClassName={"rangeTripTable"}
+          detailsColumns={rangeColumns(
+            this.handleOpenDeleteScheduleModal,
+            this.handleOpenEditModal,
+            this.handleOpenTimeSelectionModal,
+            this.handleOpenModal,
+            this.handleRedirectToCreateTicket
+          )}
         />
 
         <Modal
@@ -335,10 +341,17 @@ class TripsContainer extends React.Component<
             />
           ) : null}
 
+          {modalType === MODAL_TYPE.DELETE_SCHEDULE ? (
+            <DeleteModal
+              closeModal={this.handleCloseModal}
+              deleteItem={this.handleDeleteSchedule}
+            />
+          ) : null}
+
           {modalType === MODAL_TYPE.EDIT_TIME_SELECTION ? (
             <TimeSelectionModal
               isLoading={isModalLoading}
-              editSchedule={editData.schedule}
+              editSchedule={editData}
               closeModal={this.handleCloseModal}
               handleEditTimeSelection={this.handleEditTimeSelection}
             />

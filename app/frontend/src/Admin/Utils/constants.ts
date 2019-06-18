@@ -45,28 +45,56 @@ export const DEFULT_TICKET_DATA = {
   },
   active: false
 }
-export const DEFAULT_TIME_SELECTION_DATA = {
-  defaultPrice: 0,
-  time1: 0,
-  time2: 0,
-  time3: 0,
-  time4: 0,
-  time5: 0,
-  time6: 0,
-  time7: 0,
-  time8: 0,
-  time9: 0,
-  time10: 0,
-  bidirectionalChange: false
+// export const DEFAULT_TIME_SELECTION_DATA = {
+//   defaultPrice: 0,
+//   time1: 0,
+//   time2: 0,
+//   time3: 0,
+//   time4: 0,
+//   time5: 0,
+//   time6: 0,
+//   time7: 0,
+//   time8: 0,
+//   time9: 0,
+//   time10: 0,
 
-}
+// }
 
 export const DEFAULT_TRIP_DATA = {
   _id: '',
   active: false,
   deselectionPrice: 0,
-  timeSelection: 0,
-  schedule: DEFAULT_TIME_SELECTION_DATA,
+  timeSelection: {
+    defaultPrice: 0,
+    time1: 0,
+    time2: 0,
+    time3: 0,
+    time4: 0,
+    time5: 0,
+    time6: 0,
+    time7: 0,
+    time8: 0,
+    time9: 0,
+    time10: 0,
+  },
+  scheduledTrips: {
+    trip1: {
+      price: 0,
+      discount: 0,
+      date: {
+        start: '',
+        end: '',
+      }
+    },
+    trip2: {
+      price: 0,
+      discount: 0,
+      date: {
+        start: '',
+        end: '',
+      }
+    },
+  },
   discount: 0,
   duration: 0,
   fake: false,

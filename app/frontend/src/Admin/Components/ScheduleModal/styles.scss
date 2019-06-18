@@ -1,7 +1,7 @@
 @import '../../../Common/Utils/Styles/mixin.scss';
 @import '../../../Common/Utils/Styles/colors.scss';
 
-.spon-trip-modal {
+.spon-ticket-modal {
   padding: rc(14) rc(68);
 
   &__row {
@@ -14,26 +14,36 @@
       border-bottom: 1px solid $gray;
     }
 
+    &--bordered-m {
+      padding-bottom: rc(30);
+      margin-bottom: rc(40);
+      border-bottom: 1px solid $gray;
+    }
+
     &--noflex {
       display: block;
+    }
+
+    &--wrap {
+      flex-wrap: wrap;
     }
   }
 
   &__input-cnt {
     width: rc(140);
-    margin-right: 3rem;
+    margin-right: rc(17);
 
     &--small {
       width: rc(75);
     }
 
     &--big {
-      width: rc(180);
+      width: rc(245);
     }
 
     &--last {
       position: relative;
-      margin-left: 3.2rem;
+      margin-left: auto;
 
       &::before {
         content: '';
@@ -102,6 +112,47 @@
     margin-bottom: rc(10);
     font-size: rc(12);
     color: $label;
+
+    &--open {
+      img {
+        transform: rotate(180deg);
+      }
+    }
+
+    &--dashed {
+      position: relative;
+      width: 100%;
+      cursor: pointer;
+
+      &:after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        height: 1px;
+        width: 100%;
+        border-bottom: 1px dashed $gray;
+      }
+
+      div {
+        position: relative;
+        z-index: 2;
+        display: inline-block;
+        background: $white;
+        padding-right: rc(10);
+
+        img {
+          margin-left: rc(10);
+          width: rc(10);
+          transition: transfrom 0.3s ease-in-out;
+        }
+      }
+    }
+
+    &--nmt {
+      margin-top: 0;
+    }
   }
 
   &__buttons {
@@ -147,6 +198,48 @@
     img {
       width: rc(24);
       height: rc(19);
+    }
+  }
+
+  &__recurring {
+    display: flex;
+    width: 100%;
+    padding-bottom: rc(20);
+
+    &--open {
+      border-bottom: 1px dashed $gray;
+    }
+  }
+
+  &__days-of-week {
+    flex-direction: row;
+
+    .spon-multiswitch__items {
+      display: flex;
+    }
+
+    .spon-multiswitch-item {
+      margin-right: rc(22);
+      padding: 0;
+    }
+
+    .spon-multiswitch-item__icon {
+      top: 0;
+      left: 0;
+      border: 1px solid $violet;
+      border-radius: 3px;
+    }
+
+    .spon-multiswitch-item__checkbox {
+      flex-direction: column;
+
+      label {
+        padding-left: 0;
+        padding-top: rc(25);
+        font-size: rc(12);
+        letter-spacing: 0.6px;
+        color: $dark-text;
+      }
     }
   }
 }

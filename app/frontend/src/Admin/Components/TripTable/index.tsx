@@ -1,24 +1,23 @@
 import React from 'react'
-import ReactTable from 'react-table'
+import ReactTable, { RowRenderProps } from 'react-table'
 import classnames from 'classnames'
 import { IProps } from './types'
 import './styles.scss'
 import './table.scss'
-import TripTable from '../TripTable';
+import Button from 'src/Common/Components/Button' 
 
-const Table: React.SFC<IProps> = ({
+const TripTable: React.SFC<IProps> = ({
   columns,
   data,
-  detailsColumns,
   handleFetchData,
   loading,
   pages,
-  className,
-  subComponentClassName
+  className
 }) => {
-  const tableClass = classnames('spon-table', {
+  const tableClass = classnames('spon-triptable', {
     [`${className}`]: className
   })
+  const nullComponent = (props: RowRenderProps) => null;
 
   return (
     <div className={tableClass}>
@@ -28,25 +27,23 @@ const Table: React.SFC<IProps> = ({
         sortable={true}
         resizable={false}
         showPageJump={false}
-        defaultPageSize={10}
+        defaultPageSize={3}
+        TheadComponent={() => (
+          <Button
+            className="spon-table-footer__add-button"
+            variant="blue"
+            icon="plus"
+            text="ADD NEW"
+          />)}
+        PaginationComponent={nullComponent}
         columns={columns}
         data={data}
         loading={loading}
         pages={pages}
         onFetchData={handleFetchData}
-        SubComponent={(row) => { 
-          return(
-          <div className={subComponentClassName}>
-            <TripTable
-              data={row.original.scheduledTrips}
-              columns={detailsColumns}
-            ></TripTable>
-          </div> 
-        )}
-      }
       />
     </div>
   )
 }
 
-export default Table
+export default TripTable

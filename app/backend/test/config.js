@@ -10,11 +10,51 @@ const dataTemplate = {
   },
 
   trip: {
-    name: faker.address.city,
+    departure: faker.address.city,
+    destination: faker.address.city,
+    carrier: 'Flexibus',
     photo: getImage,
+    type: 'Train',
     price: () => faker.random.number({ min: 100, max: 200 }) + 0.99,
     discount: () => faker.random.number({ min: 5, max: 40 }) + 0.95,
     duration: () => faker.random.number({ min: 1, max: 100 }),
+    timeSelection: {
+      defaultPrice: () => faker.random.number({min: 1, max: 4}),
+      time1: () => faker.random.number({min: 1, max: 4}),
+      time2: () => faker.random.number({min: 1, max: 4}),
+      time3: () => faker.random.number({min: 1, max: 4}),
+      time4: () => faker.random.number({min: 1, max: 4}),
+      time5: () => faker.random.number({min: 1, max: 4}),
+      time6: () => faker.random.number({min: 1, max: 4}),
+      time7: () => faker.random.number({min: 1, max: 4}),
+      time8: () => faker.random.number({min: 1, max: 4}),
+      time9: () => faker.random.number({min: 1, max: 4}),
+      time10: () => faker.random.number({min: 1, max: 4}),
+    },
+    deselectionPrice: () => faker.random.number({ min: 3, max: 10 }) + 0.93
+  },
+
+  scheduledTrip: {
+    date: {
+      start: faker.date.recent().getTime(),
+      end: faker.date.future().getTime(),
+    },
+    price: () => faker.random.number({ min: 100, max: 200 }) + 0.99,
+    discount: () => faker.random.number({ min: 5, max: 40 }) + 0.95,
+    duration: () => faker.random.number({ min: 1, max: 100 }),
+    timeSelection: {
+      defaultPrice: () => faker.random.number({min: 1, max: 4}),
+      time1: () => faker.random.number({min: 1, max: 4}),
+      time2: () => faker.random.number({min: 1, max: 4}),
+      time3: () => faker.random.number({min: 1, max: 4}),
+      time4: () => faker.random.number({min: 1, max: 4}),
+      time5: () => faker.random.number({min: 1, max: 4}),
+      time6: () => faker.random.number({min: 1, max: 4}),
+      time7: () => faker.random.number({min: 1, max: 4}),
+      time8: () => faker.random.number({min: 1, max: 4}),
+      time9: () => faker.random.number({min: 1, max: 4}),
+      time10: () => faker.random.number({min: 1, max: 4}),
+    },
     deselectionPrice: () => faker.random.number({ min: 3, max: 10 }) + 0.93
   },
 

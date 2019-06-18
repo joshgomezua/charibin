@@ -11,6 +11,7 @@ module.exports = {
   SocketService: require('./SocketService'),
   TripService: require('./TripService'),
   TicketService: require('./TicketService'),
+  ScheduledTripService: require('./ScheduledTripService'),
   Utilities: require('./Utilities'),
   Valid: require('./Valid'),
 };

@@ -14,11 +14,12 @@ export interface IFormValues {
   discount: number
   duration: number
   type: string
+  timeSelection: {
+    defaultPrice: number
+  }
   deselectionPrice: number
-  timeSelection: number
   fake: boolean
   active: boolean
-  photo: string
 }
 
 export type IEditValues = Partial<IFormValues>

@@ -7,14 +7,14 @@ import {
   FormikProps,
   ErrorMessage
 } from 'formik'
-import FileInput from '../../Components/FileInput'
+// import FileInput from '../../Components/FileInput'
 import * as Yup from 'yup'
 
 import Input from '../Input'
 import Dropdown from '../Dropdown'
 import Switch from '../Switch'
 import Button from '../../../Common/Components/Button'
-import photoSvg from '../../../Common/Utils/Media/photo.svg'
+// import photoSvg from '../../../Common/Utils/Media/photo.svg'
 
 import { IProps, IFormValues, IEditValues } from './types'
 import './styles.scss'
@@ -36,10 +36,13 @@ const TripModal: React.SFC<IProps> = ({
       discount: editDate.discount,
       duration: editDate.duration,
       type: 'Train',
+      carrier: editDate.carrier,
       deselectionPrice: editDate.deselectionPrice,
+      timeSelection: {
+        defaultPrice: editDate.timeSelection.defaultPrice,
+      },
       fake: editDate.fake,
       active: editDate.active,
-      photo: editDate.photo
     }
   }
 
@@ -57,10 +60,13 @@ const TripModal: React.SFC<IProps> = ({
                 discount: 0,
                 duration: 0,
                 type: 'Train',
+                carrier: '',
                 deselectionPrice: 0,
+                timeSelection: {
+                  defaultPrice: 0,
+                },
                 fake: false,
                 active: false,
-                photo: ''
               }
         }
         validationSchema={Yup.object().shape({
@@ -70,18 +76,28 @@ const TripModal: React.SFC<IProps> = ({
           departure: Yup.string()
             .min(3)
             .required(),
-          price: Yup.number().required(),
+          price: Yup.number()
+            .required()
+            .min(1),
           type: Yup.string().required(),
-          discount: Yup.number().required(),
+          carrier: Yup.string().required(),
+          discount: Yup.number()
+            .required()
+            .min(1),
           duration: Yup.number()
             .min(1)
             .max(100000)
             .required(),
-          deselectionPrice: Yup.number().required(),
-          timeSelection: Yup.number().required(),
+          timeSelection: Yup.object().shape({
+            defaultPrice: Yup.number()
+              .required()
+              .min(1),
+          }),
+          deselectionPrice: Yup.number()
+            .required()
+            .min(1),
           fake: Yup.bool().required(),
-          active: Yup.bool().required(),
-          photo: Yup.string().required()
+          active: Yup.bool().required()
         })}
         onSubmit={(
           values: IFormValues,
@@ -118,8 +134,25 @@ const TripModal: React.SFC<IProps> = ({
                 <Field
                   type="text"
                   placeholder="Type name"
+                  name="departure"
+                  label="Departure"
+                  className="spon-trip-modal__input"
+                  component={Input}
+                />
+
+                <ErrorMessage
+                  name="departure"
+                  component="div"
+                  className="spon-trip-modal__error"
+                />
+              </div>
+
+              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--big">
+                <Field
+                  type="text"
+                  placeholder="Type name"
                   name="destination"
-                  label="Name of trip"
+                  label="Destination"
                   className="spon-trip-modal__input"
                   component={Input}
                 />
@@ -131,6 +164,25 @@ const TripModal: React.SFC<IProps> = ({
                 />
               </div>
 
+              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--big">
+                <Field
+                  type="text"
+                  placeholder="Type name"
+                  name="carrier"
+                  label="Carrier"
+                  className="spon-trip-modal__input"
+                  component={Input}
+                />
+
+                <ErrorMessage
+                  name="carrier"
+                  component="div"
+                  className="spon-trip-modal__error"
+                />
+              </div>
+            </div>
+
+            <div className="spon-trip-modal__row">
               <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--small">
                 <Field
                   isPrefix
@@ -143,6 +195,38 @@ const TripModal: React.SFC<IProps> = ({
 
                 <ErrorMessage
                   name="price"
+                  component="div"
+                  className="spon-trip-modal__error"
+                />
+              </div>
+              <div className="spon-trip-modal__input-cnt">
+                <Field
+                  isPrefix
+                  type="number"
+                  name="deselectionPrice"
+                  label="Deselection Price"
+                  className="spon-trip-modal__input"
+                  component={Input}
+                />
+
+                <ErrorMessage
+                  name="deselectionPrice"
+                  component="div"
+                  className="spon-trip-modal__error"
+                />
+              </div>
+              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt">
+                <Field
+                  isPrefix
+                  type="number"
+                  name="timeSelection.defaultPrice"
+                  label="Time Selection"
+                  className="spon-trip-modal__input"
+                  component={Input}
+                />
+
+                <ErrorMessage
+                  name="timeSelection.defaultPrice"
                   component="div"
                   className="spon-trip-modal__error"
                 />
@@ -166,8 +250,8 @@ const TripModal: React.SFC<IProps> = ({
               </div>
             </div>
 
-            <div className="spon-trip-modal__row">
-              <div className="spon-trip-modal__input-cnt">
+            <div className="spon-trip-modal__row  spon-trip-modal__row--bordered">
+            <div className="spon-trip-modal__input-cnt">
                 <Dropdown
                   id="type"
                   label="Select the Type"
@@ -189,16 +273,20 @@ const TripModal: React.SFC<IProps> = ({
                   className="spon-trip-modal__error"
                 />
               </div>
-
+              
               <div className="spon-trip-modal__input-cnt">
                 <Field
-                  isPrefix
                   type="number"
-                  placeholder="£"
-                  name="deselectionPrice"
-                  label="Deselection Price"
+                  name="duration"
+                  label="Duration (minutes)"
                   className="spon-trip-modal__input"
                   component={Input}
+                />
+
+                <ErrorMessage
+                  name="duration"
+                  component="div"
+                  className="spon-trip-modal__error"
                 />
               </div>
 
@@ -234,25 +322,7 @@ const TripModal: React.SFC<IProps> = ({
               </div>
             </div>
 
-            <div className="spon-trip-modal__row  spon-trip-modal__row--bordered">
-              <div className="spon-trip-modal__input-cnt">
-                <Field
-                  type="number"
-                  name="duration"
-                  label="Duration (minutes)"
-                  className="spon-trip-modal__input"
-                  component={Input}
-                />
-
-                <ErrorMessage
-                  name="duration"
-                  component="div"
-                  className="spon-trip-modal__error"
-                />
-              </div>
-            </div>
-
-            <div className="spon-trip-modal__row spon-trip-modal__row--bordered spon-trip-modal__row--noflex">
+            {/* <div className="spon-trip-modal__row spon-trip-modal__row--bordered spon-trip-modal__row--noflex">
               <p className="spon-trip-modal__label">Add trip cover</p>
 
               <div className="spon-trip-modal__avatar">
@@ -280,7 +350,7 @@ const TripModal: React.SFC<IProps> = ({
               {errors.photo && touched.photo ? (
                 <div className="spon-trip-modal__error">{errors.photo}</div>
               ) : null}
-            </div>
+            </div> */}
             <div className="spon-trip-modal__row">
               <div className="spon-trip-modal__buttons">
                 <Button

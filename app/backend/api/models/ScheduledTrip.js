@@ -3,9 +3,11 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const tripSchema = new Schema({
-  departure: { type: String },
-  destination: { type: String },
+const scheduledTripSchema = new Schema({
+  date: {
+    start: Date,
+    end: Date,
+  },
   fake: { type: Boolean, default: false },
   active: { type: Boolean, default: true },
   price: Number,
@@ -25,13 +27,9 @@ const tripSchema = new Schema({
     time9: Number,
     time10: Number
   },
-  scheduledTrips: { type: Schema.Types, ref: 'ScheduledTrip' },
-  carrier: { type: String },
-  type: { type: String },
+  trip: { type: Schema.Types.ObjectId, ref: 'Trip' },
   deleted: { type: Boolean, default: false },
-  tickets: { type: [Schema.Types.ObjectId], ref: 'Ticket' },
-  createdAt: { type: Date, default: Date.now },
-  isFromAPI: { type: Boolean, default: true }
+  createdAt: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('Trip', tripSchema);
+module.exports = mongoose.model('ScheduledTrip', scheduledTripSchema);

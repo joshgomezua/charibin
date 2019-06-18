@@ -7,5 +7,6 @@ module.exports = require('lodash').merge(
   require('./Ticket'),
   require('./TicketOwner'),
   require('./Data'),
-  require('./Order')
+  require('./Order'),
+  require('./ScheduledTrip')
 );

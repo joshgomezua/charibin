@@ -2,44 +2,33 @@ import React from 'react'
 import * as moment from 'moment'
 import { IDuration } from '../../../Common/Utils/globalTypes'
 import Checkbox from '../../Components/Checkbox'
-import { RowRenderProps } from 'react-table'
+import { RowRenderProps} from 'react-table'
 import 'moment-duration-format'
+// import Button from 'src/Common/Components/Button' 
+import { MODAL_TYPE } from 'src/Admin/Utils/adminTypes';
 
-export const columns = (
+export const rangeColumns = (
   openDeleteModal: (id: string) => void,
   openEditModal: (id: string) => void,
   openTimeSelectionModal: (id: string) => void,
+  openScheduleModal: (type: MODAL_TYPE, heading: string) => void,
   redirectToCreateTicket: (trip: { _id: string; departure: string; destination: string }) => void
 ) => [
   {
-    expander: true,
-    width: 40,
-    Expander: (props: RowRenderProps) => (
-      <div className="spon-table__actions">{
-        props.isExpanded
-          ? <span> ^ </span>
-          : <span> + </span>
-      }</div>
-    )
+    width: 124,
   },
   {
-    Header: 'From',
-    accessor: 'departure',
+    accessor: 'date.start',
+    width: 120,
+    Cell: (props: RowRenderProps) => moment(props.value).format('MMM DD, YYYY')
   },
   {
-    Header: 'To',
-    accessor: 'destination'
+    accessor: 'date.end',
+    width: 120,
+    Cell: (props: RowRenderProps) => moment(props.value).format('MMM DD, YYYY')
   },
+  
   {
-    Header: 'Fake',
-    accessor: 'fake',
-    width: 80,
-    Cell: (props: RowRenderProps) => (
-      <Checkbox id={`isFake${props.index}`} isChecked={props.value} />
-    )
-  },
-  {
-    Header: 'Active',
     accessor: 'active',
     width: 80,
     Cell: (props: RowRenderProps) => (
@@ -47,35 +36,24 @@ export const columns = (
     )
   },
   {
-    Header: 'Carrier',
-    accessor: 'carrier',
-    width: 120,
+    width: 210,
   },
   {
-    Header: 'Type',
-    accessor: 'type',
-    width: 90,
-  },
-  {
-    Header: 'Price',
     accessor: 'price',
     width: 100,
     Cell: (props: RowRenderProps) => `£ ${props.value}`
   },
   {
-    Header: 'Offer',
     accessor: 'discount',
     width: 80,
     Cell: (props: RowRenderProps) => `-${props.value}%`
   },
   {
-    Header: 'Deselection Price',
     accessor: 'deselectionPrice',
     width: 160,
     Cell: (props: RowRenderProps) => `£ ${props.value}`
   },
   {
-    Header: 'Time Selection',
     accessor: 'timeSelection.defaultPrice',
     width: 150,
     Cell: (props: RowRenderProps) => (
@@ -90,18 +68,8 @@ export const columns = (
     )
     
   },
-  // {
-  //   Header: 'Photo',
-  //   accessor: 'photo',
-  //   width: 80,
-  //   Cell: (props: RowRenderProps) => (
-  //     <div className="spon-table__photo">
-  //       <img src={props.value} alt="Avatar photo" />
-  //     </div>
-  //   )
-  // },
+
   {
-    Header: 'Duration',
     accessor: 'duration',
     width: 90,
     Cell: (props: RowRenderProps) => {
@@ -110,8 +78,7 @@ export const columns = (
     }
   },
   {
-    Header: '',
-    accessor: 'isFromAPI',
+    accessor: 'price',
     width: 210,
     Cell: (props: RowRenderProps) => (
       <>
@@ -129,11 +96,20 @@ export const columns = (
           <button onClick={() => openEditModal(props.row._original._id)}>
             Modify
           </button>
-          <button onClick={() => openDeleteModal(props.row._original._id)} disabled={props.value}>
+          <button onClick={() => openDeleteModal(props.row._original._id)}>
             Delete
           </button>
         </div>
       </>
-    )
+    ),
+    // Footer: (props: RowRenderProps ) => 
+    //   { console.log(props.value) }
+    //   //<Button
+    // //   className="spon-table-footer__add-button"
+    // //   variant="blue"
+    // //   icon="plus"
+    // //   text="ADD NEW"
+    // //   onClick={() => openScheduleModal(MODAL_TYPE.ADD_TRIP, 'Create schedule')}
+    // // />)
   }
 ]

@@ -7,18 +7,19 @@ export interface IProps {
 }
 
 export interface IFormValues {
-  defaultPrice: number
-  time1: number
-  time2: number
-  time3: number
-  time4: number
-  time5: number
-  time6: number
-  time7: number
-  time8: number
-  time9: number
-  time10: number
-  bidirectionalChange: boolean
+  timeSelection: {
+    defaultPrice?: number
+    time1: number
+    time2: number
+    time3: number
+    time4: number
+    time5: number
+    time6: number
+    time7: number
+    time8: number
+    time9: number
+    time10: number
+  }
 }
 
 export type IEditValues = Partial<IFormValues>
