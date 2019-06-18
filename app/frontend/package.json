@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "ajv": "^6.10.0",
     "animate.css": "^3.7.0",
     "antd": "3.8.1",
     "autoprefixer": "7.1.6",
@@ -34,12 +35,14 @@
     "postcss-flexbugs-fixes": "3.2.0",
     "postcss-loader": "2.0.8",
     "promise": "8.0.1",
+    "prop-types": "^15.7.2",
     "raf": "3.4.0",
     "rc-switch": "^1.8.0",
-    "react": "^16.4.2",
+    "react": "^16.8.6",
     "react-calendar": "^2.17.5",
     "react-dev-utils": "^5.0.1",
-    "react-dom": "^16.4.2",
+    "react-dom": "^16.8.6",
+    "react-dropdown-select": "^3.0.0",
     "react-loadable": "^5.3.1",
     "react-redux": "^6.0.0",
     "react-router-dom": "^4.2.2",
@@ -100,7 +103,7 @@
     "tslint": "^5.11.0",
     "tslint-config-prettier": "^1.17.0",
     "tslint-react": "^3.6.0",
-    "typescript": "^3.0.1"
+    "typescript": "^2.9.2"
   },
   "babel": {
     "presets": [
