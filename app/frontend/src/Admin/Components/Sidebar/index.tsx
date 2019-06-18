@@ -8,6 +8,7 @@ import { IProps, IState } from './types'
 import './styles.scss'
 import CalendarDoubleFilter from 'src/App/Components/CalendarDoubleFilter';
 import moment from 'moment'
+import Multiselect from 'multiselect-dropdown-react';
 
 class Sidebar extends React.Component<IProps, IState> {
 
@@ -69,6 +70,35 @@ class Sidebar extends React.Component<IProps, IState> {
     this.setState({calendarVisible: true}, ()=> this.props.handleFetchTicketsByDate(moment().toDate()))
   }
 
+  readonly data = [{
+    name: 'one',
+    value: 'one'
+  },
+  {
+      name: 'two',
+      value: 'two'
+    },
+    {
+      name: 'three',
+      value: 'three'
+    },
+    {
+      name: 'four',
+      value: 'four'
+    },
+    {
+      name: 'five',
+      value: 'five'
+    },
+    {
+      name: 'six',
+      value: 'six'
+    }];
+
+  result(params: any) {
+    console.log(params);
+  }
+
   render() {
 
     const {calendarVisible} = this.state
@@ -85,7 +115,9 @@ class Sidebar extends React.Component<IProps, IState> {
           selectRange
         />
         )}
-
+        <div className="App">
+        <Multiselect options={this.data} onSelectOptions={this.result} />
+        </div>
         <div className="spon-sidebar__input">
 
         <input type="text" 
