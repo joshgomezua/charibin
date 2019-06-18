@@ -45,6 +45,7 @@ class CityContainer extends React.Component<
       tags:['Beach', 'Nightlife'],
       photo: "https://s3.eu-west-2.amazonaws.com/spon-staging/staging_5c91210fb4f0e3003452a581.png",
       isModify: false,
+      isEnable: false
     }],
     total: 0,
     currentPage: 0,
@@ -191,7 +192,7 @@ class CityContainer extends React.Component<
   }
 
   handleToggleButton = (id: string, value:boolean) => {
-    
+    console.log(id, value)
     const token = getToken()
 
     editCityState(id, value, token)

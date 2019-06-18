@@ -67,6 +67,16 @@ module.exports = {
         update: [ROLE.ADMINISTRATOR],
         find: [ROLE.ADMINISTRATOR]
       }
+    },
+    
+    isEnable: {
+      type: 'boolean',
+      required: false,
+      permission: {
+        create: [ROLE.ADMINISTRATOR],
+        update: [ROLE.ADMINISTRATOR],
+        find: [ROLE.ADMINISTRATOR]
+      }
     }
   }
 };

@@ -28,7 +28,6 @@ export const columns = (
         
         let length: number = props.value.length
 
-        console.log(props.value.length, props.value)
         if (count < (length - 1) ) {
           count ++
           return (<React.Fragment key = {tag}>{tag.concat("; ")}</React.Fragment>)
@@ -72,7 +71,7 @@ export const columns = (
   {
     Header: 'Enable',
     width: 90,
-    accessor: 'isModify',
+    accessor: 'isEnable',
     Cell: (props: RowRenderProps) => (
       <Switch
       onChange={() => {

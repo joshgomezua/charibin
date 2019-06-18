@@ -9,6 +9,7 @@ export interface ICity {
   photo?: string;
   tags?: string[];   
   isModify?: boolean;
+  isEnable?: boolean;
 }
 
 export interface ITrip {
