@@ -68,7 +68,6 @@ export const rangeColumns = (
     )
     
   },
-
   {
     accessor: 'duration',
     width: 90,
@@ -77,39 +76,4 @@ export const rangeColumns = (
       return `${duration.format('h[h]mm[m]')}`
     }
   },
-  {
-    accessor: 'price',
-    width: 210,
-    Cell: (props: RowRenderProps) => (
-      <>
-        <div className="spon-table__actions">
-          <button
-            onClick={() =>
-              redirectToCreateTicket({
-                _id: props.row._original._id,
-                departure: props.row.departure,
-                destination: props.row.destination,
-              })
-            }>
-            Schedule
-          </button>
-          <button onClick={() => openEditModal(props.row._original._id)}>
-            Modify
-          </button>
-          <button onClick={() => openDeleteModal(props.row._original._id)}>
-            Delete
-          </button>
-        </div>
-      </>
-    ),
-    // Footer: (props: RowRenderProps ) => 
-    //   { console.log(props.value) }
-    //   //<Button
-    // //   className="spon-table-footer__add-button"
-    // //   variant="blue"
-    // //   icon="plus"
-    // //   text="ADD NEW"
-    // //   onClick={() => openScheduleModal(MODAL_TYPE.ADD_TRIP, 'Create schedule')}
-    // // />)
-  }
 ]

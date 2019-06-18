@@ -4,7 +4,6 @@ import classnames from 'classnames'
 import { IProps } from './types'
 import './styles.scss'
 import './table.scss'
-import Button from 'src/Common/Components/Button' 
 
 const TripTable: React.SFC<IProps> = ({
   columns,
@@ -28,13 +27,7 @@ const TripTable: React.SFC<IProps> = ({
         resizable={false}
         showPageJump={false}
         defaultPageSize={3}
-        TheadComponent={() => (
-          <Button
-            className="spon-table-footer__add-button"
-            variant="blue"
-            icon="plus"
-            text="ADD NEW"
-          />)}
+        TheadComponent={nullComponent}
         PaginationComponent={nullComponent}
         columns={columns}
         data={data}
