@@ -55,7 +55,7 @@ loadModels();
 
   // Create trips and tickets
   for (let i = 0; i < 20; i++) {
-    trips.push(await helpers.createTrip(helpers.dataClone(globals.dataTemplate.trip)));
+    trips.push(await helpers.createTrip({...helpers.dataClone(globals.dataTemplate.trip), destination: getRandomCities(), departure: getRandomCities()}));
     let str = JSON.stringify(trips[0]);
     console.log(`Creating Trips: ${i + 1}/${20} \n
     ${str}`);
@@ -87,6 +87,14 @@ loadModels();
 
   process.exit(0);
 })();
+
+function getRandomCities(){
+  const cities = ["Montreal", "Toronto", "Ottawa", "Quebec", "Ontario", "Vancouver",
+"Paris", "Marseille", "Lyon", "Toulouse", "Nice", "Nantes",
+"London", "Manchester", "Bristol"];
+
+  return cities[Math.floor(Math.random() * cities.length)];
+}
 
 function loadServices () {
   const dirPath = './api/services/';

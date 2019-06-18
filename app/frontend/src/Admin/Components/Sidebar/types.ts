@@ -2,8 +2,8 @@ import { ICity, DIRECTION_TYPE } from '../../Utils/adminTypes'
 
 export interface IProps {
   filters: string[]
-  filterFrom: string
-  filterTo: string
+  filterFrom: string[]
+  filterTo: string[]
   cities: ICity[]
   selectedDate: Date
   calendarFilter:{
@@ -12,8 +12,8 @@ export interface IProps {
   }
   direction: DIRECTION_TYPE | null
   changeFilters: (filters: string[]) => void
-  changeFilterFrom: (filterFrom: string) => void
-  changeFilterTo: (filterTo: string) => void
+  changeFilterFrom: (filterFrom: string[]) => void
+  changeFilterTo: (filterTo: string[]) => void
   changeSelectedDate: (date: Date) => void
   changeDirectionType: (type: DIRECTION_TYPE | null) => void
   onChange?: (v: [Date, Date]) => void
@@ -22,4 +22,9 @@ export interface IProps {
 
 export interface IState {
   calendarVisible: boolean
+}
+
+export interface ILocation {
+  value: number
+  label: string
 }

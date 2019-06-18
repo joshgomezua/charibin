@@ -1,14 +1,12 @@
 import React from 'react'
 
-import Button from '../../../Common/Components/Button'
-import MultiSwitch from '../../Components/MultiSwitch'
-
 import { DIRECTION_TYPE, ICity } from '../../Utils/adminTypes'
-import { IProps, IState } from './types'
+import { IProps, IState, ILocation } from './types'
 import './styles.scss'
 import CalendarDoubleFilter from 'src/App/Components/CalendarDoubleFilter';
 import moment from 'moment'
 import Select from 'react-dropdown-select'
+import data from './data';
 
 class Sidebar extends React.Component<IProps, IState> {
 
@@ -21,26 +19,34 @@ class Sidebar extends React.Component<IProps, IState> {
     this.props.changeFilters(filters)
   }
 
-  handleFilterChange = (name: string, id: string) => {
-    const { filters } = this.props
-    let newFilters
-    if (filters.includes(name)) {
-      newFilters = filters.filter((city: string) => {
-        return city !== name && city !== ''
-      })
-    } else {
-      newFilters = [...filters, name]
-    }
+  handleFilterChange = (location: ILocation[]) => {
+    const filter: string[] = []
 
-    this.props.changeFilters(newFilters)
+    location.map(location => {
+      filter.push(location.label)
+    })
+
+    this.props.changeFilters(filter)
   }
 
-  handleFilterFromChange = (event: any) => {
-    this.props.changeFilterFrom(event.target.value)
+  handleFilterFromChange = (location: ILocation[]) => {
+    const filter: string[] = []
+
+    location.map(location => {
+      filter.push(location.label)
+    })
+
+    this.props.changeFilterFrom(filter)
   }
 
-  handleFilterToChange = (event: any) => {
-    this.props.changeFilterTo(event.target.value)
+  handleFilterToChange = (location: ILocation[]) => {
+    const filter: string[] = []
+
+    location.map(location => {
+      filter.push(location.label)
+    })
+
+    this.props.changeFilterTo(filter)
   }
 
   handleMarkAll = (selectAll: boolean) => {
@@ -90,66 +96,23 @@ class Sidebar extends React.Component<IProps, IState> {
           selectRange
         />
         )}
-          <Select multi options={[
-            {
-              value: '1',
-              label: 'Project A',
-            },{
-              value: '2',
-              label: 'Project B'
-            },
-          ]} onChange={this.result}></Select>
-        <div className="spon-sidebar__input">
+          <label>From</label>
+          <Select
+          multi
+          options={data} 
+          value={this.props.filterFrom} 
+          onChange={this.handleFilterFromChange}>
+          </Select>
 
-        <input type="text" 
-        value={this.props.filterFrom} 
-        onChange={this.handleFilterFromChange}
-        placeholder="From"/>
-        <br/>
-        <input type="text" 
-        value={this.props.filterTo} 
-        onChange={this.handleFilterToChange}
-        placeholder="To"/>
-        </div>
+          <label>To</label>
+          <Select 
+          multi 
+          options={data} 
+          value={this.props.filterTo} 
+          onChange={this.handleFilterToChange}>  
+          </Select>
         
-        <div className="spon-sidebar__filters">
-
-          
-          
-
-          <h4>Cities</h4>
-
-          <div className="spon-sidebar__buttons">
-            <Button
-              variant="adminSecondary"
-              disabled={this.props.filters.length === 0}
-              className="spon-sidebar__button"
-              onClick={() => this.handleMarkAll(false)}
-              text="Deselect all"
-            />
-
-            <Button
-              variant="adminSecondary"
-              disabled={this.props.filters.length === this.props.cities.length}
-              className="spon-sidebar__button"
-              onClick={() => this.handleMarkAll(true)}
-              text="Select all"
-            />
-          </div>
-
-          <div className="spon-sidebar__cities">
-            <MultiSwitch
-              className="spon-sidebar__switcher"
-              selectedValues={this.props.filters}
-              isMulti
-              coloredNames
-              items={this.props.cities}
-              onChange={(value: string, id: string) =>
-                this.handleFilterChange(value, id)
-              }
-            />
-          </div>
-        </div>
+      
       </div>
     )
   }

@@ -20,12 +20,12 @@ export interface IFilters {
 
 export interface IFilterFrom {
   type: TICKETS_ACTIONS.FILTER_FROM_CHANGE
-  filterFrom: string
+  filterFrom: string[]
 }
 
 export interface IFilterTo {
   type: TICKETS_ACTIONS.FILTER_TO_CHANGE
-  filterTo: string
+  filterTo: string[]
 }
 
 export interface ITicketType {

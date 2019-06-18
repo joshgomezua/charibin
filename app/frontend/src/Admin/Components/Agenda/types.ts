@@ -6,8 +6,8 @@ export interface IProps {
   loading: boolean
   error: boolean
   filters: string[]
-  filterFrom: string
-  filterTo: string
+  filterFrom: string[]
+  filterTo: string[]
   direction: DIRECTION_TYPE | null
   retry: () => void
   openEditModal: (id: string) => void

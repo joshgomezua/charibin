@@ -9,8 +9,8 @@ import { DIRECTION_TYPE } from 'src/Admin/Utils/adminTypes'
 const initialState = {
   direction: null,
   filters: [],
-  filterTo: "",
-  filterFrom: '',
+  filterTo: [],
+  filterFrom: [],
   selectedDate: moment().toDate()
 }
 
@@ -45,12 +45,12 @@ export const changeFilters = (filters: string[]): IFilters => ({
   filters
 })
 
-export const changeFilterFrom = (filterFrom: string): IFilterFrom => ({
+export const changeFilterFrom = (filterFrom: string[]): IFilterFrom => ({
   type: TICKETS_ACTIONS.FILTER_FROM_CHANGE,
   filterFrom
 })
 
-export const changeFilterTo = (filterTo: string): IFilterTo => ({
+export const changeFilterTo = (filterTo: string[]): IFilterTo => ({
   type: TICKETS_ACTIONS.FILTER_TO_CHANGE,
   filterTo
 })
