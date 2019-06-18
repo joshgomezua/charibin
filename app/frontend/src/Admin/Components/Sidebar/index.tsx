@@ -5,7 +5,7 @@ import { IProps, IState, ILocation } from './types'
 import './styles.scss'
 import CalendarDoubleFilter from 'src/App/Components/CalendarDoubleFilter';
 import moment from 'moment'
-import Select from 'react-dropdown-select'
+import {default as Select} from 'react-dropdown-select'
 import data from './data';
 
 class Sidebar extends React.Component<IProps, IState> {
