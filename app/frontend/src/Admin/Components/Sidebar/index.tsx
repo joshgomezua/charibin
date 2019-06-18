@@ -32,8 +32,16 @@ class Sidebar extends React.Component<IProps, IState> {
   handleFilterFromChange = (location: ILocation[]) => {
     const filter: string[] = []
 
-    location.map(location => {
-      filter.push(location.label)
+    location.map(locationItem => {
+      if (locationItem.country === "country") {
+        data.map(locationItem2 => {
+          if (locationItem2.country !== "country" && locationItem2.country === locationItem.label){
+            filter.push(locationItem2.label)
+          }
+        })
+      } else {
+        filter.push(locationItem.label)
+      }
     })
 
     this.props.changeFilterFrom(filter)
@@ -42,8 +50,16 @@ class Sidebar extends React.Component<IProps, IState> {
   handleFilterToChange = (location: ILocation[]) => {
     const filter: string[] = []
 
-    location.map(location => {
-      filter.push(location.label)
+    location.map(locationItem => {
+      if (locationItem.country === "country") {
+        data.map(locationItem2 => {
+          if (locationItem2.country !== "country" && locationItem2.country === locationItem.label){
+            filter.push(locationItem2.label)
+          }
+        })
+      } else {
+        filter.push(locationItem.label)
+      }
     })
 
     this.props.changeFilterTo(filter)

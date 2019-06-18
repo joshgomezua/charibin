@@ -1,63 +1,93 @@
 const data = [
     {
         value : 0,
-        label : "Montreal"
+        label : "Canada",
+        country : "country"
     },
     {
         value : 1,
-        label : "Toronto"
+        label : "Montreal",
+        country : "Canada"
     },
     {
         value : 2,
-        label : "Ottawa"
+        label : "Toronto",
+        country : "Canada"
     },
     {
         value : 3,
-        label : "Quebec"
+        label : "Ottawa",
+        country : "Canada"
     },
     {
         value : 4,
-        label : "Ontario"
+        label : "Quebec",
+        country : "Canada"
     },
     {
         value : 5,
-        label : "Vancouver"
+        label : "Ontario",
+        country : "Canada"
     },
     {
         value : 6,
-        label : "Paris"
+        label : "Vancouver",
+        country : "Canada"
     },
     {
         value : 7,
-        label : "Marseille"
+        label : "France",
+        country : "country"
     },
     {
         value : 8,
-        label : "Lyon"
+        label : "Paris",
+        country : "France"
     },
     {
         value : 9,
-        label : "Toulouse"
+        label : "Marseille",
+        country : "France"
     },
     {
         value : 10,
-        label : "Nice"
+        label : "Lyon",
+        country : "France"
     },
     {
         value : 11,
-        label : "Nantes"
+        label : "Toulouse",
+        country : "France"
     },
     {
         value : 12,
-        label : "London"
+        label : "Nice",
+        country : "France"
     },
     {
         value : 13,
-        label : "Manchester"
+        label : "Nantes",
+        country : "France"
     },
     {
         value : 14,
-        label : "Bristol"
+        label : "England",
+        country : "country"
+    },
+    {
+        value : 15,
+        label : "London",
+        country : "England"
+    },
+    {
+        value : 16,
+        label : "Manchester",
+        country : "England"
+    },
+    {
+        value : 17,
+        label : "Bristol",
+        country : "England"
     },
 ];
 

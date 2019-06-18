@@ -45,7 +45,7 @@ const Agenda: React.SFC<IProps> = ({
 
   const getFilteredFromTickets = () => {
     console.log('from')
-    console.log('from filters', filters)
+    console.log('from filters', filterFrom)
     if (filterFrom.length > 0) {
       return tickets.filter(
         (ticket: ITicket) =>
@@ -58,7 +58,7 @@ const Agenda: React.SFC<IProps> = ({
 
   const getFilteredToTickets = (tickets: ITicket[]) => {
     console.log('to')
-    console.log('to filters', filters)
+    console.log('to filters', filterTo)
     if (filterTo.length > 0) {
       return tickets.filter(
         (ticket: ITicket) =>

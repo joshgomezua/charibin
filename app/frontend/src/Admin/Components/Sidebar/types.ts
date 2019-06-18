@@ -27,4 +27,5 @@ export interface IState {
 export interface ILocation {
   value: number
   label: string
+  country: string
 }
