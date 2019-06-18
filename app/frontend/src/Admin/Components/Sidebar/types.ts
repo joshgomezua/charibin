@@ -22,6 +22,7 @@ export interface IProps {
 
 export interface IState {
   calendarVisible: boolean
+  selectedColor: string
 }
 
 export interface ILocation {

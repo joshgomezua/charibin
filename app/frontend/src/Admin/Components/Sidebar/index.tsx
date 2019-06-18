@@ -12,6 +12,7 @@ class Sidebar extends React.Component<IProps, IState> {
 
   readonly state: IState = {
     calendarVisible: true,
+    selectedColor: "blue"
   }
 
   componentDidMount() {
@@ -34,12 +35,14 @@ class Sidebar extends React.Component<IProps, IState> {
 
     location.map(locationItem => {
       if (locationItem.country === "country") {
+        this.setState({selectedColor: "green"})
         data.map(locationItem2 => {
           if (locationItem2.country !== "country" && locationItem2.country === locationItem.label){
             filter.push(locationItem2.label)
           }
         })
       } else {
+        this.setState({selectedColor: "blue"})
         filter.push(locationItem.label)
       }
     })
@@ -52,12 +55,14 @@ class Sidebar extends React.Component<IProps, IState> {
 
     location.map(locationItem => {
       if (locationItem.country === "country") {
+        this.setState({selectedColor: "green"})
         data.map(locationItem2 => {
           if (locationItem2.country !== "country" && locationItem2.country === locationItem.label){
             filter.push(locationItem2.label)
           }
         })
       } else {
+        this.setState({selectedColor: "blue"})
         filter.push(locationItem.label)
       }
     })
@@ -98,7 +103,7 @@ class Sidebar extends React.Component<IProps, IState> {
 
   render() {
 
-    const {calendarVisible} = this.state
+    const {calendarVisible, selectedColor} = this.state
 
     return (
       <div className="spon-sidebar">
@@ -117,7 +122,11 @@ class Sidebar extends React.Component<IProps, IState> {
           multi
           options={data} 
           value={this.props.filterFrom} 
-          onChange={this.handleFilterFromChange}>
+          onChange={this.handleFilterFromChange}
+          color={selectedColor}
+          clearable
+          >
+          
           </Select>
 
           <label>To</label>
@@ -125,7 +134,9 @@ class Sidebar extends React.Component<IProps, IState> {
           multi 
           options={data} 
           value={this.props.filterTo} 
-          onChange={this.handleFilterToChange}>  
+          onChange={this.handleFilterToChange}
+          color={selectedColor}
+          >  
           </Select>
         
       
