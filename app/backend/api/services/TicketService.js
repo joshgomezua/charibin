@@ -13,7 +13,6 @@ const subscriber1 = redis.createClient({ host: global.config.connection.redis.ho
 client1.send_command('config', ['set','notify-keyspace-events','Ex'], onExpiredTicket);
 
 function onExpiredTicket (err, res) {
-  console.log('onExpiredTicket')
   return new Promise((resolve, reject) => {
     if(err) return reject(err);
 
@@ -95,7 +94,6 @@ function setMonday (date) {
 }
 
 async function createManyTickets (data) {
-  console.log('createManyTickets')
   if(data.repeat.dateEnd <= data.date.start) throw { status: 400, message: 'TICKET.REPEAT.BAD.DATEEND' };
   if(!data.repeat.days.includes(new Date(data.date.start).getDay())) throw { status: 400, message: 'TICKET.REPEAT.BAD.DATESTART' };
 
@@ -203,7 +201,6 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
 }
 
 async function unbook ({ owner, selectedTrip }) {
-  console.log('unbook big')
   const trip = await Trip.findOne({ _id: selectedTrip });
   if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
 
@@ -239,7 +236,6 @@ async function unbook ({ owner, selectedTrip }) {
 }
 
 async function bookWithTime ({ quantity, selectedTrip, owner }) {
-  console.log('bookWithTime')
   const arrivalTicket = await Ticket.findOne({ _id: selectedTrip.arrivalTicket, active: true, deleted: false, quantity: { $gte: quantity } });
   if(!arrivalTicket) throw { status: 404, message: 'TICKET.ARRIVAL.NOT.EXIST' };
 
@@ -307,7 +303,6 @@ async function bookWithTime ({ quantity, selectedTrip, owner }) {
 
 module.exports = {
   async create (data) {
-    console.log('create')
     const trip = await Trip.findOne({ _id: data.trip, deleted: false });
     if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
 
