@@ -284,15 +284,15 @@ export const COUNTRIES = [
   },
   {
     _id: "50",
-    name: "Switzerland"
+    name:"United States (USA)"
   },
   {
     _id: "51",
-    name:"Turkey"
+    name: "Switzerland"
   },
   {
     _id: "52",
-    name:"United States (US)"
+    name:"Turkey"
   },
   {
     _id: "53",

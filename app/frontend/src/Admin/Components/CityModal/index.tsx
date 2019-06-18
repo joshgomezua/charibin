@@ -114,7 +114,7 @@ const CityModal: React.SFC<IProps> = ({
                     label="Select the country"
                     placeholder="Select country"
                     className="spon-trip-modal__dropdown"
-                    selectedValue={(values.country as string) ? values.country as string : ''}
+                    selectedValue={values.country  ? values.country  : ''}
                     options={COUNTRIES}
                     onChange={handleChange}
                   />

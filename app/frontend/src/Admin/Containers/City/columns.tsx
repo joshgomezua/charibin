@@ -4,7 +4,7 @@ import Switch from '../../Components/Switch'
 import Button from 'src/Common/Components/Button'
 
 
-
+let count: number = 0
 export const columns = (
   openDeleteModal: (id: string) => void,
   openEditModal: (id: string) => void,
@@ -23,24 +23,26 @@ export const columns = (
     Header: 'Key words',
     accessor: 'tags',
     Cell: (props: RowRenderProps) => (
+
       props.value.map((tag: string) => {
-        let count: number = 0
-        console.log("count ", count)
-        console.log("length ", props.value.length)
-        if (count < (props.value.length -1) ) {
+        
+        let length: number = props.value.length
+
+        console.log(props.value.length, props.value)
+        if (count < (length - 1) ) {
           count ++
-          console.log("incrementation", count)
-          console.log("je suis dans le if ")
-          return (<>{tag.concat("; ")}</>)
+          return (<React.Fragment key = {tag}>{tag.concat("; ")}</React.Fragment>)
         }
         else {
-          console.log("je suis dans else ")
-          return (<>{tag.concat(" ")}</>)
-        }
+          count = 0
+          return (<React.Fragment key = {tag}>{tag.concat(" ")}</React.Fragment>)
+        } 
+        
       })
+    
     )
-  
   },
+  
   {
     Header: 'Photo',
     accessor: 'photo',

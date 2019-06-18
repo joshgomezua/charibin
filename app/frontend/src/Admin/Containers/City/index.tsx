@@ -87,10 +87,10 @@ class CityContainer extends React.Component<
       getSingleCity(id, token)
         .then(res => {
           this.setState({ editData: res.data })
-          console.log('get signle city ')
+          
         })
         .catch(err => {
-          console.log("erreur")
+          
           this.modal.current!.close()
           this.props.showError(err)
         })
@@ -99,8 +99,7 @@ class CityContainer extends React.Component<
 
   handleFetchItems = (page: number, limit: number) => {
     const token = getToken()
-    console.log(token)
-    console.log('get cities')
+    
     if (token) {
       getCities(page, limit, token)
         .then(res =>{
@@ -109,7 +108,7 @@ class CityContainer extends React.Component<
             cities: res.data.results,
             total: res.data.status.total
           })
-          console.log("res.data: ", res.data.results)
+          
         })
         .catch(err => {
           this.props.showError(err, ERRORS.CITY_FETCH)
@@ -192,7 +191,7 @@ class CityContainer extends React.Component<
   }
 
   handleToggleButton = (id: string, value:boolean) => {
-      console.log(id)
+    
     const token = getToken()
 
     editCityState(id, value, token)
