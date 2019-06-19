@@ -4,15 +4,15 @@ import { IDuration } from '../../../Common/Utils/globalTypes'
 import Checkbox from '../../Components/Checkbox'
 import { RowRenderProps} from 'react-table'
 import 'moment-duration-format'
-// import Button from 'src/Common/Components/Button' 
+// import Button from 'src/Common/Components/Button' // à enlever
 import { MODAL_TYPE } from 'src/Admin/Utils/adminTypes';
 
 export const rangeColumns = (
-  openDeleteModal: (id: string) => void,
-  openEditModal: (id: string) => void,
+  openDeleteModal: (id: string) => void, // -> enlever
+  openEditModal: (id: string) => void, // -> enlever
   openTimeSelectionModal: (id: string) => void,
-  openScheduleModal: (type: MODAL_TYPE, heading: string) => void,
-  redirectToCreateTicket: (trip: { _id: string; departure: string; destination: string }) => void
+  openScheduleModal: (type: MODAL_TYPE, heading: string) => void, // -> enlever
+  redirectToCreateTicket: (trip: { _id: string; departure: string; destination: string }) => void // -> enlever
 ) => [
   {
     width: 124,

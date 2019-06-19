@@ -167,7 +167,7 @@ class TripsContainer extends React.Component<
     }
     this.setState({ isModalLoading: true })
     return addTrip(newTrip, token)
-      .then(res => {
+      .then(res => { // remplacer res par ()
         this.modal.current!.close()
         this.handleFetchItems(currentPage, 10)
         this.props.showSuccess(SUCCESS.TRIP_ADD)
@@ -193,7 +193,7 @@ class TripsContainer extends React.Component<
     
     this.setState({ isModalLoading: true })
     return updateTrip(id, data, token)
-      .then(res => {
+      .then(res => {   // remplacer res par ()
         this.modal.current!.close()
         this.handleFetchItems(currentPage, 10)
         this.props.showSuccess(SUCCESS.TRIP_EDIT)
@@ -219,7 +219,7 @@ class TripsContainer extends React.Component<
     
     this.setState({ isModalLoading: true })
     return updateTimeSelection(id, data, token)
-      .then(res => {
+      .then(res => {  // remplacer res par ()
         this.modal.current!.close()
         this.handleFetchItems(currentPage, 10)
         this.props.showSuccess(SUCCESS.TRIP_EDIT)

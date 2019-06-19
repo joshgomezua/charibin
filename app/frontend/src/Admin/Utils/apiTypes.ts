@@ -94,7 +94,7 @@ export interface IEditTimeSelect {
 //   time9: number
 //   time10: number
 
-// }
+// } double check
 
 export interface ITicket {
   trip: string

@@ -1,4 +1,4 @@
-// import { min } from "moment";
+// import { min } from "moment"; enlever
 
 export enum ADMIN_ROUTING {
   MAIN = '/admin',
@@ -58,7 +58,7 @@ export const DEFULT_TICKET_DATA = {
 //   time9: 0,
 //   time10: 0,
 
-// }
+// } double check voir s'il faut enlever
 
 export const DEFAULT_TRIP_DATA = {
   _id: '',

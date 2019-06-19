@@ -65,7 +65,7 @@ export interface ITrip {
 //   time8: number
 //   time9: number
 //   time10: number
-// }
+// }  double check voir s'il faut enlever
 
 export interface IOrder {
   _id: string

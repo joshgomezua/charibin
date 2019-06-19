@@ -10,7 +10,7 @@ import {
 import * as Yup from 'yup'
 
 import Input from '../Input'
-// import Switch from '../Switch'
+// import Switch from '../Switch' -> enlever
 import Button from '../../../Common/Components/Button'
 
 import { IProps, IFormValues, IEditValues } from './types'
@@ -40,7 +40,7 @@ const TimeSelectionModal: React.SFC<IProps> = ({
         time9: editSchedule.timeSelection.time9,
         time10: editSchedule.timeSelection.time10,
       }
-      // bidirectionalChange: false
+      // bidirectionalChange: false -> enlever
     }
   }
 
@@ -81,7 +81,7 @@ const TimeSelectionModal: React.SFC<IProps> = ({
             time9: Yup.number().required(),
             time10: Yup.number().required()
           })
-          // bidirectionalChange: Yup.bool().required(),
+          // bidirectionalChange: Yup.bool().required(), -> enlever
         })}
         onSubmit={(
           values: IFormValues,
@@ -106,14 +106,14 @@ const TimeSelectionModal: React.SFC<IProps> = ({
           }
         }}
         render={({
-          handleChange,
+          handleChange, // -> enlever
           values,
-          errors,
-          touched,
-          setFieldError
+          errors, // -> enlever
+          touched, // -> enlever
+          setFieldError // -> enlever
         }: FormikProps<IFormValues>) => (
           <Form noValidate>
-            <div className="spon-seltime-modal__row">
+            <div className="spon-seltime-modal__row"> {/** spon-timeselection-modal pour tout */}
               <div className="spon-seltime-modal__input-cnt spon-seltime-modal__input-cnt--small">
                 <Field
                   isPrefix
@@ -305,7 +305,7 @@ const TimeSelectionModal: React.SFC<IProps> = ({
                   />
                 </div>
               </div>
-            </div> */}
+            </div> */} {/* probablement commenté de la part des devs de redvike? */}
             
 
             <div className="spon-seltime-modal__row--bordered"></div>

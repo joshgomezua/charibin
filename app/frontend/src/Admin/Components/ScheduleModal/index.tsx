@@ -158,11 +158,11 @@ class ScheduleModal extends React.Component<IProps, IState> {
           render={({
             handleChange,
             values,
-            setFieldValue
+            setFieldValue // à enlever
           }: FormikProps<IFormValues>) => (
             <Form noValidate>
-              <div className="spon-ticket-modal__row">
-                <div className="spon-ticket-modal__input-cnt spon-ticket-modal__input-cnt--big">
+              <div className="spon-ticket-modal__row"> {/** à renommer tous les spon-ticket-modal par spon-schedule-modal  */}
+                <div className="spon-ticket-modal__input-cnt spon-ticket-modal__input-cnt--big"> 
                   <Dropdown
                     saveAsObject
                     id="trip"

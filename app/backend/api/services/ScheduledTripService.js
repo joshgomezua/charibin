@@ -18,7 +18,7 @@ module.exports = {
     }, { $set:
       { deleted: true }
     });
-      console.log(sTrip.trip);
+      console.log(sTrip.trip); // console log
       await ScheduledTrip.findByIdAndDelete(id);
       await Trip.findOneAndUpdate({ _id: sTrip.trip }, { $pull: { scheduledTrips: { _id : id } } }, { new: true });
 
