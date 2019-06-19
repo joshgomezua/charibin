@@ -135,6 +135,10 @@ async function createManyTickets (data) {
 }
 
 async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
+  console.log('bookWithOutTime')
+  console.log('quantity', quantity)
+  console.log('selectedTrip', selectedTrip)
+  console.log('owner', owner)
   if(new Date(selectedTrip.dateStart).setHours(0,0,0,0) < Date.now() + global.config.custom.time.day)
     throw { status: 400, message: 'TICKET.DATE.START.INVALID%', args: [new Date(Date.now() + global.config.custom.time.day).toDateString()] };
   if(new Date(selectedTrip.dateEnd).setHours(0,0,0,0) < Date.now() + global.config.custom.time.day)
@@ -142,6 +146,7 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
 
   const trip = await Trip.findOne({ _id: selectedTrip.id, deleted: false, active: true });
   if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
+  console.log('----trip----', trip)
 
   const [arrivalTicket] = await Ticket.find({
     trip: trip._id,
@@ -152,6 +157,7 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
     'date.start': { $gte: new Date(selectedTrip.dateStart).setHours(0,0,0,0), $lte: new Date(selectedTrip.dateStart).setHours(23,59,59,999) }
   }).limit(1);
   if(!arrivalTicket) throw { status: 404, message: 'TICKET.ARRIVAL.NOT.EXIST%', args: [new Date(selectedTrip.dateStart).toDateString()] };
+  console.log('----arrivalTicket----', arrivalTicket)
 
   const [departureTicket] = await Ticket.find({
     trip: trip._id,
@@ -162,22 +168,25 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
     'date.start': { $gte: new Date(selectedTrip.dateEnd).setHours(0,0,0,0), $lte: new Date(selectedTrip.dateEnd).setHours(23,59,59,999) }
   }).limit(1);
   if(!departureTicket) throw { status: 404, message: 'TICKET.DEPARTURE.NOT.EXIST%', args: [new Date(selectedTrip.dateEnd).toDateString()] };
+  console.log('----departureTicket----', departureTicket)
 
   const reservedArrivalTicket = await Ticket.findOneAndUpdate({ _id: arrivalTicket._id, active: true, deleted: false, quantity: { $gte: quantity } }, {
     quantity: arrivalTicket.quantity - quantity,
-    soldTickets: arrivalTicket.soldTickets + quantity,
+    //soldTickets: arrivalTicket.soldTickets + quantity,
     $addToSet: { blockedQuantity: { owner, quantity } }
   }, { new: true });
   if(!reservedArrivalTicket) throw { status: 404, message: 'TICKET.ARRIVAL.NOT.EXIST%', args: [new Date(selectedTrip.dateStart).toDateString()] };
+  console.log('----reservedArrivalTicket----', reservedArrivalTicket)
 
   const reservedDepartureTicket = await Ticket.findOneAndUpdate({ _id: departureTicket._id, active: true, deleted: false, quantity: { $gte: quantity } }, {
     quantity: departureTicket.quantity - quantity,
-    soldTickets: departureTicket.soldTickets + quantity,
+    //soldTickets: departureTicket.soldTickets + quantity,
     $addToSet: { blockedQuantity: { owner, quantity } }
   }, { new: true });
   if(!reservedDepartureTicket) throw { status: 404, message: 'TICKET.DEPARTURE.NOT.EXIST%', args: [new Date(selectedTrip.dateEnd).toDateString()] };
+  console.log('----reservedDepartureTicket----', reservedDepartureTicket)
 
-  await TicketOwner.findOneAndUpdate({
+  const updatedTicketOwner = await TicketOwner.findOneAndUpdate({
     owner
   },{
     owner,
@@ -196,40 +205,51 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
     new: true,
     setDefaultsOnInsert: true
   });
+  console.log('----updatedTicketOwner----', updatedTicketOwner)
 
   return;
 }
 
 async function unbook ({ owner, selectedTrip }) {
+  console.log('unbook big')
+  console.log('owner', owner)
   const trip = await Trip.findOne({ _id: selectedTrip });
   if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
+  console.log('trip', trip)
 
   const ownerInfo = await TicketOwner.findOne({ owner });
   if(!ownerInfo) throw { status: 404, message: 'TICKET.OWNER.NOT.EXIST' };
   if(!ownerInfo.trips.length) throw { status: 404, message: 'TICKET.OWNER.NOT.EXIST' };
+  console.log('ownerInfo', ownerInfo)
 
   for (const reserved of ownerInfo.trips)
+  console.log('ownerInfo.trips', ownerInfo.trips)
+  console.log('reserved', reserved)
     if(`${reserved.trip}` === `${trip._id}`) {
       const tickets = await Ticket.find({ _id: { $in: [reserved.arrivalTicket, reserved.departureTicket] } });
+      console.log('tickets', tickets)
       if(tickets.length !== 2) throw { status: 404, message: 'TICKET.NOT.FOUND' };
 
       const unbookedArrivalTicket = await Ticket.findOneAndUpdate({ _id: reserved.arrivalTicket }, {
         $inc: { quantity: ownerInfo.quantity },
         $pull: { blockedQuantity: { owner } }
       }, { new: true });
+      console.log('unbookedArrivalTicket', unbookedArrivalTicket)
       if(unbookedArrivalTicket.deleted) await this.destroy(unbookedArrivalTicket._id);
 
       const unbookedDepartureTicket = await Ticket.findOneAndUpdate({ _id: reserved.departureTicket }, {
         $inc: { quantity: ownerInfo.quantity },
         $pull: { blockedQuantity: { owner } }
       }, { new: true });
+      console.log('unbookedDepartureTicket', unbookedDepartureTicket)
       if(unbookedArrivalTicket.deleted) await this.destroy(unbookedDepartureTicket._id);
 
-      await TicketOwner.updateOne({
+      const ticketOwnerUpdated = await TicketOwner.updateOne({
         _id: ownerInfo._id, 'trips._id': reserved._id
       }, {
         $inc: { billing: -reserved.cost }, $set: { 'trips.$.deselected': true }
       });
+      console.log('ticketOwnerUpdated', ticketOwnerUpdated)
     }
 
   return;
@@ -252,13 +272,13 @@ async function bookWithTime ({ quantity, selectedTrip, owner }) {
 
   const reservedArrivalTicket = await Ticket.findOneAndUpdate({ _id: selectedTrip.arrivalTicket, active: true, deleted: false, quantity: { $gte: quantity } }, {
     $inc: { quantity:  -quantity },
-    $inc: { soldTickets:  quantity },
+    //$inc: { soldTickets:  quantity },
     $addToSet: { blockedQuantity: { owner, quantity } }
   }, { new: true });
 
   const reservedDepartureTicket = await Ticket.findOneAndUpdate({ _id: selectedTrip.departureTicket, active: true, deleted: false, quantity: { $gte: quantity } }, {
     $inc: { quantity:  -quantity },
-    $inc: { soldTickets:  quantity },
+    //$inc: { soldTickets:  quantity },
     $addToSet: { blockedQuantity: { owner, quantity } }
   }, { new: true });
 
@@ -325,6 +345,7 @@ module.exports = {
   },
 
   async book ({ quantity, trips, ownerHash }) {
+    console.log('book')
     if(ownerHash) {
       const isOwnerExist = await TicketOwner.findOne({ owner: ownerHash });
       if(isOwnerExist) return isOwnerExist;
@@ -345,6 +366,9 @@ module.exports = {
   },
 
   async unbook ({ owner, trips }) {
+    console.log('unbook little')
+    console.log('owner', owner)
+    console.log('trips', trips)
     for (let selectedTrip of trips) {
       await unbook({ selectedTrip, owner });
     }
@@ -353,14 +377,21 @@ module.exports = {
   },
 
   async buy ({ owner, creditCardToken, buyerInfo }) {
+    console.log('buy')
+    console.log('owner', owner)
+    console.log('creditCardToken', creditCardToken)
+    console.log('buyerInfo', buyerInfo)
     const ownerInfo = await TicketOwner.findOne({ owner });
     if(!ownerInfo) throw { status: 404, message: 'BUY.OWNER.NOT.EXIST' };
+    console.log('----ownerInfo----', ownerInfo)
 
     ownerInfo.trips = await populateTrips(ownerInfo.trips);
+    console.log('----ownerInfo.trips----', ownerInfo.trips)
 
     let finalCost = 0;
     const [admin] = await User.find({ role: global.config.custom.roles.ADMINISTRATOR }).sort('_id').limit(1);
     const selectedTrip = getMostExpensiveTrip(ownerInfo);
+    console.log('----selectedTrip----', selectedTrip)
 
     // Add a trip price (time choose already added)
     finalCost += selectedTrip.cost;
@@ -429,10 +460,12 @@ module.exports = {
     };
 
     async function populateTrips (trips) {
+      console.log('populateTrips')
       for (let selectedTrip of trips) {
         selectedTrip.trip = await Trip.findById(selectedTrip.trip);
         selectedTrip.arrivalTicket = await Ticket.findById(selectedTrip.arrivalTicket);
         selectedTrip.departureTicket = await Ticket.findById(selectedTrip.departureTicket);
+        console.log('----selectedTrip----', selectedTrip)
       }
 
       return trips;

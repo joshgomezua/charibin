@@ -80,6 +80,10 @@ class PaymentContainer extends Component<
   }
 
   handleSubmit = ({ cardToken, passenger, payment }: ISuccessValues) => {
+    console.log('handleSubmit')
+    console.log('cardToken', cardToken)
+    console.log('passenger', passenger)
+    console.log('payment', payment)
     const owner = getOwnerToken()
 
     const birthDate = +moment(
@@ -105,10 +109,12 @@ class PaymentContainer extends Component<
         zipCode: payment.zipCode
       }
     }
+    console.log('dataToSubmit', dataToSubmit)
 
     this.setState({ isLoading: true })
     buyTickets(dataToSubmit)
       .then(({ data }: { data: IFinalSelected }) => {
+        console.log('data', data)
         this.props.setFinalDestination(data)
         this.props.history.push('/destinations/summary')
       })
