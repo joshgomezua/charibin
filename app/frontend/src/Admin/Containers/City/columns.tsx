@@ -66,7 +66,6 @@ export const columns = (
     accessor: 'isModify',
     Cell: (props: RowRenderProps) => (
       <div  className="spon-table__actions">
-        {console.log(props.value)}
         <button disabled = {!(props.value)} onClick={() => openEditModal(props.row._original._id)}>
               Modify
         </button>
