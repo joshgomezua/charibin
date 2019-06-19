@@ -111,6 +111,7 @@ class TicketsContainer extends React.Component<
   }
 
   handleFetchTicketsByDate = (initialDate: Date, finalDate?: Date) => {
+    /******* pas de console log **************/
     console.log("handleFetchTicketsByDate")
     const token = getToken()
 
@@ -166,8 +167,10 @@ class TicketsContainer extends React.Component<
       .then(res => {
         let message = ''
         if (res.data.updated) {
+          /*tu pourrais faire SUCCESS.TICKET_OVERRIGHT  */
           message = 'Tickets was overright'
         } else if (!res.data.updated && res.data.dates) {
+          /*tu pourrais faire SUCCESS.TICKET_UPDATED  */
           message = 'Ticket was updated'
         } else {
           message = SUCCESS.TICKET_ADD
@@ -251,6 +254,7 @@ class TicketsContainer extends React.Component<
   }
 
   handleChangeActiveState = (id: string, isActive: boolean) => {
+    /******* pas de console log **************/
     console.log("handleChangeActivateState")
     const token = getToken()
 

@@ -30,6 +30,7 @@ class Sidebar extends React.Component<IProps, IState> {
     this.props.changeFilters(filter)
   }
 
+  /** duplication de code tu pourrais plutot transformer en une fonction les lignes 35 à 49*/
   handleFilterFromChange = (location: ILocation[]) => {
     const filter: string[] = []
 
@@ -75,6 +76,7 @@ class Sidebar extends React.Component<IProps, IState> {
       const filters = this.props.cities.map((city: ICity) => city.name)
       this.props.changeFilters(filters)
     } else {
+      // je ne suis pas sur que ça soit necessaire
       this.props.changeFilters([])
     }
   }
@@ -88,16 +90,20 @@ class Sidebar extends React.Component<IProps, IState> {
   }
 
   clearCalendar = () => {
+    /******* pas de console log **************/
     console.log("test1")
     this.setState({calendarVisible: false}, this.resetCalendar)
   } 
 
   resetCalendar = () => {
+    /******* pas de console log **************/
     console.log("test2")
     this.setState({calendarVisible: true}, ()=> this.props.handleFetchTicketsByDate(moment().toDate()))
   }
 
+  /******* nom de la fonction pas assez descriptif **************/
   result(params: any) {
+    /******* pas de console log **************/
     console.log(params);
   }
 
