@@ -65,7 +65,7 @@ class TicketsContainer extends React.Component<
     const { state } = this.props.location
 
     this.handleFetchTicketsByDate(selectedDate)
-    this.handleFetchDestionation()
+    this.handleFetchDestination()
 
     if (state && state.trip) {
       const tripFromState = state.trip
@@ -91,7 +91,7 @@ class TicketsContainer extends React.Component<
     this.modal.current!.close()
   }
 
-  handleFetchDestionation = () => {
+  handleFetchDestination = () => {
     const token = getToken()
 
     getTripNames(token)
@@ -111,7 +111,6 @@ class TicketsContainer extends React.Component<
   }
 
   handleFetchTicketsByDate = (initialDate: Date, finalDate?: Date) => {
-    console.log("handleFetchTicketsByDate")
     const token = getToken()
 
     const startDate = finalDate ? moment(initialDate).format('x') : 
@@ -251,7 +250,6 @@ class TicketsContainer extends React.Component<
   }
 
   handleChangeActiveState = (id: string, isActive: boolean) => {
-    console.log("handleChangeActivateState")
     const token = getToken()
 
     editTicket({ active: isActive }, id, token)
@@ -307,10 +305,8 @@ class TicketsContainer extends React.Component<
       filterTo,
       selectedDate,
       direction,
-      changeFilters,
       changeFilterFrom,
       changeFilterTo,
-      changeTicketType,
       changeSelectedDate
     } = this.props
 
@@ -318,17 +314,12 @@ class TicketsContainer extends React.Component<
       <div className="spon-tickets">
         <div className="spon-tickets__content">
           <Sidebar
-            cities={destinations}
-            filters={filters}
             filterFrom={filterFrom}
             filterTo={filterTo}
             selectedDate={selectedDate}
-            direction={direction}
-            changeFilters={changeFilters}
             changeFilterFrom={changeFilterFrom}
             changeFilterTo={changeFilterTo}
             changeSelectedDate={changeSelectedDate}
-            changeDirectionType={changeTicketType}
             calendarFilter={calendarFilter}
             onChange={this.handleFetchTicketsByTwoDates}
             handleFetchTicketsByDate={this.handleFetchTicketsByDate}

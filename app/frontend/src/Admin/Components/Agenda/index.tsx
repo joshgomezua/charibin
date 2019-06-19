@@ -7,7 +7,7 @@ import Button from '../../../Common/Components/Button'
 
 import { MODAL_TYPE } from '../../Utils/adminTypes'
 import { ITicket } from '../../../Common/Utils/globalTypes'
-import { IProps } from './types'
+import { IProps, DIRECTION } from './types'
 import './styles.scss'
 
 const Agenda: React.SFC<IProps> = ({
@@ -19,54 +19,34 @@ const Agenda: React.SFC<IProps> = ({
   filters,
   filterFrom,
   filterTo,
-  direction,
   changeActiveState,
   openEditModal
 }) => {
 
-  const isFilterFromUsed = filterFrom !== [] &&  filterFrom !== undefined
-  const isFilterToUsed = filterTo !== [] && filterTo !== undefined
-
   const getFilteredTickets = () => {
-
     const areFromToFiltersUsed = (
-       (isFilterFromUsed) ||
-        (isFilterToUsed) 
-       )
-
+      filterFrom.length && filterFrom ||
+       filterTo.length && filterTo
+    )
+       
     if (areFromToFiltersUsed){
-      let newFiltered = []
-      newFiltered.push(...getFilteredFromTickets())
-      return getFilteredToTickets(newFiltered)
-    } else {
-      return tickets;
+      return getFilteredFromToTickets(
+        getFilteredFromToTickets(tickets, filterFrom, DIRECTION.DEPARTURE),
+        filterTo,
+        DIRECTION.DESTINATION
+        )
     }
+    return tickets;
   }
-
-  const getFilteredFromTickets = () => {
-    console.log('from')
-    console.log('from filters', filterFrom)
-    if (filterFrom.length > 0) {
+  
+  const getFilteredFromToTickets = (tickets: ITicket[], filters: string[], direction: string) => {
+    if (filters.length) {
       return tickets.filter(
         (ticket: ITicket) =>
-          filterFrom.includes(ticket.trip.departure)
+          filters.includes(ticket.trip[direction])
       )
-    } else {
-      return tickets
     }
-  }
-
-  const getFilteredToTickets = (tickets: ITicket[]) => {
-    console.log('to')
-    console.log('to filters', filterTo)
-    if (filterTo.length > 0) {
-      return tickets.filter(
-        (ticket: ITicket) =>
-          filterTo.includes(ticket.trip.destination)
-      )
-    } else {
-      return tickets
-    }
+    return tickets
   }
 
   const prepareRows = () => {

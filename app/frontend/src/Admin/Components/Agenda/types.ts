@@ -14,3 +14,8 @@ export interface IProps {
   openModal: (type: MODAL_TYPE, heading: string, id: string) => void
   changeActiveState: (id: string, checked: boolean) => void
 }
+
+export enum DIRECTION {
+  DEPARTURE = "departure",
+  DESTINATION = "destination"
+}
