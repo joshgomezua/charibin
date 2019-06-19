@@ -15,8 +15,8 @@ import Button from '../../../Common/Components/Button'
 import photoSvg from '../../../Common/Utils/Media/photo.svg'
 import Dropdown from '../Dropdown'
 
-import {TAGS} from '../../Utils/constants'
-import {COUNTRIES} from '../../Utils/constants'
+import { TAGS } from '../../Utils/constants'
+import { COUNTRIES } from '../../Utils/constants'
 
 import { IProps, IFormValues, IEditValues } from './types'
 import './styles.scss' 
@@ -110,15 +110,15 @@ const CityModal: React.SFC<IProps> = ({
               </div>
 
               <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--big">
-               <Dropdown
-                    id="country"
-                    label="Select the country"
-                    placeholder="Select country"
-                    className="spon-trip-modal__dropdown"
-                    selectedValue={values.country  ? values.country  : ''}
-                    options={COUNTRIES}
-                    onChange={handleChange}
-                  />
+                <Dropdown
+                  id="country"
+                  label="Select the country"
+                  placeholder="Select country"
+                  className="spon-trip-modal__dropdown"
+                  selectedValue={values.country  ? values.country  : ''}
+                  options={COUNTRIES}
+                  onChange={handleChange}
+                />
 
 
                 <ErrorMessage
@@ -159,6 +159,7 @@ const CityModal: React.SFC<IProps> = ({
                 <div className="spon-trip-modal__error">{errors.photo}</div>
               ) : null}
             </div>
+
             <div className="spon-trip-modal__row">
               <div className="spon-trip-modal__tagsbtn">
                 {TAGS.map(tag => {
@@ -172,7 +173,8 @@ const CityModal: React.SFC<IProps> = ({
                             if (!((values['tags'] as string[]).includes(tag))){
                               (values['tags'] as string[]).push(tag)
                             }
-                        }}/>
+                        }}
+                      />
                 )})}
               </div>
                 <ErrorMessage

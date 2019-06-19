@@ -7,9 +7,9 @@ const citySchema = new Schema({
   name: String,
   country: String,
   photo: String,
-  tags: [String],
+  tags: [ String ],
   isModify:{ type: Boolean, default: false },
-  isEnable: {type: Boolean, default: false}
+  isEnable: { type: Boolean, default: false }
 });
 
 module.exports = mongoose.model('City', citySchema);

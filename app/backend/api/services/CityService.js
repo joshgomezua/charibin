@@ -1,7 +1,5 @@
 'use strict'
 
-'use strict';
-
 const { City } = require('../models');
 const Aggregate = require('./Aggregate');
 //const Utilities = require('./Utilities');
@@ -30,6 +28,7 @@ module.exports = {
       }
     ]).then(Aggregate.parseResults);
   },
+  
   async findOne (id) {
     const city = await City.findOne({ _id: id })
     if(!city) throw { status: 404, message: 'CITY.NOT.EXIST' };

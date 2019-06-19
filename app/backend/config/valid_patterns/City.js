@@ -27,16 +27,17 @@ module.exports = {
     },
 
     country: {
-        type: 'string',
-        required: true,
-        permission: {
-          create: [ROLE.ADMINISTRATOR],
-          update: [ROLE.ADMINISTRATOR],
-          find: [ROLE.ADMINISTRATOR, ROLE.GUEST]
-        },
-        minLength: 1,
-        maxLength: 40,
+      type: 'string',
+      required: true,
+      permission: {
+        create: [ROLE.ADMINISTRATOR],
+        update: [ROLE.ADMINISTRATOR],
+        find: [ROLE.ADMINISTRATOR, ROLE.GUEST]
       },
+      minLength: 1,
+      maxLength: 40,
+    },
+
     photo: {
       type: 'string',
       required: true,
