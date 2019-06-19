@@ -1,3 +1,6 @@
+
+/** Vaudrait mieux donner l'extension .ts plutot .js */
+
 const data = [
     {
         value : 0,
