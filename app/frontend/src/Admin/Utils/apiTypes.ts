@@ -19,6 +19,8 @@ export interface ICity {
   country?:string
   tags?: string[]
   photo?: string
+  isModify?: boolean
+  isEnabled?: boolean
 }
 
 export interface ITicket {

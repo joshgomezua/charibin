@@ -136,7 +136,7 @@ export const deleteCity = (id: string, token: string) =>
   export const editCityState = (id: string, value: boolean, token: string) =>
   axios.patch(
     `${API_URL}/city/${id}`,
-    { isEnable: value },
+    { isEnabled: value },
     {
       headers: {
         'Content-type': 'application/json',

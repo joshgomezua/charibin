@@ -51,8 +51,7 @@ const CityModal: React.SFC<IProps> = ({
                 country: '',
                 tags: [],
                 photo: '',
-                isModify: false,
-                isEnable: false
+                isModify: false
             }
         }
         validationSchema={Yup.object().shape({

@@ -70,7 +70,7 @@ module.exports = {
       }
     },
     
-    isEnable: {
+    isEnabled: {
       type: 'boolean',
       required: false,
       permission: {

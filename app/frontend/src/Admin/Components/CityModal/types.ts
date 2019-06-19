@@ -13,7 +13,8 @@ export interface IFormValues {
     country?: string
     tags?: string[]
     photo?: string
-    isEnable?: boolean;
+    isModify?: boolean
+    isEnabled?: boolean
 }
 
 export type IEditValues = Partial<IFormValues>

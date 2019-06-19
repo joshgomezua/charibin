@@ -24,7 +24,7 @@ const dataTemplate = {
     photo: getImage,
     tags: () => [faker.name.firstName()],
     isModify: false,
-    isEnable: false
+    isEnabled: false
 
   },
 

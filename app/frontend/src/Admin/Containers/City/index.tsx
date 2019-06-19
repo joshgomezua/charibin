@@ -45,7 +45,7 @@ class CityContainer extends React.Component<
       tags:['Beach', 'Nightlife'],
       photo: "https://s3.eu-west-2.amazonaws.com/spon-staging/staging_5c91210fb4f0e3003452a581.png",
       isModify: false,
-      isEnable: false
+      isEnabled: false
     }],
     total: 0,
     currentPage: 0,
@@ -77,6 +77,7 @@ class CityContainer extends React.Component<
   }
 
   handleOpenEditModal = (id: string) => {
+    console.log("edit modal ")
     this.handleOpenModal(MODAL_TYPE.EDIT_CITY, 'Edit city', id)
     this.handleFetchCityData(id)
   }
@@ -192,9 +193,8 @@ class CityContainer extends React.Component<
   }
 
   handleToggleButton = (id: string, value:boolean) => {
-    console.log(id, value)
     const token = getToken()
-
+    
     editCityState(id, value, token)
       .then(({ data }) => {
         const updatedCities = this.state.cities.map((city: ICity) => {

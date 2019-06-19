@@ -1,7 +1,6 @@
 import React from 'react'
 import { RowRenderProps } from 'react-table'
 import Switch from '../../Components/Switch'
-import Button from 'src/Common/Components/Button'
 
 let count: number = 0
 
@@ -25,8 +24,8 @@ export const columns = (
     Cell: (props: RowRenderProps) => (
 
       props.value.map((tag: string) => {
-        //utiliser const
-        let length: number = props.value.length
+      
+        const length: number = props.value.length
 
         if (count < (length - 1) ) {
           count ++
@@ -49,26 +48,9 @@ export const columns = (
     )
   },
   {
-    Header: 'Modify',
-    width: 90,
-    accessor: 'isModify',
-    Cell: (props: RowRenderProps) => (
- 
-        <Button
-          text = "modify"
-          variant = "adminPrimary"
-          icon = "pencil"
-          disabled = {!(props.value)}
-          onClick={() => openEditModal(props.row._original._id)}
-        />
-     
-      )
-  },
-
-  {
     Header: 'Enable',
     width: 90,
-    accessor: 'isEnable',
+    accessor: 'isEnabled',
     Cell: (props: RowRenderProps) => (
       <Switch
       onChange={() => {
@@ -79,18 +61,30 @@ export const columns = (
   },
 
   {
-    //Enlever le Header Delete
-    Header: 'Delete',
+    Header: '',
+    width: 90,
+    accessor: 'isModify',
+    Cell: (props: RowRenderProps) => (
+      <div  className="spon-table__actions">
+        {console.log(props.value)}
+        <button disabled = {!(props.value)} onClick={() => openEditModal(props.row._original._id)}>
+              Modify
+        </button>
+      </div>
+     
+      )
+  },
+
+  {
+    Header: '',
     accessor: 'delete',
     width: 90,
     Cell: (props: RowRenderProps) => (
-      //Changer le bouton voir page Trips
-      <Button
-        text = "delete"
-        icon = "trash"
-        variant = "adminPrimary"
-        onClick={() => openDeleteModal(props.row._original._id)}
-      />
+      <div  className="spon-table__actions">
+        <button onClick={() => openDeleteModal(props.row._original._id)}>
+              Delete
+        </button>
+      </div>
     )
   },
 ]
