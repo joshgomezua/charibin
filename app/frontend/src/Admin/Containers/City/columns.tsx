@@ -3,8 +3,8 @@ import { RowRenderProps } from 'react-table'
 import Switch from '../../Components/Switch'
 import Button from 'src/Common/Components/Button'
 
-
 let count: number = 0
+
 export const columns = (
   openDeleteModal: (id: string) => void,
   openEditModal: (id: string) => void,
@@ -20,12 +20,12 @@ export const columns = (
    
   },
   {
-    Header: 'Key words',
+    Header: 'Keywords',
     accessor: 'tags',
     Cell: (props: RowRenderProps) => (
 
       props.value.map((tag: string) => {
-        
+        //utiliser const
         let length: number = props.value.length
 
         if (count < (length - 1) ) {
@@ -36,12 +36,9 @@ export const columns = (
           count = 0
           return (<React.Fragment key = {tag}>{tag.concat(" ")}</React.Fragment>)
         } 
-        
       })
-    
     )
   },
-  
   {
     Header: 'Photo',
     accessor: 'photo',
@@ -82,10 +79,12 @@ export const columns = (
   },
 
   {
+    //Enlever le Header Delete
     Header: 'Delete',
     accessor: 'delete',
     width: 90,
     Cell: (props: RowRenderProps) => (
+      //Changer le bouton voir page Trips
       <Button
         text = "delete"
         icon = "trash"

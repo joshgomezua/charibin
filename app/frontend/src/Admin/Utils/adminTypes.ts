@@ -8,6 +8,7 @@ export interface ICity {
   country?: string;
   photo?: string;
   tags?: string[];   
+  //Plutot isModified et isEnabled
   isModify?: boolean;
   isEnable?: boolean;
 }

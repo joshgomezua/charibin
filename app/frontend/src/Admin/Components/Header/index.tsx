@@ -19,13 +19,13 @@ const Header: React.SFC<IProps> = ({
         <h1 className="spon-admin-header__heading">{title}</h1>
       </div>
 
-      {(handleOpenModal&&heading&&modal) ? (
+      {(handleOpenModal && heading && modal) ? (
         <Button
           className="spon-admin-header__add-button"
           variant="blue"
           icon="plus"
           text="ADD NEW"
-          onClick={() => handleOpenModal(modal,heading)}
+          onClick={() => handleOpenModal(modal, heading)}
         />
       ) : handleOpenModal ? (
           <Button
@@ -33,7 +33,7 @@ const Header: React.SFC<IProps> = ({
             variant="blue"
             icon="plus"
             text="ADD NEW"
-            onClick={() => handleOpenModal(MODAL_TYPE.ADD_TRIP, 'create trip')}
+            onClick={() => handleOpenModal(MODAL_TYPE.ADD_TRIP, 'Create trip')}
           />
       ):null}
     </div>
