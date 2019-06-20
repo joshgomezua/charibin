@@ -22,7 +22,10 @@ const dataTemplate = {
     name: faker.address.city,
     country: () => faker.name.lastName(),
     photo: getImage,
-    tags: () => [faker.name.firstName()],
+    tags: () => [{
+        name:faker.name.firstName(),
+        isSelected: false
+      }],
     isModify: false,
     isEnabled: false
 

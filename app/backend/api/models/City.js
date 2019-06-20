@@ -7,7 +7,10 @@ const citySchema = new Schema({
   name: String,
   country: String,
   photo: String,
-  tags: [ String ],
+  tags: [{
+    name: String,
+    isSelected: Boolean
+  }],
   isModify:{ type: Boolean, default: false },
   isEnabled: { type: Boolean, default: false }
 });

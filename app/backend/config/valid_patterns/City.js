@@ -52,7 +52,7 @@ module.exports = {
     tags: {
       type: 'array',
       required: true,
-      subType: 'string',
+      subType:'object',
       permission: {
         create: [ROLE.ADMINISTRATOR],
         update: [ROLE.ADMINISTRATOR],

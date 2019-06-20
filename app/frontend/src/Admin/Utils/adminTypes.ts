@@ -2,12 +2,17 @@ export interface IAdmin {
   email: string
 }
 
+export interface ITag {
+  name: string
+  isSelected: boolean
+}
+
 export interface ICity {
   _id: string
   name: string
   country?: string;
   photo?: string;
-  tags?: string[];   
+  tags?: ITag[];   
   isModify?: boolean;
   isEnabled?: boolean;
 }

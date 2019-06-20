@@ -1,3 +1,5 @@
+import { ITag } from "./adminTypes";
+
 export interface ILoginForm {
   email: string
   password: string
@@ -17,7 +19,7 @@ export interface ITrip {
 export interface ICity {
   name: string
   country?:string
-  tags?: string[]
+  tags?: ITag[]
   photo?: string
   isModify?: boolean
   isEnabled?: boolean

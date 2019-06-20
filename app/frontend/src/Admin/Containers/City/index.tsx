@@ -42,7 +42,16 @@ class CityContainer extends React.Component<
       _id: '0',
       name: 'Paris',
       country: 'France',
-      tags:['Beach', 'Nightlife'],
+      tags:[
+        {
+          name: 'Beach',
+          isSelected: false
+        },
+        {
+          name: 'Nightlife',
+          isSelected: false
+        } ],
+        
       photo: "https://s3.eu-west-2.amazonaws.com/spon-staging/staging_5c91210fb4f0e3003452a581.png",
       isModify: false,
       isEnabled: false
@@ -77,7 +86,6 @@ class CityContainer extends React.Component<
   }
 
   handleOpenEditModal = (id: string) => {
-    console.log("edit modal ")
     this.handleOpenModal(MODAL_TYPE.EDIT_CITY, 'Edit city', id)
     this.handleFetchCityData(id)
   }

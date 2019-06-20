@@ -70,15 +70,51 @@ export const DEFAULT_CITY_DATA = {
     _id: '',
     name: 'London',
     country: 'United Kingdom',
-    tags: ["beach"],
+    tags: [ {
+         name:"beach",
+        isSelected: false}],
     photo: ''
 }
 
 
 
-export const TAGS = ['City', 'Beach', 'Nightlife'
-            , 'Art & Culture', 'Family', 'Nature',
-            'History']
+export const TAGS = [
+  {
+    name: 'City',
+    isSelected: false
+
+  },
+  {
+    name: 'Beach',
+    isSelected: false
+
+  },
+  {
+    name: 'Nightlife',
+    isSelected: false
+
+  },
+  {
+    name: 'Art & Culture',
+    isSelected: false
+
+  },
+  {
+    name: 'Family',
+    isSelected: false
+
+  },
+  {
+    name: 'Nature',
+    isSelected: false
+
+  },
+  {
+    name: 'History',
+    isSelected: false
+
+  }
+]
 
 
 export const COUNTRIES = [
@@ -132,22 +168,18 @@ export const COUNTRIES = [
   },
   {
     _id: "12",
-    name: "Canada"
-  },
-  {
-    _id: "13",
     name: "Denmark"
   },
   {
-    _id: "14",
+    _id: "13",
     name: "Estonia"
   },
   {
-    _id: "15",
+    _id: "14",
     name: "Finland"
   },
   {
-    _id: "16",
+    _id: "15",
     name: "France"
   },
   {

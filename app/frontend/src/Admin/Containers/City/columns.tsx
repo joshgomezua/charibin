@@ -1,6 +1,7 @@
 import React from 'react'
 import { RowRenderProps } from 'react-table'
 import Switch from '../../Components/Switch'
+import { ITag } from 'src/Admin/Utils/adminTypes';
 
 let count: number = 0
 
@@ -23,17 +24,17 @@ export const columns = (
     accessor: 'tags',
     Cell: (props: RowRenderProps) => (
 
-      props.value.map((tag: string) => {
+      props.value.map((tag: ITag) => {
       
         const length: number = props.value.length
 
         if (count < (length - 1) ) {
           count ++
-          return (<React.Fragment key = {tag}>{tag.concat("; ")}</React.Fragment>)
+          return (<React.Fragment key = {tag.name}>{tag.name.concat("; ")}</React.Fragment>)
         }
         else {
           count = 0
-          return (<React.Fragment key = {tag}>{tag.concat(" ")}</React.Fragment>)
+          return (<React.Fragment key = {tag.name}>{tag.name.concat(" ")}</React.Fragment>)
         } 
       })
     )
