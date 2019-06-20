@@ -4,10 +4,47 @@ import axios from 'axios'
 
 const API_URL = process.env.REACT_APP_API_URL
 
+
 export const logIn = (data: Types.ILoginForm) =>
   axios.post(`${API_URL}/login`, data, {
     headers: { 'Content-type': 'application/json' }
   })
+
+
+export const addUser = (data: Types.IUser, token: string) =>
+    axios.post(`${API_URL}/user`, data, {
+      headers: { 'Content-type': 'application/json', token }
+    })
+
+export const getUsers = (page: number, limit: number, token: string) =>
+  axios.get(`${API_URL}/user/${page}/${limit}`, {
+    headers: {
+      'Content-type': 'application/json',
+      token
+    }
+  })
+export const editUserState = (id: string, value: boolean, token: string) =>
+axios.patch(`${API_URL}/user/${id}`, 
+      { active: value },
+      {    
+        headers: { 'Content-type': 'application/json',
+                   token
+                   }
+})
+
+export const getSingleUser = (id: string, token: string) =>
+  axios.get(`${API_URL}/user/${id}`, { headers: { token } })
+
+export const deleteUser = (id: string, token: string) =>
+  axios.delete(`${API_URL}/user/${id}`, {
+    headers: { token }
+})
+
+export const updateUser = (id: string, data: Types.IEditUser, token: string) =>
+  axios.put(`${API_URL}/trip/${id}`, data, {
+    headers: { 'Content-type': 'application/json', token }
+  })
+
 
 export const addTrip = (data: Types.ITrip, token: string) =>
   axios.post(`${API_URL}/trip`, data, {

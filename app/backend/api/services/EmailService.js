@@ -49,7 +49,19 @@ class Email {
       }
     });
   }
+  async AddingNotif(name, password){
 
+    const context = `username: ${entities.encode(name)}<br />
+                     password: ${entities.encode(password)}<br />
+    `;
+    this.options.subject = `Welcome to Sponteous: ${entities.encode(name)}`;
+    this.options.text = `${context}`;
+    this.options.html = mailTemplate(context);
+
+    return this.__send();
+
+
+  }
   async clientOrder (order, invoiceLink) {
     const hours = {
       arrival: {
@@ -121,6 +133,9 @@ module.exports = {
   },
   async adminOrder (admin, order) {
     return new Email(admin.email).adminOrder(order);
+  },
+  async AddingNotif(name, email, password){
+    return new Email(email).AddingNotif(name, password);
   },
   async support (data) {
     return new Email(global.config.custom.supportEmail).support(data);

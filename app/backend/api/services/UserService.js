@@ -1,11 +1,20 @@
 'use strict';
-
+const Aggregate = require('./Aggregate');
 const Models = require('../models');
 const { User } = Models;
+const EmailService = require('../services/EmailService');
 const jwToken = require('../services/jwToken');
+const faker = require('faker');
+const redis = require('redis');
+const client = redis.createClient({ host: global.config.connection.redis.host });
+
+client.on('error', err => new Error(err));
 
 module.exports = {
   async login ({ email, password }) {
+    console.log('email: ', email);
+    console.log('password: ', password);
+
     const user = await User.findOne({ email });
     if (!user) throw { status: 404, message : 'USER.EMAIL.NOT_FOUND' };
 
@@ -18,5 +27,61 @@ module.exports = {
       }),
       user: user
     };
-  }
+  },
+  async create (data) {
+    const user = await User.findOne({ email: data.email});
+    if(user) throw { status: 409, message: 'USER.EXIST' };
+    data.password = faker.internet.password(6);
+    console.log('password: ', data.password);
+    await User.create(data);
+    await EmailService.AddingNotif(data.name, data.email, data.password);
+  },
+  async findOne (id) {
+    const user = await User.findOne({ _id: id, deleted: false }).populate('users');
+    if(!user) throw { status: 404, message: 'USER.NOT.EXIST' };
+
+    return user;
+  },
+
+  async getListOfUsers () {
+    const users = await User.find({ deleted: false }).select('name email role active');
+
+    return users;
+  },
+
+  async findCRM (page, limit) {
+    return User.aggregate([
+      {
+        $facet: {
+          results: [
+           
+            ...Aggregate.skipAndLimit(page, limit)
+          ],
+          status: Aggregate.getStatusWithSimpleMatch(
+            {},
+            page,
+            limit
+          )
+        }
+      }
+    ]).then(Aggregate.parseResults);
+  },
+  /*async update (id, data) {
+    const user = await User.findById(id);
+    if(!user) throw { status: 404, message: 'USER.NOT.EXIST' };
+      
+    //await User.update
+    
+    return;
+  },*/
+
+  async destroy (id) {
+    const user = await User.findById(id);
+    if(!user) throw { status: 404, message: 'USER.NOT.EXIST' };
+      
+    await User.findByIdAndDelete(id);
+    
+    return;
+  },
+
 };

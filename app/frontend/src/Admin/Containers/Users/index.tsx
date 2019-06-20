@@ -3,42 +3,43 @@ import React from 'react'
 import Header from '../../Components/Header'
 import Table from '../../Components/Table'
 import Modal from '../../Components/Modal'
-import TripModal from '../../Components/TripModal'
+import UserModal from '../../Components/UserModal'
 import DeleteModal from '../../Components/DeleteModal'
 
 import withToast from '../../../Common/HOC/withToast'
 import { RouteComponentProps } from 'react-router-dom'
-import { MODAL_TYPE, ITrip } from '../../Utils/adminTypes'
+import { MODAL_TYPE, IUser } from '../../Utils/adminTypes'
 import { getToken } from '../../../Common/Utils/helpers'
 import {
-  ADMIN_ROUTING,
+  //ADMIN_ROUTING,
   ERRORS,
   SUCCESS,
-  DEFAULT_TRIP_DATA
+  DEFAULT_USER_DATA
 } from '../../Utils/constants'
 import {
-  getTrips,
-  addTrip,
-  deleteTrip,
-  getSingleTrip,
-  updateTrip
+  getUsers,
+  addUser,
+  deleteUser,
+  getSingleUser,
+  editUserState,
+  updateUser
 } from '../../Utils/api'
 import { IState, IProps } from './types'
 import { columns } from './columns'
 
-class TripsContainer extends React.Component<
+class UsersContainer extends React.Component<
   RouteComponentProps<{}> & IProps,
   IState
 > {
   private modal = React.createRef<Modal>()
 
   readonly state: IState = {
-    trips: [],
+    users: [],
     total: 0,
     currentPage: 0,
     isLoading: true,
     isModalLoading: false,
-    editData: DEFAULT_TRIP_DATA,
+    editData: DEFAULT_USER_DATA,
     modal: {
       id: '',
       type: null,
@@ -59,19 +60,19 @@ class TripsContainer extends React.Component<
   }
 
   handleOpenDeleteModal = (id: string) => {
-    this.handleOpenModal(MODAL_TYPE.DELETE_TRIP, 'Delete trip', id)
+    this.handleOpenModal(MODAL_TYPE.DELETE_USER, 'Delete user', id)
   }
 
   handleOpenEditModal = (id: string) => {
-    this.handleOpenModal(MODAL_TYPE.EDIT_TRIP, 'Edit trip', id)
-    this.handleFetchTripData(id)
+    this.handleOpenModal(MODAL_TYPE.EDIT_USER, 'Edit user', id)
+    this.handleFetchUserpData(id)
   }
 
-  handleFetchTripData = (id: string) => {
+  handleFetchUserpData = (id: string) => {
     const token = getToken()
 
     if (token) {
-      getSingleTrip(id, token)
+      getSingleUser(id, token)
         .then(res => {
           this.setState({ editData: res.data })
         })
@@ -86,17 +87,19 @@ class TripsContainer extends React.Component<
     const token = getToken()
     console.log('2000')
     if (token) {
-      getTrips(page, limit, token)
-        .then(res =>
-          this.setState({
-            isLoading: false,
-            trips: res.data.results,
-            total: res.data.status.total
+      getUsers(page, limit, token)
+        .then(res => {
+            this.setState({
+              isLoading: false,
+              users: res.data.results,
+              total: res.data.status.total
+              
+            })
             
-          })
-        )
+
+        })
         .catch(err => {
-          this.props.showError(err, ERRORS.TRIP_FETCH)
+          this.props.showError(err, ERRORS.USER_FETCH)
         })
     }
   }
@@ -106,7 +109,7 @@ class TripsContainer extends React.Component<
     this.handleFetchItems(boardState.page, 10)
   }
 
-  handleDeleteTrip = () => {
+  handleDeleteUser = () => {
     const {
       modal: { id },
       currentPage
@@ -114,43 +117,43 @@ class TripsContainer extends React.Component<
     const token = getToken()
 
     if (token) {
-      deleteTrip(id, token)
+      deleteUser(id, token)
         .then(() => {
           this.handleFetchItems(currentPage, 10)
           this.handleCloseModal()
-          this.props.showSuccess(SUCCESS.TRIP_DELETE)
+          this.props.showSuccess(SUCCESS.USER_DELETE)
           this.handleRestartModalType()
         })
         .catch(err => {
           this.handleCloseModal()
-          this.props.showError(err, ERRORS.TRIP_DELETE)
+          this.props.showError(err, ERRORS.USER_DELETE)
         })
     }
   }
 
-  handleAddTrip = (data: ITrip) => {
+  handleAddUser = (data: IUser) => {
     const token = getToken()
     const { currentPage } = this.state
 
     this.setState({ isModalLoading: true })
-    return addTrip(data, token)
+    return addUser(data, token)
       .then(res => {
         this.modal.current!.close()
         this.handleFetchItems(currentPage, 10)
-        this.props.showSuccess(SUCCESS.TRIP_ADD)
+        this.props.showSuccess(SUCCESS.USER_ADD)
         this.handleRestartModalType()
 
         return Promise.resolve()
       })
       .catch(err => {
         this.setState({ isModalLoading: false })
-        this.props.showError(err, ERRORS.TRIP_ADD)
+        this.props.showError(err, ERRORS.USER_ADD)
 
         return Promise.reject()
       })
   }
 
-  handleEditTrip = (data: ITrip) => {
+  handleEditUser = (data: IUser) => {
     const token = getToken()
     const { currentPage } = this.state
     const {
@@ -158,28 +161,40 @@ class TripsContainer extends React.Component<
     } = this.state
 
     this.setState({ isModalLoading: true })
-    return updateTrip(id, data, token)
+    return updateUser(id, data, token)
       .then(res => {
         this.modal.current!.close()
         this.handleFetchItems(currentPage, 10)
-        this.props.showSuccess(SUCCESS.TRIP_EDIT)
+        this.props.showSuccess(SUCCESS.USER_EDIT)
         this.handleRestartModalType()
 
         return Promise.resolve()
       })
       .catch(err => {
         this.setState({ isModalLoading: false })
-        this.props.showError(err, ERRORS.TRIP_EDIT)
+        this.props.showError(err, ERRORS.USER_EDIT)
 
         return Promise.reject()
       })
   }
 
-  handleRedirectToCreateTicket = (trip: { _id: string; name: string }) => {
-    this.props.history.push({
-      pathname: `${ADMIN_ROUTING.MAIN}${ADMIN_ROUTING.TICKETS}`,
-      state: { trip }
-    })
+  handleToggleSwitch = (id: string, value: boolean) => {
+    const token = getToken()
+
+    editUserState(id, value, token)
+      .then(({ data }) => {
+        const updatedUsers = this.state.users.map((user: IUser) => {
+          if (user._id === data._id) {
+            return data
+          }
+
+          return user
+        })
+        
+        this.setState({ users: updatedUsers })
+        this.props.showSuccess(SUCCESS.USER_UPDATE)
+      })
+      .catch(err => this.props.showError(err, ERRORS.USER_EDIT))
   }
 
   handleRestartModalType = () => {
@@ -195,7 +210,7 @@ class TripsContainer extends React.Component<
 
   render() {
     const {
-      trips,
+      users,
       total,
       isLoading,
       isModalLoading,
@@ -205,17 +220,17 @@ class TripsContainer extends React.Component<
     return (
       <div className="spon-container">
         <Header
-          title="Destination control"
+          title="Users control"
           handleOpenModal={this.handleOpenModal}
         />
 
         <Table
-          data={trips}
+          data={users}
           handleFetchData={this.handleFetchTableData}
           columns={columns(
             this.handleOpenDeleteModal,
             this.handleOpenEditModal,
-            this.handleRedirectToCreateTicket
+            this.handleToggleSwitch
           )}
           loading={isLoading}
           pages={Math.ceil(total / 10)}
@@ -226,26 +241,26 @@ class TripsContainer extends React.Component<
           title={modalHeading}
           restartModalType={this.handleRestartModalType}>
           {modalType === MODAL_TYPE.ADD_TRIP ? (
-            <TripModal
+            <UserModal
               isLoading={isModalLoading}
               closeModal={this.handleCloseModal}
-              handleSubmit={this.handleAddTrip}
+              handleSubmit={this.handleAddUser}
             />
           ) : null}
 
           {modalType === MODAL_TYPE.EDIT_TRIP ? (
-            <TripModal
+            <UserModal
               isLoading={isModalLoading}
               editDate={editData}
               closeModal={this.handleCloseModal}
-              handleEditTrip={this.handleEditTrip}
+              handleEditTrip={this.handleEditUser}
             />
           ) : null}
 
           {modalType === MODAL_TYPE.DELETE_TRIP ? (
             <DeleteModal
               closeModal={this.handleCloseModal}
-              deleteItem={this.handleDeleteTrip}
+              deleteItem={this.handleDeleteUser}
             />
           ) : null}
         </Modal>
@@ -254,5 +269,5 @@ class TripsContainer extends React.Component<
   }
 }
 
-export default withToast(TripsContainer)
+export default withToast(UsersContainer)
 

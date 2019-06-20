@@ -3,7 +3,8 @@ export enum ADMIN_ROUTING {
   LOGIN = '/login',
   TRIPS = '/trips',
   TICKETS = '/tickets',
-  ORDERS = '/orders'
+  ORDERS = '/orders',
+  USERS = '/users'
 }
 
 export const ERRORS = {
@@ -17,6 +18,10 @@ export const ERRORS = {
   TICKET_EDIT: 'Error when edit ticket',
   ORDERS_FETCH: `Can't fetch orders list`,
   ORDERS_EDIT: 'Error when edit order',
+  USER_FETCH: `Cant't fetch user list`,
+  USER_ADD: 'Error when add user' ,
+  USER_EDIT: 'Error when edit user',
+  USER_DELETE: 'Error when delete user',
   DEFAULT: 'Error'
 }
 
@@ -28,6 +33,10 @@ export const SUCCESS = {
   TICKET_EDIT: 'Trip edited successfully',
   TICKET_DELETE: 'Ticket deleted successfully',
   ORDER_UPDATE: 'Order update successfully',
+  USER_ADD: 'user added successfully' ,
+  USER_EDIT: 'user edited successfully' ,
+  USER_DELETE: 'User deleted succesfully',
+  USER_UPDATE: 'user updated successfully' ,
   DEFAULT: 'Success'
 }
 
@@ -55,4 +64,13 @@ export const DEFAULT_TRIP_DATA = {
   photo: '',
   price: 0,
   type: ''
+}
+
+export const DEFAULT_USER_DATA = {
+  _id: '',
+  active: false,
+  email: '-key@hotmail.com',
+  name: '',
+  role: '',
+  password: ''
 }

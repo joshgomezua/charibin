@@ -8,6 +8,25 @@ const dataTemplate = {
     role: 'Administrator',
     password: '22AA@@aaasasd'
   },
+/*
+  user:{
+
+    email: faker.email,
+    name: 'user1',
+    role: 'Guest',
+    password: '22AA@@aaasasdaa',
+    active: true
+
+  },
+  
+  */
+    user:{
+      email: faker.internet.exampleEmail,
+      name: faker.name.firstName,
+      role: 'Client',
+      password: faker.name.firstName
+    },
+
 
   trip: {
     name: faker.address.city,

@@ -7,6 +7,17 @@ export interface ICity {
   name: string
 }
 
+export interface IUser {
+  _id: string
+  active: boolean
+  email: string
+  name: string
+  role: string
+  password: string
+
+}
+
+
 export interface ITrip {
   _id: string
   active: boolean
@@ -56,5 +67,9 @@ export enum MODAL_TYPE {
   'DELETE_TRIP',
   'ADD_TICKET',
   'EDIT_TICKET',
-  'DELETE_TICKET'
+  'DELETE_TICKET',
+  'ADD_USER',
+  'EDIT_USER',
+  'DELETE_USER',
 }
+ 

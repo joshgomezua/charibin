@@ -1,0 +1,19 @@
+export interface IProps {
+    editDate?: IFormValues & { _id: string }
+    isLoading: boolean
+    closeModal: () => void
+    handleSubmit?: (data: any) => Promise<void>
+    handleEditTrip?: (data: IEditValues) => Promise<void>
+  }
+  
+  export interface IFormValues {
+    name: string
+    email: string
+    role: string
+    //password: string
+    active: boolean
+    
+  }
+  
+  export type IEditValues = Partial<IFormValues>
+  

@@ -14,6 +14,23 @@ export interface ITrip {
   type: string
 }
 
+export interface IUser {
+  active: boolean
+  email: string
+  name: string
+  role: string
+  //password: string
+
+}
+
+export interface IEditUser {
+  user?: string
+  active?: boolean
+  email?: string
+  name?: string
+}
+
+
 export interface ITicket {
   trip: string
   direction: string
