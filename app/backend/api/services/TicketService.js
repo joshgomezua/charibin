@@ -437,6 +437,16 @@ module.exports = {
       totalPrice: finalCost,
     });
 
+    await Ticket.findOneAndUpdate({ _id: selectedTrip.arrivalTicket._id, active: true, deleted: false, quantity: { $gte: quantity } }, {
+      $dec: { quantity },
+      $inc: { soldTickets }
+    });
+
+    await Ticket.findOneAndUpdate({ _id: selectedTrip.departureTicket._id, active: true, deleted: false, quantity: { $gte: quantity } }, {
+      $dec: { quantity },
+      $inc: { soldTickets }
+    });
+
     await EmailService.clientOrder(order, charge.receipt_url);
     await EmailService.adminOrder(admin, order);
 
