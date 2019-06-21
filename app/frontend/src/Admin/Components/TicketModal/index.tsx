@@ -78,8 +78,8 @@ class TicketModal extends React.Component<IProps, IState> {
                   },
                   type: 'Train',
                   quantity: 0,
-                  soldTickets: 0,
-                  reservedQuantity: 0,
+                  //soldTickets: 0,
+                  //reservedQuantity: 0,
                   date: undefined,
                   endDate: undefined,
                   days: [0, 1, 2, 3, 4, 5, 6],
@@ -96,16 +96,14 @@ class TicketModal extends React.Component<IProps, IState> {
             type: Yup.string().required('Trip type is required'),
             quantity: Yup.number()
               .min(1)
-              .max(1000)
-              .required(),
-            soldTickets: Yup.number()
-              .min(1)
-              .max(1000)
-              .required(),
-            reservedQuantity: Yup.number()
-              .min(1)
-              .max(1000)
-              .required(),
+              .max(1000),
+            //soldTickets: Yup.number()
+            //  .min(1)
+            //  .max(1000),
+            //reservedQuantity: Yup.number()
+            //  .min(1)
+            //  .max(1000)
+            //  .required(),
             date: Yup.string().required(),
             hours: Yup.string().required(),
             direction: Yup.string().required(),
@@ -132,8 +130,8 @@ class TicketModal extends React.Component<IProps, IState> {
               trip: values.trip._id,
               direction: values.direction.toLocaleLowerCase(),
               quantity: values.quantity,
-              soldTickets: values.soldTickets,
-              reservedQuantity: values.reservedQuantity,
+              soldTickets: 0,
+              reservedQuantity: 0,
               type: values.type,
               hours: values.hours,
               date: {

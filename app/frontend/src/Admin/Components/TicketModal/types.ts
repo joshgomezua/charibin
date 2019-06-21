@@ -14,8 +14,6 @@ export interface IProps {
     }
     type: string
     quantity: number
-    soldTickets: number
-    reservedQuantity: number
     date: {
       start: string
       end: string
@@ -40,7 +38,7 @@ export interface IProps {
     }
   ) => Promise<void>
   handleEditTicket?: (
-    ticket: Pick<ITicket, Exclude<keyof ITicket, 'trip' | '_id' | 'date'>> & {
+    ticket: Pick<ITicket, Exclude<keyof ITicket, 'trip' | '_id' | 'date' | 'soldTickets' | 'reservedQuantity'>> & {
       trip: string
       date: {
         start: number
@@ -57,8 +55,6 @@ export interface IFormValues {
   }
   type: string
   quantity: number
-  soldTickets: number
-  reservedQuantity: number
   date: Date | string | undefined
   endDate?: Date | string | undefined
   days?: number[]
