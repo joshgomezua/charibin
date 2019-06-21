@@ -40,7 +40,7 @@ const Table: React.SFC<IProps> = ({
             <TripTable
               data={row.original.scheduledTrips}
               columns={detailsColumns}
-            ></TripTable>
+            />
           </div> 
         )}
       }

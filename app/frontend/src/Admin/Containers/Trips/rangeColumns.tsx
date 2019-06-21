@@ -2,7 +2,7 @@ import React from 'react'
 import * as moment from 'moment'
 import { IDuration } from '../../../Common/Utils/globalTypes'
 import Checkbox from '../../Components/Checkbox'
-import { RowRenderProps} from 'react-table'
+import { RowRenderProps } from 'react-table'
 import 'moment-duration-format'
 // import Button from 'src/Common/Components/Button' 
 import { MODAL_TYPE } from 'src/Admin/Utils/adminTypes';
@@ -78,7 +78,7 @@ export const rangeColumns = (
     }
   },
   {
-    accessor: 'price',
+    accessor: '_id',
     width: 210,
     Cell: (props: RowRenderProps) => (
       <>
@@ -102,8 +102,8 @@ export const rangeColumns = (
         </div>
       </>
     ),
-    // Footer: (props: RowRenderProps ) => 
-    //   { console.log(props.value) }
+    Footer: (props: RowRenderProps ) => 
+      { console.log(props.value) }
     //   //<Button
     // //   className="spon-table-footer__add-button"
     // //   variant="blue"
