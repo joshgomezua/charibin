@@ -1,4 +1,4 @@
-import { ITag } from "src/Admin/Utils/adminTypes";
+
 
 export interface IProps {
     editDate?: IFormValues & { _id: string }
@@ -13,7 +13,7 @@ export interface IProps {
 export interface IFormValues {
     name: string
     country?: string
-    tags?: ITag[]
+    tags?: string[]
     photo?: string
     isModify?: boolean
     isEnabled?: boolean

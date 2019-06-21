@@ -16,7 +16,6 @@ import photoSvg from '../../../Common/Utils/Media/photo.svg'
 import Dropdown from '../Dropdown'
 
 import { TAGS } from '../../Utils/constants'
-import { ITag } from 'src/Admin/Utils/adminTypes';
 import { COUNTRIES } from '../../Utils/constants'
 
 import { IProps, IFormValues, IEditValues } from './types'
@@ -165,17 +164,16 @@ const CityModal: React.SFC<IProps> = ({
                 {TAGS.map(tag => {
                     return( 
                       <Button
-                        key = {tag.name}
-                        className= "spon-trip-modal__button"
+                        key = {tag}
+                        className= {editDate && (values['tags'] as string[]).includes(tag) ?
+                                                  "spon-trip-modal selected": "spon-trip-modal__button"}
                         type = "button"
                         variant="adminPrimary"
-                        text = {tag.name}
+                        text = {tag}
                         onClick = {() => {
-                              if (!tag.isSelected) {
-                                tag.isSelected = !(tag.isSelected);
                                 const tags: string = 'tags';
-                                (values[tags] as ITag[]).push(tag)
-                              }
+                                (values[tags] as string[]).push(tag)
+                              
                         }}
                       />
                 )})}

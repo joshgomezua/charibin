@@ -132,8 +132,8 @@
 
   }
   
-  &__selected{
-    background-color: red;
+  &.selected{
+    background-color:$dark-deep-blue;
   }
   &__avatar {
     display: flex;

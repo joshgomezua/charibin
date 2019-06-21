@@ -70,50 +70,16 @@ export const DEFAULT_CITY_DATA = {
     _id: '',
     name: 'London',
     country: 'United Kingdom',
-    tags: [ {
-         name:"beach",
-        isSelected: false}],
+    tags: ["beach"],
     photo: ''
 }
 
 
 
 export const TAGS = [
-  {
-    name: 'City',
-    isSelected: false
-
-  },
-  {
-    name: 'Beach',
-    isSelected: false
-
-  },
-  {
-    name: 'Nightlife',
-    isSelected: false
-
-  },
-  {
-    name: 'Art & Culture',
-    isSelected: false
-
-  },
-  {
-    name: 'Family',
-    isSelected: false
-
-  },
-  {
-    name: 'Nature',
-    isSelected: false
-
-  },
-  {
-    name: 'History',
-    isSelected: false
-
-  }
+  'City','Beach','Nightlife','Art & Culture','Family',
+  'Nature',
+  'History'
 ]
 
 
