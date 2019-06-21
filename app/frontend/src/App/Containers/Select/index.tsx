@@ -123,7 +123,10 @@ class SelectContainer extends Component<
   }
 
   handleBookTrips = () => {
+    console.log('handleBookTrips')
     const { selected, quantity } = this.props
+    console.log('selected', selected)
+    console.log('quantity', quantity)
     const token = getOwnerToken()
     const bookedTrips = selected.map((selectedItem: ISelectedData) => {
       if (selectedItem.departureTicket && selectedItem.arrivalTicket) {
@@ -139,6 +142,7 @@ class SelectContainer extends Component<
         }
       }
     })
+    console.log('bookedTrips', bookedTrips)
 
     const data: IBookedData = {
       quantity,
@@ -152,15 +156,18 @@ class SelectContainer extends Component<
     API.bookTrips(data)
       .then(res => {
         const bookedTrips = res.data.trips
+        console.log('bookedTrips in API call of Select', bookedTrips)
         const selectedTrips = this.props.selected.map((item: ISelectedData) => {
           const filteredTrip: IBookedType = bookedTrips.find(
             (trip: IBookedType) => item.tripId === trip.trip
           )
+          console.log('filteredTrip', filteredTrip)
           if (filteredTrip) {
             item.price = filteredTrip.cost
           }
           return item
         })
+        console.log('selectedTrips', selectedTrips)
 
         saveToLS('owner', {
           billing: res.data.billing,

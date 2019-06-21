@@ -40,6 +40,8 @@ export interface ITicket {
    }
   direction: string
   quantity: number
+  soldTickets: number,
+  reservedQuantity: number,
   type: string
   hours?: string
   date: {

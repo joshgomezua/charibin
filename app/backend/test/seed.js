@@ -54,28 +54,31 @@ loadModels();
   console.log(`Create administrator: ${globals.data.administrator.email} ${globals.data.administrator.password}`);
 
   // Create trips and tickets
-  for (let i = 0; i < 20; i++) {
-    trips.push(await helpers.createTrip({...helpers.dataClone(globals.dataTemplate.trip), destination: getRandomCities(), departure: getRandomCities()}));
-    let str = JSON.stringify(trips[0]);
-    console.log(`Creating Trips: ${i + 1}/${20} \n
-    ${str}`);
+  for (let i = 0; i < 5; i++) {
+    trips.push(await helpers.createTrip(helpers.dataClone(globals.dataTemplate.trip)));
+    console.log(`Creating Trips: ${i + 1}/${20}`);
 
     // Create tickets
-    for (let j = 0; j < 10; j++) {
-      const ticket = await helpers.createTicket({ ...helpers.dataClone(globals.dataTemplate.ticket), direction: 'arrival', trip: trips[i]._id });
-      await helpers.createTicket({
+    for (let j = 0; j < 1; j++) {
+      //const ticket = await helpers.createTicket({ ...helpers.dataClone(globals.dataTemplate.ticket), direction: 'arrival', trip: trips[i]._id});
+    const ticketArrivalTemp = { ...helpers.dataClone(globals.dataTemplate.ticket), direction: 'arrival', trip: trips[i]._id};
+    const ticketArrival = await helpers.createTicket(ticketArrivalTemp);
+    const ticketDepartureTemp = {
         ...helpers.dataClone(globals.dataTemplate.ticket),
         date: {
-          start: new Date(ticket.date.start.getTime() + global.config.custom.time.day7).getTime(),
-          end: new Date(ticket.date.end.getTime() + global.config.custom.time.day7).getTime()
+          start: new Date(ticketArrival.date.start.getTime() + global.config.custom.time.day7).getTime(),
+          end: new Date(ticketArrival.date.end.getTime() + global.config.custom.time.day7).getTime()
         },
         direction: 'departure',
         trip: trips[i]._id
-      });
+      };
+    const ticketDeparture = await helpers.createTicket(ticketDepartureTemp)
+
 
       process.stdout.clearLine();
       process.stdout.cursorTo(0);
       process.stdout.write(`\tCreating Tickets: ${j + 1}/${10}`);
+      //console.log(JSON.stringify(ticket))
     }
     process.stdout.write('\n');
   }
@@ -94,6 +97,9 @@ function getRandomCities(){
 "London", "Manchester", "Bristol"];
 
   return cities[Math.floor(Math.random() * cities.length)];
+}
+function getQuantity(ticket) {
+  return ticket.quantity;
 }
 
 function loadServices () {

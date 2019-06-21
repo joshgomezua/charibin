@@ -38,7 +38,7 @@ export interface IProps {
     }
   ) => Promise<void>
   handleEditTicket?: (
-    ticket: Pick<ITicket, Exclude<keyof ITicket, 'trip' | '_id' | 'date'>> & {
+    ticket: Pick<ITicket, Exclude<keyof ITicket, 'trip' | '_id' | 'date' | 'soldTickets' | 'reservedQuantity'>> & {
       trip: string
       date: {
         start: number
