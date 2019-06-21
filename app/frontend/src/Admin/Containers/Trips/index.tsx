@@ -204,7 +204,7 @@ class TripsContainer extends React.Component<
     return (
       <div className="spon-container">
         <Header
-          title="Destination control"
+          title="Routes & Prices"
           handleOpenModal={this.handleOpenModal}
         />
 
