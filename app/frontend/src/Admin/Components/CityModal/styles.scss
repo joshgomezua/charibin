@@ -122,19 +122,16 @@
   &__button {
     width: rc(170);
     height: rc(50);
-    &:active {
-      background-color:$dark-deep-blue;
-    }
 
     &:first-of-type {
       margin-right: 1rem;
     }
 
+    &:active {
+      background-color: $gray-dark;
+    }
   }
   
-  &.selected{
-    background-color:$dark-deep-blue;
-  }
   &__avatar {
     display: flex;
   }

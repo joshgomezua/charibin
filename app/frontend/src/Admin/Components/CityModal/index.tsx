@@ -15,11 +15,11 @@ import Button from '../../../Common/Components/Button'
 import photoSvg from '../../../Common/Utils/Media/photo.svg'
 import Dropdown from '../Dropdown'
 
-import { TAGS } from '../../Utils/constants'
 import { COUNTRIES } from '../../Utils/constants'
 
 import { IProps, IFormValues, IEditValues } from './types'
 import './styles.scss' 
+import Tag from '../Tag';
 
 const CityModal: React.SFC<IProps> = ({
   isLoading,
@@ -29,6 +29,7 @@ const CityModal: React.SFC<IProps> = ({
   handleSubmit
 }) => {
   let editableData = null
+  const TAG = "tags"
 
   if (editDate) {
     editableData = {
@@ -69,7 +70,7 @@ const CityModal: React.SFC<IProps> = ({
             for (const key in values) {
               if (
                 values.hasOwnProperty(key) &&
-                values[key] !== editDate![key] || (key === "tags")
+                values[key] !== editDate![key] || (key === TAG)
               ) {
                 dataToUpdate[key] = values[key]
               } 
@@ -161,22 +162,10 @@ const CityModal: React.SFC<IProps> = ({
 
             <div className="spon-trip-modal__row">
               <div className="spon-trip-modal__tagsbtn">
-                {TAGS.map(tag => {
-                    return( 
-                      <Button
-                        key = {tag}
-                        className= {editDate && (values['tags'] as string[]).includes(tag) ?
-                                                  "spon-trip-modal selected": "spon-trip-modal__button"}
-                        type = "button"
-                        variant="adminPrimary"
-                        text = {tag}
-                        onClick = {() => {
-                                const tags: string = 'tags';
-                                (values[tags] as string[]).push(tag)
-                              
-                        }}
-                      />
-                )})}
+                  <Tag
+                  tags = {values[TAG] as string []}
+                  editDate = {editDate}
+                  />
               </div>
                 <ErrorMessage
                   name="tags"
