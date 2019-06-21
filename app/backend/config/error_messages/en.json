@@ -101,6 +101,11 @@
           "EXIST": "You must first book these trips to able to unbook them"
         }
       },
+      "BOOK": {
+        "NOT":{
+          "ENOUGH": "No enough tickets available"
+        }
+      },
       "OWNER": {
         "NOT": {
           "EXIST": "You must first book some trips"

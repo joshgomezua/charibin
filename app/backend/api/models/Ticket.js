@@ -8,6 +8,7 @@ const ticketSchema = new Schema({
   direction: { type: String, enum: ['arrival', 'departure'] },
   quantity: Number,
   soldTickets: Number,
+  reservedQuantity: Number,
   type: { type: String, enum: global.config.custom.ticket.type },
   date: {
     start: Date,

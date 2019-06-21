@@ -37,6 +37,7 @@ export const DEFULT_TICKET_DATA = {
   direction: '',
   quantity: 0,
   soldTickets: 0,
+  reservedQuantity: 0,
   type: '',
   date: {
     start: '',

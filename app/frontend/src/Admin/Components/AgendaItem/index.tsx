@@ -37,10 +37,10 @@ const AgendaItem: React.SFC<IProps> = ({
         {ticket.trip.name}
       </td>
       <td className="spon-agenda__cell spon-agenda__cell--body">
-        {ticket.quantity + ticket.soldTickets}
+        {ticket.quantity}
       </td>
       <td className="spon-agenda__cell spon-agenda__cell--body">
-        {ticket.quantity}
+        {ticket.quantity - ticket.soldTickets}
       </td>
       <td className="spon-agenda__cell spon-agenda__cell--body">
         {ticket.soldTickets}

@@ -54,12 +54,12 @@ loadModels();
   console.log(`Create administrator: ${globals.data.administrator.email} ${globals.data.administrator.password}`);
 
   // Create trips and tickets
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 5; i++) {
     trips.push(await helpers.createTrip(helpers.dataClone(globals.dataTemplate.trip)));
     console.log(`Creating Trips: ${i + 1}/${20}`);
 
     // Create tickets
-    for (let j = 0; j < 10; j++) {
+    for (let j = 0; j < 1; j++) {
       //const ticket = await helpers.createTicket({ ...helpers.dataClone(globals.dataTemplate.ticket), direction: 'arrival', trip: trips[i]._id});
     const ticketArrivalTemp = { ...helpers.dataClone(globals.dataTemplate.ticket), direction: 'arrival', trip: trips[i]._id};
     const ticketArrival = await helpers.createTicket(ticketArrivalTemp);

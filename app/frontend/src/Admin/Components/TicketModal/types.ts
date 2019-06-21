@@ -15,6 +15,7 @@ export interface IProps {
     type: string
     quantity: number
     soldTickets: number
+    reservedQuantity: number
     date: {
       start: string
       end: string
@@ -57,6 +58,7 @@ export interface IFormValues {
   type: string
   quantity: number
   soldTickets: number
+  reservedQuantity: number
   date: Date | string | undefined
   endDate?: Date | string | undefined
   days?: number[]

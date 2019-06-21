@@ -80,10 +80,6 @@ class PaymentContainer extends Component<
   }
 
   handleSubmit = ({ cardToken, passenger, payment }: ISuccessValues) => {
-    console.log('handleSubmit')
-    console.log('cardToken', cardToken)
-    console.log('passenger', passenger)
-    console.log('payment', payment)
     const owner = getOwnerToken()
 
     const birthDate = +moment(
