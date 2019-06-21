@@ -82,6 +82,11 @@
         "EXIST": "Trip not exist"
       }
     },
+    "SCHEDULED_TRIP": {
+      "NOT": {
+        "EXIST": "Scheduled trip not exist"
+      }
+    },
     "BUY": {
       "OWNER": {
         "NOT": {

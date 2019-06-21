@@ -84,9 +84,9 @@ module.exports = {
       type: 'boolean',
       required: false,
       permission: {
-        create: [],
-        update: [],
-        find: []
+        create: [ROLE.ADMINISTRATOR],
+        update: [ROLE.ADMINISTRATOR],
+        find: [ROLE.ADMINISTRATOR]
       }
     },
 
