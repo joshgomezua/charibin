@@ -40,6 +40,8 @@ class UsersContainer extends React.Component<
     isLoading: true,
     isModalLoading: false,
     editData: DEFAULT_USER_DATA,
+    enable: false,
+    usersTable: [],
     modal: {
       id: '',
       type: null,
@@ -92,6 +94,7 @@ class UsersContainer extends React.Component<
             this.setState({
               isLoading: false,
               users: res.data.results,
+              usersTable: res.data.results,
               total: res.data.status.total
               
             })
@@ -196,6 +199,26 @@ class UsersContainer extends React.Component<
       })
       .catch(err => this.props.showError(err, ERRORS.USER_EDIT))
   }
+  handleToggle = () =>{
+    let newUsers
+    const toggle = !this.state.enable
+    
+    if (toggle){
+      newUsers = this.state.users.filter(user => user.active === true)
+    } else {
+      newUsers = this.state.users
+    }
+    
+    this.setState({usersTable: newUsers, enable: toggle})
+
+
+  }
+ 
+  handlResetPassword(id: string){
+
+    console.log('aaaaaa')
+  }
+
 
   handleRestartModalType = () => {
     this.setState({
@@ -210,27 +233,35 @@ class UsersContainer extends React.Component<
 
   render() {
     const {
-      users,
+      usersTable,
       total,
       isLoading,
       isModalLoading,
       editData,
+      enable,
       modal: { type: modalType, heading: modalHeading }
     } = this.state
     return (
       <div className="spon-container">
         <Header
           title="Users control"
+          handleToggle={this.handleToggle}
+          heading = 'Create User'
+          enable = {enable}
+	        modal = {MODAL_TYPE.ADD_USER}
           handleOpenModal={this.handleOpenModal}
+	  
         />
 
         <Table
-          data={users}
+          data={usersTable}
           handleFetchData={this.handleFetchTableData}
           columns={columns(
             this.handleOpenDeleteModal,
             this.handleOpenEditModal,
+            this.handlResetPassword,
             this.handleToggleSwitch
+           
           )}
           loading={isLoading}
           pages={Math.ceil(total / 10)}
@@ -240,7 +271,7 @@ class UsersContainer extends React.Component<
           ref={this.modal}
           title={modalHeading}
           restartModalType={this.handleRestartModalType}>
-          {modalType === MODAL_TYPE.ADD_TRIP ? (
+          {modalType === MODAL_TYPE.ADD_USER ? (
             <UserModal
               isLoading={isModalLoading}
               closeModal={this.handleCloseModal}
@@ -248,16 +279,16 @@ class UsersContainer extends React.Component<
             />
           ) : null}
 
-          {modalType === MODAL_TYPE.EDIT_TRIP ? (
+          {modalType === MODAL_TYPE.EDIT_USER ? (
             <UserModal
               isLoading={isModalLoading}
               editDate={editData}
               closeModal={this.handleCloseModal}
-              handleEditTrip={this.handleEditUser}
+              handleEditUser={this.handleEditUser}
             />
           ) : null}
 
-          {modalType === MODAL_TYPE.DELETE_TRIP ? (
+          {modalType === MODAL_TYPE.DELETE_USER ? (
             <DeleteModal
               closeModal={this.handleCloseModal}
               deleteItem={this.handleDeleteUser}
@@ -266,7 +297,9 @@ class UsersContainer extends React.Component<
         </Modal>
       </div>
     )
+
   }
+
 }
 
 export default withToast(UsersContainer)

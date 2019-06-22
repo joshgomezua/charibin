@@ -4,10 +4,16 @@ import Button from '../../../Common/Components/Button'
 import { MODAL_TYPE } from '../../Utils/adminTypes'
 import { IProps } from './types'
 import './styles.scss'
+import Switch from '../Switch';
+
 
 const Header: React.SFC<IProps> = ({
   title,
   query,
+  heading,
+  modal,
+  handleToggle,
+  enable,
   handleSearch,
   handleOpenModal
 }) => {
@@ -17,15 +23,43 @@ const Header: React.SFC<IProps> = ({
         <h1 className="spon-admin-header__heading">{title}</h1>
       </div>
 
-      {handleOpenModal ? (
+      <div className="spon-admin-header__inner">
+        <h1 className="spon-admin-header__heading">{title}</h1>
+
+        {handleToggle ? (
+        
+        <Switch
+
+        checked={enable ? enable : false}
+        onChange={() => {
+          handleToggle()
+        }}
+        
+        />
+) : null}
+
+      </div>
+
+      {(handleOpenModal && heading && modal) ? (
         <Button
           className="spon-admin-header__add-button"
           variant="blue"
           icon="plus"
           text="ADD NEW"
-          onClick={() => handleOpenModal(MODAL_TYPE.ADD_TRIP, 'Create trip')}
+          onClick={() => handleOpenModal(modal, heading)}
         />
-      ) : null}
+      ) : handleOpenModal ? (
+          <Button
+            className="spon-admin-header__add-button"
+            variant="blue"
+            icon="plus"
+            text="ADD NEW"
+            onClick={() => handleOpenModal(MODAL_TYPE.ADD_TRIP, 'Create trip')}
+          />
+      ):null}
+  
+
+
     </div>
   )
 }

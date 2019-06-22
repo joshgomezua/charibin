@@ -2,13 +2,10 @@
 const Aggregate = require('./Aggregate');
 const Models = require('../models');
 const { User } = Models;
-const EmailService = require('../services/EmailService');
+const EmailService = require('./EmailService');
 const jwToken = require('../services/jwToken');
 const faker = require('faker');
-const redis = require('redis');
-const client = redis.createClient({ host: global.config.connection.redis.host });
 
-client.on('error', err => new Error(err));
 
 module.exports = {
   async login ({ email, password }) {
@@ -35,6 +32,7 @@ module.exports = {
     console.log('password: ', data.password);
     await User.create(data);
     await EmailService.AddingNotif(data.name, data.email, data.password);
+    
   },
   async findOne (id) {
     const user = await User.findOne({ _id: id, deleted: false }).populate('users');

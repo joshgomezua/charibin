@@ -22,7 +22,7 @@ if (process.env.NODE_ENV === 'development') {
 class Email {
   constructor (emails) {
     this.options = {
-      from: global.config.custom.mail.from
+      from: 'red-key@hotmail.com'
     };
 
     if (_.isArray(emails)) {
@@ -36,9 +36,12 @@ class Email {
 
   __send () {
     return new Promise((resolve, reject) => {
-      if (process.env.NODE_ENV === 'development') {
+      if (process.env.NODE_ENV === 'development') { console.log('transport:', transporter);
         transporter.sendMail(this.options, err => {
           if (err) return reject(err);
+          console.log('reject', reject);
+          console.log('resolve;', resolve);
+          console.log('options', this.options);
           return resolve();
         });
       } else {

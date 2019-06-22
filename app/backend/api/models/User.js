@@ -9,7 +9,8 @@ const userSchema = new Schema({
   name: String,
   role: { type: String, enum: ['Administrator', 'Client', 'Guest'] },
   password: String,
-  createdAt: { type: Date, default: Date.now }
+  createdAt: { type: Date, default: Date.now },
+  active: Boolean
 });
 
 userSchema.pre('save', function (next) {

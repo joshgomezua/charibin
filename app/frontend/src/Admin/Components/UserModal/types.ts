@@ -3,7 +3,7 @@ export interface IProps {
     isLoading: boolean
     closeModal: () => void
     handleSubmit?: (data: any) => Promise<void>
-    handleEditTrip?: (data: IEditValues) => Promise<void>
+    handleEditUser?: (data: IEditValues) => Promise<void>
   }
   
   export interface IFormValues {

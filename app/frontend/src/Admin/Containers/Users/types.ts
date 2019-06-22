@@ -3,6 +3,7 @@ import { IResponseError } from '../../../Common/Utils/globalTypes'
 
 export interface IState {
   users: IUser[]
+  usersTable: IUser[]
   total: number
   isModalLoading: boolean
   isLoading: boolean
@@ -13,6 +14,7 @@ export interface IState {
     type: MODAL_TYPE | null
     heading: string
   }
+  enable: boolean
 }
 
 export interface IProps {

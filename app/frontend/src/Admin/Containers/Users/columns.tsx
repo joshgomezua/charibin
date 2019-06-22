@@ -5,11 +5,12 @@ import React from 'react'
 import { RowRenderProps } from 'react-table'
 import 'moment-duration-format'
 import Switch from 'src/Admin/Components/Switch';
+import Button from 'src/Common/Components/Button';
 
 export const columns = (
   openDeleteModal: (id: string) => void,
   openEditModal: (id: string) => void,
-  
+  openResetPasswordModal: (id: string) => void,
   onSwitchChange: ((id: string, value: boolean) =>void),
 ) => [
   {
@@ -43,12 +44,35 @@ export const columns = (
   
   
   {
+    Header: 'pass',
+    accessor: 'role',
+    Cell: (props: RowRenderProps) => (<Button
+              className="spon-agenda__add-button"
+              variant="blue"
+              //icon="plus"
+              text="Reset password"
+             
+                onClick={() => openResetPasswordModal(props.row._original._id)
+              }
+            />
+    )
+  },
+
+
+  {
     Header: '',
     accessor: 'actions',
-    width: 200,
+    width: 400,
     Cell: (props: RowRenderProps) => (
       <>
+
+
         <div className="spon-table__actions">
+
+
+
+          
+         
           
           <button onClick={() => openEditModal(props.row._original._id)}>
             Modify

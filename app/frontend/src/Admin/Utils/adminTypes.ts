@@ -71,5 +71,6 @@ export enum MODAL_TYPE {
   'ADD_USER',
   'EDIT_USER',
   'DELETE_USER',
+  'RESET_PASSWORD'
 }
  

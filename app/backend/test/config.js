@@ -8,7 +8,7 @@ const dataTemplate = {
     role: 'Administrator',
     password: '22AA@@aaasasd'
   },
-/*
+
   user:{
 
     email: faker.email,
@@ -19,7 +19,7 @@ const dataTemplate = {
 
   },
   
-  */
+  
     user:{
       email: faker.internet.exampleEmail,
       name: faker.name.firstName,

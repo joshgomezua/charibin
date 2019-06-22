@@ -23,7 +23,7 @@ const UserModal: React.SFC<IProps> = ({
   isLoading,
   editDate,
   closeModal,
-  handleEditTrip,
+  handleEditUser,
   handleSubmit
 }) => {
   let editableData = null
@@ -48,7 +48,7 @@ const UserModal: React.SFC<IProps> = ({
                 name: '',
                 email: '',
                 role: '',
-                active: true
+                active: false
                 
               }
         }
@@ -76,8 +76,8 @@ const UserModal: React.SFC<IProps> = ({
             }
           }
 
-          if (editDate && handleEditTrip) {
-            handleEditTrip(dataToUpdate).then(() => resetForm())
+          if (editDate && handleEditUser) {
+            handleEditUser(dataToUpdate).then(() => resetForm())
           } else if (handleSubmit) {
             handleSubmit(values).then(() => resetForm())
           }
@@ -96,7 +96,7 @@ const UserModal: React.SFC<IProps> = ({
                   type="text"
                   placeholder="Type name"
                   name="name"
-                  label="Name of trip"
+                  label="Name of user"
                   className="spon-trip-modal__input"
                   component={Input}
                 />
@@ -106,11 +106,12 @@ const UserModal: React.SFC<IProps> = ({
                   component="div"
                   className="spon-trip-modal__error"
                 />
-              </div>
+              
 
-              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--small">
+              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--big">
                 <Field
                   type="email"
+		  placeholder="Type email"
                   name="email"
                   label="E-mail"
                   className="spon-trip-modal__input"
@@ -122,9 +123,9 @@ const UserModal: React.SFC<IProps> = ({
                   component="div"
                   className="spon-trip-modal__error"
                 />
-              </div>
+            
 
-              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--small spon-trip-modal__input-cnt--last">
+              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--big spon-trip-modal__input-cnt--last">
                 <Dropdown
                   id="role"
                   label="Select the role"
@@ -156,7 +157,7 @@ const UserModal: React.SFC<IProps> = ({
               </div>
             </div>
 
-            
+            </div></div>
               
              
             <div className="spon-trip-modal__row">
