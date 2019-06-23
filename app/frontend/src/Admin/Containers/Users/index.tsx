@@ -156,7 +156,7 @@ class UsersContainer extends React.Component<
       })
   }
 
-  handleEditUser = (data: IUser) => {
+  /*handleEditUser = (data: IUser) => {
     const token = getToken()
     const { currentPage } = this.state
     const {
@@ -179,7 +179,34 @@ class UsersContainer extends React.Component<
 
         return Promise.reject()
       })
-  }
+  }*/
+
+  handleEditUser = (data: IUser) => {
+    const token = getToken()
+    const { currentPage } = this.state
+    const {
+      modal: { id }
+    } = this.state
+
+    this.setState({ isModalLoading: true })
+
+    return updateUser(id, data, token)
+      .then(res => {
+        this.modal.current!.close()
+        this.handleFetchItems(currentPage, 10)
+        this.props.showSuccess(SUCCESS.USER_EDIT)
+        this.handleRestartModalType()
+
+        return Promise.resolve()
+      })
+      .catch(err => {
+        this.setState({ isModalLoading: false })
+        this.props.showError(err, ERRORS.USER_EDIT)
+
+        return Promise.reject()
+      })
+}
+
 
   handleToggleSwitch = (id: string, value: boolean) => {
     const token = getToken()

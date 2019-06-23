@@ -24,10 +24,11 @@ export interface IUser {
 }
 
 export interface IEditUser {
-  user?: string
+  //user?: string
   active?: boolean
   email?: string
   name?: string
+  role?: string
 }
 
 

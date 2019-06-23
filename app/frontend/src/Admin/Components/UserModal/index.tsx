@@ -48,7 +48,7 @@ const UserModal: React.SFC<IProps> = ({
                 name: '',
                 email: '',
                 role: '',
-                active: false
+                active: true
                 
               }
         }
@@ -169,7 +169,7 @@ const UserModal: React.SFC<IProps> = ({
                   className="spon-trip-modal__button"
                 />
                 <Button
-                  text={editDate ? 'EDIT' : 'ADD'}
+                  text={editDate ? 'UPDATE' : 'ADD'}
                   disabled={isLoading}
                   isLoading={isLoading}
                   type="submit"

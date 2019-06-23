@@ -41,7 +41,7 @@ export const deleteUser = (id: string, token: string) =>
 })
 
 export const updateUser = (id: string, data: Types.IEditUser, token: string) =>
-  axios.put(`${API_URL}/trip/${id}`, data, {
+  axios.put(`${API_URL}/user/${id}`, data, {
     headers: { 'Content-type': 'application/json', token }
   })
 

@@ -22,6 +22,7 @@ export const ERRORS = {
   USER_ADD: 'Error when add user' ,
   USER_EDIT: 'Error when edit user',
   USER_DELETE: 'Error when delete user',
+  USER_UPDATE: 'Error when update user',
   DEFAULT: 'Error'
 }
 

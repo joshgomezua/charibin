@@ -44,8 +44,8 @@ export const columns = (
   
   
   {
-    Header: 'pass',
-    accessor: 'role',
+    Header: '',
+    accessor: 'reset',
     Cell: (props: RowRenderProps) => (<Button
               className="spon-agenda__add-button"
               variant="blue"

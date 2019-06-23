@@ -35,7 +35,7 @@ module.exports = {
     
   },
   async findOne (id) {
-    const user = await User.findOne({ _id: id, deleted: false }).populate('users');
+    const user = await User.findOne({ _id: id }) ;
     if(!user) throw { status: 404, message: 'USER.NOT.EXIST' };
 
     return user;
@@ -64,14 +64,19 @@ module.exports = {
       }
     ]).then(Aggregate.parseResults);
   },
-  /*async update (id, data) {
-    const user = await User.findById(id);
+  
+  async update (id, data) {
+    let user = await User.findOne({ _id: id });
     if(!user) throw { status: 404, message: 'USER.NOT.EXIST' };
-      
-    //await User.update
-    
-    return;
-  },*/
+
+    if(data.name) {
+      user = await User.findOne({ name: data.name});
+      if(user) throw { status: 409, message: 'USER.NAME.EXIST' };
+    }
+
+    return User.findByIdAndUpdate(id, data, { new: true });
+},
+
 
   async destroy (id) {
     const user = await User.findById(id);

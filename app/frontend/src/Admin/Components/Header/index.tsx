@@ -21,10 +21,9 @@ const Header: React.SFC<IProps> = ({
     <div className="spon-admin-header">
       <div className="spon-admin-header__inner">
         <h1 className="spon-admin-header__heading">{title}</h1>
-      </div>
+      </div> 
 
-      <div className="spon-admin-header__inner">
-        <h1 className="spon-admin-header__heading">{title}</h1>
+     <div>Ative Users  
 
         {handleToggle ? (
         
