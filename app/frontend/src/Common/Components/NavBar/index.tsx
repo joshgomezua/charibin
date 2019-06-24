@@ -77,6 +77,11 @@ class NavBar extends Component<IProps, IState> {
 
           {isLoggedIn ? (
             <>
+             <NavLink
+                className={classWithBurger('navbar__link')}
+                to={`${ADMIN_ROUTING.MAIN}${ADMIN_ROUTING.CITIES}`}>
+                CITIES
+              </NavLink>
               <NavLink
                 className={classWithBurger('navbar__link')}
                 to={`${ADMIN_ROUTING.MAIN}${ADMIN_ROUTING.TRIPS}`}>
@@ -111,7 +116,8 @@ class NavBar extends Component<IProps, IState> {
               LOGOUT
             </button>
           </div>
-        ) : null}
+        ) : null} 
+        
       </div>
     )
   }

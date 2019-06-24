@@ -1,3 +1,5 @@
+
+
 export interface ILoginForm {
   email: string
   password: string
@@ -12,6 +14,15 @@ export interface ITrip {
   fake: boolean
   active: boolean
   type: string
+}
+
+export interface ICity {
+  name: string
+  country?:string
+  tags?: string[]
+  photo?: string
+  isModify?: boolean
+  isEnabled?: boolean
 }
 
 export interface ITicket {

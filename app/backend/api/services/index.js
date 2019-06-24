@@ -13,4 +13,5 @@ module.exports = {
   TicketService: require('./TicketService'),
   Utilities: require('./Utilities'),
   Valid: require('./Valid'),
+  CityService: require('./CityService'),
 };

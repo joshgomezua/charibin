@@ -4,6 +4,7 @@ import { Switch, Route, RouteComponentProps } from 'react-router-dom'
 import ORDERS from '../Orders'
 import Tickets from '../Tickets'
 import Trips from '../Trips'
+import City from '../City'
 
 import { ADMIN_ROUTING } from '../../Utils/constants'
 import { IState } from './types'
@@ -34,6 +35,10 @@ export default class MainContainer extends Component<
             path={`${match.url}${ADMIN_ROUTING.ORDERS}`}
             component={ORDERS}
           />
+          <Route 
+            exact
+            path={`${match.url}${ADMIN_ROUTING.CITIES}`} 
+            component = {City}
           />
         </Switch>
       </section>

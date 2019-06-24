@@ -21,6 +21,8 @@ import arrowDown from '../../../Common/Utils/Media/arrowDown.svg'
 
 import { daysOfWeek } from './_data'
 import { IProps, IState, IFormValues } from './types'
+
+
 import './styles.scss'
 
 class TicketModal extends React.Component<IProps, IState> {

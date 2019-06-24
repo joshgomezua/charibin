@@ -3,42 +3,56 @@ import React from 'react'
 import Header from '../../Components/Header'
 import Table from '../../Components/Table'
 import Modal from '../../Components/Modal'
-import TripModal from '../../Components/TripModal'
+import CityModal from '../../Components/CityModal'
 import DeleteModal from '../../Components/DeleteModal'
+ 
 
 import withToast from '../../../Common/HOC/withToast'
+import { debounce } from 'lodash'
 import { RouteComponentProps } from 'react-router-dom'
-import { MODAL_TYPE, ITrip } from '../../Utils/adminTypes'
+import { MODAL_TYPE, ICity } from '../../Utils/adminTypes'
 import { getToken } from '../../../Common/Utils/helpers'
 import {
-  ADMIN_ROUTING,
+ // ADMIN_ROUTING,
   ERRORS,
   SUCCESS,
-  DEFAULT_TRIP_DATA
+  DEFAULT_CITY_DATA
 } from '../../Utils/constants'
 import {
-  getTrips,
-  addTrip,
-  deleteTrip,
-  getSingleTrip,
-  updateTrip
+  getCities,
+  deleteCity,
+  getSingleCity,
+  addCity,
+  updateCity,
+  editCityState
 } from '../../Utils/api'
 import { IState, IProps } from './types'
 import { columns } from './columns'
 
-class TripsContainer extends React.Component<
+
+
+class CityContainer extends React.Component<
   RouteComponentProps<{}> & IProps,
   IState
 > {
   private modal = React.createRef<Modal>()
 
   readonly state: IState = {
-    trips: [],
+    cities: [{
+      _id: '0',
+      name: 'Paris',
+      country: 'France',
+      tags:['Beach', 'Nigthlife'],
+        
+      photo: "https://s3.eu-west-2.amazonaws.com/spon-staging/staging_5c91210fb4f0e3003452a581.png",
+      isModify: false,
+      isEnabled: false
+    }],
     total: 0,
     currentPage: 0,
-    isLoading: true,
+    isLoading: false,
     isModalLoading: false,
-    editData: DEFAULT_TRIP_DATA,
+    editData: DEFAULT_CITY_DATA,
     modal: {
       id: '',
       type: null,
@@ -50,6 +64,7 @@ class TripsContainer extends React.Component<
     this.setState({ modal: { type, heading, id } }, () => {
       this.modal.current!.open()
     })
+    
   }
 
   handleCloseModal = () => {
@@ -59,23 +74,25 @@ class TripsContainer extends React.Component<
   }
 
   handleOpenDeleteModal = (id: string) => {
-    this.handleOpenModal(MODAL_TYPE.DELETE_TRIP, 'Delete trip', id)
+    this.handleOpenModal(MODAL_TYPE.DELETE_CITY, 'Delete city', id)
   }
 
   handleOpenEditModal = (id: string) => {
-    this.handleOpenModal(MODAL_TYPE.EDIT_TRIP, 'Edit trip', id)
-    this.handleFetchTripData(id)
+    this.handleOpenModal(MODAL_TYPE.EDIT_CITY, 'Edit city', id)
+    this.handleFetchCityData(id)
   }
 
-  handleFetchTripData = (id: string) => {
+  handleFetchCityData = (id: string) => {
     const token = getToken()
-
+    
     if (token) {
-      getSingleTrip(id, token)
+      getSingleCity(id, token)
         .then(res => {
           this.setState({ editData: res.data })
+          
         })
         .catch(err => {
+          
           this.modal.current!.close()
           this.props.showError(err)
         })
@@ -84,18 +101,19 @@ class TripsContainer extends React.Component<
 
   handleFetchItems = (page: number, limit: number) => {
     const token = getToken()
-
+    
     if (token) {
-      getTrips(page, limit, token)
-        .then(res =>
+      getCities(page, limit, token)
+        .then(res =>{
           this.setState({
             isLoading: false,
-            trips: res.data.results,
+            cities: res.data.results,
             total: res.data.status.total
           })
-        )
+          
+        })
         .catch(err => {
-          this.props.showError(err, ERRORS.TRIP_FETCH)
+          this.props.showError(err, ERRORS.CITY_FETCH)
         })
     }
   }
@@ -105,7 +123,7 @@ class TripsContainer extends React.Component<
     this.handleFetchItems(boardState.page, 10)
   }
 
-  handleDeleteTrip = () => {
+  handleDeleteCity = () => {
     const {
       modal: { id },
       currentPage
@@ -113,43 +131,43 @@ class TripsContainer extends React.Component<
     const token = getToken()
 
     if (token) {
-      deleteTrip(id, token)
+      deleteCity(id, token)
         .then(() => {
           this.handleFetchItems(currentPage, 10)
           this.handleCloseModal()
-          this.props.showSuccess(SUCCESS.TRIP_DELETE)
+          this.props.showSuccess(SUCCESS.CITY_DELETE)
           this.handleRestartModalType()
         })
         .catch(err => {
           this.handleCloseModal()
-          this.props.showError(err, ERRORS.TRIP_DELETE)
+          this.props.showError(err, ERRORS.CITY_DELETE)
         })
     }
   }
 
-  handleAddTrip = (data: ITrip) => {
+  handleAddCity = (data: ICity) => {
     const token = getToken()
     const { currentPage } = this.state
-
+    data.isModify = true
     this.setState({ isModalLoading: true })
-    return addTrip(data, token)
+    return addCity(data, token)
       .then(res => {
         this.modal.current!.close()
         this.handleFetchItems(currentPage, 10)
-        this.props.showSuccess(SUCCESS.TRIP_ADD)
+        this.props.showSuccess(SUCCESS.CITY_ADD)
         this.handleRestartModalType()
 
         return Promise.resolve()
       })
       .catch(err => {
         this.setState({ isModalLoading: false })
-        this.props.showError(err, ERRORS.TRIP_ADD)
+        this.props.showError(err, ERRORS.CITY_ADD)
 
         return Promise.reject()
       })
   }
 
-  handleEditTrip = (data: ITrip) => {
+  handleEditCity = (data: ICity) => {
     const token = getToken()
     const { currentPage } = this.state
     const {
@@ -157,29 +175,48 @@ class TripsContainer extends React.Component<
     } = this.state
 
     this.setState({ isModalLoading: true })
-    return updateTrip(id, data, token)
+    return updateCity(id, data, token)
       .then(res => {
         this.modal.current!.close()
         this.handleFetchItems(currentPage, 10)
-        this.props.showSuccess(SUCCESS.TRIP_EDIT)
+        this.props.showSuccess(SUCCESS.CITY_EDIT)
         this.handleRestartModalType()
 
         return Promise.resolve()
       })
       .catch(err => {
         this.setState({ isModalLoading: false })
-        this.props.showError(err, ERRORS.TRIP_EDIT)
+        this.props.showError(err, ERRORS.CITY_EDIT)
 
         return Promise.reject()
       })
   }
 
-  handleRedirectToCreateTicket = (trip: { _id: string; name: string }) => {
-    this.props.history.push({
-      pathname: `${ADMIN_ROUTING.MAIN}${ADMIN_ROUTING.TICKETS}`,
-      state: { trip }
-    })
+  handleToggleButton = (id: string, value:boolean) => {
+    const token = getToken()
+    
+    editCityState(id, value, token)
+      .then(({ data }) => {
+        const updatedCities = this.state.cities.map((city: ICity) => {
+          if (city._id === data._id) {
+            return data
+          }
+
+          return city
+        })
+
+        this.setState({ cities: updatedCities })
+        this.props.showSuccess(SUCCESS.CITY_UPDATE)
+      })
+      .catch(err => this.props.showError(err, ERRORS.CITY_EDIT))
   }
+
+/*  handleRedirectToCreateCity = (city: { _id: string; name: string }) => {
+    this.props.history.push({
+      pathname: `${ADMIN_ROUTING.MAIN}${ADMIN_ROUTING.CITIES}`,
+       state: { city }
+    })
+  }*/
 
   handleRestartModalType = () => {
     this.setState({
@@ -194,7 +231,7 @@ class TripsContainer extends React.Component<
 
   render() {
     const {
-      trips,
+      cities,
       total,
       isLoading,
       isModalLoading,
@@ -203,18 +240,20 @@ class TripsContainer extends React.Component<
     } = this.state
     return (
       <div className="spon-container">
-        
         <Header
-          title="Routes & Prices"
+          title="Destination & Departure Database"
+          heading = 'Create city'
+          modal = {MODAL_TYPE.ADD_CITY}
           handleOpenModal={this.handleOpenModal}
         />
+
         <Table
-          data={trips}
+          data={cities}
           handleFetchData={this.handleFetchTableData}
           columns={columns(
             this.handleOpenDeleteModal,
             this.handleOpenEditModal,
-            this.handleRedirectToCreateTicket
+            debounce(this.handleToggleButton,300)
           )}
           loading={isLoading}
           pages={Math.ceil(total / 10)}
@@ -224,27 +263,27 @@ class TripsContainer extends React.Component<
           ref={this.modal}
           title={modalHeading}
           restartModalType={this.handleRestartModalType}>
-          {modalType === MODAL_TYPE.ADD_TRIP ? (
-            <TripModal
+          {modalType === MODAL_TYPE.ADD_CITY ? (
+            <CityModal
               isLoading={isModalLoading}
               closeModal={this.handleCloseModal}
-              handleSubmit={this.handleAddTrip}
+              handleSubmit={this.handleAddCity}
             />
           ) : null}
 
-          {modalType === MODAL_TYPE.EDIT_TRIP ? (
-            <TripModal
+          {modalType === MODAL_TYPE.EDIT_CITY ? (
+            <CityModal
               isLoading={isModalLoading}
               editDate={editData}
               closeModal={this.handleCloseModal}
-              handleEditTrip={this.handleEditTrip}
+              handleEditCity={this.handleEditCity}
             />
           ) : null}
 
-          {modalType === MODAL_TYPE.DELETE_TRIP ? (
+          {modalType === MODAL_TYPE.DELETE_CITY ? (
             <DeleteModal
               closeModal={this.handleCloseModal}
-              deleteItem={this.handleDeleteTrip}
+              deleteItem={this.handleDeleteCity}
             />
           ) : null}
         </Modal>
@@ -253,4 +292,4 @@ class TripsContainer extends React.Component<
   }
 }
 
-export default withToast(TripsContainer)
+export default withToast(CityContainer)
