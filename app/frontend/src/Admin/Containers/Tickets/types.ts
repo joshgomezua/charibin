@@ -12,7 +12,7 @@ export interface IState {
     type: MODAL_TYPE | null
     heading: string
     data: ITicket
-    trip: { _id: string; destination: string } | null
+    trip: { _id: string; departure: string, destination: string } | null
   }
   calendarFilter: {
     start: Date | undefined
@@ -24,7 +24,6 @@ export interface IProps {
   filters: string[]
   filterFrom: string[]
   filterTo: string []
-  direction: DIRECTION_TYPE | null
   changeFilters: (filters: string[]) => void
   changeFilterFrom: (filterFrom: string[]) => void
   changeFilterTo: (filterTo: string[]) => void
@@ -36,7 +35,8 @@ export interface IProps {
 
 export interface IEditedData {
   trip?: string
-  direction?: string
+  destination?: string
+  depature?: string
   quantity?: number
   type?: string
   date?: {

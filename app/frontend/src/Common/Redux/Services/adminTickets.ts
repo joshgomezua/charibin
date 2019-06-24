@@ -2,12 +2,9 @@ import moment from 'moment'
 import { IStore } from '../types'
 import { ISelectDate, IFilters, ITicketType, IFilterFrom, IFilterTo } from './adminTicketsTypes'
 import { ITicketsActions, TICKETS_ACTIONS } from './adminTicketsTypes'
-import { DIRECTION_TYPE } from 'src/Admin/Utils/adminTypes'
-
 // Reducer
 
 const initialState = {
-  direction: null,
   filters: [],
   filterTo: [],
   filterFrom: [],
@@ -27,8 +24,6 @@ export const adminTicketsReducer = (
       return { ...state, filterFrom: action.filterFrom }
       case TICKETS_ACTIONS.FILTER_TO_CHANGE:
         return { ...state, filterTo: action.filterTo }  
-    case TICKETS_ACTIONS.TICKETS_TYPE_CHANGE:
-      return { ...state, direction: action.direction }
     default:
       return state
   }
@@ -56,20 +51,16 @@ export const changeFilterTo = (filterTo: string[]): IFilterTo => ({
 })
 
 export const changeTicketType = (
-  direction: DIRECTION_TYPE | null
 ): ITicketType => ({
   type: TICKETS_ACTIONS.TICKETS_TYPE_CHANGE,
-  direction
 })
 
 const selectFilters = (state: IStore) => state.adminTickets.filters
 const selectFilterFrom = (state: IStore) => state.adminTickets.filterFrom
 const selectFilterTo = (state: IStore) => state.adminTickets.filterTo
 const selectSelectedDate = (state: IStore) => state.adminTickets.selectedDate
-const selectDirection = (state: IStore) => state.adminTickets.direction
 
 export const Selectors = {
-  selectDirection,
   selectFilters,
   selectFilterFrom,
   selectFilterTo,

@@ -116,7 +116,7 @@ async function createManyTickets (data) {
 
       if(data.repeat.dateEnd < seedDate.start) break;
       if(data.date.start <= seedDate.start){
-        let ticket = await Ticket.findOne({ trip: data.trip, direction: data.direction, date: { start: new Date(seedDate.start), end: new Date(seedDate.end) } });
+        let ticket = await Ticket.findOne({ trip: data.trip, departure: data.departure, destination: data.destination, date: { start: new Date(seedDate.start), end: new Date(seedDate.end) } });
 
         if(ticket) {
           await Ticket.updateOne({ _id: ticket._id }, { $inc: { quantity: data.quantity } });
@@ -148,7 +148,8 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
     active: true,
     deleted: false,
     quantity: { $gte: quantity },
-    direction: 'arrival',
+    departure: trip.departure,
+    destination: destination.departure,
     'date.start': { $gte: new Date(selectedTrip.dateStart).setHours(0,0,0,0), $lte: new Date(selectedTrip.dateStart).setHours(23,59,59,999) }
   }).limit(1);
   if(!arrivalTicket) throw { status: 404, message: 'TICKET.ARRIVAL.NOT.EXIST%', args: [new Date(selectedTrip.dateStart).toDateString()] };
@@ -158,7 +159,8 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
     active: true,
     deleted: false,
     quantity: { $gte: quantity },
-    direction: 'departure',
+    departure: trip.destination,
+    destination: trip.departure,
     'date.start': { $gte: new Date(selectedTrip.dateEnd).setHours(0,0,0,0), $lte: new Date(selectedTrip.dateEnd).setHours(23,59,59,999) }
   }).limit(1);
   if(!departureTicket) throw { status: 404, message: 'TICKET.DEPARTURE.NOT.EXIST%', args: [new Date(selectedTrip.dateEnd).toDateString()] };
@@ -359,7 +361,7 @@ module.exports = {
     if(data.repeat) { // create many
       return createManyTickets(data);
     } else { // create one
-      let ticket = await Ticket.findOne({ trip: data.trip, direction: data.direction, date: { start: new Date(data.date.start), end: new Date(data.date.end) } });
+      let ticket = await Ticket.findOne({ trip: data.trip, departure: data.departure, destination: data.destination, date: { start: new Date(data.date.start), end: new Date(data.date.end) } });
       if(ticket) {
         ticket = await Ticket.updateOne({ _id: ticket._id }, { $inc: { quantity: data.quantity } }, { new: true });
 
@@ -578,7 +580,7 @@ module.exports = {
       ticketMatch.$and.push({ $lte: [ '$$tickets.date.start', new Date(dateEnd) ] });
     } else {
       ticketMatch.$and.push({ $cond: [
-        { $eq: ['$$tickets.direction', 'departure'] },
+        //{ $eq: ['$$tickets.direction', 'departure'] }, à y penser
         { $gte: [ '$$tickets.date.start', new Date(Date.now() + 2 * global.config.custom.time.day) ] },
         { $gte: [ '$$tickets.date.start', new Date(Date.now() + global.config.custom.time.day) ] }
       ] });

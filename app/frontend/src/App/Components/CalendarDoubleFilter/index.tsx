@@ -62,7 +62,7 @@ export default class CalendarDoubleFilter extends React.Component<IProps, IState
     )
 
     return (
-      <div className="calendar">
+      <div className="calendarDoubleFilter">
         <div className="spon-sidebar">
         <ReactCalendar
           locale="en-GB"
@@ -75,9 +75,6 @@ export default class CalendarDoubleFilter extends React.Component<IProps, IState
           minDetail="year"
           nextLabel={<img src={arrow} className="calendar-arrow_next" />}
           prevLabel={<img src={arrow} className="calendar-arrow_prev" />}
-          //value={this.props.selectedDate}
-          //activeStartDate={this.props.selectedDate}
-          //onClickMonth={this.props.handleChangeDate}
           onActiveDateChange={debouncedChange}
           selectRange={true}
           value={this.props.value}
@@ -85,13 +82,14 @@ export default class CalendarDoubleFilter extends React.Component<IProps, IState
           onChange={this.handleChangeEvent}
           tileDisabled={this.handleDisableDays}
         />
-         </div>
-         <Button
+        <Button
             text="clear dates"
             variant="gray"
             icon="cross"
             onClick={this.clearCalendar}
           />
+         </div>
+         
       </div>
     )
   }

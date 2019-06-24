@@ -66,27 +66,24 @@ class TicketModal extends React.Component<IProps, IState> {
                     .utc(editDate!.date.start)
                     .format('h')}-${moment
                     .utc(editDate!.date.end)
-                    .format('h')}`,
-                  direction: `${editDate.direction[0].toUpperCase()}${editDate.direction.substr(
-                    1
-                  )}`
+                    .format('h')}`
                 }
               : {
                   trip: {
                     _id: tripSelected ? tripSelected._id : '',
+                    departure: tripSelected ? tripSelected.departure : '',
                     destination: tripSelected ? tripSelected.destination : '',
 
                   },
                   type: 'Train',
                   quantity: 0,
-                  //soldTickets: 0,
-                  //reservedQuantity: 0,
                   date: undefined,
                   endDate: undefined,
                   days: [0, 1, 2, 3, 4, 5, 6],
                   hours: '',
                   active: true,
-                  direction: 'Arrival'
+                  departure: '',
+                  destination: ''
                 }
           }
           validationSchema={Yup.object().shape({
@@ -98,16 +95,10 @@ class TicketModal extends React.Component<IProps, IState> {
             quantity: Yup.number()
               .min(1)
               .max(1000),
-            //soldTickets: Yup.number()
-            //  .min(1)
-            //  .max(1000),
-            //reservedQuantity: Yup.number()
-            //  .min(1)
-            //  .max(1000)
-            //  .required(),
             date: Yup.string().required(),
             hours: Yup.string().required(),
-            direction: Yup.string().required(),
+            departure: Yup.string().required(),
+            destination: Yup.string().required(),
             isRecurring: Yup.boolean(),
             endDate: Yup.string().when('isRecurring', {
               is: true,
@@ -129,7 +120,8 @@ class TicketModal extends React.Component<IProps, IState> {
 
             const dataToSubmit = {
               trip: values.trip._id,
-              direction: values.direction.toLocaleLowerCase(),
+              departure: values.departure,
+              destination: values.destination,
               quantity: values.quantity,
               soldTickets: 0,
               reservedQuantity: 0,
@@ -415,34 +407,7 @@ class TicketModal extends React.Component<IProps, IState> {
               ) : null}
 
               <div className="spon-ticket-modal__row spon-ticket-modal__row--bordered-m">
-                <div className="spon-ticket-modal__input-cnt">
-                  <Dropdown
-                    id="direction"
-                    label="Direction"
-                    placeholder="Select direction "
-                    className="spon-ticket-modal__dropdown"
-                    selectedValue={values.direction ? values.direction : ''}
-                    options={[
-                      {
-                        _id: '1',
-                        name: 'Arrival'
-                      },
-                      {
-                        _id: ' 1',
-                        name: 'Departure'
-                      }
-                    ]}
-                    onChange={handleChange}
-                  />
-
-                  <ErrorMessage
-                    name="direction"
-                    component="div"
-                    className="spon-ticket-modal__error"
-                  />
-                </div>
               </div>
-
               <div className="spon-ticket-modal__row">
                 <div className="spon-ticket-modal__buttons">
                   <Button

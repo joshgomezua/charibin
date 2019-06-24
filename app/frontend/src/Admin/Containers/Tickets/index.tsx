@@ -306,7 +306,6 @@ class TicketsContainer extends React.Component<
       filterFrom,
       filterTo,
       selectedDate,
-      direction,
       changeFilterFrom,
       changeFilterTo,
       changeSelectedDate
@@ -328,7 +327,6 @@ class TicketsContainer extends React.Component<
           />
           <Agenda
             tickets={tickets}
-            direction={direction}
             filterFrom={filterFrom}
             filterTo={filterTo}
             openEditModal={this.handleOpenEditModal}
@@ -382,7 +380,6 @@ const mapStateToProps = (state: IStore) => ({
   filterFrom: Selectors.selectFilterFrom(state),
   filterTo: Selectors.selectFilterTo(state),
   selectedDate: Selectors.selectSelectedDate(state),
-  direction: Selectors.selectDirection(state)
 })
 
 export default connect(

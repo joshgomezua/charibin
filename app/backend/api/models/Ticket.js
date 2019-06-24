@@ -5,7 +5,8 @@ const Schema = mongoose.Schema;
 
 const ticketSchema = new Schema({
   trip: { type: Schema.Types.ObjectId, ref: 'Trip' },
-  direction: { type: String, enum: ['arrival', 'departure'] },
+  departure: String,
+  destination: String,
   quantity: Number,
   soldTickets: Number,
   reservedQuantity: Number,

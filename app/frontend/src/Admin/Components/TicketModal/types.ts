@@ -10,6 +10,7 @@ export interface IProps {
   editDate?: {
     trip: {
       _id: string
+      departure: string
       destination: string
     }
     type: string
@@ -18,10 +19,11 @@ export interface IProps {
       start: string
       end: string
     }
-    active: boolean
-    direction: string
+    active: boolean,
+    departure: string,
+    destination: string
   }
-  tripSelected?: { _id: string; destination: string } | null
+  tripSelected?: { _id: string; departure: string, destination: string } | null
   destinations: ICity[]
   closeModal: () => void
   handleSubmit?: (
@@ -52,6 +54,7 @@ export interface IFormValues {
   trip: {
     _id: string
     destination: string
+    departure: string
   }
   type: string
   quantity: number
@@ -60,6 +63,7 @@ export interface IFormValues {
   days?: number[]
   hours?: string
   active: boolean
-  direction: string
+  departure: string,
+  destination: string,
   isRecurring?: boolean
 }

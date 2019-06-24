@@ -16,7 +16,8 @@ export interface ITrip {
 
 export interface ITicket {
   trip: string
-  direction: string
+  departure: string
+  destination: string
   quantity: number
   type: string
   date: {
@@ -28,7 +29,6 @@ export interface ITicket {
 
 export interface IEditTicket {
   trip?: string
-  direction?: string
   quantity?: number
   type?: string
   date?: {

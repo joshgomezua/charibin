@@ -21,10 +21,11 @@ const dataTemplate = {
   },
 
   ticket: {
-    direction: 'arrival',
     quantity: 5,
     soldTickets: 0,
     reservedQuantity: 0,
+    departure: '',
+    destination: '',
     type: () => randomOneWord('type'),
     date: {
       __tmpStart: 0,

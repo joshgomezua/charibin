@@ -38,7 +38,8 @@ export interface ITicket {
     departure: string
     destination: string
    }
-  direction: string
+  departure: string,
+  destination: string,
   quantity: number
   soldTickets: number,
   reservedQuantity: number,

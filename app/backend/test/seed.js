@@ -55,22 +55,30 @@ loadModels();
 
   // Create trips and tickets
   for (let i = 0; i < 5; i++) {
-    trips.push(await helpers.createTrip(helpers.dataClone(globals.dataTemplate.trip)));
-    console.log(`Creating Trips: ${i + 1}/${20}`);
+    trips.push(await helpers.createTrip({...helpers.dataClone(globals.dataTemplate.trip), 
+    departure: getRandomCities(),
+    destination: getRandomCities(),
+    }));
+    console.log(`Creating Trips: ${i + 1}/${5}`);
 
     // Create tickets
     for (let j = 0; j < 1; j++) {
-      //const ticket = await helpers.createTicket({ ...helpers.dataClone(globals.dataTemplate.ticket), direction: 'arrival', trip: trips[i]._id});
-    const ticketArrivalTemp = { ...helpers.dataClone(globals.dataTemplate.ticket), direction: 'arrival', trip: trips[i]._id};
+    const ticketArrivalTemp = { ...helpers.dataClone(globals.dataTemplate.ticket), 
+      trip: trips[i]._id,
+      departure: trips[i].departure,
+      destination: trips[i].destination
+    };
     const ticketArrival = await helpers.createTicket(ticketArrivalTemp);
+
     const ticketDepartureTemp = {
         ...helpers.dataClone(globals.dataTemplate.ticket),
         date: {
           start: new Date(ticketArrival.date.start.getTime() + global.config.custom.time.day7).getTime(),
           end: new Date(ticketArrival.date.end.getTime() + global.config.custom.time.day7).getTime()
         },
-        direction: 'departure',
-        trip: trips[i]._id
+        trip: trips[i]._id,
+        departure: trips[i].destination,
+        destination: trips[i].departure
       };
     const ticketDeparture = await helpers.createTicket(ticketDepartureTemp)
 

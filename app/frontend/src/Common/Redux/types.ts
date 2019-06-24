@@ -1,4 +1,3 @@
-import { DIRECTION_TYPE } from '../../Admin/Utils/adminTypes'
 import { ISelectedData, IFinalSelected } from '../../App/Utils/appTypes'
 
 export interface IStore {
@@ -23,7 +22,6 @@ interface ITips {
 }
 
 interface IAdminTickets {
-  direction: DIRECTION_TYPE | null
   filters: string[]
   filterFrom: string[]
   filterTo: string[]

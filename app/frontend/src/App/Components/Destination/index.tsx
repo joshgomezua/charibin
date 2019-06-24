@@ -51,7 +51,7 @@ export default class Destination extends Component<IProps, IState> {
         ? data.tickets
             .filter(
               (item: ITicket) =>
-                item.direction === 'arrival' &&
+                item.departure === data.departure &&
                 moment
                   .utc(item.date.start)
                   .set({ hour: 0, minutes: 0, seconds: 0, milliseconds: 0 })
@@ -69,7 +69,7 @@ export default class Destination extends Component<IProps, IState> {
         ? data.tickets
             .filter(
               (item: ITicket) =>
-                item.direction === 'departure' &&
+                item.destination === data.destination &&
                 moment
                   .utc(item.date.start)
                   .set({ hour: 0, minutes: 0, seconds: 0, milliseconds: 0 })
@@ -223,7 +223,7 @@ export default class Destination extends Component<IProps, IState> {
   }
 
   handleSelectDates = (dates: [Date, Date]) => {
-    const { tickets } = this.props.data as ITripSelect
+    const { tickets, departure, destination } = this.props.data as ITripSelect
     const offset = moment(dates[0]).utcOffset()
 
     const hours = tickets.reduce(
@@ -246,7 +246,7 @@ export default class Destination extends Component<IProps, IState> {
             .format('YYYY-MM-DD')
         )
 
-        if (isStartSameFirst && ticket.direction === 'arrival') {
+        if (isStartSameFirst && ticket.departure === departure) {
           total.start.push({
             id: ticket._id,
             name: `${moment
@@ -255,7 +255,7 @@ export default class Destination extends Component<IProps, IState> {
               .utc(ticket.date.end)
               .format('HH:mm')}`
           })
-        } else if (isStartSameSecond && ticket.direction === 'departure') {
+        } else if (isStartSameSecond && ticket.destination === destination) {
           total.end.push({
             id: ticket._id,
             name: `${moment

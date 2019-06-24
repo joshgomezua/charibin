@@ -5,6 +5,18 @@
   width: calc(20rem - 1px);
   height: 100%;
   border-right: 1px solid $inactive;
+  padding: 0 rc(15) 0 rc(5);
+
+  &__select {
+    margin-top: rc(15);
+
+    &__From{
+      margin-top: rc(15);
+    }
+    &__To{
+      margin-top: rc(15);
+    }
+  }
 
   h4 {
     margin: 0;

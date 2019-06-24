@@ -32,11 +32,11 @@ const AgendaItem: React.SFC<IProps> = ({
       ) : (
         <td className="spon-agenda__cell spon-agenda__cell--body  spon-agenda__cell--first-item" />
       )}
-      <td className="spon-agenda__cell spon-agenda__cell--body spon-agenda__cell--hours">
-        {ticket.trip.departure}
+      <td className="spon-agenda__cell spon-agenda__cell--body">
+        {ticket.departure}
       </td>
-      <td className="spon-agenda__cell spon-agenda__cell--body spon-agenda__cell--hours">
-        {ticket.trip.destination}
+      <td className="spon-agenda__cell spon-agenda__cell--body">
+        {ticket.destination}
       </td>
       <td className="spon-agenda__cell spon-agenda__cell--body">
         {ticket.quantity}
@@ -53,12 +53,6 @@ const AgendaItem: React.SFC<IProps> = ({
       <td className="spon-agenda__cell spon-agenda__cell--body">
         {moment.utc(ticket.date.start).format('HH:mm')}-
         {moment.utc(ticket.date.end).format('HH:mm')}
-      </td>
-      <td className="spon-agenda__cell spon-agenda__cell--body">
-        {`${ticket.direction[0].toLocaleUpperCase()}${ticket.direction.slice(
-          1,
-          ticket.direction.length
-        )}`}
       </td>
       <td className="spon-agenda__cell spon-agenda__cell--body">
         <Switch

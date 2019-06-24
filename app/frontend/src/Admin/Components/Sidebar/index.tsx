@@ -87,10 +87,12 @@ class Sidebar extends React.Component<IProps, IState> {
             selectRange
           />
         )}
-        
-          <label>From</label>
-          <Select
+        <div className="spon-sidebar__select">
+        <div className="spon-sidebar__select__From">
+        <Select
+        className="spon-sidebar__select__From"
             multi
+            placeholder={'From'}
             options={data} 
             value={filterFrom} 
             onChange={this.handleFiltersFromChange}
@@ -98,10 +100,11 @@ class Sidebar extends React.Component<IProps, IState> {
             clearable
           >
           </Select>
-
-          <label>To</label>
-          <Select 
-            multi 
+        </div>
+        <div className="spon-sidebar__select__To">
+        <Select 
+            multi
+            placeholder={'To'} 
             options={data} 
             value={filterTo} 
             onChange={this.handleFiltersToChange}
@@ -109,7 +112,8 @@ class Sidebar extends React.Component<IProps, IState> {
             clearable
           >  
           </Select>
-    
+        </div>
+        </div>
       </div>
     )
   }
