@@ -23,7 +23,7 @@ export const getUsers = (page: number, limit: number, token: string) =>
       token
     }
   })
-export const editUserState = (id: string, value: boolean, token: string) =>
+export const editUserState = (id: string, value: boolean, token: string) => // indentation
 axios.patch(`${API_URL}/user/${id}`, 
       { active: value },
       {    
