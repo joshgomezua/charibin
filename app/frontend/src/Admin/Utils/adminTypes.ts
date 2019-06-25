@@ -43,8 +43,6 @@ export interface ITrip {
   photo: string
   price: number
   type: string
-  departure: string
-  destination: string
 }
 
 export interface IOrder {
