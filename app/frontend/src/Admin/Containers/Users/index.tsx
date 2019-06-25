@@ -275,7 +275,7 @@ class UsersContainer extends React.Component<
     return (
       <div className="spon-container">
         <Header
-          title="Users control"
+          title="Manage Users"
           handleToggle={this.handleToggle}
           heading = 'Create User'
           enable = {enable}

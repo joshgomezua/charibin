@@ -23,7 +23,6 @@ export const getUsers = (page: number, limit: number, token: string) =>
       token
     }
   })
-<<<<<<< HEAD
   export const editUserState = (id: string, value: boolean, token: string) =>
   axios.patch(
     `${API_URL}/user/${id}`,
@@ -36,16 +35,6 @@ export const getUsers = (page: number, limit: number, token: string) =>
     }
   )
 
-=======
-export const editUserState = (id: string, value: boolean, token: string) => // indentation
-axios.patch(`${API_URL}/user/${id}`, 
-      { active: value },
-      {    
-        headers: { 'Content-type': 'application/json',
-                   token
-                   }
-})
->>>>>>> 2ad974960530ed2bd2b1d2f0dcde378840affc8e
 
 export const getSingleUser = (id: string, token: string) =>
   axios.get(`${API_URL}/user/${id}`, { headers: { token } })

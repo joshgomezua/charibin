@@ -20,8 +20,7 @@ export const columns = (
   {
     Header: 'Email',
     accessor: 'email',
-    width: 80,
-    
+      
   },
   {
     Header: 'Role',
@@ -30,8 +29,8 @@ export const columns = (
   },
   {
     Header: 'Active',
-    width: 90,
     accessor: 'active',
+    width: 300,
     Cell: (props: RowRenderProps) => (
       <Switch
         onChange={() => {
@@ -44,44 +43,46 @@ export const columns = (
   
   
   {
-    Header: '',
-    accessor: 'reset',
-    Cell: (props: RowRenderProps) => (<Button
-              className="spon-agenda__add-button"
+    Header: 'Reset Password',
+    accessor: 'action',
+    width: 180,
+    Cell: (props: RowRenderProps) => (
+            <Button
+              className="spon-table__reset-button"
               variant="blue"
               //icon="plus"
-              text="Reset password"
-             
+              text="RESET Password"
+                          
                 onClick={() => openResetPasswordModal(props.row._original._id)
               }
             />
+
     )
   },
 
 
   {
-    Header: '',
-    accessor: 'actions',
-    width: 400,
+    Header: 'Modify',
+    width: 180,
+    accessor: 'action',
     Cell: (props: RowRenderProps) => (
-      <>
-
-
-        <div className="spon-table__actions">
-
-
-        {/** indentation */}
-          
-         
-          
-          <button onClick={() => openEditModal(props.row._original._id)}>
-            Modify
-          </button>
-          <button onClick={() => openDeleteModal(props.row._original._id)}>
-            Delete
-          </button>
-        </div>
-      </>
+      <div  className="spon-table__actions">
+        <button  onClick={() => openEditModal(props.row._original._id)}>
+              Modify
+        </button>
+      </div>
     )
-  }
+  },
+  {
+    Header: 'Delete',
+    accessor: 'action',
+    width: 180,
+    Cell: (props: RowRenderProps) => (
+      <div  className="spon-table__actions">
+        <button onClick={() => openDeleteModal(props.row._original._id)}>
+              Delete
+        </button>
+      </div>
+    )
+  },
 ]
