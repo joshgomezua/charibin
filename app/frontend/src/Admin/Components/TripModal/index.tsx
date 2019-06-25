@@ -7,15 +7,12 @@ import {
   FormikProps,
   ErrorMessage
 } from 'formik'
-// import FileInput from '../../Components/FileInput'
 import * as Yup from 'yup'
 
 import Input from '../Input'
 import Dropdown from '../Dropdown'
 import Switch from '../Switch'
 import Button from '../../../Common/Components/Button'
-// import photoSvg from '../../../Common/Utils/Media/photo.svg'
-
 import { IProps, IFormValues, IEditValues } from './types'
 import './styles.scss'
 
@@ -164,7 +161,7 @@ const TripModal: React.SFC<IProps> = ({
                 />
               </div>
 
-              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--big">
+              {/* <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt">
                 <Field
                   type="text"
                   placeholder="Type name"
@@ -179,11 +176,11 @@ const TripModal: React.SFC<IProps> = ({
                   component="div"
                   className="spon-trip-modal__error"
                 />
-              </div>
+              </div> */}
             </div>
 
             <div className="spon-trip-modal__row">
-              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--small">
+              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt">
                 <Field
                   isPrefix
                   type="number"
@@ -273,6 +270,23 @@ const TripModal: React.SFC<IProps> = ({
                   className="spon-trip-modal__error"
                 />
               </div>
+
+              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt">
+                <Field
+                  type="text"
+                  placeholder="Type name"
+                  name="carrier"
+                  label="Carrier"
+                  className="spon-trip-modal__input"
+                  component={Input}
+                />
+
+                <ErrorMessage
+                  name="carrier"
+                  component="div"
+                  className="spon-trip-modal__error"
+                />
+              </div>
               
               <div className="spon-trip-modal__input-cnt">
                 <Field
@@ -322,35 +336,6 @@ const TripModal: React.SFC<IProps> = ({
               </div>
             </div>
 
-            {/* <div className="spon-trip-modal__row spon-trip-modal__row--bordered spon-trip-modal__row--noflex">
-              <p className="spon-trip-modal__label">Add trip cover</p>
-
-              <div className="spon-trip-modal__avatar">
-                <div className="spon-trip-modal__photo">
-                  {!values.photo ? (
-                    <div className="spon-trip-modal__photo-cover">
-                      <img src={photoSvg} alt="" />
-                    </div>
-                  ) : (
-                    <div
-                      className="spon-trip-modal__photo-cover"
-                      style={{ backgroundImage: `url(${values.photo})` }}
-                    />
-                  )}
-                </div>
-
-                <div className="spon-trip-modal__photo-input">
-                  <FileInput
-                    label="UPLOAD FILE"
-                    handleChange={handleChange}
-                    handleSetError={(name, msg) => setFieldError(name, msg)}
-                  />
-                </div>
-              </div>
-              {errors.photo && touched.photo ? (
-                <div className="spon-trip-modal__error">{errors.photo}</div>
-              ) : null}
-            </div> */}
             <div className="spon-trip-modal__row">
               <div className="spon-trip-modal__buttons">
                 <Button
