@@ -7,14 +7,14 @@ import {
   FormikProps,
   ErrorMessage
 } from 'formik'
-//import FileInput from '../../Components/FileInput'
+//import FileInput from '../../Components/FileInput' // à enlever si inutile
 import * as Yup from 'yup'
 
 import Input from '../Input'
 import Dropdown from '../Dropdown'
-//import Switch from '../Switch'
+//import Switch from '../Switch' // à enlever si inutile
 import Button from '../../../Common/Components/Button'
-//import photoSvg from '../../../Common/Utils/Media/photo.svg'
+//import photoSvg from '../../../Common/Utils/Media/photo.svg' // à enlever si inutile
 
 import { IProps, IFormValues, IEditValues } from './types'
 import './styles.scss'
@@ -38,7 +38,7 @@ const UserModal: React.SFC<IProps> = ({
   }
 
   return (
-    <div className="spon-trip-modal">
+    <div className="spon-trip-modal"> {/** changer le nom pour user-modal - pas trop prioritaire en vrai */}
       <Formik
         enableReinitialize
         initialValues={
@@ -85,12 +85,12 @@ const UserModal: React.SFC<IProps> = ({
         render={({
           handleChange,
           values,
-          errors,
-          touched,
-          setFieldError
+          errors, // à enlever si inutile
+          touched, // à enlever si inutile
+          setFieldError // à enlever si inutile
         }: FormikProps<IFormValues>) => (
           <Form noValidate>
-            <div className="spon-trip-modal__row">
+            <div className="spon-trip-modal__row"> {/** changere le nom pour user et dans le scss aussi pour le coup pas trop prioritaire */}
               <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--big">
                 <Field
                   type="text"
@@ -111,7 +111,7 @@ const UserModal: React.SFC<IProps> = ({
               <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--big">
                 <Field
                   type="email"
-		  placeholder="Type email"
+		  placeholder="Type email" // indentation
                   name="email"
                   label="E-mail"
                   className="spon-trip-modal__input"
@@ -157,7 +157,7 @@ const UserModal: React.SFC<IProps> = ({
               </div>
             </div>
 
-            </div></div>
+            </div></div> {/** à enlever */}
               
              
             <div className="spon-trip-modal__row">

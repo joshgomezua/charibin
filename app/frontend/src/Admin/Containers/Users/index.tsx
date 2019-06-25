@@ -141,7 +141,7 @@ class UsersContainer extends React.Component<
 
     this.setState({ isModalLoading: true })
     return addUser(data, token)
-      .then(res => {
+      .then(res => { // remplacer par res par ()
         this.modal.current!.close()
         this.handleFetchItems(currentPage, 10)
         this.props.showSuccess(SUCCESS.USER_ADD)
@@ -192,7 +192,7 @@ class UsersContainer extends React.Component<
     this.setState({ isModalLoading: true })
 
     return updateUser(id, data, token)
-      .then(res => {
+      .then(res => { // remplacer res par ()
         this.modal.current!.close()
         this.handleFetchItems(currentPage, 10)
         this.props.showSuccess(SUCCESS.USER_EDIT)
@@ -235,7 +235,7 @@ class UsersContainer extends React.Component<
     const toggle = !this.state.enable
     
     if (toggle){
-      newUsers = this.state.users.filter(user => user.active === true)
+      newUsers = this.state.users.filter(user => user.active === true) // remplacer la condition par user.active seulement
     } else {
       newUsers = this.state.users
     }

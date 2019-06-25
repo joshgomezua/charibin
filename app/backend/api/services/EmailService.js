@@ -137,7 +137,7 @@ module.exports = {
   async adminOrder (admin, order) {
     return new Email(admin.email).adminOrder(order);
   },
-  async AddingNotif(name, email, password){
+  async AddingNotif(name, email, password){ // remplacer les parametres par {name, email, password} destructuration
     return new Email(email).AddingNotif(name, password);
   },
   async support (data) {

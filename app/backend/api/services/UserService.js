@@ -28,10 +28,10 @@ module.exports = {
   async create (data) {
     const user = await User.findOne({ email: data.email});
     if(user) throw { status: 409, message: 'USER.EXIST' };
-    data.password = faker.internet.password(6);
-    console.log('password: ', data.password);
+    data.password = faker.internet.password(6); // à remplacer par des vrais passwords dans add new users
+    console.log('password: ', data.password); // enlever console log
     await User.create(data);
-    await EmailService.AddingNotif(data.name, data.email, data.password);
+    await EmailService.AddingNotif(data.name, data.email, data.password); //  remplacer par data dans les paramètres et déstructurer la methode signature
     
   },
   async findOne (id) {
