@@ -6,9 +6,6 @@ export interface IProps {
   pages: number
   loading: boolean
   columns: Column[]
-  detailsColumns?: Column[]
-  subComponentClassName?: string,
   className?: string
   handleFetchData: TableProps['onFetchData']
-  handleOpenModal: (id: string) => void
 }

@@ -41,20 +41,6 @@ export const updateTimeSelection = (id: string, data: Types.IEditTimeSelect, tok
     headers: { 'Content-type': 'application/json', token }
   })
 
-  export const addSchedule = (data: Types.INewScheduledTrip, token: string) => 
-  axios.post(`${API_URL}/scheduledTrip`, data, {
-      headers: { 'Content-type': 'application/json', token }
-})
-
-export const deleteScheduledTrip = (id: string, token: string) =>
-  axios.delete(`${API_URL}/scheduledTrip/${id}`, {
-    headers: { token }
-  })
-
-export const getSingleScheduledTrip = (id: string, token: string) =>
-  axios.get(`${API_URL}/scheduledTrip/${id}`, { headers: { token } 
-})
-
 export const getTickets = (startDate: string, endDate: string, token: string) =>
   axios.get(`${API_URL}/ticket/${startDate}/${endDate}`, {
     headers: {

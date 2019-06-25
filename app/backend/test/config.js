@@ -34,30 +34,6 @@ const dataTemplate = {
     deselectionPrice: () => faker.random.number({ min: 3, max: 10 }) + 0.93
   },
 
-  scheduledTrip: {
-    date: {
-      start: faker.date.recent().getTime(),
-      end: faker.date.future().getTime(),
-    },
-    price: () => faker.random.number({ min: 100, max: 200 }) + 0.99,
-    discount: () => faker.random.number({ min: 5, max: 40 }) + 0.95,
-    duration: () => faker.random.number({ min: 1, max: 100 }),
-    timeSelection: {
-      defaultPrice: () => faker.random.number({min: 1, max: 4}),
-      _0to6AM: () => faker.random.number({min: 1, max: 4}),
-      _6to8AM: () => faker.random.number({min: 1, max: 4}),
-      _8to10AM: () => faker.random.number({min: 1, max: 4}),
-      _10to12PM: () => faker.random.number({min: 1, max: 4}),
-      _12to2PM: () => faker.random.number({min: 1, max: 4}),
-      _2to4PM: () => faker.random.number({min: 1, max: 4}),
-      _4to6PM: () => faker.random.number({min: 1, max: 4}),
-      _6to8PM: () => faker.random.number({min: 1, max: 4}),
-      _8to10PM: () => faker.random.number({min: 1, max: 4}),
-      _10to12AM: () => faker.random.number({min: 1, max: 4}),
-    },
-    deselectionPrice: () => faker.random.number({ min: 3, max: 10 }) + 0.93
-  },
-
   ticket: {
     direction: 'arrival',
     quantity: () => faker.random.number({ min: 5, max: 20 }),

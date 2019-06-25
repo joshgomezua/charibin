@@ -25,7 +25,6 @@ const tripSchema = new Schema({
     _8to10PM: Number,
     _10to12AM: Number
   },
-  scheduledTrips: { type: Schema.Types, ref: 'ScheduledTrip' },
   carrier: { type: String },
   type: { type: String },
   deleted: { type: Boolean, default: false },
