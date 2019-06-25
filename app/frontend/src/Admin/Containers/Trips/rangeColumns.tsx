@@ -68,7 +68,6 @@ export const rangeColumns = (
     )
     
   },
-
   {
     accessor: 'duration',
     width: 90,

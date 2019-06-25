@@ -1,5 +1,5 @@
-import { ITrip, MODAL_TYPE, IScheduledTrip } from '../../Utils/adminTypes'
-import { IResponseError } from '../../../Common/Utils/globalTypes'
+import { ITrip, MODAL_TYPE } from '../../Utils/adminTypes'
+import { IResponseError, IScheduledTrip } from '../../../Common/Utils/globalTypes'
 
 export interface IState {
   trips: ITrip[]

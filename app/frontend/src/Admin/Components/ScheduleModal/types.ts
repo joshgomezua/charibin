@@ -1,9 +1,13 @@
+import { INewSchedule } from "src/Admin/Containers/Trips/types";
+
 export interface IProps {
   editDate?: IFormValues & { _id: string }
   isLoading: boolean
   closeModal: () => void
-  handleSubmit?: (data: any) => Promise<void>
-  handleEditSchedule?: (data: IEditValues) => Promise<void>
+  handleSubmit?: (data: Pick<INewSchedule, Exclude<keyof INewSchedule, 
+      'trip' | '_id' | 'date' >>) => Promise<void>
+  handleEditSchedule?: (data: Pick<INewSchedule, Exclude<keyof INewSchedule, 
+      'trip' | '_id' | 'date' >>) => Promise<void>
 }
 
 export interface IFormValues {

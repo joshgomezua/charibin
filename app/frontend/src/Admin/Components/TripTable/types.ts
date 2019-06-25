@@ -1,5 +1,4 @@
 import { Column, TableProps } from 'react-table'
-// import { MODAL_TYPE } from 'src/Admin/Utils/adminTypes';
 
 export interface IProps {
   data: any
@@ -8,6 +7,7 @@ export interface IProps {
   columns?: Column[]
   detailsColumns?: Column[]
   className?: string
+  parentTrip: string
   handleFetchData?: TableProps['onFetchData']
-  // handleOpenModal?: (type: MODAL_TYPE, heading: string) => void
+  handleOpenModal: (id: string) => void
 }

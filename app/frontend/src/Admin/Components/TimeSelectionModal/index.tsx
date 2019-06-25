@@ -106,11 +106,6 @@ const TimeSelectionModal: React.SFC<IProps> = ({
           }
         }}
         render={({
-          handleChange,
-          values,
-          errors,
-          touched,
-          setFieldError
         }: FormikProps<IFormValues>) => (
           <Form noValidate>
             <div className="spon-seltime-modal__row">
@@ -307,7 +302,7 @@ const TimeSelectionModal: React.SFC<IProps> = ({
             </div> */}
             
 
-            <div className="spon-seltime-modal__row--bordered"></div>
+            <div className="spon-seltime-modal__row--bordered"/>
             <div className="spon-seltime-modal__row">
               <div className="spon-seltime-modal__buttons">
                 <Button

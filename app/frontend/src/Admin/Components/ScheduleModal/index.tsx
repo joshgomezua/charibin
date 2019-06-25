@@ -12,9 +12,11 @@ import * as Yup from 'yup'
 import Input from '../Input'
 import Switch from '../Switch'
 import Button from '../../../Common/Components/Button'
+import DatePicker from '../DatePicker'
 
-import { IProps, IFormValues, IEditValues } from './types'
+import { IProps, IFormValues } from './types'
 import './styles.scss'
+import moment from 'moment';
 
 const TripModal: React.SFC<IProps> = ({
   isLoading,
@@ -95,16 +97,27 @@ const TripModal: React.SFC<IProps> = ({
           values: IFormValues,
           { resetForm }: FormikActions<IFormValues>
         ) => {
-          const dataToUpdate: IEditValues = {}
-          if (editDate) {
-            for (const key in values) {
-              if (
-                values.hasOwnProperty(key) &&
-                values[key] !== editDate![key]
-              ) {
-                dataToUpdate[key] = values[key]
-              }
-            }
+          const offset = moment().utcOffset()
+
+          const dataToUpdate = {
+            price: values.price,
+            discount: values.discount,
+            timeSelection: {
+              defaultPrice: values.timeSelection.defaultPrice,
+            },
+            deselectionPrice: values.deselectionPrice,
+            duration: values.duration,
+            date: {
+              start: +moment
+                .utc(values.date.start)
+                .add(offset, 'minutes')
+                .format('x'),
+              end: +moment
+                .utc(values.date.end)
+                .add(offset, 'minutes')
+                .format('x')
+            },
+            active: values.active,
           }
 
           if (editDate && handleEditSchedule) {
@@ -122,7 +135,51 @@ const TripModal: React.SFC<IProps> = ({
         }: FormikProps<IFormValues>) => (
           <Form noValidate>
             <div className="spon-trip-modal__row">
-              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--small">
+              <div className="spon-ticket-modal__input-cnt">
+                <DatePicker
+                  id="date"
+                  label="Start date"
+                  placeholder="Select date"
+                  selectedDate={editDate ? (values.date.start as Date) : undefined}
+                  onChange={(date: Date) => {
+                    handleChange({
+                      target: {
+                        id: 'date.start',
+                        value: date
+                      }
+                    })
+                  }}
+                />
+
+                <ErrorMessage
+                  name="date"
+                  component="div"
+                  className="spon-ticket-modal__error"
+                />
+              </div>
+              <div className="spon-ticket-modal__input-cnt">
+                <DatePicker
+                  id="date"
+                  label="End date"
+                  placeholder="Select date"
+                  selectedDate={editDate ? (values.date.end as Date) : undefined}
+                  onChange={(date: Date) => {
+                    handleChange({
+                      target: {
+                        id: 'date.end',
+                        value: date
+                      }
+                    })
+                  }}
+                />
+
+                <ErrorMessage
+                  name="date"
+                  component="div"
+                  className="spon-ticket-modal__error"
+                />
+              </div>
+              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt">
                 <Field
                   isPrefix
                   type="number"
@@ -138,6 +195,8 @@ const TripModal: React.SFC<IProps> = ({
                   className="spon-trip-modal__error"
                 />
               </div>
+            </div>
+            <div className="spon-trip-modal__row">
               <div className="spon-trip-modal__input-cnt">
                 <Field
                   isPrefix

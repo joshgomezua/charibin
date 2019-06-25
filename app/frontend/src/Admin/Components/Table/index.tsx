@@ -11,6 +11,7 @@ const Table: React.SFC<IProps> = ({
   data,
   detailsColumns,
   handleFetchData,
+  handleOpenModal,
   loading,
   pages,
   className,
@@ -19,7 +20,7 @@ const Table: React.SFC<IProps> = ({
   const tableClass = classnames('spon-table', {
     [`${className}`]: className
   })
-
+  console.log(data)
   return (
     <div className={tableClass}>
       <ReactTable
@@ -39,7 +40,9 @@ const Table: React.SFC<IProps> = ({
           <div className={subComponentClassName}>
             <TripTable
               data={row.original.scheduledTrips}
+              parentTrip={row.original._id}
               columns={detailsColumns}
+              handleOpenModal={handleOpenModal}
             />
           </div> 
         )}

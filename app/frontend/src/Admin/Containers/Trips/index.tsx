@@ -82,8 +82,9 @@ class TripsContainer extends React.Component<
   }
 
   handleOpenScheduleModal = (id: string) => {
-    this.handleOpenModal(MODAL_TYPE.ADD_SCHEDULE, 'Add schedule', id)
     this.handleFetchTripData(id)
+    this.handleOpenModal(MODAL_TYPE.ADD_SCHEDULE, 'Add schedule', id)
+    console.log(this.state)
   }
 
   handleOpenDeleteScheduleModal = (id: string) => {
@@ -362,6 +363,7 @@ class TripsContainer extends React.Component<
           loading={isLoading}
           pages={Math.ceil(total / 10)}
           subComponentClassName={"rangeTripTable"}
+          handleOpenModal={this.handleOpenScheduleModal}
           detailsColumns={rangeColumns(
             this.handleOpenDeleteScheduleModal,
             this.handleOpenEditModal,

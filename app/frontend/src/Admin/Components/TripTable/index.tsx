@@ -11,6 +11,8 @@ const TripTable: React.SFC<IProps> = ({
   columns,
   data,
   handleFetchData,
+  handleOpenModal,
+  parentTrip,
   loading,
   pages,
   className
@@ -19,7 +21,7 @@ const TripTable: React.SFC<IProps> = ({
     [`${className}`]: className
   })
   const nullComponent = (props: RowRenderProps) => (null);
-
+  console.log(data)
   return (
     <div className={tableClass}>
       <ReactTable
@@ -30,7 +32,14 @@ const TripTable: React.SFC<IProps> = ({
         showPageJump={false}
         defaultPageSize={3}
         TheadComponent={nullComponent}
-        TfootComponent={() =>(<Footer />)}
+        TfootComponent={() => {
+          return(
+            <Footer 
+              handleOpenModal={handleOpenModal}
+              parentTrip={parentTrip}
+            />
+          )
+        }}
         PaginationComponent={nullComponent}
         columns={columns}
         data={data}

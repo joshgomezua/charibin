@@ -25,8 +25,8 @@ export interface IScheduledTrip {
     _10to12AM: number
   }
   date: {
-    start: string,
-    end: string,
+    start: number
+    end: number
   }
   discount: number
   duration: number

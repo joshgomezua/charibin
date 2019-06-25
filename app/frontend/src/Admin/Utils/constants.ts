@@ -52,7 +52,7 @@ export const DEFAULT_TRIP_SCHEDULE = {
   deselectionPrice: 0,
   date: {
     start: '',
-    end: ''
+    end: '',
   },
   timeSelection: {
     defaultPrice: 0,
