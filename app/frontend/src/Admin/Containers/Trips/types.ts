@@ -43,7 +43,6 @@ export interface INewData {
   departure: string
   destination: string
   carrier: string
-  photo: string
   price: number
   type: string
   isFromAPI: boolean
@@ -72,7 +71,6 @@ export interface IEditTimeSchedule {
   departure?: string
   destination?: string
   carrier?: string
-  photo?: string
   price?: number
   type?: string
 }

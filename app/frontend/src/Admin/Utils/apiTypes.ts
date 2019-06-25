@@ -35,7 +35,6 @@ export interface INewTrip {
   destination: string
   departure: string
   carrier: string
-  photo: string
   price: number
   discount: number
   deselectionPrice: number
