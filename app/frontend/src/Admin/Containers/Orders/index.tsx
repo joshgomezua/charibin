@@ -46,7 +46,6 @@ class OrdersContainer extends React.Component<IProps, IState> {
 
   handleToggleSwitch = (id: string, value: boolean) => {
     const token = getToken()
-
     editOrderState(id, value, token)
       .then(({ data }) => {
         const updatedOrders = this.state.orders.map((order: IOrder) => {

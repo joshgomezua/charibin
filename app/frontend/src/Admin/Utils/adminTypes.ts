@@ -2,9 +2,19 @@ export interface IAdmin {
   email: string
 }
 
+export interface ITag {
+  name: string
+  isSelected: boolean
+}
+
 export interface ICity {
   _id: string
   name: string
+  country?: string;
+  photo?: string;
+  tags?: string[];   
+  isModify?: boolean;
+  isEnabled?: boolean;
 }
 
 export interface ITrip {
@@ -33,6 +43,8 @@ export interface ITrip {
   photo: string
   price: number
   type: string
+  departure: string
+  destination: string
 }
 
 export interface IOrder {
@@ -73,4 +85,7 @@ export enum MODAL_TYPE {
   'EDIT_TICKET',
   'DELETE_TICKET',
   'EDIT_TIME_SELECTION',
+  'ADD_CITY',
+  'EDIT_CITY',
+  'DELETE_CITY',
 }

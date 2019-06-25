@@ -1,7 +1,11 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+node_modules/*
+!node_modules/react-dropdown-select
+node_modules/react-dropdown-select/*
+!node_modules/react-dropdown-select/index.d.ts
+
 
 # testing
 /coverage

@@ -254,11 +254,11 @@ class TripsContainer extends React.Component<
     } = this.state
     return (
       <div className="spon-container">
+        
         <Header
           title="Routes & Prices"
           handleOpenModal={this.handleOpenModal}
         />
-
         <Table
           data={trips}
           handleFetchData={this.handleFetchTableData}

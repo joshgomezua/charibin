@@ -226,7 +226,7 @@ export default class Billing extends React.Component<IProps, IState> {
           </div>
           <div className="billing-payment-card">
             <p className="billing-header-violet">Card Info</p>
-            <StripeProvider apiKey={process.env.REACT_APP_STRIPE_KEY as string}>
+            <StripeProvider apiKey={'pk_test_TtLQNVbp3yRRFP0FTPipppF100MhQayejT'}>
               <Elements>
                 <CardInfo
                   name={this.state.name}

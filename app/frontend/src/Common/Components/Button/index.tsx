@@ -12,7 +12,9 @@ const ICONS = {
   crossWhite: require('../../Utils/Media/crossWhite.svg'),
   arrowRight: require('../../Utils/Media/arrowRight.svg'),
   arrowLeft: require('../../Utils/Media/arrowLeft.svg'),
-  undo: require('../../Utils/Media/undo.svg')
+  undo: require('../../Utils/Media/undo.svg'),
+  trash: require('../../Utils/Media/trash.svg'),
+  pencil: require('../../Utils/Media/pencil.svg'),
 }
 
 const Button = ({

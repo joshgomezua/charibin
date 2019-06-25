@@ -25,7 +25,6 @@ export default class Calendar extends React.Component<IProps, IState> {
   handleDisableDays = (props: { date: Date }) => {
     const { startDates, endDates } = this.props
     const dateString = moment(props.date).format('YYYY-MM-DD')
-
     if (startDates && !this.state.startFillingEndRange) {
       return !startDates.includes(dateString)
     } else if (endDates && this.state.startFillingEndRange) {
@@ -56,6 +55,7 @@ export default class Calendar extends React.Component<IProps, IState> {
           tileDisabled={this.handleDisableDays}
         />
       </div>
+      
     )
   }
 }

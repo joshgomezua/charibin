@@ -19,10 +19,11 @@ export interface IProps {
       start: string
       end: string
     }
-    active: boolean
-    direction: string
+    active: boolean,
+    departure: string,
+    destination: string
   }
-  tripSelected?: { _id: string; departure: string; destination: string } | null
+  tripSelected?: { _id: string; departure: string, destination: string } | null
   destinations: ICity[]
   closeModal: () => void
   handleSubmit?: (
@@ -39,7 +40,7 @@ export interface IProps {
     }
   ) => Promise<void>
   handleEditTicket?: (
-    ticket: Pick<ITicket, Exclude<keyof ITicket, 'trip' | '_id' | 'date'>> & {
+    ticket: Pick<ITicket, Exclude<keyof ITicket, 'trip' | '_id' | 'date' | 'soldTickets' | 'reservedQuantity'>> & {
       trip: string
       date: {
         start: number
@@ -52,8 +53,8 @@ export interface IProps {
 export interface IFormValues {
   trip: {
     _id: string
-    departure: string
     destination: string
+    departure: string
   }
   type: string
   quantity: number
@@ -62,6 +63,7 @@ export interface IFormValues {
   days?: number[]
   hours?: string
   active: boolean
-  direction: string
+  departure: string,
+  destination: string,
   isRecurring?: boolean
 }

@@ -1,6 +1,7 @@
 'use strict';
 
 const faker = require('faker');
+const moment = require('moment');
 
 const dataTemplate = {
   administrator: {
@@ -34,14 +35,27 @@ const dataTemplate = {
     deselectionPrice: () => faker.random.number({ min: 3, max: 10 }) + 0.93
   },
 
+  city: {
+    name: faker.address.city,
+    country: () => faker.name.lastName(),
+    photo: getImage,
+    tags: () => [faker.name.firstName()],
+    isModify: false,
+    isEnabled: false
+
+  },
+
   ticket: {
-    direction: 'arrival',
-    quantity: () => faker.random.number({ min: 5, max: 20 }),
+    quantity: 5,
+    soldTickets: 0,
+    reservedQuantity: 0,
+    departure: '',
+    destination: '',
     type: () => randomOneWord('type'),
     date: {
       __tmpStart: 0,
       start: function () {
-        const tmpDate = faker.date.future().getTime();
+        const tmpDate = new Date(moment.now() + (1000 * 60 * 60 * 24 * 2));
         this.__tmpStart = tmpDate;
         return tmpDate;
       },

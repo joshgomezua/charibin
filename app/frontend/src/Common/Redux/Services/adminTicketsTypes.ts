@@ -1,8 +1,8 @@
-import { DIRECTION_TYPE } from '../../../Admin/Utils/adminTypes'
-
 export enum TICKETS_ACTIONS {
   SELECTED_DATE_CHANGE = 'SELECTED_DATE_CHANGE',
   FILTERS_CHANGE = 'FILTERS_CHANGE',
+  FILTER_FROM_CHANGE = 'FILTER_FROM_CHANGE',
+  FILTER_TO_CHANGE = 'FILTER_TO_CHANGE',
   TICKETS_TYPE_CHANGE = 'TICKETS_TYPE_CHANGE'
 }
 
@@ -16,9 +16,18 @@ export interface IFilters {
   filters: string[]
 }
 
-export interface ITicketType {
-  type: TICKETS_ACTIONS.TICKETS_TYPE_CHANGE
-  direction: DIRECTION_TYPE | null
+export interface IFilterFrom {
+  type: TICKETS_ACTIONS.FILTER_FROM_CHANGE
+  filterFrom: string[]
 }
 
-export type ITicketsActions = ISelectDate | IFilters | ITicketType
+export interface IFilterTo {
+  type: TICKETS_ACTIONS.FILTER_TO_CHANGE
+  filterTo: string[]
+}
+
+export interface ITicketType {
+  type: TICKETS_ACTIONS.TICKETS_TYPE_CHANGE
+}
+
+export type ITicketsActions = ISelectDate | IFilters | ITicketType | IFilterFrom | IFilterTo

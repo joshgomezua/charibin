@@ -11,7 +11,7 @@ export default class FileInput extends React.Component<IProps, IState> {
     const file = e.target.files![0]
     const allowedFileTypes = ['image/jpeg', 'image/jpg', 'image/png']
     const reader = new FileReader()
-
+    
     reader.onloadend = () => {
       if (!allowedFileTypes.includes(file.type)) {
         this.props.handleSetError('photo', 'Illegal file extension')
@@ -24,7 +24,6 @@ export default class FileInput extends React.Component<IProps, IState> {
         this.setState({ name: file.name })
       }
     }
-
     reader.readAsDataURL(file)
   }
 

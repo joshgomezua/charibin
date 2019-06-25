@@ -1,11 +1,30 @@
-import { ICity, DIRECTION_TYPE } from '../../Utils/adminTypes'
-
 export interface IProps {
-  filters: string[]
-  cities: ICity[]
+  filterFrom: string[]
+  filterTo: string[]
   selectedDate: Date
-  direction: DIRECTION_TYPE | null
-  changeFilters: (filters: string[]) => void
+  calendarFilter:{
+    start: Date | undefined
+    end: Date | undefined
+  }
+  changeFilterFrom: (filterFrom: string[]) => void
+  changeFilterTo: (filterTo: string[]) => void
   changeSelectedDate: (date: Date) => void
-  changeDirectionType: (type: DIRECTION_TYPE | null) => void
+  onChange?: (v: [Date, Date]) => void
+  handleFetchTicketsByDate: (startDate: Date, endDate?: Date) => void
+}
+
+export interface IState {
+  calendarVisible: boolean
+  selectedColor: string
+}
+
+export interface ITerritory {
+  value: number
+  label: string
+  country: string
+}
+
+export enum COLOR {
+  BLUE = 'blue',
+  GREEN = 'green'
 }

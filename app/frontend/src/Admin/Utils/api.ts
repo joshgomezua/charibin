@@ -113,3 +113,41 @@ export const editOrderState = (id: string, value: boolean, token: string) =>
       }
     }
   )
+export const addCity = (data: Types.ICity, token: string) => 
+  axios.post(`${API_URL}/city`, data, {
+    headers: { 'Content-type': 'application/json', token }
+})
+
+export const updateCity = (id: string, data: Types.ICity, token: string) =>
+  axios.put(`${API_URL}/city/${id}`, data, {
+    headers: { 'Content-type': 'application/json', token }
+})
+
+export const getCities = (page: number, limit: number, token: string) =>
+  axios.get(`${API_URL}/city/${page}/${limit}`, {
+    headers: {
+      'Content-type': 'application/json',
+      token
+    }
+  })
+
+export const getSingleCity = (id: string, token: string) =>
+  axios.get(`${API_URL}/city/${id}`, { headers: { token } })
+
+export const deleteCity = (id: string, token: string) =>
+  axios.delete(`${API_URL}/city/${id}`, {
+    headers: { token }
+  })
+
+  export const editCityState = (id: string, value: boolean, token: string) =>
+  axios.patch(
+    `${API_URL}/city/${id}`,
+    { isEnabled: value },
+    {
+      headers: {
+        'Content-type': 'application/json',
+        token
+      }
+    }
+  )
+

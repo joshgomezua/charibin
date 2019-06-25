@@ -5,7 +5,8 @@ export enum ADMIN_ROUTING {
   LOGIN = '/login',
   TRIPS = '/trips',
   TICKETS = '/tickets',
-  ORDERS = '/orders'
+  ORDERS = '/orders',
+  CITIES = '/cities'
 }
 
 export const ERRORS = {
@@ -17,6 +18,10 @@ export const ERRORS = {
   TICKET_FETCH: `Can't fetch tickets list`,
   TICKET_DELETE: 'Error when delete ticket',
   TICKET_EDIT: 'Error when edit ticket',
+  CITY_FETCH: `Cant't fetch city list`,
+  CITY_DELETE: 'Error when delete city ',
+  CITY_ADD: 'Error when submit form',
+  CITY_EDIT: 'Error when edit city',
   ORDERS_FETCH: `Can't fetch orders list`,
   ORDERS_EDIT: 'Error when edit order',
   DEFAULT: 'Error'
@@ -30,14 +35,21 @@ export const SUCCESS = {
   TICKET_EDIT: 'Trip edited successfully',
   TICKET_DELETE: 'Ticket deleted successfully',
   ORDER_UPDATE: 'Order update successfully',
+  CITY_ADD: 'City added successfully',
+  CITY_EDIT: 'City edited successfully',
+  CITY_DELETE: 'City deleted successfully',
+  CITY_UPDATE: 'city update successfully',
   DEFAULT: 'Success'
 }
 
 export const DEFULT_TICKET_DATA = {
   _id: '',
-  trip: { _id: '', destination: '', departure: '' },
-  direction: '',
+  trip: { _id: '', name: '', departure: '', destination: '' },
   quantity: 0,
+  soldTickets: 0,
+  reservedQuantity: 0,
+  destination: '',
+  departure: '',
   type: '',
   date: {
     start: '',
@@ -71,6 +83,238 @@ export const DEFAULT_TRIP_DATA = {
   carrier: '',
   photo: '',
   price: 0,
-  type: ''
+  type: '',
 }
 
+export const DEFAULT_CITY_DATA = {
+    _id: '',
+    name: 'London',
+    country: 'United Kingdom',
+    tags: ["beach"],
+    photo: ''
+}
+
+
+
+export const TAGS = [
+  'City','Beach','Nightlife','Art & Culture','Family',
+  'Nature',
+  'History'
+]
+
+
+export const COUNTRIES = [
+  { _id: "0",
+    name:"Albania"
+  },
+  {
+    _id: "1",
+    name:"Andorra"
+  },
+  {
+    _id: "2",
+    name:"Armenia"
+
+  },
+  {
+    _id: "3",
+    name: "Austria" 
+  },
+  {
+    _id: "4",
+    name: "Azerbaijan"
+  },
+  {
+    _id: "5",
+    name: "Belarus"
+  },
+  {
+    _id: "6",
+    name: "Belgium"
+  },
+  {
+    _id: "7",
+    name: "Bosnia and Herzegovina"
+  },
+  {
+    _id: "8",
+    name: "Bulgaria"
+  }, 
+  {
+    _id: "9",
+    name: "Croatia"
+  },
+  {
+    _id: "10",
+    name: "Cyprus"
+  },
+  {
+    _id: "11",
+    name: "Canada"
+  },
+  {
+    _id: "12",
+    name: "Denmark"
+  },
+  {
+    _id: "13",
+    name: "Estonia"
+  },
+  {
+    _id: "14",
+    name: "Finland"
+  },
+  {
+    _id: "15",
+    name: "France"
+  },
+  {
+    _id: "17",
+    name: "Georgia"
+  },
+  {
+    _id: "18",
+    name: "Germany"
+  },
+  {
+    _id: "19",
+    name: "Greece"
+  },
+  {
+    _id: "20",
+    name: "Hungary"
+  },
+  {
+    _id: "21",
+    name: "Iceland"
+  },
+  {
+    _id: "22",
+    name: "Ireland"
+  },
+  {
+    _id: "23",
+    name: "Italy"
+  },
+  {
+    _id: "24",
+    name:"Kazakhstan"
+  },
+  {
+    _id: "25",
+    name: "Kosovo"
+  },
+  {
+    _id: "26",
+    name: "Latvia"
+  },
+  {
+    _id:"27",
+    name:"Liechtenstein"
+  },
+  {
+    _id:"28",
+    name:"Lithuania"
+  },
+  {
+    _id: "29",
+    name: "Luxembourg"
+  },
+  {
+    _id: "30",
+    name: "Malta"
+  },
+  {
+    _id: "31",
+    name: "Mexique"
+  },
+  {
+    _id: "32",
+    name: "Moldova"
+  },
+  {
+    _id: "33",
+    name: "Monaco"
+  },
+  {
+    _id: "34",
+    name:"Montenegro"
+  },
+  {
+    _id: "35",
+    name: "Netherlands"
+  },
+  {
+    _id: "36",
+    name: "North Macedonia (formerly Macedonia)"
+  },
+  {
+    _id: "37",
+    name: "Norway"
+  },
+  {
+    _id: "38",
+    name: "Poland"
+  },
+  {
+    _id: "39",
+    name: "Portugal"
+  },
+  {
+    _id: "40",
+    name: "Romania"
+  },
+  {
+    _id: "41",
+    name: "Russia"
+  },
+  {
+    _id: "42",
+    name: "San Marino"
+  },
+  {
+    _id: "43",
+    name: "Serbia"
+  },  
+  {
+    _id: "44",
+    name: "Slovakia"
+  },
+  {
+    _id: "45",
+    name: "Slovenia"
+  },
+  {
+    _id: "46",
+    name: "Spain"
+  },
+  {
+    _id: "47",
+    name: "Sweden"
+  },
+  {
+    _id: "48",
+    name: "Ukraine"
+  },
+  {
+    _id: "49",
+    name: "United Kingdom (UK)"
+  },
+  {
+    _id: "50",
+    name:"United States (USA)"
+  },
+  {
+    _id: "51",
+    name: "Switzerland"
+  },
+  {
+    _id: "52",
+    name:"Turkey"
+  },
+  {
+    _id: "53",
+    name:"Vatican City (Holy See)"
+  },
+  
+]
