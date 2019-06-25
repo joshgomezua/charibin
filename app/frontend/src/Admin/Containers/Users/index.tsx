@@ -26,6 +26,7 @@ import {
 } from '../../Utils/api'
 import { IState, IProps } from './types'
 import { columns } from './columns'
+import { debounce } from 'lodash';
 
 class UsersContainer extends React.Component<
   RouteComponentProps<{}> & IProps,
@@ -208,24 +209,27 @@ class UsersContainer extends React.Component<
 }
 
 
-  handleToggleSwitch = (id: string, value: boolean) => {
+  handleToggleSwitch =  (id: string, value:boolean) => {
     const token = getToken()
-
+    
     editUserState(id, value, token)
       .then(({ data }) => {
         const updatedUsers = this.state.users.map((user: IUser) => {
           if (user._id === data._id) {
+
             return data
           }
 
           return user
         })
-        
+
         this.setState({ users: updatedUsers })
         this.props.showSuccess(SUCCESS.USER_UPDATE)
       })
       .catch(err => this.props.showError(err, ERRORS.USER_EDIT))
-  }
+}
+  
+
   handleToggle = () =>{
     let newUsers
     const toggle = !this.state.enable
@@ -287,7 +291,8 @@ class UsersContainer extends React.Component<
             this.handleOpenDeleteModal,
             this.handleOpenEditModal,
             this.handlResetPassword,
-            this.handleToggleSwitch
+            debounce(this.handleToggleSwitch,300)
+            
            
           )}
           loading={isLoading}

@@ -52,6 +52,19 @@ module.exports = {
       //pattern: /^(Administrator)$/
     },
 
+    active: {
+      type: 'boolean',
+      required: true,
+      permission: {
+        create: [ROLE.ADMINISTRATOR],
+        update: [ROLE.ADMINISTRATOR],
+        find: [ROLE.ADMINISTRATOR]
+      }
+    
+
+      //pattern: /^(Administrator)$/
+    },
+
     password: {
       type: 'password',
       required: false,

@@ -65,18 +65,21 @@ module.exports = {
     ]).then(Aggregate.parseResults);
   },
   
-  async update (id, data) {
+  async updateOne (id, data) {
     let user = await User.findOne({ _id: id });
     if(!user) throw { status: 404, message: 'USER.NOT.EXIST' };
 
-    if(data.name) {
-      user = await User.findOne({ name: data.name});
-      if(user) throw { status: 409, message: 'USER.NAME.EXIST' };
+    if(data.email) {
+      user = await User.findOne({ email: data.email});
+      if(user) throw { status: 409, message: 'USER.EMAIL.EXIST' };
     }
 
     return User.findByIdAndUpdate(id, data, { new: true });
 },
-
+  
+  async updateState (id, data) {
+  return User.findByIdAndUpdate(id, data, { new: true });
+},
 
   async destroy (id) {
     const user = await User.findById(id);

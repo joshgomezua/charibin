@@ -23,14 +23,18 @@ export const getUsers = (page: number, limit: number, token: string) =>
       token
     }
   })
-export const editUserState = (id: string, value: boolean, token: string) =>
-axios.patch(`${API_URL}/user/${id}`, 
-      { active: value },
-      {    
-        headers: { 'Content-type': 'application/json',
-                   token
-                   }
-})
+  export const editUserState = (id: string, value: boolean, token: string) =>
+  axios.patch(
+    `${API_URL}/user/${id}`,
+    { active: value },
+    {
+      headers: {
+        'Content-type': 'application/json',
+        token
+      }
+    }
+  )
+
 
 export const getSingleUser = (id: string, token: string) =>
   axios.get(`${API_URL}/user/${id}`, { headers: { token } })

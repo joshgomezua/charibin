@@ -11,7 +11,7 @@ export const columns = (
   openDeleteModal: (id: string) => void,
   openEditModal: (id: string) => void,
   openResetPasswordModal: (id: string) => void,
-  onSwitchChange: ((id: string, value: boolean) =>void),
+  onSwitchChange: ((id: string, value: boolean) => void),
 ) => [
   {
     Header: 'User',
@@ -30,17 +30,17 @@ export const columns = (
   },
   {
     Header: 'Active',
+    width: 90,
     accessor: 'active',
-    width: 80,
     Cell: (props: RowRenderProps) => (
-      <Switch 
-      onChange={() => {
-         onSwitchChange(props.row._original._id, !props.value)
-      }}
-      checked={props.value}
+      <Switch
+        onChange={() => {
+          onSwitchChange(props.row._original._id, !props.value)
+        }}
+        checked={props.value}
       />
     )
-  },
+},
   
   
   {
