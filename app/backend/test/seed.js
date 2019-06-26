@@ -128,8 +128,8 @@ function connect () {
   const { user, password, host, port, name } = global.config.connection.database;
   return mongoose.connect(`mongodb://mongo:27017/db?authSource=admin`, {
   useNewUrlParser: true,
-  user: 'admin',
-  pass: 'admin',
+  user: 'username',
+  pass: 'password',
   keepAlive: true,
 });
 }

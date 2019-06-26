@@ -19,7 +19,7 @@ import {
   deleteTicket,
   editTicket
 } from '../../Utils/api'
-import { MODAL_TYPE, ICity } from '../../Utils/adminTypes'
+import { MODAL_TYPE, /*ICity*/ } from '../../Utils/adminTypes'
 import { ITicket } from '../../../Common/Utils/globalTypes'
 import { getToken } from '../../../Common/Utils/helpers'
 import { ERRORS, SUCCESS, DEFULT_TICKET_DATA } from '../../Utils/constants'
@@ -90,9 +90,14 @@ class TicketsContainer extends React.Component<
 
     getTripNames(token)
       .then(({ data }) => {
-        const cityNames = data.map((item: ICity) => item.name)
+        console.log('data', data)
+        const cityNames = data.map((item: any) => ({
+          _id: item._id,
+          name: item.destination
+        }))
+        console.log('cityNames', cityNames)
         this.props.changeFilters(cityNames)
-        this.setState({ destinations: data })
+        this.setState({ destinations: cityNames })
       })
       .catch(err => {
         this.props.showError(err)
