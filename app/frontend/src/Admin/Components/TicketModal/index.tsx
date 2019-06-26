@@ -75,7 +75,6 @@ class TicketModal extends React.Component<IProps, IState> {
                     _id: tripSelected ? tripSelected._id : '',
                     departure: tripSelected ? tripSelected.departure : '',
                     destination: tripSelected ? tripSelected.destination : '',
-
                   },
                   type: 'Train',
                   quantity: 0,
@@ -122,8 +121,8 @@ class TicketModal extends React.Component<IProps, IState> {
 
             const dataToSubmit = {
               trip: values.trip._id,
-              departure: values.departure,
-              destination: values.destination,
+              departure: 'test',
+              destination: 'test',
               quantity: values.quantity,
               soldTickets: 0,
               reservedQuantity: 0,

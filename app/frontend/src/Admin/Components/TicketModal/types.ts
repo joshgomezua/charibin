@@ -53,8 +53,8 @@ export interface IProps {
 export interface IFormValues {
   trip: {
     _id: string
+    departure: string,
     destination: string
-    departure: string
   }
   type: string
   quantity: number

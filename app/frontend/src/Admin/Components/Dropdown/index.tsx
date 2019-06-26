@@ -33,6 +33,7 @@ class DropDown extends React.Component<IProps, IState> {
   }
 
   renderOptions = (optionsArr: IOption[]): JSX.Element[] => {
+    console.log('options', optionsArr)
     return optionsArr.map(
       (el: IOption): JSX.Element => {
         return (

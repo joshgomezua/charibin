@@ -31,7 +31,10 @@ const dataTemplate = {
   },
 
   ticket: {
-    quantity: 5,
+    direction: 'arrival',
+    departure: faker.address.city,
+    destination: faker.address.city,
+    quantity: () => faker.random.number({ min: 5, max: 20 }),
     soldTickets: 0,
     reservedQuantity: 0,
     departure: '',
