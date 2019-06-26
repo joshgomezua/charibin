@@ -7,7 +7,6 @@ const Footer: React.SFC<IProps> = ({
   handleOpenModal,
   parentTrip
 }) => {
-  console.log(parentTrip)
   return (
     <div className="table-footer">
       <Button

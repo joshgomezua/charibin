@@ -25,8 +25,8 @@ export interface IScheduledTrip {
     _10to12AM: number
   }
   date: {
-    start: number
-    end: number
+    start: string
+    end: string  
   }
   discount: number
   duration: number
@@ -102,5 +102,6 @@ export enum MODAL_TYPE {
   'DELETE_TICKET',
   'EDIT_TIME_SELECTION',
   'ADD_SCHEDULE',
-  'DELETE_SCHEDULE'
+  'DELETE_SCHEDULE',
+  'EDIT_SCHEDULE'
 }

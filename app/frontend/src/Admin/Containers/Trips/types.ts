@@ -51,7 +51,7 @@ export interface INewData {
 }
 
 export interface INewSchedule {
-  _id: string
+  _id?: string
   active: boolean
   deselectionPrice: number
   timeSelection: {
@@ -68,8 +68,8 @@ export interface INewSchedule {
     _10to12AM?: number
   }
   date: {
-    start: number
-    end: number
+    start: string
+    end: string
   }
   discount: number
   duration: number

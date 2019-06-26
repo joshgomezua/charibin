@@ -5,7 +5,6 @@ import { IProps } from './types'
 import './styles.scss'
 import './table.scss'
 import Footer from 'src/Admin/Components/Footer';
-// import Button from 'src/Common/Components/Button' 
 
 const TripTable: React.SFC<IProps> = ({
   columns,
@@ -15,13 +14,13 @@ const TripTable: React.SFC<IProps> = ({
   parentTrip,
   loading,
   pages,
-  className
+  className,
 }) => {
   const tableClass = classnames('spon-triptable', {
     [`${className}`]: className
   })
   const nullComponent = (props: RowRenderProps) => (null);
-  console.log(data)
+
   return (
     <div className={tableClass}>
       <ReactTable

@@ -73,8 +73,8 @@ export interface INewScheduledTrip {
     _10to12AM?: number
   }
   date: {
-    start: number
-    end: number
+    start: string
+    end: string
   }
   active: boolean
   trip?: string

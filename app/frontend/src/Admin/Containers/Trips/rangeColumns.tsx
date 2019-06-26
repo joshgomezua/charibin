@@ -4,7 +4,6 @@ import { IDuration } from '../../../Common/Utils/globalTypes'
 import Checkbox from '../../Components/Checkbox'
 import { RowRenderProps } from 'react-table'
 import 'moment-duration-format'
-// import Button from 'src/Common/Components/Button' 
 import { MODAL_TYPE } from 'src/Admin/Utils/adminTypes';
 
 export const rangeColumns = (
@@ -15,16 +14,16 @@ export const rangeColumns = (
   redirectToCreateTicket: (trip: { _id: string; departure: string; destination: string }) => void
 ) => [
   {
-    width: 124,
+    width: 64,
   },
   {
     accessor: 'date.start',
-    width: 120,
+    width: 150,
     Cell: (props: RowRenderProps) => moment(props.value).format('MMM DD, YYYY')
   },
   {
     accessor: 'date.end',
-    width: 120,
+    width: 150,
     Cell: (props: RowRenderProps) => moment(props.value).format('MMM DD, YYYY')
   },
   
@@ -101,14 +100,6 @@ export const rangeColumns = (
         </div>
       </>
     ),
-    Footer: (props: RowRenderProps ) => 
-      { console.log(props.value) }
-    //   //<Button
-    // //   className="spon-table-footer__add-button"
-    // //   variant="blue"
-    // //   icon="plus"
-    // //   text="ADD NEW"
-    // //   onClick={() => openScheduleModal(MODAL_TYPE.ADD_TRIP, 'Create schedule')}
-    // // />)
+    Footer: (props: RowRenderProps ) => { }
   }
 ]

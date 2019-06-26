@@ -113,7 +113,7 @@ module.exports = {
   
         attributes: {
           start: {
-            type: 'timestamp',
+            type: 'string',
             required: true,
             permission: {
               create: [ROLE.ADMINISTRATOR],
@@ -123,7 +123,7 @@ module.exports = {
           },
   
           end: {
-            type: 'timestamp',
+            type: 'string',
             required: true,
             permission: {
               create: [ROLE.ADMINISTRATOR],

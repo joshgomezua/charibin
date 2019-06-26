@@ -20,7 +20,7 @@ const Table: React.SFC<IProps> = ({
   const tableClass = classnames('spon-table', {
     [`${className}`]: className
   })
-  console.log(data)
+
   return (
     <div className={tableClass}>
       <ReactTable

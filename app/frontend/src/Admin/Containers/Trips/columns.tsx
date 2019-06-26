@@ -90,16 +90,6 @@ export const columns = (
     )
     
   },
-  // {
-  //   Header: 'Photo',
-  //   accessor: 'photo',
-  //   width: 80,
-  //   Cell: (props: RowRenderProps) => (
-  //     <div className="spon-table__photo">
-  //       <img src={props.value} alt="Avatar photo" />
-  //     </div>
-  //   )
-  // },
   {
     Header: 'Duration',
     accessor: 'duration',

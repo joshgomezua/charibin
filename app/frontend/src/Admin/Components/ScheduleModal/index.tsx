@@ -16,9 +16,9 @@ import DatePicker from '../DatePicker'
 
 import { IProps, IFormValues } from './types'
 import './styles.scss'
-import moment from 'moment';
+// import moment from 'moment';
 
-const TripModal: React.SFC<IProps> = ({
+const ScheduleModal: React.SFC<IProps> = ({
   isLoading,
   editDate,
   closeModal,
@@ -43,7 +43,7 @@ const TripModal: React.SFC<IProps> = ({
       active: editDate.active,
     }
   }
-
+  console.log(editableData)
   return (
     <div className="spon-trip-modal">
       <Formik
@@ -97,7 +97,7 @@ const TripModal: React.SFC<IProps> = ({
           values: IFormValues,
           { resetForm }: FormikActions<IFormValues>
         ) => {
-          const offset = moment().utcOffset()
+          // const offset = moment().utcOffset()
 
           const dataToUpdate = {
             price: values.price,
@@ -108,18 +108,12 @@ const TripModal: React.SFC<IProps> = ({
             deselectionPrice: values.deselectionPrice,
             duration: values.duration,
             date: {
-              start: +moment
-                .utc(values.date.start)
-                .add(offset, 'minutes')
-                .format('x'),
-              end: +moment
-                .utc(values.date.end)
-                .add(offset, 'minutes')
-                .format('x')
+              start: values.date.start,
+              end: values.date.end
             },
             active: values.active,
           }
-
+          console.log(dataToUpdate)
           if (editDate && handleEditSchedule) {
             handleEditSchedule(dataToUpdate).then(() => resetForm())
           } else if (handleSubmit) {
@@ -308,4 +302,4 @@ const TripModal: React.SFC<IProps> = ({
   )
 }
 
-export default TripModal
+export default ScheduleModal

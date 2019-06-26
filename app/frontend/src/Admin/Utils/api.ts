@@ -46,6 +46,11 @@ export const updateTimeSelection = (id: string, data: Types.IEditTimeSelect, tok
       headers: { 'Content-type': 'application/json', token }
 })
 
+export const updateSchedule = (id: string, data: Types.INewScheduledTrip, token: string) =>
+  axios.put(`${API_URL}/scheduledTrip/${id}`, data, {
+    headers: { 'Content-type': 'application/json', token }
+  })
+
 export const deleteScheduledTrip = (id: string, token: string) =>
   axios.delete(`${API_URL}/scheduledTrip/${id}`, {
     headers: { token }

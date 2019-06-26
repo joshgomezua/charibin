@@ -7,14 +7,12 @@ import {
   FormikProps,
   ErrorMessage
 } from 'formik'
-// import FileInput from '../../Components/FileInput'
 import * as Yup from 'yup'
 
 import Input from '../Input'
 import Dropdown from '../Dropdown'
 import Switch from '../Switch'
 import Button from '../../../Common/Components/Button'
-// import photoSvg from '../../../Common/Utils/Media/photo.svg'
 
 import { IProps, IFormValues, IEditValues } from './types'
 import './styles.scss'
@@ -27,7 +25,7 @@ const TripModal: React.SFC<IProps> = ({
   handleSubmit
 }) => {
   let editableData = null
-
+  console.log(editDate)
   if (editDate) {
     editableData = {
       destination: editDate.destination,

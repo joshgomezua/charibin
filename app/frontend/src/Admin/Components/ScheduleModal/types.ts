@@ -1,7 +1,20 @@
 import { INewSchedule } from "src/Admin/Containers/Trips/types";
 
 export interface IProps {
-  editDate?: IFormValues & { _id: string }
+  editDate?: {
+    price: number
+    discount: number
+    duration: number
+    timeSelection: {
+      defaultPrice: number
+    }
+    date: {
+      start: string
+      end: string
+    }
+    deselectionPrice: number
+    active: boolean
+  } & { _id: string }
   isLoading: boolean
   closeModal: () => void
   handleSubmit?: (data: Pick<INewSchedule, Exclude<keyof INewSchedule, 
