@@ -98,8 +98,13 @@ loadModels();
   }
 
   for (let i = 0; i < 20; i++) {
+<<<<<<< HEAD
     console.log(`Creating Cities: ${i + 1}/${20}`);
     await helpers.createCity(helpers.dataClone(globals.dataTemplate.city));
+=======
+    console.log(`Creating Users: ${i + 1}/${20}`);
+    await helpers.createUser(helpers.dataClone(globals.dataTemplate.user));
+>>>>>>> SMS-27
   }
 
   process.exit(0);

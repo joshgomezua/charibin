@@ -33,7 +33,11 @@ services:
     volumes:
       - mongo-data:/data/db
     ports:
+<<<<<<< HEAD
       - 2018:27017
+=======
+      - 27018:27017
+>>>>>>> SMS-27
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}

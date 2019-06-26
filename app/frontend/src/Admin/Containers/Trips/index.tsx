@@ -91,7 +91,7 @@ class TripsContainer extends React.Component<
 
   handleFetchItems = (page: number, limit: number) => {
     const token = getToken()
-
+    console.log('2000')
     if (token) {
       getTrips(page, limit, token)
         .then(res =>
@@ -99,6 +99,7 @@ class TripsContainer extends React.Component<
             isLoading: false,
             trips: res.data.results,
             total: res.data.status.total
+            
           })
         )
         .catch(err => {
@@ -315,3 +316,4 @@ class TripsContainer extends React.Component<
 }
 
 export default withToast(TripsContainer)
+
