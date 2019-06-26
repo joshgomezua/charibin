@@ -11,7 +11,6 @@ import { RouteComponentProps } from 'react-router-dom'
 import { MODAL_TYPE, IUser } from '../../Utils/adminTypes'
 import { getToken } from '../../../Common/Utils/helpers'
 import {
-  //ADMIN_ROUTING,
   ERRORS,
   SUCCESS,
   DEFAULT_USER_DATA
@@ -157,31 +156,6 @@ class UsersContainer extends React.Component<
       })
   }
 
-  /*handleEditUser = (data: IUser) => {
-    const token = getToken()
-    const { currentPage } = this.state
-    const {
-      modal: { id }
-    } = this.state
-
-    this.setState({ isModalLoading: true })
-    return updateUser(id, data, token)
-      .then(res => {
-        this.modal.current!.close()
-        this.handleFetchItems(currentPage, 10)
-        this.props.showSuccess(SUCCESS.USER_EDIT)
-        this.handleRestartModalType()
-
-        return Promise.resolve()
-      })
-      .catch(err => {
-        this.setState({ isModalLoading: false })
-        this.props.showError(err, ERRORS.USER_EDIT)
-
-        return Promise.reject()
-      })
-  }*/
-
   handleEditUser = (data: IUser) => {
     const token = getToken()
     const { currentPage } = this.state
@@ -192,7 +166,7 @@ class UsersContainer extends React.Component<
     this.setState({ isModalLoading: true })
 
     return updateUser(id, data, token)
-      .then(res => { // remplacer res par ()
+      .then(res => { 
         this.modal.current!.close()
         this.handleFetchItems(currentPage, 10)
         this.props.showSuccess(SUCCESS.USER_EDIT)
@@ -235,7 +209,7 @@ class UsersContainer extends React.Component<
     const toggle = !this.state.enable
     
     if (toggle){
-      newUsers = this.state.users.filter(user => user.active === true) // remplacer la condition par user.active seulement
+      newUsers = this.state.users.filter(user => user.active)
     } else {
       newUsers = this.state.users
     }

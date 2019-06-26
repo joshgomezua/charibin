@@ -9,12 +9,10 @@ import Switch from '../Switch';
 
 const Header: React.SFC<IProps> = ({
   title,
-  query, // à enlever
   heading,
   modal,
   handleToggle,
   enable,
-  handleSearch, // à enlever
   handleOpenModal
 }) => {
   return (
@@ -30,12 +28,9 @@ const Header: React.SFC<IProps> = ({
         <Switch
 
         checked={enable ? enable : false}
-        onChange={() => {
-          handleToggle()
-        }} // mettre en une ligne sur onChange
-        
-        />
-) : null} {/** indentation */}
+        onChange={() => { handleToggle() }}
+    />
+        ) : null} 
 
       </div>
 
@@ -57,8 +52,6 @@ const Header: React.SFC<IProps> = ({
           />
       ):null}
   
-
-
     </div>
   )
 }

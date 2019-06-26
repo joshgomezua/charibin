@@ -10,9 +10,7 @@ export interface IProps {
     name: string
     email: string
     role: string
-    //password: string
     active: boolean
-    
   }
   
   export type IEditValues = Partial<IFormValues>

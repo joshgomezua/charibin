@@ -50,7 +50,6 @@ export const columns = (
             <Button
               className="spon-table__reset-button"
               variant="blue"
-              //icon="plus"
               text="RESET Password"
                           
                 onClick={() => openResetPasswordModal(props.row._original._id)
