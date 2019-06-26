@@ -83,7 +83,6 @@ class TicketModal extends React.Component<IProps, IState> {
                   days: [0, 1, 2, 3, 4, 5, 6],
                   hours: '',
                   active: true,
-                  direction: 'Arrival'
                 }
           }
           validationSchema={Yup.object().shape({
@@ -104,7 +103,6 @@ class TicketModal extends React.Component<IProps, IState> {
             //  .required(),
             date: Yup.string().required(),
             hours: Yup.string().required(),
-            direction: Yup.string().required(),
             isRecurring: Yup.boolean(),
             endDate: Yup.string().when('isRecurring', {
               is: true,
@@ -164,7 +162,7 @@ class TicketModal extends React.Component<IProps, IState> {
                 days: values.days as number[]
               }
             }
-
+            console.log('dataToSubmit', dataToSubmit)
             if (editDate || !values.isRecurring) {
               delete dataToSubmit.repeat
             }
@@ -215,7 +213,7 @@ class TicketModal extends React.Component<IProps, IState> {
                     selectedValue={values.type ? values.type : ''}
                     options={[
                       {
-                        _id: '1',
+                        _id: '0',
                         name: 'Train'
                       },
                       {
