@@ -34,7 +34,7 @@ const AgendaItem: React.SFC<IProps> = ({
       )}
 
       <td className="spon-agenda__cell spon-agenda__cell--body spon-agenda__cell--hours">
-        {ticket.trip.name}
+        {ticket.trip.departure}
       </td>
       <td className="spon-agenda__cell spon-agenda__cell--body">
         {ticket.quantity}
