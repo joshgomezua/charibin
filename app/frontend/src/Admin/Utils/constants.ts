@@ -43,6 +43,8 @@ export const DEFULT_TICKET_DATA = {
     start: '',
     end: ''
   },
+  departure: '',
+  destination: '',
   active: false
 }
 

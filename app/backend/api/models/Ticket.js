@@ -9,6 +9,8 @@ const ticketSchema = new Schema({
   quantity: Number,
   soldTickets: Number,
   reservedQuantity: Number,
+  departure: String,
+  destination: String,
   type: { type: String, enum: global.config.custom.ticket.type },
   date: {
     start: Date,

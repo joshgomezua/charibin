@@ -128,6 +128,8 @@ class TicketModal extends React.Component<IProps, IState> {
 
             const dataToSubmit = {
               trip: values.trip._id,
+              departure: 'test',
+              destination: 'test',
               direction: values.direction.toLocaleLowerCase(),
               quantity: values.quantity,
               soldTickets: 0,
