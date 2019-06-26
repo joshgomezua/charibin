@@ -31,7 +31,7 @@ export interface ITrip {
   type: string
 }
 
-<<<<<<< HEAD
+
 export interface INewTrip {
   destination: string
   departure: string
@@ -91,7 +91,7 @@ export interface ICity {
   isModify?: boolean
   isEnabled?: boolean
 }
-=======
+
 export interface IUser {
   active: boolean
   email: string
@@ -109,7 +109,6 @@ export interface IEditUser {
   role?: string
 }
 
->>>>>>> SMS-27
 
 export interface ITicket {
   trip: string

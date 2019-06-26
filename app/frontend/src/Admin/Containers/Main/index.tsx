@@ -4,13 +4,8 @@ import { Switch, Route, RouteComponentProps } from 'react-router-dom'
 import ORDERS from '../Orders'
 import Tickets from '../Tickets'
 import Trips from '../Trips'
-<<<<<<< HEAD
 import City from '../City'
-=======
 import Users from '../Users'
-
->>>>>>> SMS-27
-
 import { ADMIN_ROUTING } from '../../Utils/constants'
 import { IState } from './types'
 import 'react-toastify/dist/ReactToastify.css'
@@ -40,18 +35,19 @@ export default class MainContainer extends Component<
             path={`${match.url}${ADMIN_ROUTING.ORDERS}`}
             component={ORDERS}
           />
-<<<<<<< HEAD
+
           <Route 
             exact
             path={`${match.url}${ADMIN_ROUTING.CITIES}`} 
             component = {City}
-=======
+          />
+          
           <Route
             exact
             path={`${match.url}${ADMIN_ROUTING.USERS}`}
             component={Users}
           />
->>>>>>> SMS-27
+
           />
         </Switch>
       </section>

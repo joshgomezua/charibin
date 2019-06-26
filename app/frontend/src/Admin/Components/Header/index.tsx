@@ -10,15 +10,21 @@ import Switch from '../Switch';
 const Header: React.SFC<IProps> = ({
   title,
 <<<<<<< HEAD
+<<<<<<< HEAD
   query,
   heading,
   modal,
   handleSearch,
 =======
+=======
+>>>>>>> SMS-27
   heading,
   modal,
   handleToggle,
   enable,
+<<<<<<< HEAD
+>>>>>>> SMS-27
+=======
 >>>>>>> SMS-27
   handleOpenModal
 }) => {
@@ -59,6 +65,10 @@ const Header: React.SFC<IProps> = ({
           />
       ):null}
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  
+>>>>>>> SMS-27
 =======
   
 >>>>>>> SMS-27

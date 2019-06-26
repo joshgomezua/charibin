@@ -93,16 +93,13 @@ export enum MODAL_TYPE {
   'ADD_TICKET',
   'EDIT_TICKET',
   'DELETE_TICKET',
-<<<<<<< HEAD
   'EDIT_TIME_SELECTION',
   'ADD_CITY',
   'EDIT_CITY',
   'DELETE_CITY',
-=======
   'ADD_USER',
   'EDIT_USER',
   'DELETE_USER',
   'RESET_PASSWORD'
->>>>>>> SMS-27
 }
  

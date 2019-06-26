@@ -26,6 +26,7 @@ function connect () {
   const options = { keepAlive: 1, useNewUrlParser: true };
   const { user, password, host, port, name } = global.config.connection.database;
 <<<<<<< HEAD
+<<<<<<< HEAD
   return mongoose.connect(`mongodb://mongo:27017/db?authSource=admin`, {
    useNewUrlParser: true,
    user: 'username',
@@ -33,6 +34,8 @@ function connect () {
    keepAlive: true,
  });
 =======
+=======
+>>>>>>> SMS-27
  /* return mongoose.connect(`mongodb://mongo:27017/db?authSource=admin`, {
   useNewUrlParser: true,
   user: 'username',
@@ -40,6 +43,9 @@ function connect () {
   keepAlive: true,
 });*/
 return mongoose.connect(`mongodb+srv://redouaneadriouch:ShxJNUGZFNOuWHVc@sponteous-dev-rjoqe.mongodb.net/Sponteous`, options);
+<<<<<<< HEAD
+>>>>>>> SMS-27
+=======
 >>>>>>> SMS-27
 }
 

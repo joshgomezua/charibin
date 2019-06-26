@@ -10,9 +10,7 @@ export const logIn = (data: Types.ILoginForm) =>
     headers: { 'Content-type': 'application/json' }
   })
 
-<<<<<<< HEAD
-export const addTrip = (data: Types.INewTrip, token: string) => 
-=======
+
 
 export const addUser = (data: Types.IUser, token: string) =>
     axios.post(`${API_URL}/user`, data, {
@@ -49,12 +47,15 @@ export const deleteUser = (id: string, token: string) =>
 
 export const updateUser = (id: string, data: Types.IEditUser, token: string) =>
   axios.put(`${API_URL}/user/${id}`, data, {
+
     headers: { 'Content-type': 'application/json', token }
   })
 
 
+
+
 export const addTrip = (data: Types.ITrip, token: string) =>
->>>>>>> SMS-27
+
   axios.post(`${API_URL}/trip`, data, {
       headers: { 'Content-type': 'application/json', token }
 })

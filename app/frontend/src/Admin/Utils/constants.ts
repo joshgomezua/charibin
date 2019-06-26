@@ -6,11 +6,9 @@ export enum ADMIN_ROUTING {
   TRIPS = '/trips',
   TICKETS = '/tickets',
   ORDERS = '/orders',
-<<<<<<< HEAD
-  CITIES = '/cities'
-=======
+  CITIES = '/cities',
   USERS = '/users'
->>>>>>> SMS-27
+
 }
 
 export const ERRORS = {
@@ -44,17 +42,14 @@ export const SUCCESS = {
   TICKET_EDIT: 'Trip edited successfully',
   TICKET_DELETE: 'Ticket deleted successfully',
   ORDER_UPDATE: 'Order update successfully',
-<<<<<<< HEAD
   CITY_ADD: 'City added successfully',
   CITY_EDIT: 'City edited successfully',
   CITY_DELETE: 'City deleted successfully',
   CITY_UPDATE: 'city update successfully',
-=======
   USER_ADD: 'user added successfully' ,
   USER_EDIT: 'user edited successfully' ,
   USER_DELETE: 'User deleted succesfully',
   USER_UPDATE: 'user updated successfully' ,
->>>>>>> SMS-27
   DEFAULT: 'Success'
 }
 
@@ -109,8 +104,6 @@ export const DEFAULT_CITY_DATA = {
     tags: ["beach"],
     photo: ''
 }
-
-<<<<<<< HEAD
 
 
 export const TAGS = [
@@ -335,13 +328,14 @@ export const COUNTRIES = [
   },
   
 ]
-=======
+
+
 export const DEFAULT_USER_DATA = {
   _id: '',
   active: false,
-  email: '-key@hotmail.com',
+  email: '',
   name: '',
   role: '',
   password: ''
 }
->>>>>>> SMS-27
+
