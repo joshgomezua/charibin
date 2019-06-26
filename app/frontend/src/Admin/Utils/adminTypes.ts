@@ -51,7 +51,7 @@ export interface ITrip {
   departure: string
   destination: string
   carrier: string
-  photo: string
+  photo?: string
   price: number
   type: string
 }

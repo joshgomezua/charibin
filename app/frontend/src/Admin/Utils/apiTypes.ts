@@ -9,7 +9,7 @@ export interface ITrip {
   destination: string
   departure: string
   carrier: string
-  photo: string
+  photo?: string
   price: number
   discount: number
   deselectionPrice: number

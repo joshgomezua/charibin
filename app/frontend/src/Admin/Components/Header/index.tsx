@@ -9,23 +9,12 @@ import Switch from '../Switch';
 
 const Header: React.SFC<IProps> = ({
   title,
-<<<<<<< HEAD
-<<<<<<< HEAD
   query,
   heading,
   modal,
   handleSearch,
-=======
-=======
->>>>>>> SMS-27
-  heading,
-  modal,
   handleToggle,
   enable,
-<<<<<<< HEAD
->>>>>>> SMS-27
-=======
->>>>>>> SMS-27
   handleOpenModal
 }) => {
   return (
@@ -64,14 +53,6 @@ const Header: React.SFC<IProps> = ({
             onClick={() => handleOpenModal(MODAL_TYPE.ADD_TRIP, 'Create trip')}
           />
       ):null}
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-  
->>>>>>> SMS-27
-=======
-  
->>>>>>> SMS-27
     </div>
   )
 }

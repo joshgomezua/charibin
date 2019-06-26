@@ -54,7 +54,7 @@ export const updateUser = (id: string, data: Types.IEditUser, token: string) =>
 
 
 
-export const addTrip = (data: Types.ITrip, token: string) =>
+export const addTrip = (data: Types.INewTrip, token: string) =>
 
   axios.post(`${API_URL}/trip`, data, {
       headers: { 'Content-type': 'application/json', token }
