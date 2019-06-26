@@ -197,6 +197,16 @@ class TicketsContainer extends React.Component<
 
     getSingleTicket(id, token)
       .then(({ data }) => {
+        const newData = {
+          _id: data.trip._id,
+          departure: data.trip.departure,
+          destination: data.trip.destination
+        } 
+        console.log('newData', newData)
+        console.log('data', data)
+        data.trip = newData; 
+        //data.date = new Date()
+        //console.log('data.modal.trip', data.modal.trip)
         this.setState(
           (state: IState) => ({
             ...state,
@@ -209,6 +219,7 @@ class TicketsContainer extends React.Component<
             this.handleOpenModal(MODAL_TYPE.EDIT_TICKET, 'Edit ticket', id)
           }
         )
+        console.log('modal.data', this.state.modal.data)
       })
       .catch(err => {
         this.handleCloseModal()

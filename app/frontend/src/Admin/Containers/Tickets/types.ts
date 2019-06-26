@@ -45,3 +45,9 @@ export interface IEditedData {
   }
   active?: boolean
 }
+
+export interface ITripData {
+  _id: string,
+  departure: string,
+  destination: string
+}

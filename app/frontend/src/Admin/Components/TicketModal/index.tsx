@@ -85,10 +85,12 @@ class TicketModal extends React.Component<IProps, IState> {
                   active: true,
                 }
           }
+          
           validationSchema={Yup.object().shape({
             trip: Yup.object().shape({
               _id: Yup.string(),
-              name: Yup.string().required('Trip is required')
+              departure: Yup.string().required('Trip is required'),
+              destination: Yup.string().required('Trip is required')
             }),
             type: Yup.string().required('Trip type is required'),
             quantity: Yup.number()
@@ -162,12 +164,12 @@ class TicketModal extends React.Component<IProps, IState> {
                 days: values.days as number[]
               }
             }
-            console.log('dataToSubmit', dataToSubmit)
             if (editDate || !values.isRecurring) {
               delete dataToSubmit.repeat
             }
 
             if (editDate && handleEditTicket) {
+              console.log('CreatedataToSubmit', dataToSubmit)
               handleEditTicket(dataToSubmit).then(() => {
                 resetForm()
                 closeModal()
@@ -185,6 +187,9 @@ class TicketModal extends React.Component<IProps, IState> {
             setFieldValue
           }: FormikProps<IFormValues>) => (
             <Form noValidate>
+              {console.log('values', values)}
+              {console.log('editDate', editDate)}
+              {console.log('values', values)}
               <div className="spon-ticket-modal__row">
                 <div className="spon-ticket-modal__input-cnt spon-ticket-modal__input-cnt--big">
                   <Dropdown
