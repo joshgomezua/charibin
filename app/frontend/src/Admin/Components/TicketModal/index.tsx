@@ -21,8 +21,6 @@ import arrowDown from '../../../Common/Utils/Media/arrowDown.svg'
 
 import { daysOfWeek } from './_data'
 import { IProps, IState, IFormValues } from './types'
-
-
 import './styles.scss'
 
 class TicketModal extends React.Component<IProps, IState> {
@@ -68,7 +66,7 @@ class TicketModal extends React.Component<IProps, IState> {
                     .utc(editDate!.date.start)
                     .format('h')}-${moment
                     .utc(editDate!.date.end)
-                    .format('h')}`
+                    .format('h')}`,
                 }
               : {
                   trip: {
@@ -78,13 +76,14 @@ class TicketModal extends React.Component<IProps, IState> {
                   },
                   type: 'Train',
                   quantity: 0,
+                  //soldTickets: 0,
+                  //reservedQuantity: 0,
                   date: undefined,
                   endDate: undefined,
                   days: [0, 1, 2, 3, 4, 5, 6],
                   hours: '',
                   active: true,
-                  departure: '',
-                  destination: ''
+                  direction: 'Arrival'
                 }
           }
           validationSchema={Yup.object().shape({
@@ -96,10 +95,16 @@ class TicketModal extends React.Component<IProps, IState> {
             quantity: Yup.number()
               .min(1)
               .max(1000),
+            //soldTickets: Yup.number()
+            //  .min(1)
+            //  .max(1000),
+            //reservedQuantity: Yup.number()
+            //  .min(1)
+            //  .max(1000)
+            //  .required(),
             date: Yup.string().required(),
             hours: Yup.string().required(),
-            departure: Yup.string().required(),
-            destination: Yup.string().required(),
+            direction: Yup.string().required(),
             isRecurring: Yup.boolean(),
             endDate: Yup.string().when('isRecurring', {
               is: true,
@@ -196,7 +201,7 @@ class TicketModal extends React.Component<IProps, IState> {
                   />
 
                   <ErrorMessage
-                    name="trip.destination"
+                    name="trip.name"
                     component="div"
                     className="spon-ticket-modal__error"
                   />
@@ -407,8 +412,6 @@ class TicketModal extends React.Component<IProps, IState> {
                 </div>
               ) : null}
 
-              <div className="spon-ticket-modal__row spon-ticket-modal__row--bordered-m">
-              </div>
               <div className="spon-ticket-modal__row">
                 <div className="spon-ticket-modal__buttons">
                   <Button

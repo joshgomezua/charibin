@@ -5,8 +5,6 @@ const Schema = mongoose.Schema;
 
 const ticketSchema = new Schema({
   trip: { type: Schema.Types.ObjectId, ref: 'Trip' },
-  departure: String,
-  destination: String,
   quantity: Number,
   soldTickets: Number,
   reservedQuantity: Number,

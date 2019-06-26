@@ -19,9 +19,7 @@ export interface IProps {
       start: string
       end: string
     }
-    active: boolean,
-    departure: string,
-    destination: string
+    active: boolean
   }
   tripSelected?: { _id: string; departure: string, destination: string } | null
   destinations: ICity[]
@@ -63,7 +61,5 @@ export interface IFormValues {
   days?: number[]
   hours?: string
   active: boolean
-  departure: string,
-  destination: string,
   isRecurring?: boolean
 }
