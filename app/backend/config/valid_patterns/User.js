@@ -30,10 +30,10 @@ module.exports = {
       type: 'email',
       required: true,
       permission: {
-        create: [],
+        create: [ROLE.ADMINISTRATOR],
         update: [ROLE.ADMINISTRATOR],
         find: [ROLE.ADMINISTRATOR],
-        destroy: [],
+        destroy: [ROLE.ADMINISTRATOR],
       },
       minLength: 5,
       maxLength: 40,
@@ -42,19 +42,32 @@ module.exports = {
 
     role: {
       type: 'string',
-      required: false,
+      required: true,
       permission: {
-        create: [],
-        update: [],
+        create: [ROLE.ADMINISTRATOR],
+        update: [ROLE.ADMINISTRATOR],
         find: [ROLE.ADMINISTRATOR],
-        destroy: [],
+        destroy: [ROLE.ADMINISTRATOR],
       },
-      pattern: /^(Administrator)$/
+      //pattern: /^(Administrator)$/
+    },
+
+    active: {
+      type: 'boolean',
+      required: true,
+      permission: {
+        create: [ROLE.ADMINISTRATOR],
+        update: [ROLE.ADMINISTRATOR],
+        find: [ROLE.ADMINISTRATOR]
+      }
+    
+
+      //pattern: /^(Administrator)$/
     },
 
     password: {
       type: 'password',
-      required: true,
+      required: false,
       permission: {
         create: [],
         update: [],

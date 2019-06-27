@@ -7,7 +7,6 @@
   -webkit-box-direction: normal;
   -ms-flex-direction: column;
   flex-direction: column;
-  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 .ReactTable * {
   box-sizing: border-box;
@@ -377,6 +376,22 @@
   padding: 20px;
   color: rgba(0, 0, 0, 0.5);
 }
+
+.ReactTable .ReactTable .rt-noData {
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 25%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+  z-index: 1;
+  pointer-events: none;
+  padding: 20px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
 .ReactTable .-loading {
   display: block;
   position: absolute;

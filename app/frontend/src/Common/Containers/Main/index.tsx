@@ -28,6 +28,7 @@ import { ADMIN_ROUTING } from '../../../Admin/Utils/constants'
 import { IState, IProps } from './types'
 import 'animate.css'
 import './styles.scss'
+// import Trips from 'src/Admin/Containers/Trips';
 
 class MainContainer extends Component<
   RouteComponentProps<{}> & IProps,
@@ -69,6 +70,8 @@ class MainContainer extends Component<
           <Route path="/destinations" component={Destinations} />
           <Route
             exact
+            // path={`${ADMIN_ROUTING.MAIN}${ADMIN_ROUTING.TRIPS}`}
+            // component={Trips}
             path={`${ADMIN_ROUTING.MAIN}${ADMIN_ROUTING.LOGIN}`}
             component={Login}
           />

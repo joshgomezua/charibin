@@ -21,19 +21,19 @@
 
   &__input-cnt {
     width: rc(140);
-    margin-right: rc(17);
+    margin-right: 3rem;
 
     &--small {
       width: rc(75);
     }
 
     &--big {
-      width: rc(245);
+      width: rc(180);
     }
 
     &--last {
       position: relative;
-      margin-left: auto;
+      margin-left: 3rem;
 
       &::before {
         content: '';

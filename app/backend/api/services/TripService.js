@@ -6,7 +6,7 @@ const Utilities = require('./Utilities');
 
 module.exports = {
   async create (data) {
-    const trip = await Trip.findOne({ name: data.name, deleted: false });
+    const trip = await Trip.findOne({ _id: data.id, deleted: false });
     if(trip) throw { status: 409, message: 'TRIP.EXIST' };
 
     if(data.fake) {
@@ -14,16 +14,12 @@ module.exports = {
       if(feakedTripsCount === 2) throw { status: 403, message: 'TRIP.FAKE.LIMIT' };
     }
 
-    data.photo = await Utilities.upload(data.photo, 'png');
     return Trip.create(data);
   },
 
   async update (id, data) {
     let trip = await Trip.findOne({ _id: id, deleted: false });
     if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
-
-    if(data.photo)
-      data.photo = await Utilities.upload(data.photo, 'png');
 
     if(data.name) {
       trip = await Trip.findOne({ name: data.name, deleted: false });
@@ -40,6 +36,7 @@ module.exports = {
     return trip;
   },
 
+  //Changer pour liste des villes de départs, ou liste selon les id ?
   async getListOfTripsNames () {
     const names = await Trip.find({ deleted: false }).select('departure').select('destination');
 

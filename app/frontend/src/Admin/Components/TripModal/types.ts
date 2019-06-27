@@ -7,15 +7,19 @@ export interface IProps {
 }
 
 export interface IFormValues {
-  name: string
+  departure: string
+  destination: string
+  carrier: string
   price: number
   discount: number
   duration: number
   type: string
+  timeSelection: {
+    defaultPrice: number
+  }
   deselectionPrice: number
   fake: boolean
   active: boolean
-  photo: string
 }
 
 export type IEditValues = Partial<IFormValues>

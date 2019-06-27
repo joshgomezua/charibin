@@ -99,6 +99,13 @@ class NavBar extends Component<IProps, IState> {
                 to={`${ADMIN_ROUTING.MAIN}${ADMIN_ROUTING.ORDERS}`}>
                 ORDERS
               </NavLink>
+
+
+              <NavLink
+                className={classWithBurger('navbar__link')}
+                to={`${ADMIN_ROUTING.MAIN}${ADMIN_ROUTING.USERS}`}>
+                USERS
+              </NavLink>
             </>
           ) : null}
         </div>

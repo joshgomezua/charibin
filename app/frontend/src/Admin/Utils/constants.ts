@@ -1,10 +1,13 @@
+
 export enum ADMIN_ROUTING {
   MAIN = '/admin',
   LOGIN = '/login',
   TRIPS = '/trips',
   TICKETS = '/tickets',
   ORDERS = '/orders',
-  CITIES = '/cities'
+  CITIES = '/cities',
+  USERS = '/users'
+
 }
 
 export const ERRORS = {
@@ -22,6 +25,11 @@ export const ERRORS = {
   CITY_EDIT: 'Error when edit city',
   ORDERS_FETCH: `Can't fetch orders list`,
   ORDERS_EDIT: 'Error when edit order',
+  USER_FETCH: `Cant't fetch user list`,
+  USER_ADD: 'Error when add user' ,
+  USER_EDIT: 'Error when edit user',
+  USER_DELETE: 'Error when delete user',
+  USER_UPDATE: 'Error when update user',
   DEFAULT: 'Error'
 }
 
@@ -37,6 +45,10 @@ export const SUCCESS = {
   CITY_EDIT: 'City edited successfully',
   CITY_DELETE: 'City deleted successfully',
   CITY_UPDATE: 'city update successfully',
+  USER_ADD: 'user added successfully' ,
+  USER_EDIT: 'user edited successfully' ,
+  USER_DELETE: 'User deleted succesfully',
+  USER_UPDATE: 'user updated successfully' ,
   DEFAULT: 'Success'
 }
 
@@ -57,19 +69,60 @@ export const DEFULT_TICKET_DATA = {
   active: false
 }
 
+export const DEFAULT_TRIP_SCHEDULE = {
+  _id: '',
+  active: false,
+  deselectionPrice: 0,
+  date: {
+    start: '',
+    end: '',
+  },
+  timeSelection: {
+    defaultPrice: 0,
+    _0to6AM: 0,
+    _6to8AM: 0,
+    _8to10AM: 0,
+    _10to12PM: 0,
+    _12to2PM: 0,
+    _2to4PM: 0,
+    _4to6PM: 0,
+    _6to8PM: 0,
+    _8to10PM: 0,
+    _10to12AM: 0,
+  },
+  discount: 0,
+  duration: 0,
+  price: 0,
+  trip: ''
+}
+
 export const DEFAULT_TRIP_DATA = {
   _id: '',
   active: false,
   deselectionPrice: 0,
+  timeSelection: {
+    defaultPrice: 0,
+    _0to6AM: 0,
+    _6to8AM: 0,
+    _8to10AM: 0,
+    _10to12PM: 0,
+    _12to2PM: 0,
+    _2to4PM: 0,
+    _4to6PM: 0,
+    _6to8PM: 0,
+    _8to10PM: 0,
+    _10to12AM: 0,
+  },
+  scheduledTrips: [DEFAULT_TRIP_SCHEDULE],
   discount: 0,
   duration: 0,
   fake: false,
-  name: '',
+  departure: '',
+  destination: '',
+  carrier: '',
   photo: '',
   price: 0,
-  type: '',
-  departure: '',
-  destination: ''
+  type: ''
 }
 
 export const DEFAULT_CITY_DATA = {
@@ -79,7 +132,6 @@ export const DEFAULT_CITY_DATA = {
     tags: ["beach"],
     photo: ''
 }
-
 
 
 export const TAGS = [
@@ -304,3 +356,14 @@ export const COUNTRIES = [
   },
   
 ]
+
+
+export const DEFAULT_USER_DATA = {
+  _id: '',
+  active: false,
+  email: '',
+  name: '',
+  role: '',
+  password: ''
+}
+

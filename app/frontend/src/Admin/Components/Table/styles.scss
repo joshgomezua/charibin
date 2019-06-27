@@ -1,6 +1,8 @@
 @import '../../../Common/Utils/Styles/mixin.scss';
 @import '../../../Common/Utils/Styles/colors.scss';
 .spon-table {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+
   &--transactions {
     .rt-td,
     .rt-th {
@@ -30,8 +32,8 @@
       }
 
       &:disabled {
+        color: $disabled;
         cursor: not-allowed;
-        color: $gray-dark;
       }
     }
   }

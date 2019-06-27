@@ -24,7 +24,19 @@ module.exports = {
       },
     },
 
-    name: {
+    destination: {
+      type: 'string',
+      required: true,
+      permission: {
+        create: [ROLE.ADMINISTRATOR],
+        update: [ROLE.ADMINISTRATOR],
+        find: [ROLE.ADMINISTRATOR, ROLE.GUEST]
+      },
+      minLength: 1,
+      maxLength: 40,
+    },
+
+    departure: {
       type: 'string',
       required: true,
       permission: {
@@ -54,17 +66,6 @@ module.exports = {
         update: [ROLE.ADMINISTRATOR],
         find: [ROLE.ADMINISTRATOR]
       }
-    },
-
-    photo: {
-      type: 'string',
-      required: true,
-      permission: {
-        create: [ROLE.ADMINISTRATOR],
-        update: [ROLE.ADMINISTRATOR],
-        find: [ROLE.ADMINISTRATOR, ROLE.GUEST]
-      },
-      maxLength: 7340032, // 5MB image in binary
     },
 
     price: {
@@ -123,6 +124,16 @@ module.exports = {
       },
       min: 0,
       max: 1000000,
+    },
+
+    scheduledTrips: {
+      type: 'array',
+      required: false,
+      permission: {
+        create: [ROLE.ADMINISTRATOR],
+        update: [ROLE.ADMINISTRATOR],
+        find: [ROLE.ADMINISTRATOR, ROLE.GUEST]
+      }
     },
 
     tickets: {

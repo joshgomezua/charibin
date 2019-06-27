@@ -62,6 +62,8 @@ class OrdersContainer extends React.Component<IProps, IState> {
       .catch(err => this.props.showError(err, ERRORS.ORDERS_EDIT))
   }
 
+  handleVoidFunction = () => {};
+
   render() {
     const { isLoading, orders, total } = this.state
 
@@ -74,6 +76,7 @@ class OrdersContainer extends React.Component<IProps, IState> {
           columns={columns(debounce(this.handleToggleSwitch, 300))}
           loading={isLoading}
           pages={Math.ceil(total / 10)}
+          handleOpenModal={this.handleVoidFunction}
           className="spon-table--transactions"
         />
       </>
