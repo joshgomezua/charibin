@@ -14,7 +14,6 @@ module.exports = {
       if(feakedTripsCount === 2) throw { status: 403, message: 'TRIP.FAKE.LIMIT' };
     }
 
-    // data.photo = await Utilities.upload(data.photo, 'png');
     return Trip.create(data);
   },
 
@@ -22,9 +21,6 @@ module.exports = {
     let trip = await Trip.findOne({ _id: id, deleted: false });
     if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
 
-    // if(data.photo)
-    //   data.photo = await Utilities.upload(data.photo, 'png');
-    //data.destination puis data.departure
     if(data.name) {
       trip = await Trip.findOne({ name: data.name, deleted: false });
       if(trip) throw { status: 409, message: 'TRIP.NAME.EXIST' };

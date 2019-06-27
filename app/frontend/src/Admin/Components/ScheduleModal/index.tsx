@@ -16,7 +16,6 @@ import DatePicker from '../DatePicker'
 
 import { IProps, IFormValues } from './types'
 import './styles.scss'
-// import moment from 'moment';
 
 const ScheduleModal: React.SFC<IProps> = ({
   isLoading,
@@ -28,6 +27,7 @@ const ScheduleModal: React.SFC<IProps> = ({
   let editableData = null
 
   if (editDate) {
+
     editableData = {
       price: editDate.price,
       discount: editDate.discount,
@@ -37,13 +37,13 @@ const ScheduleModal: React.SFC<IProps> = ({
         defaultPrice: editDate.timeSelection.defaultPrice,
       },
       date: {
-        start: editDate.date.start,
-        end: editDate.date.end
+        start: undefined,
+        end: undefined
       },
       active: editDate.active,
     }
   }
-  console.log(editableData)
+
   return (
     <div className="spon-trip-modal">
       <Formik
@@ -113,7 +113,7 @@ const ScheduleModal: React.SFC<IProps> = ({
             },
             active: values.active,
           }
-          console.log(dataToUpdate)
+
           if (editDate && handleEditSchedule) {
             handleEditSchedule(dataToUpdate).then(() => resetForm())
           } else if (handleSubmit) {
@@ -131,7 +131,7 @@ const ScheduleModal: React.SFC<IProps> = ({
             <div className="spon-trip-modal__row">
               <div className="spon-ticket-modal__input-cnt">
                 <DatePicker
-                  id="date"
+                  id="date.start"
                   label="Start date"
                   placeholder="Select date"
                   selectedDate={editDate ? (values.date.start as Date) : undefined}
@@ -146,14 +146,14 @@ const ScheduleModal: React.SFC<IProps> = ({
                 />
 
                 <ErrorMessage
-                  name="date"
+                  name="date.start"
                   component="div"
                   className="spon-ticket-modal__error"
                 />
               </div>
               <div className="spon-ticket-modal__input-cnt">
                 <DatePicker
-                  id="date"
+                  id="date.end"
                   label="End date"
                   placeholder="Select date"
                   selectedDate={editDate ? (values.date.end as Date) : undefined}
@@ -168,7 +168,7 @@ const ScheduleModal: React.SFC<IProps> = ({
                 />
 
                 <ErrorMessage
-                  name="date"
+                  name="date.end"
                   component="div"
                   className="spon-ticket-modal__error"
                 />

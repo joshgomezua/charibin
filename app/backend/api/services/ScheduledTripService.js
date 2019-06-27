@@ -55,7 +55,6 @@ module.exports = {
           } 
         }, { new: true });
 
-      console.log(sTrip)
       return { ...sTrip.toObject(), updated: false };
       }
   },
@@ -70,6 +69,35 @@ module.exports = {
     if(!sTrip) throw { status: 404, message: 'SCHEDULED_TRIP.NOT.EXIST' };
 
     await ScheduledTrip.updateOne({ _id: id }, data);
+    await Trip.findOneAndUpdate({ 'scheduledTrips': { $elemMatch: { '_id': ObjectId(sTrip._id) } } }, 
+        { $set: 
+          { 
+            'scheduledTrips.$.date': {
+              'start': data.date.start,
+              'end': data.date.end,
+            },
+            'scheduledTrips.$.active': data.active,
+            'scheduledTrips.$.deleted' : false,
+            'scheduledTrips.$.price': data.price,
+            'scheduledTrips.$.discount': data.discount,
+            'scheduledTrips.$.duration': data.duration,
+            'scheduledTrips.$.deselectionPrice': data.deselectionPrice,
+            'scheduledTrips.$.timeSelection': { 
+              'defaultPrice': data.timeSelection.defaultPrice,
+              '_0to6AM': data.timeSelection._0to6AM,
+              '_6to8AM': data.timeSelection._6to8AM,
+              '_8to10AM': data.timeSelection._8to10AM,
+              '_10to12PM': data.timeSelection._10to12PM,
+              '_12to2PM': data.timeSelection._12to2PM,
+              '_2to4PM': data.timeSelection._2to4PM,
+              '_4to6PM': data.timeSelection._4to6PM,
+              '_6to8PM': data.timeSelection._6to8PM,
+              '_8to10PM': data.timeSelection._8to10PM,
+              '_10to12AM': data.timeSelection._10to12AM
+            },
+          }, 
+        }, { new: true });
+
     return ScheduledTrip.findById(id).populate('trip');
   },
 
