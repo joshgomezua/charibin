@@ -20,6 +20,15 @@ export interface ICity {
 export interface IUser {
   _id: string
   active: boolean
+  email: string
+  name: string
+  role: string
+  password: string
+
+}
+export interface IScheduledTrip {
+  _id: string
+  active: boolean
   deselectionPrice: number
   timeSelection: {
     defaultPrice: number
@@ -42,13 +51,8 @@ export interface IUser {
   duration: number
   price: number
   trip: string
-  email: string
-  name: string
-  role: string
-  password: string
 
 }
-
 
 export interface ITrip {
   _id: string
