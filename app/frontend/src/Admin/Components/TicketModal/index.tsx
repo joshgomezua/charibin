@@ -40,6 +40,21 @@ class TicketModal extends React.Component<IProps, IState> {
     : values.trip.departure : ''
   }
 
+  getTicketDestinations = (values: IFormValues) => {
+    let i = 0
+    let ticketDestinations: any = []
+    ticketDestinations.push({
+      _id: i++,
+      name: values.trip.departure
+    })
+    ticketDestinations.push({
+      _id: i,
+      name: values.trip.destination
+    })
+    console.log('ticketDestinations', ticketDestinations)
+    return ticketDestinations
+  }
+
   render() {
     const {
       editDate,
@@ -236,16 +251,7 @@ class TicketModal extends React.Component<IProps, IState> {
                     placeholder="Select ticket departure"
                     className="spon-ticket-modal__dropdown"
                     selectedValue={values.departure ? values.departure : ''}
-                    options={[
-                      {
-                        _id: '0',
-                        name: values.trip.departure
-                      },
-                      {
-                        _id: '1',
-                        name: values.trip.destination
-                      }
-                    ]}
+                    options={values.trip.destination ? this.getTicketDestinations(values): []}
                     onChange={handleChange}
                   />
 

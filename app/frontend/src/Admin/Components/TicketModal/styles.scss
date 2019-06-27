@@ -33,7 +33,7 @@
     margin-right: rc(17);
 
     &--small {
-      width: rc(75);
+      width: rc(125);
     }
 
     &--big {
@@ -57,6 +57,7 @@
   }
 
   &__input {
+    width: rc(75);
     .spon-input__cnt {
       border: 1px solid $gray;
       height: rc(50);
