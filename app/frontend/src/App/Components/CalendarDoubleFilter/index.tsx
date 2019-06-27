@@ -73,8 +73,8 @@ export default class CalendarDoubleFilter extends React.Component<IProps, IState
               .toUpperCase()
           }
           minDetail="year"
-          nextLabel={<img src={arrow} className="calendar-arrow_next" />}
-          prevLabel={<img src={arrow} className="calendar-arrow_prev" />}
+          nextLabel={<img src={arrow} className="calendarDoubleFilter-arrow_next" />}
+          prevLabel={<img src={arrow} className="calendarDoubleFilter-arrow_prev" />}
           onActiveDateChange={debouncedChange}
           selectRange={true}
           value={this.props.value}
