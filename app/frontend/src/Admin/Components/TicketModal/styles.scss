@@ -2,6 +2,8 @@
 @import '../../../Common/Utils/Styles/colors.scss';
 
 .spon-ticket-modal {
+  padding: rc(14) rc(68);
+  width: rc(800);
 
   &__row {
     display: flex;
@@ -33,11 +35,11 @@
     margin-right: rc(17);
 
     &--small {
-      width: rc(125);
+      width: rc(75);
     }
 
     &--big {
-      width: rc(150);
+      width: rc(245);
     }
 
     &--last {
@@ -57,7 +59,7 @@
   }
 
   &__input {
-    width: rc(75);
+    width: rc(60);
     .spon-input__cnt {
       border: 1px solid $gray;
       height: rc(50);
@@ -88,7 +90,6 @@
 
   &__dropdown {
     margin-right: rc(17);
-    width: rc(125);
   }
 
   &__toggles {
@@ -244,8 +245,6 @@
     }
   }
 
-  @import '../../../Common/Utils/Styles/mixin.scss';
-@import '../../../Common/Utils/Styles/colors.scss';
 
 .spon-label {
   &__element {
