@@ -10,7 +10,6 @@ import {
 import * as Yup from 'yup'
 
 import Input from '../Input'
-// import Switch from '../Switch' -> enlever
 import Button from '../../../Common/Components/Button'
 
 import { IProps, IFormValues, IEditValues } from './types'
@@ -65,7 +64,6 @@ const TimeSelectionModal: React.SFC<IProps> = ({
                   _8to10PM: 0,
                   _10to12AM: 0
                 },
-                // bidirectionalChange: false,
               }
         }
         validationSchema={Yup.object().shape({
@@ -81,7 +79,6 @@ const TimeSelectionModal: React.SFC<IProps> = ({
             _8to10PM: Yup.number().required(),
             _10to12AM: Yup.number().required()
           })
-          // bidirectionalChange: Yup.bool().required(), -> enlever
         })}
         onSubmit={(
           values: IFormValues,
@@ -281,26 +278,6 @@ const TimeSelectionModal: React.SFC<IProps> = ({
                 />
               </div>
             </div>
-
-            {/* <div className="spon-seltime-modal__row">
-              <div className="spon-seltime-modal__toggles">
-                <div className="spon-seltime-modal__toggle-item">
-                  <p>Bidirectional Change:</p>
-                  <Switch
-                    checked=false,
-                    onChange={() =>
-                      handleChange({
-                        target: {
-                          id: 'bidirectionalChange',
-                          value: !values.bidirectionalChange
-                        }
-                      })
-                    }
-                  />
-                </div>
-              </div>
-            </div> */} {/* probablement commenté de la part des devs de redvike? */}
-            
 
             <div className="spon-seltime-modal__row--bordered"/>
             <div className="spon-seltime-modal__row">

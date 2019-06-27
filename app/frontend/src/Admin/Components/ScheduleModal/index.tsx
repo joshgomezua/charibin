@@ -97,8 +97,6 @@ const ScheduleModal: React.SFC<IProps> = ({
           values: IFormValues,
           { resetForm }: FormikActions<IFormValues>
         ) => {
-          // const offset = moment().utcOffset()
-
           const dataToUpdate = {
             price: values.price,
             discount: values.discount,
@@ -123,9 +121,6 @@ const ScheduleModal: React.SFC<IProps> = ({
         render={({
           handleChange,
           values,
-          errors,
-          touched,
-          setFieldError
         }: FormikProps<IFormValues>) => (
           <Form noValidate>
             <div className="spon-trip-modal__row">

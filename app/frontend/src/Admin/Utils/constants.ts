@@ -1,4 +1,3 @@
-// import { min } from "moment"; enlever
 
 export enum ADMIN_ROUTING {
   MAIN = '/admin',

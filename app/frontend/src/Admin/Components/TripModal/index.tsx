@@ -25,7 +25,7 @@ const TripModal: React.SFC<IProps> = ({
   handleSubmit
 }) => {
   let editableData = null
-  console.log(editDate)
+
   if (editDate) {
     editableData = {
       destination: editDate.destination,
