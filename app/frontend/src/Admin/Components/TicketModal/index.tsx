@@ -41,7 +41,8 @@ class TicketModal extends React.Component<IProps, IState> {
       destinations,
       handleSubmit,
       closeModal,
-      isLoading
+      isLoading,
+      departures
     } = this.props
     const isRecurringClass = classnames('spon-ticket-modal__recurring', {
       'spon-ticket-modal__recurring--open': this.state.isRecurring
@@ -196,16 +197,35 @@ class TicketModal extends React.Component<IProps, IState> {
                   <DropDownTicket
                     saveAsObject
                     id="trip"
-                    label="Select the trip"
-                    placeholder="Select trip"
+                    label="Select trip departure"
+                    placeholder="Select trip departure"
                     className="spon-ticket-modal__dropdown"
                     selectedValue={values.trip ? values.trip.departure : ''}
+                    options={departures}
+                    onChange={handleChange}
+                    onSelectDeparture={this.props.handleSelectDeparture}
+                  />
+
+                  <ErrorMessage
+                    name="trip.departure"
+                    component="div"
+                    className="spon-ticket-modal__error"
+                  />
+                </div>
+                <div className="spon-ticket-modal__input-cnt spon-ticket-modal__input-cnt--big">
+                  <DropDownTicket
+                    saveAsObject
+                    id="trip"
+                    label="Select trip destination"
+                    placeholder="Select trip destination"
+                    className="spon-ticket-modal__dropdown"
+                    selectedValue={values.trip ? values.trip.destination : ''}
                     options={destinations}
                     onChange={handleChange}
                   />
 
                   <ErrorMessage
-                    name="trip.name"
+                    name="trip.departure"
                     component="div"
                     className="spon-ticket-modal__error"
                   />

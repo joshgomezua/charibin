@@ -13,8 +13,9 @@ export interface IState {
     onChange: (
       e: { target: { id: string; value: { _id: string; departure: string; destination: string } | string } }
     ) => void
+    onSelectDeparture?: (departure: string) => void
   }
-  
+   
   export interface IOptionTicket {
     _id: string
     departure: string

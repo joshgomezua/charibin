@@ -22,8 +22,10 @@ export interface IProps {
     active: boolean
   }
   tripSelected?: { _id: string; departure: string, destination: string } | null
+  departures: IOptionTicket[]
   destinations: IOptionTicket[]
   closeModal: () => void
+  handleSelectDeparture: (departure: string) => void
   handleSubmit?: (
     ticket: Pick<ITicket, Exclude<keyof ITicket, 'trip' | '_id' | 'date'>> & {
       trip: string

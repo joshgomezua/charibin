@@ -27,13 +27,13 @@ import { IStore } from '../../../Common/Redux/types'
 import { IState, IProps, IEditedData } from './types'
 import './styles.scss'
 
-
 class TicketsContainer extends React.Component<
   RouteComponentProps<{ tripName: string }> & IProps,
   IState
 > {
   readonly state: IState = {
     tickets: [],
+    departures: [],
     destinations: [],
     isLoading: false,
     isModalLoading: false,
@@ -104,7 +104,7 @@ class TicketsContainer extends React.Component<
         }))
         console.log('cityNames', cityNames)
         this.props.changeFilters(cityNames)
-        this.setState({ destinations: cityNames })
+        this.setState({ departures: cityNames })
       })
       .catch(err => {
         this.props.showError(err)
@@ -307,6 +307,26 @@ class TicketsContainer extends React.Component<
     })
   }
 
+  handleSelectTicketDeparture = (departure: string) => {
+    const token = getToken()
+
+    getTripNames(token)
+      .then(({data}) => {
+        const destinationsFiltered = data.filter((item: any) => item.departure === departure)
+        const destinations = destinationsFiltered.map((item: any) => {
+          ({  _id: item._id,
+              departure: item.departure,
+              destination: item.destinaton
+          })
+        })
+        this.setState({destinations : destinations})
+        console.log('destinations', destinations)
+      })
+    .catch(err => {
+        this.props.showError(err)
+    })    
+  }
+
   render() {
     const {
       tickets,
@@ -314,6 +334,7 @@ class TicketsContainer extends React.Component<
       isLoading,
       isModalLoading,
       isError,
+      departures,
       destinations,
       calendarFilter
     } = this.state
@@ -362,20 +383,24 @@ class TicketsContainer extends React.Component<
           {modal.type === MODAL_TYPE.ADD_TICKET ? (
             <TicketModal
               tripSelected={modal.trip ? modal.trip : null}
+              departures={departures}
               destinations={destinations}
               isLoading={isModalLoading}
               closeModal={this.handleCloseModal}
               handleSubmit={this.handleAddTicket}
+              handleSelectDeparture={this.handleSelectTicketDeparture}
             />
           ) : null}
 
           {modal.type === MODAL_TYPE.EDIT_TICKET ? (
             <TicketModal
+              departures={departures}
               destinations={destinations}
               editDate={modal.data}
               isLoading={isModalLoading}
               closeModal={this.handleCloseModal}
               handleEditTicket={this.handleEditTicket}
+              handleSelectDeparture={this.handleSelectTicketDeparture}
             />
           ) : null}
 
