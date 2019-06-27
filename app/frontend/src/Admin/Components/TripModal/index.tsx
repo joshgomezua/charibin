@@ -197,6 +197,7 @@ const TripModal: React.SFC<IProps> = ({
                   className="spon-trip-modal__error"
                 />
               </div>
+
               <div className="spon-trip-modal__input-cnt">
                 <Field
                   isPrefix
@@ -213,6 +214,7 @@ const TripModal: React.SFC<IProps> = ({
                   className="spon-trip-modal__error"
                 />
               </div>
+              
               <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt">
                 <Field
                   isPrefix
@@ -320,35 +322,6 @@ const TripModal: React.SFC<IProps> = ({
               </div>
             </div>
 
-            {/* <div className="spon-trip-modal__row spon-trip-modal__row--bordered spon-trip-modal__row--noflex">
-              <p className="spon-trip-modal__label">Add trip cover</p>
-
-              <div className="spon-trip-modal__avatar">
-                <div className="spon-trip-modal__photo">
-                  {!values.photo ? (
-                    <div className="spon-trip-modal__photo-cover">
-                      <img src={photoSvg} alt="" />
-                    </div>
-                  ) : (
-                    <div
-                      className="spon-trip-modal__photo-cover"
-                      style={{ backgroundImage: `url(${values.photo})` }}
-                    />
-                  )}
-                </div>
-
-                <div className="spon-trip-modal__photo-input">
-                  <FileInput
-                    label="UPLOAD FILE"
-                    handleChange={handleChange}
-                    handleSetError={(name, msg) => setFieldError(name, msg)}
-                  />
-                </div>
-              </div>
-              {errors.photo && touched.photo ? (
-                <div className="spon-trip-modal__error">{errors.photo}</div>
-              ) : null}
-            </div> */}
             <div className="spon-trip-modal__row">
               <div className="spon-trip-modal__buttons">
                 <Button

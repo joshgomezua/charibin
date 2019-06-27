@@ -362,6 +362,7 @@ class TripsContainer extends React.Component<
     } = this.state
 
     this.setState({ isModalLoading: true })
+    
     return updateSchedule(id, data, token)
       .then(() => {
         this.modal.current!.close()

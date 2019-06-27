@@ -39,7 +39,6 @@ const TimeSelectionModal: React.SFC<IProps> = ({
         _8to10PM: editSchedule.timeSelection._8to10PM,
         _10to12AM: editSchedule.timeSelection._10to12AM,
       }
-      // bidirectionalChange: false -> enlever
     }
   }
 
@@ -105,7 +104,7 @@ const TimeSelectionModal: React.SFC<IProps> = ({
         render={({
         }: FormikProps<IFormValues>) => (
           <Form noValidate>
-            <div className="spon-seltime-modal__row"> {/** spon-timeselection-modal pour tout */}
+            <div className="spon-seltime-modal__row">
               <div className="spon-seltime-modal__input-cnt spon-seltime-modal__input-cnt--small">
                 <Field
                   isPrefix
