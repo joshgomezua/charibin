@@ -255,9 +255,24 @@ class TicketModal extends React.Component<IProps, IState> {
                   />
                 </div>
                 <div className="spon-ticket-modal__input-cnt spon-ticket-modal__input-cnt--big">
-                  <p>Ticket Destination</p><br/>
-                  {values.departure ? values.departure === values.trip.departure ? values.destination = values.trip.destination 
-                  : values.destination = values.trip.departure : values.destination = ''}
+
+                  {
+                     <div className={"spon-label"}>
+                     <p className="spon-label__label">{"Ticket Destination"}</p>
+                     <div
+                       className={"spon-label__element"}>
+                       <div className="spon-label__placeholder">
+                         <p>{
+                           values.departure ? 
+                           values.departure === values.trip.departure ? 
+                           values.destination = values.trip.destination 
+                           : values.destination = values.trip.departure : values.destination = ''
+                          }</p>
+                       </div>
+                     </div>
+                   </div>
+                  }
+
                 </div>
                 <div className="spon-ticket-modal__input-cnt">
                   <Dropdown

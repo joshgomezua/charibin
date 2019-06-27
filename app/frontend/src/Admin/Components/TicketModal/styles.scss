@@ -241,4 +241,45 @@
       }
     }
   }
+
+  @import '../../../Common/Utils/Styles/mixin.scss';
+@import '../../../Common/Utils/Styles/colors.scss';
+
+.spon-label {
+  &__element {
+    position: relative;
+    width: 100%;
+    height: rc(50);
+    border: solid 1px $gray;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+
+  &__label {
+    margin-top: 0;
+    margin-bottom: rc(10);
+    font-size: rc(12);
+    color: $label;
+  }
+
+  &__placeholder {
+    position: relative;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 rc(10) 0 rc(10);
+    color: $dark-blue;
+    font-size: rc(14);
+
+    & p {
+      margin: 0 !important;
+      font-size: rc(14);
+    }
+  }
+
+}
+
+
 }
