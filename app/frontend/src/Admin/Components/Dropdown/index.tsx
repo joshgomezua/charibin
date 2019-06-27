@@ -22,7 +22,7 @@ class DropDown extends React.Component<IProps, IState> {
   }
 
   handleSelectOption = (el: IOption): void => {
-    const { onChange, saveAsObject } = this.props
+    const { onChange, saveAsObject, onChangeDeparture } = this.props
     this.setState({ isListVisible: false })
     onChange({
       target: {
@@ -30,6 +30,7 @@ class DropDown extends React.Component<IProps, IState> {
         value: saveAsObject ? { _id: el._id, name: el.name } : el.name
       }
     })
+    onChangeDeparture && onChangeDeparture(el.name)
   }
 
   renderOptions = (optionsArr: IOption[]): JSX.Element[] => {

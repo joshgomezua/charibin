@@ -13,6 +13,8 @@ export interface IProps {
       departure: string
       destination: string
     }
+    departure: string
+    destination: string
     type: string
     quantity: number
     date: {
@@ -58,6 +60,8 @@ export interface IFormValues {
   }
   type: string
   quantity: number
+  departure: string
+  destination: string
   date: Date | string | undefined
   endDate?: Date | string | undefined
   days?: number[]
