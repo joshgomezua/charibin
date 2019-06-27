@@ -14,16 +14,13 @@ export const rangeColumns = (
   redirectToCreateTicket: (trip: { _id: string; departure: string; destination: string }) => void
 ) => [
   {
-    width: 64,
-  },
-  {
     accessor: 'date.start',
-    width: 150,
+    width: 142,
     Cell: (props: RowRenderProps) => moment(props.value).format('MMM DD, YYYY')
   },
   {
     accessor: 'date.end',
-    width: 150,
+    width: 142,
     Cell: (props: RowRenderProps) => moment(props.value).format('MMM DD, YYYY')
   },
   
@@ -74,6 +71,9 @@ export const rangeColumns = (
       const duration = moment.duration({ minutes: props.value }) as IDuration
       return `${duration.format('h[h]mm[m]')}`
     }
+  },
+  {
+    width: 80,
   },
   {
     accessor: '_id',
