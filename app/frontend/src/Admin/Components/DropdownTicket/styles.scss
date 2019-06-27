@@ -1,0 +1,135 @@
+@import '../../../Common/Utils/Styles/mixin.scss';
+@import '../../../Common/Utils/Styles/colors.scss';
+
+.spon-dropdown {
+  &--open {
+    position: relative;
+    z-index: 9 !important;
+  }
+
+  &__element {
+    position: relative;
+    width: 100%;
+    height: rc(50);
+    border: solid 1px $gray;
+    border-radius: 3px;
+    cursor: pointer;
+
+    &--active {
+      border-color: $violet-light;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+
+  &__label {
+    margin-top: 0;
+    margin-bottom: rc(10);
+    font-size: rc(12);
+    color: $label;
+
+    @include respond(mobile) {
+      font-size: rc(16);
+    }
+  }
+
+  &__placeholder {
+    position: relative;
+    height: 100%;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 rc(10) 0 rc(10);
+    color: $dark-blue;
+    font-size: rc(14);
+
+    @include respond(mobile) {
+      font-size: rc(16);
+    }
+
+    & p {
+      margin: 0 !important;
+      font-size: rc(12);
+
+      @include respond(mobile) {
+        font-size: rc(16);
+      }
+    }
+  }
+
+  &__placeholder-icon {
+    width: rc(9);
+    fill: $gray;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    @include respond(mobile) {
+      width: 1rem;
+    }
+
+    &--active {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__list {
+    position: absolute;
+    left: 0;
+    display: none;
+    flex-direction: column;
+    background: $white;
+    box-sizing: border-box;
+    width: calc(100% + 2px);
+    max-height: rc(200);
+    z-index: 600;
+    transform: translateX(-1px);
+    border: 1px solid $gray;
+    transition: all 300ms;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      width: rc(4);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: darkgrey;
+      border-radius: rc(5);
+      outline: 1px solid slategrey;
+    }
+
+    &::-webkit-scrollbar-track {
+      box-shadow: 0 1px 4px 1px rgba(0, 0, 0, 0.05);
+    }
+
+    &--active {
+      display: flex;
+      border-bottom: 1px solid $main-blue;
+      border-right: 1px solid $main-blue;
+      border-left: 1px solid $main-blue;
+      border-bottom-left-radius: 0.5rem;
+      border-bottom-right-radius: 0.5rem;
+    }
+  }
+
+  &__list-item {
+    padding: 0 rc(10);
+    min-height: rc(40);
+    display: flex;
+    align-items: center;
+    font-size: rc(12);
+    cursor: pointer;
+
+    @include respond(mobile) {
+      font-size: rc(14);
+      min-height: rc(50);
+    }
+
+    &:not(:first-child) {
+      border-top: 1px solid $gray;
+    }
+    &:hover {
+      background: $gray;
+    }
+  }
+}

@@ -1,5 +1,5 @@
-import { ICity } from '../../Utils/adminTypes'
 import { ITicket } from '../../../Common/Utils/globalTypes'
+import { IOptionTicket } from '../DropdownTicket/types';
 
 export interface IState {
   isRecurring: boolean
@@ -22,7 +22,7 @@ export interface IProps {
     active: boolean
   }
   tripSelected?: { _id: string; departure: string, destination: string } | null
-  destinations: ICity[]
+  destinations: IOptionTicket[]
   closeModal: () => void
   handleSubmit?: (
     ticket: Pick<ITicket, Exclude<keyof ITicket, 'trip' | '_id' | 'date'>> & {

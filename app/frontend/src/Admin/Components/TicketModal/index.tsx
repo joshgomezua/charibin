@@ -22,6 +22,7 @@ import arrowDown from '../../../Common/Utils/Media/arrowDown.svg'
 import { daysOfWeek } from './_data'
 import { IProps, IState, IFormValues } from './types'
 import './styles.scss'
+import DropDownTicket from '../DropdownTicket';
 
 class TicketModal extends React.Component<IProps, IState> {
   readonly state: IState = {
@@ -126,8 +127,8 @@ class TicketModal extends React.Component<IProps, IState> {
 
             const dataToSubmit = {
               trip: values.trip._id,
-              departure: 'test',
-              destination: 'test',
+              departure: values.trip.departure,
+              destination: values.trip.destination,
               quantity: values.quantity,
               soldTickets: 0,
               reservedQuantity: 0,
@@ -192,13 +193,13 @@ class TicketModal extends React.Component<IProps, IState> {
               {console.log('values', values)}
               <div className="spon-ticket-modal__row">
                 <div className="spon-ticket-modal__input-cnt spon-ticket-modal__input-cnt--big">
-                  <Dropdown
+                  <DropDownTicket
                     saveAsObject
                     id="trip"
                     label="Select the trip"
                     placeholder="Select trip"
                     className="spon-ticket-modal__dropdown"
-                    selectedValue={values.trip ? values.trip.destination : ''}
+                    selectedValue={values.trip ? values.trip.departure : ''}
                     options={destinations}
                     onChange={handleChange}
                   />

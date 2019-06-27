@@ -99,7 +99,8 @@ class TicketsContainer extends React.Component<
         console.log('data', data)
         const cityNames = data.map((item: any) => ({
           _id: item._id,
-          name: item.destination
+          departure: item.departure,
+          destination: item.destination
         }))
         console.log('cityNames', cityNames)
         this.props.changeFilters(cityNames)
