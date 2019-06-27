@@ -1,5 +1,5 @@
 import { ITrip, MODAL_TYPE } from '../../Utils/adminTypes'
-import { IResponseError } from '../../../Common/Utils/globalTypes'
+import { IResponseError, IScheduledTrip } from '../../../Common/Utils/globalTypes'
 
 export interface IState {
   trips: ITrip[]
@@ -8,6 +8,7 @@ export interface IState {
   isLoading: boolean
   currentPage: number
   editData: ITrip
+  editSchedule: IScheduledTrip
   modal: {
     id: string
     type: MODAL_TYPE | null
@@ -43,6 +44,7 @@ export interface INewData {
   departure: string
   destination: string
   carrier: string
+  photo: string
   price: number
   type: string
   isFromAPI: boolean
@@ -98,6 +100,7 @@ export interface IEditTimeSchedule {
   departure?: string
   destination?: string
   carrier?: string
+  photo?: string
   price?: number
   type?: string
 }

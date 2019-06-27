@@ -16,6 +16,7 @@ import {
   ERRORS,
   SUCCESS,
   DEFAULT_TRIP_DATA,
+  DEFAULT_TRIP_SCHEDULE,
 } from '../../Utils/constants'
 import {
   getTrips,
@@ -29,8 +30,10 @@ import {
   addSchedule,
   updateSchedule
 } from '../../Utils/api'
-import { IState, IProps, INewData, IEditTimeSchedule } from './types'
+import { IState, IProps, INewData, IEditTimeSchedule, INewSchedule } from './types'
 import { columns } from './columns'
+import { rangeColumns } from './rangeColumns';
+import ScheduleModal from 'src/Admin/Components/ScheduleModal';
 
 class TripsContainer extends React.Component<
   RouteComponentProps<{}> & IProps,
@@ -45,6 +48,7 @@ class TripsContainer extends React.Component<
     isLoading: true,
     isModalLoading: false,
     editData: DEFAULT_TRIP_DATA,
+    editSchedule: DEFAULT_TRIP_SCHEDULE,
     modal: {
       id: '',
       type: null,
@@ -90,6 +94,7 @@ class TripsContainer extends React.Component<
 
   handleOpenTimeSelectionScheduleModal = (id: string) => {
     this.handleFetchTripSchedule(id)
+    console.log(this.state)
     this.handleOpenModal(MODAL_TYPE.EDIT_TIME_SELECTION_SCHEDULE, 'Edit time selection price settings of schedule', id)
   }
 
@@ -112,9 +117,25 @@ class TripsContainer extends React.Component<
     }
   }
 
+  handleFetchTripSchedule = (id: string) => {
+    const token = getToken()
+    console.log(id)
+    if (token) {
+      getSingleScheduledTrip(id, token)
+        .then(res => {
+          this.setState({ editSchedule: res.data })
+          console.log(res.data)
+        })
+        .catch(err => {
+          this.modal.current!.close()
+          this.props.showError(err)
+        })
+    }
+  }
+
   handleFetchItems = (page: number, limit: number) => {
     const token = getToken()
-    console.log('2000')
+
     if (token) {
       getTrips(page, limit, token)
         .then(res =>
@@ -122,7 +143,6 @@ class TripsContainer extends React.Component<
             isLoading: false,
             trips: res.data.results,
             total: res.data.status.total
-            
           })
         )
         .catch(err => {
@@ -180,7 +200,7 @@ class TripsContainer extends React.Component<
     }
     this.setState({ isModalLoading: true })
     return addTrip(newTrip, token)
-      .then(() => { 
+      .then(res => {
         this.modal.current!.close()
         this.handleFetchItems(currentPage, 10)
         this.props.showSuccess(SUCCESS.TRIP_ADD)
@@ -205,7 +225,7 @@ class TripsContainer extends React.Component<
 
     this.setState({ isModalLoading: true })
     return updateTrip(id, data, token)
-      .then(() => {
+      .then(res => {
         this.modal.current!.close()
         this.handleFetchItems(currentPage, 10)
         this.props.showSuccess(SUCCESS.TRIP_EDIT)
@@ -230,7 +250,7 @@ class TripsContainer extends React.Component<
     
     this.setState({ isModalLoading: true })
     return updateTimeSelection(id, data, token)
-      .then(() => { 
+      .then(res => {
         this.modal.current!.close()
         this.handleFetchItems(currentPage, 10)
         this.props.showSuccess(SUCCESS.TRIP_EDIT)
@@ -281,7 +301,7 @@ class TripsContainer extends React.Component<
     
     this.setState({ isModalLoading: true })
     return updateSchedule(id, updatedSchedule, token)
-      .then(() => {
+      .then(res => {
         this.modal.current!.close()
         this.handleFetchItems(currentPage, 10)
         this.props.showSuccess(SUCCESS.TRIP_EDIT)
@@ -318,9 +338,9 @@ class TripsContainer extends React.Component<
       trip: this.state.editData._id
     }
     this.setState({ isModalLoading: true })
-
+    console.log(newSchedule)
     return addSchedule(newSchedule, token)
-      .then(() => {
+      .then(res => {
         this.modal.current!.close()
         this.handleFetchItems(currentPage, 10)
         this.props.showSuccess(SUCCESS.DEFAULT)
@@ -344,9 +364,8 @@ class TripsContainer extends React.Component<
     } = this.state
 
     this.setState({ isModalLoading: true })
-    
     return updateSchedule(id, data, token)
-      .then(() => {
+      .then(res => {
         this.modal.current!.close()
         this.handleFetchItems(currentPage, 10)
         this.props.showSuccess(SUCCESS.TRIP_EDIT)
@@ -409,15 +428,16 @@ class TripsContainer extends React.Component<
       isLoading,
       isModalLoading,
       editData,
+      editSchedule,
       modal: { type: modalType, heading: modalHeading }
     } = this.state
     return (
       <div className="spon-container">
-        
         <Header
           title="Routes & Prices"
           handleOpenModal={this.handleOpenModal}
         />
+
         <Table
           data={trips}
           handleFetchData={this.handleFetchTableData}
@@ -435,6 +455,7 @@ class TripsContainer extends React.Component<
             this.handleOpenDeleteScheduleModal,
             this.handleOpenEditScheduleModal,
             this.handleOpenTimeSelectionScheduleModal,
+            this.handleOpenModal,
             this.handleRedirectToCreateTicket
           )}
         />
@@ -515,4 +536,3 @@ class TripsContainer extends React.Component<
 }
 
 export default withToast(TripsContainer)
-

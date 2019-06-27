@@ -67,22 +67,16 @@ export const columns = (
     Header: 'Time Selection',
     accessor: 'timeSelection.defaultPrice',
     width: 150,
-    Cell: (props: RowRenderProps) => { 
-      let multiplePrices: boolean = false;
-      for(const key in props.row._original.timeSelection){
-        if(props.row._original.timeSelection[key] != props.value)
-          multiplePrices = true;
-      }
-      return(
+    Cell: (props: RowRenderProps) => (
       <> 
         <div className="spon-table__actions">
-           {multiplePrices == true ? ( <> £ {props.value} * </> ) : ( <> £ {props.value} </> ) }
+          £ {props.value} 
           <button onClick={() => openTimeSelectionModal(props.row._original._id)}>
             Advanced
           </button>
         </div>
       </>
-    )}
+    )
     
   },
   {
