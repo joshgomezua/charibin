@@ -7,7 +7,7 @@ import Button from '../../../Common/Components/Button'
 
 import { MODAL_TYPE } from '../../Utils/adminTypes'
 import { ITicket } from '../../../Common/Utils/globalTypes'
-import { IProps } from './types'
+import { IProps, DIRECTION } from './types'
 import './styles.scss'
 
 const Agenda: React.SFC<IProps> = ({
@@ -17,23 +17,36 @@ const Agenda: React.SFC<IProps> = ({
   error,
   retry,
   filters,
-  direction,
+  filterFrom,
+  filterTo,
   changeActiveState,
   openEditModal
 }) => {
+
   const getFilteredTickets = () => {
-    if (filters.length > 0 && direction !== null) {
+    const areFromToFiltersUsed = (
+      filterFrom.length && filterFrom ||
+       filterTo.length && filterTo
+    )
+       
+    if (areFromToFiltersUsed){
+      return getFilteredFromToTickets(
+        getFilteredFromToTickets(tickets, filterFrom, DIRECTION.DEPARTURE),
+        filterTo,
+        DIRECTION.DESTINATION
+        )
+    }
+    return tickets;
+  }
+  
+  const getFilteredFromToTickets = (tickets: ITicket[], filters: string[], direction: string) => {
+    if (filters.length) {
       return tickets.filter(
         (ticket: ITicket) =>
-          filters.includes(ticket.trip.destination) && ticket.direction === direction
+          filters.includes(ticket.trip[direction])
       )
-    } else if (filters.length > 0) {
-      return tickets.filter((ticket: ITicket) =>
-        filters.includes(ticket.trip.destination)
-      )
-    } else {
-      return tickets
     }
+    return tickets
   }
 
   const prepareRows = () => {
@@ -47,7 +60,6 @@ const Agenda: React.SFC<IProps> = ({
       }
       return acc
     }, {})
-
     if (filters.length === 0) {
       return null
     } else {
@@ -74,16 +86,20 @@ const Agenda: React.SFC<IProps> = ({
           <th className="spon-agenda__cell spon-agenda__cell--head spon-agenda__cell--first-item">
             Date
           </th>
-          <th className="spon-agenda__cell spon-agenda__cell--head">Trip</th>
+          <th className="spon-agenda__cell spon-agenda__cell--head">From</th>
+          <th className="spon-agenda__cell spon-agenda__cell--head">To</th>
           <th className="spon-agenda__cell spon-agenda__cell--head">
-            Quantity
+            Qte of tickets
+          </th>
+          <th className="spon-agenda__cell spon-agenda__cell--head">
+            Available tickets
+          </th>
+          <th className="spon-agenda__cell spon-agenda__cell--head">
+            Sold    tickets
           </th>
           <th className="spon-agenda__cell spon-agenda__cell--head">Type</th>
           <th className="spon-agenda__cell spon-agenda__cell--head">
             Time of departure
-          </th>
-          <th className="spon-agenda__cell spon-agenda__cell--head">
-            Direction
           </th>
           <th className="spon-agenda__cell spon-agenda__cell--head">Active</th>
           <th className="spon-agenda__cell spon-agenda__cell--head">

@@ -7,7 +7,7 @@ import Main from './Common/Containers/Main'
 import intl from 'intl'
 import 'intl/locale-data/jsonp/en'
 
-if (!(window as any).Intl) (window as any).Intl = intl
+if (!(window as any).Intl) { (window as any).Intl = intl }
 
 ReactDOM.render(
   <Provider store={store}>

@@ -2,12 +2,22 @@ export interface IAdmin {
   email: string
 }
 
+export interface ITag {
+  name: string
+  isSelected: boolean
+}
+
 export interface ICity {
   _id: string
   name: string
+  country?: string;
+  photo?: string;
+  tags?: string[];   
+  isModify?: boolean;
+  isEnabled?: boolean;
 }
 
-export interface IScheduledTrip {
+export interface IUser {
   _id: string
   active: boolean
   deselectionPrice: number
@@ -32,7 +42,13 @@ export interface IScheduledTrip {
   duration: number
   price: number
   trip: string
+  email: string
+  name: string
+  role: string
+  password: string
+
 }
+
 
 export interface ITrip {
   _id: string
@@ -51,14 +67,13 @@ export interface ITrip {
     _8to10PM: number
     _10to12AM: number
   }
-  scheduledTrips: IScheduledTrip[],
   discount: number
   duration: number
   fake: boolean
   departure: string
   destination: string
   carrier: string
-  photo: string
+  photo?: string
   price: number
   type: string
 }
@@ -104,5 +119,13 @@ export enum MODAL_TYPE {
   'ADD_SCHEDULE',
   'DELETE_SCHEDULE',
   'EDIT_SCHEDULE',
-  'EDIT_TIME_SELECTION_SCHEDULE'
+  'EDIT_TIME_SELECTION_SCHEDULE',
+  'ADD_CITY',
+  'EDIT_CITY',
+  'DELETE_CITY',
+  'ADD_USER',
+  'EDIT_USER',
+  'DELETE_USER',
+  'RESET_PASSWORD'
 }
+ 

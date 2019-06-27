@@ -8,5 +8,5 @@ module.exports = require('lodash').merge(
   require('./TicketOwner'),
   require('./Data'),
   require('./Order'),
-  require('./ScheduledTrip')
+  require('./City')
 );

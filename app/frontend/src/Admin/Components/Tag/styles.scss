@@ -1,0 +1,31 @@
+@import '../../../Common/Utils/Styles/colors.scss';
+
+.tagbtn {
+    width: 100%;
+    max-width: 25rem;
+    height: 3rem;
+    border: none;
+    border-radius: 3px;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    outline: none;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 10rem;
+    color: $white;
+    background-color: $blue;
+
+    &:active {
+        background-color: $dark-deep-blue;
+    }
+
+    &.selected {
+        background-color: $dark-deep-blue;
+    }
+}

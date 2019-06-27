@@ -1,6 +1,7 @@
 'use strict';
 
 const faker = require('faker');
+const moment = require('moment');
 
 const dataTemplate = {
   administrator: {
@@ -8,6 +9,25 @@ const dataTemplate = {
     role: 'Administrator',
     password: '22AA@@aaasasd'
   },
+
+  user:{
+
+    email: faker.email,
+    name: 'user1',
+    role: 'Guest',
+    password: '22AA@@aaasasdaa',
+    active: true
+
+  },
+  
+  
+    user:{
+      email: faker.internet.exampleEmail,
+      name: faker.name.firstName,
+      role: 'Client',
+      password: faker.name.firstName
+    },
+
 
   trip: {
     departure: faker.address.city,
@@ -34,38 +54,27 @@ const dataTemplate = {
     deselectionPrice: () => faker.random.number({ min: 3, max: 10 }) + 0.93
   },
 
-  scheduledTrip: {
-    date: {
-      start: faker.date.recent().getTime(),
-      end: faker.date.future().getTime(),
-    },
-    price: () => faker.random.number({ min: 100, max: 200 }) + 0.99,
-    discount: () => faker.random.number({ min: 5, max: 40 }) + 0.95,
-    duration: () => faker.random.number({ min: 1, max: 100 }),
-    timeSelection: {
-      defaultPrice: () => faker.random.number({min: 1, max: 4}),
-      _0to6AM: () => faker.random.number({min: 1, max: 4}),
-      _6to8AM: () => faker.random.number({min: 1, max: 4}),
-      _8to10AM: () => faker.random.number({min: 1, max: 4}),
-      _10to12PM: () => faker.random.number({min: 1, max: 4}),
-      _12to2PM: () => faker.random.number({min: 1, max: 4}),
-      _2to4PM: () => faker.random.number({min: 1, max: 4}),
-      _4to6PM: () => faker.random.number({min: 1, max: 4}),
-      _6to8PM: () => faker.random.number({min: 1, max: 4}),
-      _8to10PM: () => faker.random.number({min: 1, max: 4}),
-      _10to12AM: () => faker.random.number({min: 1, max: 4}),
-    },
-    deselectionPrice: () => faker.random.number({ min: 3, max: 10 }) + 0.93
+  city: {
+    name: faker.address.city,
+    country: () => faker.name.lastName(),
+    photo: getImage,
+    tags: () => [faker.name.firstName()],
+    isModify: false,
+    isEnabled: false
+
   },
 
   ticket: {
-    direction: 'arrival',
-    quantity: () => faker.random.number({ min: 5, max: 20 }),
+    quantity: 5,
+    soldTickets: 0,
+    reservedQuantity: 0,
+    departure: '',
+    destination: '',
     type: () => randomOneWord('type'),
     date: {
       __tmpStart: 0,
       start: function () {
-        const tmpDate = faker.date.future().getTime();
+        const tmpDate = new Date(moment.now() + (1000 * 60 * 60 * 24 * 2));
         this.__tmpStart = tmpDate;
         return tmpDate;
       },

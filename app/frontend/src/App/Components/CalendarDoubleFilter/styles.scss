@@ -1,0 +1,87 @@
+@import '../../../Common/Utils/Styles/colors.scss';
+
+.calendarDoubleFilter {
+
+  &-arrow_next {
+    transform: rotateZ(-90deg);
+  }
+  &-arrow_prev {
+    transform: rotateZ(90deg);
+  }
+
+  &-clear {
+    width: 100%;
+  max-width: 25rem;
+  height: 3rem;
+  border: none;
+  border-radius: 3px;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  outline: none;
+  }
+
+  .react-calendar {
+    border: none;
+    color: $gray-dark;
+    border-top: 1px solid $gray;
+    padding-top: 1rem;
+
+    &__navigation {
+      align-items: center;
+      &__label {
+        color: $input;
+        font-size: 1rem;
+        font-weight: bold;
+        pointer-events: none;
+      }
+      &__arrow {
+        height: 29px;
+        border-radius: 3px;
+        border: thin solid $gray;
+      }
+    }
+    &__month-view {
+      &__weekdays {
+        padding-bottom: 1rem;
+      }
+      &__days {
+        display: table;
+
+        &__day {
+          &--weekend {
+            color: buttontext;
+            font-weight: bold;
+
+            &:disabled {
+              color: #7b899f;
+            }
+          }
+        }
+      }
+    }
+    &__tile {
+      box-shadow: 1px 0 0 0 $gray, 0 1px 0 0 $gray, 1px 1px 0 0 $gray,
+        1px 0 0 0 $gray inset, 0 1px 0 0 $gray inset;
+      &--active {
+        color: $white !important;
+        background-color: $blue-light !important;
+        box-shadow: 1px 0 0 0 $blue, 0 1px 0 0 $blue, 1px 1px 0 0 $blue,
+          1px 0 0 0 $blue inset, 0 1px 0 0 $blue inset;
+      }
+
+      &--rangeStart {
+        background-color: $blue !important;
+      }
+      &--rangeEnd {
+        background-color: $blue !important;
+      }
+    }
+  }
+  .react-calendar__tile:disabled {
+    background-color: darken($color: #f0f0f0, $amount: 15);
+  }
+}

@@ -13,7 +13,6 @@ import Input from '../Input'
 import Dropdown from '../Dropdown'
 import Switch from '../Switch'
 import Button from '../../../Common/Components/Button'
-
 import { IProps, IFormValues, IEditValues } from './types'
 import './styles.scss'
 
@@ -162,7 +161,7 @@ const TripModal: React.SFC<IProps> = ({
                 />
               </div>
 
-              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--big">
+              {/* <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt">
                 <Field
                   type="text"
                   placeholder="Type name"
@@ -177,11 +176,11 @@ const TripModal: React.SFC<IProps> = ({
                   component="div"
                   className="spon-trip-modal__error"
                 />
-              </div>
+              </div> */}
             </div>
 
             <div className="spon-trip-modal__row">
-              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--small">
+              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt">
                 <Field
                   isPrefix
                   type="number"
@@ -269,6 +268,23 @@ const TripModal: React.SFC<IProps> = ({
 
                 <ErrorMessage
                   name="type"
+                  component="div"
+                  className="spon-trip-modal__error"
+                />
+              </div>
+
+              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt">
+                <Field
+                  type="text"
+                  placeholder="Type name"
+                  name="carrier"
+                  label="Carrier"
+                  className="spon-trip-modal__input"
+                  component={Input}
+                />
+
+                <ErrorMessage
+                  name="carrier"
                   component="div"
                   className="spon-trip-modal__error"
                 />

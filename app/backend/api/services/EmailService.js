@@ -22,7 +22,7 @@ if (process.env.NODE_ENV === 'development') {
 class Email {
   constructor (emails) {
     this.options = {
-      from: global.config.custom.mail.from
+      from: 'red-key@hotmail.com'
     };
 
     if (_.isArray(emails)) {
@@ -36,9 +36,12 @@ class Email {
 
   __send () {
     return new Promise((resolve, reject) => {
-      if (process.env.NODE_ENV === 'development') {
+      if (process.env.NODE_ENV === 'development') { console.log('transport:', transporter);
         transporter.sendMail(this.options, err => {
           if (err) return reject(err);
+          console.log('reject', reject);
+          console.log('resolve;', resolve);
+          console.log('options', this.options);
           return resolve();
         });
       } else {
@@ -49,7 +52,19 @@ class Email {
       }
     });
   }
+  async AddingNotif(name, password){
 
+    const context = `username: ${entities.encode(name)}<br />
+                     password: ${entities.encode(password)}<br />
+    `;
+    this.options.subject = `Welcome to Sponteous: ${entities.encode(name)}`;
+    this.options.text = `${context}`;
+    this.options.html = mailTemplate(context);
+
+    return this.__send();
+
+
+  }
   async clientOrder (order, invoiceLink) {
     const hours = {
       arrival: {
@@ -121,6 +136,9 @@ module.exports = {
   },
   async adminOrder (admin, order) {
     return new Email(admin.email).adminOrder(order);
+  },
+  async AddingNotif(name, email, password){ // remplacer les parametres par {name, email, password} destructuration
+    return new Email(email).AddingNotif(name, password);
   },
   async support (data) {
     return new Email(global.config.custom.supportEmail).support(data);

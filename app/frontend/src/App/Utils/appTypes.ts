@@ -12,6 +12,8 @@ export interface ITrip {
   type: 'trip'
   dateStart?: number
   dateEnd?: number
+  departure: string,
+  destination: string
 }
 
 export interface ISelectedData {

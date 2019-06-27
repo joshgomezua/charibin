@@ -19,13 +19,14 @@ import {
   deleteTicket,
   editTicket
 } from '../../Utils/api'
-import { MODAL_TYPE, ICity } from '../../Utils/adminTypes'
+import { MODAL_TYPE } from '../../Utils/adminTypes'
 import { ITicket } from '../../../Common/Utils/globalTypes'
 import { getToken } from '../../../Common/Utils/helpers'
 import { ERRORS, SUCCESS, DEFULT_TICKET_DATA } from '../../Utils/constants'
 import { IStore } from '../../../Common/Redux/types'
 import { IState, IProps, IEditedData } from './types'
 import './styles.scss'
+
 
 class TicketsContainer extends React.Component<
   RouteComponentProps<{ tripName: string }> & IProps,
@@ -43,7 +44,12 @@ class TicketsContainer extends React.Component<
       heading: '',
       data: DEFULT_TICKET_DATA,
       trip: null
+    },
+    calendarFilter: {
+      start: undefined,
+      end: undefined
     }
+
   }
 
   private modal = React.createRef<Modal>()
@@ -59,7 +65,7 @@ class TicketsContainer extends React.Component<
     const { state } = this.props.location
 
     this.handleFetchTicketsByDate(selectedDate)
-    this.handleFetchDestionation()
+    this.handleFetchDestination()
 
     if (state && state.trip) {
       const tripFromState = state.trip
@@ -85,27 +91,34 @@ class TicketsContainer extends React.Component<
     this.modal.current!.close()
   }
 
-  handleFetchDestionation = () => {
+  handleFetchDestination = () => {
     const token = getToken()
 
     getTripNames(token)
       .then(({ data }) => {
-        const cityNames = data.map((item: ICity) => item.name)
+        const newData = data.map((item: any) => ({_id: item._id, name: item.destination}))
+        const cityNames = newData.map((item: any) => item.name)
         this.props.changeFilters(cityNames)
-        this.setState({ destinations: data })
+        this.setState({ destinations: newData })
       })
       .catch(err => {
         this.props.showError(err)
       })
   }
 
-  handleFetchTicketsByDate = (date: Date) => {
+  handleFetchTicketsByTwoDates = ([startDate, endDate] : [Date, Date]) => {
+    this.handleFetchTicketsByDate(startDate, endDate)
+  }
+
+  handleFetchTicketsByDate = (initialDate: Date, finalDate?: Date) => {
     const token = getToken()
 
-    const startDate = moment(date)
+    const startDate = finalDate ? moment(initialDate).format('x') : 
+      moment(initialDate)
       .startOf('month')
       .format('x')
-    const endDate = moment(date)
+    const endDate = finalDate ? moment(finalDate).format('x') : 
+      moment(initialDate)
       .endOf('month')
       .format('x')
 
@@ -152,8 +165,10 @@ class TicketsContainer extends React.Component<
       .then(res => {
         let message = ''
         if (res.data.updated) {
+          /*tu pourrais faire SUCCESS.TICKET_OVERRIGHT  */
           message = 'Tickets was overright'
         } else if (!res.data.updated && res.data.dates) {
+          /*tu pourrais faire SUCCESS.TICKET_UPDATED  */
           message = 'Ticket was updated'
         } else {
           message = SUCCESS.TICKET_ADD
@@ -283,14 +298,16 @@ class TicketsContainer extends React.Component<
       isLoading,
       isModalLoading,
       isError,
-      destinations
+      destinations,
+      calendarFilter
     } = this.state
     const {
       filters,
+      filterFrom,
+      filterTo,
       selectedDate,
-      direction,
-      changeFilters,
-      changeTicketType,
+      changeFilterFrom,
+      changeFilterTo,
       changeSelectedDate
     } = this.props
 
@@ -298,17 +315,20 @@ class TicketsContainer extends React.Component<
       <div className="spon-tickets">
         <div className="spon-tickets__content">
           <Sidebar
-            cities={destinations}
-            filters={filters}
+            filterFrom={filterFrom}
+            filterTo={filterTo}
             selectedDate={selectedDate}
-            direction={direction}
-            changeFilters={changeFilters}
+            changeFilterFrom={changeFilterFrom}
+            changeFilterTo={changeFilterTo}
             changeSelectedDate={changeSelectedDate}
-            changeDirectionType={changeTicketType}
+            calendarFilter={calendarFilter}
+            onChange={this.handleFetchTicketsByTwoDates}
+            handleFetchTicketsByDate={this.handleFetchTicketsByDate}
           />
           <Agenda
             tickets={tickets}
-            direction={direction}
+            filterFrom={filterFrom}
+            filterTo={filterTo}
             openEditModal={this.handleOpenEditModal}
             openModal={this.handleOpenModal}
             loading={isLoading}
@@ -357,8 +377,9 @@ class TicketsContainer extends React.Component<
 
 const mapStateToProps = (state: IStore) => ({
   filters: Selectors.selectFilters(state),
+  filterFrom: Selectors.selectFilterFrom(state),
+  filterTo: Selectors.selectFilterTo(state),
   selectedDate: Selectors.selectSelectedDate(state),
-  direction: Selectors.selectDirection(state)
 })
 
 export default connect(

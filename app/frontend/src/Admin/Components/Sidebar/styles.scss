@@ -5,6 +5,18 @@
   width: calc(20rem - 1px);
   height: 100%;
   border-right: 1px solid $inactive;
+  padding: 0 rc(15) 0 rc(5);
+
+  &__select {
+    margin-top: rc(15);
+
+    &__From{
+      margin-top: rc(15);
+    }
+    &__To{
+      margin-top: rc(15);
+    }
+  }
 
   h4 {
     margin: 0;
@@ -14,9 +26,20 @@
     color: $inactive;
   }
 
+  &__input{
+      width: 80%;
+      margin-left: 15px
+    
+  }
+
+  input {
+    margin: 15px
+  }
+
   &__filters {
     padding: rc(20) rc(20) 0 rc(20);
   }
+
 
   &__buttons {
     display: flex;
@@ -59,156 +82,6 @@
     overflow: auto;
   }
 
-  // REACT CALENDAR STYLES
-
-  .react-calendar {
-    border: none;
-    width: 100%;
-
-    &__month-view {
-      display: none;
-    }
-
-    button {
-      height: rc(48);
-      width: rc(48);
-      border-radius: 50%;
-      &:hover:not(:disabled) {
-        time {
-          color: $violet-dark;
-        }
-      }
-    }
-    time {
-      text-transform: uppercase;
-    }
-    &__navigation {
-      position: relative;
-      align-items: center;
-      height: rc(100);
-      background: lighten($color: $violet, $amount: 45);
-      color: $white;
-      margin: 0 !important;
-
-      @include respond(phone) {
-        height: rc(50);
-        padding-top: rc(15);
-      }
-
-      &:after {
-        content: '';
-        position: absolute;
-        top: 0;
-        right: -1px;
-        width: 1px;
-        height: 100%;
-        background: lighten($color: $violet, $amount: 45);
-      }
-
-      &__label {
-        font-weight: 600;
-        letter-spacing: 1px;
-        color: $dark-deep-blue !important;
-        font-size: rc(14) !important;
-        cursor: default;
-        pointer-events: none;
-
-        &:focus {
-          background: transparent !important;
-        }
-
-        &:hover {
-          background: transparent !important;
-        }
-      }
-
-      button {
-        background: transparent;
-        min-width: auto;
-
-        &:focus {
-          background: transparent;
-        }
-
-        &:hover {
-          background: transparent;
-        }
-      }
-    }
-    &__navigation__arrow {
-      &:focus {
-        background-color: transparent !important;
-      }
-    }
-    &__tile {
-      &:hover {
-        background: transparent !important;
-      }
-      &:disabled {
-        background-color: transparent !important;
-        cursor: default;
-      }
-    }
-    &__tile--active {
-      background: $dark-blue;
-      &:focus {
-        background: $dark-blue !important;
-      }
-      &:hover {
-        background: lighten($color: $dark-blue, $amount: 10%) !important;
-      }
-    }
-    &__tile--hasActive {
-      background: transparent;
-      time {
-        color: $violet-dark;
-      }
-    }
-
-    &__navigation__prev-button {
-      display: block;
-      position: relative;
-      margin-left: rc(20) !important;
-
-      img {
-        transform: rotate(90deg);
-      }
-    }
-
-    &__navigation__next-button {
-      display: block;
-      position: relative;
-      margin-right: rc(20) !important;
-
-      img {
-        transform: rotate(-90deg);
-      }
-    }
-
-    &__navigation__prev-button,
-    &__navigation__next-button {
-      height: rc(30) !important;
-      width: rc(30) !important;
-      background: $violet !important;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-width: auto;
-      &:focus {
-        background: $violet !important;
-      }
-
-      &:hover {
-        background: rgba(black, 0.3) !important;
-      }
-    }
-
-    &__navigation__prev2-button,
-    &__navigation__next2-button {
-      display: none;
-    }
-    &__navigation__label {
-      font-size: rc(17);
-    }
-  }
+  
+  
 }

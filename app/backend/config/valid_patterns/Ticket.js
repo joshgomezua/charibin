@@ -34,17 +34,6 @@ module.exports = {
       }
     },
 
-    direction: {
-      type: 'string',
-      required: true,
-      permission: {
-        create: [ROLE.ADMINISTRATOR],
-        update: [ROLE.ADMINISTRATOR],
-        find: [ROLE.ADMINISTRATOR, ROLE.GUEST]
-      },
-      pattern: /^(arrival|departure)$/
-    },
-
     quantity: {
       type: 'number',
       required: true,

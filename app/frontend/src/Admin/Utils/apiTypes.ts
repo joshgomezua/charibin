@@ -1,3 +1,5 @@
+
+
 export interface ILoginForm {
   email: string
   password: string
@@ -7,7 +9,7 @@ export interface ITrip {
   destination: string
   departure: string
   carrier: string
-  photo: string
+  photo?: string
   price: number
   discount: number
   deselectionPrice: number
@@ -29,11 +31,11 @@ export interface ITrip {
   type: string
 }
 
+
 export interface INewTrip {
   destination: string
   departure: string
   carrier: string
-  photo: string
   price: number
   discount: number
   deselectionPrice: number
@@ -106,9 +108,37 @@ export interface IEditTimeSelect {
   type?: string
 }
 
+export interface ICity {
+  name: string
+  country?:string
+  tags?: string[]
+  photo?: string
+  isModify?: boolean
+  isEnabled?: boolean
+}
+
+export interface IUser {
+  active: boolean
+  email: string
+  name: string
+  role: string
+  //password: string
+
+}
+
+export interface IEditUser {
+  //user?: string
+  active?: boolean
+  email?: string
+  name?: string
+  role?: string
+}
+
+
 export interface ITicket {
   trip: string
-  direction: string
+  departure: string
+  destination: string
   quantity: number
   type: string
   date: {
@@ -120,7 +150,6 @@ export interface ITicket {
 
 export interface IEditTicket {
   trip?: string
-  direction?: string
   quantity?: number
   type?: string
   date?: {

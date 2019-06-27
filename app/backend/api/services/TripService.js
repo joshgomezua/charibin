@@ -23,7 +23,7 @@ module.exports = {
 
     if(data.name) {
       trip = await Trip.findOne({ name: data.name, deleted: false });
-      if(trip) throw { status: 409, message: 'TRIP.NAME.EXIST' };
+      if(trip) throw { status: 409, message: 'TRIP.DESTINATION.EXIST' };
     }
 
     return Trip.findByIdAndUpdate(id, data, { new: true });
@@ -38,7 +38,7 @@ module.exports = {
 
   //Changer pour liste des villes de départs, ou liste selon les id ?
   async getListOfTripsNames () {
-    const names = await Trip.find({ deleted: false }).select('name');
+    const names = await Trip.find({ deleted: false }).select('destination');
 
     return names;
   },
