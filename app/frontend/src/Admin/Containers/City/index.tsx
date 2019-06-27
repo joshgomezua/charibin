@@ -218,6 +218,8 @@ class CityContainer extends React.Component<
     })
   }*/
 
+  handleVoidFunction = () => {};
+
   handleRestartModalType = () => {
     this.setState({
       isModalLoading: false,

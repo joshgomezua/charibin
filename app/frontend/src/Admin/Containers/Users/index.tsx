@@ -236,6 +236,8 @@ class UsersContainer extends React.Component<
     })
   }
 
+  handleVoidFunction = () => {};
+
   render() {
     const {
       usersTable,
@@ -266,9 +268,8 @@ class UsersContainer extends React.Component<
             this.handleOpenEditModal,
             this.handlResetPassword,
             debounce(this.handleToggleSwitch,300)
-            
-           
           )}
+          handleOpenModal={this.handleVoidFunction}
           loading={isLoading}
           pages={Math.ceil(total / 10)}
         />
