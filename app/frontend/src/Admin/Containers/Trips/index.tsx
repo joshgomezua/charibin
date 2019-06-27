@@ -345,7 +345,7 @@ class TripsContainer extends React.Component<
         this.handleFetchItems(currentPage, 10)
         this.props.showSuccess(SUCCESS.DEFAULT)
         this.handleRestartModalType()
-
+        console.log(this.state.trips)
         return Promise.resolve()
       })
       .catch(err => {
@@ -455,7 +455,6 @@ class TripsContainer extends React.Component<
             this.handleOpenDeleteScheduleModal,
             this.handleOpenEditScheduleModal,
             this.handleOpenTimeSelectionScheduleModal,
-            this.handleOpenModal,
             this.handleRedirectToCreateTicket
           )}
         />

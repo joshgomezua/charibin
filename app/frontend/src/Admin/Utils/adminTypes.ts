@@ -71,6 +71,7 @@ export interface ITrip {
     _8to10PM: number
     _10to12AM: number
   }
+  scheduledTrips: IScheduledTrip[]
   discount: number
   duration: number
   fake: boolean

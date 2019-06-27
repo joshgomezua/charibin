@@ -68,6 +68,33 @@ export const DEFULT_TICKET_DATA = {
   active: false
 }
 
+export const DEFAULT_TRIP_SCHEDULE = {
+  _id: '',
+  active: false,
+  deselectionPrice: 0,
+  date: {
+    start: '',
+    end: '',
+  },
+  timeSelection: {
+    defaultPrice: 0,
+    _0to6AM: 0,
+    _6to8AM: 0,
+    _8to10AM: 0,
+    _10to12PM: 0,
+    _12to2PM: 0,
+    _2to4PM: 0,
+    _4to6PM: 0,
+    _6to8PM: 0,
+    _8to10PM: 0,
+    _10to12AM: 0,
+  },
+  discount: 0,
+  duration: 0,
+  price: 0,
+  trip: ''
+}
+
 export const DEFAULT_TRIP_DATA = {
   _id: '',
   active: false,
@@ -85,6 +112,7 @@ export const DEFAULT_TRIP_DATA = {
     _8to10PM: 0,
     _10to12AM: 0,
   },
+  scheduledTrips: [DEFAULT_TRIP_SCHEDULE],
   discount: 0,
   duration: 0,
   fake: false,
@@ -93,7 +121,7 @@ export const DEFAULT_TRIP_DATA = {
   carrier: '',
   photo: '',
   price: 0,
-  type: '',
+  type: ''
 }
 
 export const DEFAULT_CITY_DATA = {

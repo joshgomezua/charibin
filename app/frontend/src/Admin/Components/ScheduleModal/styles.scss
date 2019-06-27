@@ -1,0 +1,245 @@
+@import '../../../Common/Utils/Styles/mixin.scss';
+@import '../../../Common/Utils/Styles/colors.scss';
+
+.spon-ticket-modal {
+  padding: rc(14) rc(68);
+
+  &__row {
+    display: flex;
+    margin-bottom: rc(14);
+
+    &--bordered {
+      padding-bottom: rc(30);
+      margin-bottom: rc(20);
+      border-bottom: 1px solid $gray;
+    }
+
+    &--bordered-m {
+      padding-bottom: rc(30);
+      margin-bottom: rc(40);
+      border-bottom: 1px solid $gray;
+    }
+
+    &--noflex {
+      display: block;
+    }
+
+    &--wrap {
+      flex-wrap: wrap;
+    }
+  }
+
+  &__input-cnt {
+    width: rc(140);
+    margin-right: rc(17);
+
+    &--small {
+      width: rc(75);
+    }
+
+    &--big {
+      width: rc(245);
+    }
+
+    &--last {
+      position: relative;
+      margin-left: auto;
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: -35px;
+        top: 30px;
+        height: rc(50);
+        width: 2px;
+        background: $gray;
+      }
+    }
+  }
+
+  &__input {
+    .spon-input__cnt {
+      border: 1px solid $gray;
+      height: rc(50);
+      border-radius: 3px;
+    }
+
+    label {
+      color: $label;
+      font-size: rc(12);
+    }
+
+    input {
+      font-size: rc(14);
+      color: $dark-blue;
+
+      @include placeholder {
+        color: $gray;
+        font-size: rc(14);
+      }
+    }
+  }
+
+  &__error {
+    color: $error-red;
+    font-size: rc(10);
+    margin-top: rc(5);
+  }
+
+  &__dropdown {
+    margin-right: rc(17);
+  }
+
+  &__toggles {
+    margin-left: rc(20);
+    margin-top: 2.625rem;
+  }
+
+  &__toggle-item {
+    display: flex;
+    justify-content: space-between;
+    width: rc(120);
+    margin-bottom: rc(7);
+
+    p {
+      margin: 0;
+      font-size: rc(14);
+      color: $dark-blue;
+    }
+  }
+
+  &__label {
+    margin-bottom: rc(10);
+    font-size: rc(12);
+    color: $label;
+
+    &--open {
+      img {
+        transform: rotate(180deg);
+      }
+    }
+
+    &--dashed {
+      position: relative;
+      width: 100%;
+      cursor: pointer;
+
+      &:after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translateY(-50%);
+        height: 1px;
+        width: 100%;
+        border-bottom: 1px dashed $gray;
+      }
+
+      div {
+        position: relative;
+        z-index: 2;
+        display: inline-block;
+        background: $white;
+        padding-right: rc(10);
+
+        img {
+          margin-left: rc(10);
+          width: rc(10);
+          transition: transfrom 0.3s ease-in-out;
+        }
+      }
+    }
+
+    &--nmt {
+      margin-top: 0;
+    }
+  }
+
+  &__buttons {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  &__button {
+    width: rc(170);
+    height: rc(50);
+
+    &:first-of-type {
+      margin-right: 1rem;
+    }
+  }
+
+  &__avatar {
+    display: flex;
+  }
+
+  &__photo {
+    margin-right: rc(20);
+
+    img {
+      display: block;
+      width: rc(24);
+      height: auto;
+    }
+  }
+
+  &__photo-cover {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: rc(40);
+    height: rc(40);
+    background: $gray;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    img {
+      width: rc(24);
+      height: rc(19);
+    }
+  }
+
+  &__recurring {
+    display: flex;
+    width: 100%;
+    padding-bottom: rc(20);
+
+    &--open {
+      border-bottom: 1px dashed $gray;
+    }
+  }
+
+  &__days-of-week {
+    flex-direction: row;
+
+    .spon-multiswitch__items {
+      display: flex;
+    }
+
+    .spon-multiswitch-item {
+      margin-right: rc(22);
+      padding: 0;
+    }
+
+    .spon-multiswitch-item__icon {
+      top: 0;
+      left: 0;
+      border: 1px solid $violet;
+      border-radius: 3px;
+    }
+
+    .spon-multiswitch-item__checkbox {
+      flex-direction: column;
+
+      label {
+        padding-left: 0;
+        padding-top: rc(25);
+        font-size: rc(12);
+        letter-spacing: 0.6px;
+        color: $dark-text;
+      }
+    }
+  }
+}
