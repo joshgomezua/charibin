@@ -43,7 +43,7 @@ const Agenda: React.SFC<IProps> = ({
     if (filters.length) {
       return tickets.filter(
         (ticket: ITicket) =>
-          filters.includes(ticket.trip[direction])
+          filters.includes(ticket[direction])
       )
     }
     return tickets
