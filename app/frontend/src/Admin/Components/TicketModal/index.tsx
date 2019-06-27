@@ -33,8 +33,11 @@ class TicketModal extends React.Component<IProps, IState> {
     this.setState((state: IState) => ({ isRecurring: !state.isRecurring }))
   }
 
-  handleOnChangeDeparture = () => {
-
+  getTicketDestination = (values: IFormValues) => {
+    return values.departure ? 
+    values.departure === values.trip.departure ? 
+    values.trip.destination 
+    : values.trip.departure : ''
   }
 
   render() {
@@ -102,8 +105,7 @@ class TicketModal extends React.Component<IProps, IState> {
             quantity: Yup.number()
               .min(1)
               .max(1000),
-            departure: Yup.string().required('ticket departure is required'),
-            //destination: Yup.string().required('ticket destination is required'),
+            departure: Yup.string().required('Ticket departure is required'),
             date: Yup.string().required(),
             hours: Yup.string().required(),
             isRecurring: Yup.boolean(),
@@ -128,7 +130,7 @@ class TicketModal extends React.Component<IProps, IState> {
             const dataToSubmit = {
               trip: values.trip._id,
               departure: values.departure,
-              destination: values.departure === values.trip.departure ? values.destination : values.departure,
+              destination: this.getTicketDestination(values),
               quantity: values.quantity,
               soldTickets: 0,
               reservedQuantity: 0,
@@ -222,7 +224,7 @@ class TicketModal extends React.Component<IProps, IState> {
                   />
                   
                   <ErrorMessage
-                    name="trip.departure"
+                    name="trip.destination"
                     component="div"
                     className="spon-ticket-modal__error"
                   />
@@ -245,11 +247,10 @@ class TicketModal extends React.Component<IProps, IState> {
                       }
                     ]}
                     onChange={handleChange}
-                    onChangeDeparture={this.handleOnChangeDeparture}
                   />
 
                   <ErrorMessage
-                    name="type"
+                    name="departure"
                     component="div"
                     className="spon-ticket-modal__error"
                   />
@@ -263,10 +264,7 @@ class TicketModal extends React.Component<IProps, IState> {
                        className={"spon-label__element"}>
                        <div className="spon-label__placeholder">
                          <p>{
-                           values.departure ? 
-                           values.departure === values.trip.departure ? 
-                           values.destination = values.trip.destination 
-                           : values.destination = values.trip.departure : values.destination = ''
+                           values.destination = this.getTicketDestination(values)
                           }</p>
                        </div>
                      </div>
@@ -277,8 +275,8 @@ class TicketModal extends React.Component<IProps, IState> {
                 <div className="spon-ticket-modal__input-cnt">
                   <Dropdown
                     id="type"
-                    label="Select the trip"
-                    placeholder="Best trip"
+                    label="Select the type"
+                    placeholder="Select the type"
                     className="spon-ticket-modal__dropdown"
                     selectedValue={values.type ? values.type : ''}
                     options={[
