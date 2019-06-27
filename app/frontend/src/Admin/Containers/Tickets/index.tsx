@@ -203,7 +203,6 @@ class TicketsContainer extends React.Component<
           departure: data.trip.departure,
           destination: data.trip.destination
         } 
-        console.log('newData', newData)
         console.log('data', data)
         data.trip = newData; 
         //data.date = new Date()
