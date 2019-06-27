@@ -37,7 +37,7 @@
     }
 
     &--big {
-      width: rc(245);
+      width: rc(150);
     }
 
     &--last {
@@ -88,6 +88,7 @@
 
   &__dropdown {
     margin-right: rc(17);
+    width: rc(125);
   }
 
   &__toggles {
@@ -266,6 +267,7 @@
   &__placeholder {
     position: relative;
     height: 100%;
+    width: rc(125);
     box-sizing: border-box;
     display: flex;
     justify-content: space-between;

@@ -11,6 +11,7 @@
   display: none;
   justify-content: center;
   align-items: center;
+  overflow-y: auto;
 
   &--visible {
     display: flex;
@@ -27,7 +28,6 @@
 
   &__card {
     position: relative;
-    width: rc(700);
   }
 
   &__header {

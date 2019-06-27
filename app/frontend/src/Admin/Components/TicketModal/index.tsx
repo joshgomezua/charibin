@@ -289,8 +289,8 @@ class TicketModal extends React.Component<IProps, IState> {
                 <div className="spon-ticket-modal__input-cnt">
                   <Dropdown
                     id="type"
-                    label="Select the type"
-                    placeholder="Select the type"
+                    label="Select type"
+                    placeholder="Select type"
                     className="spon-ticket-modal__dropdown"
                     selectedValue={values.type ? values.type : ''}
                     options={[
