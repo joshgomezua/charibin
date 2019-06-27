@@ -44,6 +44,8 @@ class OrdersContainer extends React.Component<IProps, IState> {
     }
   }
 
+  handleVoidModal = (id: string) => {};
+
   handleToggleSwitch = (id: string, value: boolean) => {
     const token = getToken()
 
@@ -74,6 +76,7 @@ class OrdersContainer extends React.Component<IProps, IState> {
           handleFetchData={this.handleFetchTableData}
           columns={columns(debounce(this.handleToggleSwitch, 300))}
           loading={isLoading}
+          handleOpenModal={this.handleVoidModal}
           pages={Math.ceil(total / 10)}
           className="spon-table--transactions"
         />

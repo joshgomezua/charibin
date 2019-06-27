@@ -7,5 +7,7 @@ export interface IProps {
   columns?: Column[]
   detailsColumns?: Column[]
   className?: string
+  parentTrip: string
   handleFetchData?: TableProps['onFetchData']
+  handleOpenModal: (id: string) => void
 }

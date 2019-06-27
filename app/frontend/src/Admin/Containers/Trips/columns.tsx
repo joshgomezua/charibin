@@ -12,17 +12,6 @@ export const columns = (
   redirectToCreateTicket: (trip: { _id: string; departure: string; destination: string }) => void
 ) => [
   {
-    expander: true,
-    width: 40,
-    Expander: (props: RowRenderProps) => (
-      <div className="spon-table__actions">{
-        props.isExpanded
-          ? <span> ^ </span>
-          : <span> + </span>
-      }</div>
-    )
-  },
-  {
     Header: 'From',
     accessor: 'departure',
   },
@@ -90,16 +79,6 @@ export const columns = (
     )
     
   },
-  // {
-  //   Header: 'Photo',
-  //   accessor: 'photo',
-  //   width: 80,
-  //   Cell: (props: RowRenderProps) => (
-  //     <div className="spon-table__photo">
-  //       <img src={props.value} alt="Avatar photo" />
-  //     </div>
-  //   )
-  // },
   {
     Header: 'Duration',
     accessor: 'duration',
@@ -108,6 +87,17 @@ export const columns = (
       const duration = moment.duration({ minutes: props.value }) as IDuration
       return `${duration.format('h[h]mm[m]')}`
     }
+  },
+  {
+    expander: true,
+    width: 80,
+    Expander: (props: RowRenderProps) => (
+      <div className="spon-table__actions">{
+        props.isExpanded
+          ? <button> Range ⬆︎ </button>
+          : <button> Range ⬇︎ </button>
+      }</div>
+    )
   },
   {
     Header: '',

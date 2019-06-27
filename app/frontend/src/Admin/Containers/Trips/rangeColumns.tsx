@@ -2,9 +2,8 @@ import React from 'react'
 import * as moment from 'moment'
 import { IDuration } from '../../../Common/Utils/globalTypes'
 import Checkbox from '../../Components/Checkbox'
-import { RowRenderProps} from 'react-table'
+import { RowRenderProps } from 'react-table'
 import 'moment-duration-format'
-// import Button from 'src/Common/Components/Button' // à enlever
 import { MODAL_TYPE } from 'src/Admin/Utils/adminTypes';
 
 export const rangeColumns = (
@@ -15,16 +14,13 @@ export const rangeColumns = (
   redirectToCreateTicket: (trip: { _id: string; departure: string; destination: string }) => void // -> enlever
 ) => [
   {
-    width: 124,
-  },
-  {
     accessor: 'date.start',
-    width: 120,
+    width: 142,
     Cell: (props: RowRenderProps) => moment(props.value).format('MMM DD, YYYY')
   },
   {
     accessor: 'date.end',
-    width: 120,
+    width: 142,
     Cell: (props: RowRenderProps) => moment(props.value).format('MMM DD, YYYY')
   },
   
@@ -76,4 +72,34 @@ export const rangeColumns = (
       return `${duration.format('h[h]mm[m]')}`
     }
   },
+  {
+    width: 80,
+  },
+  {
+    accessor: '_id',
+    width: 210,
+    Cell: (props: RowRenderProps) => (
+      <>
+        <div className="spon-table__actions">
+          <button
+            onClick={() =>
+              redirectToCreateTicket({
+                _id: props.row._original._id,
+                departure: props.row.departure,
+                destination: props.row.destination,
+              })
+            }>
+            Schedule
+          </button>
+          <button onClick={() => openEditModal(props.row._original._id)}>
+            Modify
+          </button>
+          <button onClick={() => openDeleteModal(props.row._original._id)}>
+            Delete
+          </button>
+        </div>
+      </>
+    ),
+    Footer: (props: RowRenderProps ) => { }
+  }
 ]

@@ -45,20 +45,33 @@ export const DEFULT_TICKET_DATA = {
   },
   active: false
 }
-// export const DEFAULT_TIME_SELECTION_DATA = {
-//   defaultPrice: 0,
-//   time1: 0,
-//   time2: 0,
-//   time3: 0,
-//   time4: 0,
-//   time5: 0,
-//   time6: 0,
-//   time7: 0,
-//   time8: 0,
-//   time9: 0,
-//   time10: 0,
 
-// } double check voir s'il faut enlever
+export const DEFAULT_TRIP_SCHEDULE = {
+  _id: '',
+  active: false,
+  deselectionPrice: 0,
+  date: {
+    start: '',
+    end: '',
+  },
+  timeSelection: {
+    defaultPrice: 0,
+    _0to6AM: 0,
+    _6to8AM: 0,
+    _8to10AM: 0,
+    _10to12PM: 0,
+    _12to2PM: 0,
+    _2to4PM: 0,
+    _4to6PM: 0,
+    _6to8PM: 0,
+    _8to10PM: 0,
+    _10to12AM: 0,
+  },
+  discount: 0,
+  duration: 0,
+  price: 0,
+  trip: ''
+}
 
 export const DEFAULT_TRIP_DATA = {
   _id: '',
@@ -66,35 +79,18 @@ export const DEFAULT_TRIP_DATA = {
   deselectionPrice: 0,
   timeSelection: {
     defaultPrice: 0,
-    time1: 0,
-    time2: 0,
-    time3: 0,
-    time4: 0,
-    time5: 0,
-    time6: 0,
-    time7: 0,
-    time8: 0,
-    time9: 0,
-    time10: 0,
+    _0to6AM: 0,
+    _6to8AM: 0,
+    _8to10AM: 0,
+    _10to12PM: 0,
+    _12to2PM: 0,
+    _2to4PM: 0,
+    _4to6PM: 0,
+    _6to8PM: 0,
+    _8to10PM: 0,
+    _10to12AM: 0,
   },
-  scheduledTrips: {
-    trip1: {
-      price: 0,
-      discount: 0,
-      date: {
-        start: '',
-        end: '',
-      }
-    },
-    trip2: {
-      price: 0,
-      discount: 0,
-      date: {
-        start: '',
-        end: '',
-      }
-    },
-  },
+  scheduledTrips: [DEFAULT_TRIP_SCHEDULE],
   discount: 0,
   duration: 0,
   fake: false,

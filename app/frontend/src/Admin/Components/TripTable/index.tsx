@@ -4,19 +4,22 @@ import classnames from 'classnames'
 import { IProps } from './types'
 import './styles.scss'
 import './table.scss'
+import Footer from 'src/Admin/Components/Footer';
 
 const TripTable: React.SFC<IProps> = ({
   columns,
   data,
   handleFetchData,
+  handleOpenModal,
+  parentTrip,
   loading,
   pages,
-  className
+  className,
 }) => {
   const tableClass = classnames('spon-triptable', {
     [`${className}`]: className
   })
-  const nullComponent = (props: RowRenderProps) => null;
+  const nullComponent = (props: RowRenderProps) => (null);
 
   return (
     <div className={tableClass}>
@@ -28,6 +31,14 @@ const TripTable: React.SFC<IProps> = ({
         showPageJump={false}
         defaultPageSize={3}
         TheadComponent={nullComponent}
+        TfootComponent={() => {
+          return(
+            <Footer 
+              handleOpenModal={handleOpenModal}
+              parentTrip={parentTrip}
+            />
+          )
+        }}
         PaginationComponent={nullComponent}
         columns={columns}
         data={data}

@@ -29,16 +29,16 @@ const TimeSelectionModal: React.SFC<IProps> = ({
     editableData = {
       timeSelection: {
         defaultPrice: editSchedule.timeSelection.defaultPrice,
-        time1: editSchedule.timeSelection.time1,
-        time2: editSchedule.timeSelection.time2,
-        time3: editSchedule.timeSelection.time3,
-        time4: editSchedule.timeSelection.time4,
-        time5: editSchedule.timeSelection.time5,
-        time6: editSchedule.timeSelection.time6,
-        time7: editSchedule.timeSelection.time7,
-        time8: editSchedule.timeSelection.time8,
-        time9: editSchedule.timeSelection.time9,
-        time10: editSchedule.timeSelection.time10,
+        _0to6AM: editSchedule.timeSelection._0to6AM,
+        _6to8AM: editSchedule.timeSelection._6to8AM,
+        _8to10AM: editSchedule.timeSelection._8to10AM,
+        _10to12PM: editSchedule.timeSelection._10to12PM,
+        _12to2PM: editSchedule.timeSelection._12to2PM,
+        _2to4PM: editSchedule.timeSelection._2to4PM,
+        _4to6PM: editSchedule.timeSelection._4to6PM,
+        _6to8PM: editSchedule.timeSelection._6to8PM,
+        _8to10PM: editSchedule.timeSelection._8to10PM,
+        _10to12AM: editSchedule.timeSelection._10to12AM,
       }
       // bidirectionalChange: false -> enlever
     }
@@ -54,32 +54,32 @@ const TimeSelectionModal: React.SFC<IProps> = ({
             : {
                 timeSelection:{
                   defaultPrice: 1,
-                  time1: 0,
-                  time2: 0,
-                  time3: 0,
-                  time4: 0,
-                  time5: 0,
-                  time6: 0,
-                  time7: 0,
-                  time8: 0,
-                  time9: 0,
-                  time10: 0
+                  _0to6AM: 0,
+                  _6to8AM: 0,
+                  _8to10AM: 0,
+                  _10to12PM: 0,
+                  _12to2PM: 0,
+                  _2to4PM: 0,
+                  _4to6PM: 0,
+                  _6to8PM: 0,
+                  _8to10PM: 0,
+                  _10to12AM: 0
                 },
                 // bidirectionalChange: false,
               }
         }
         validationSchema={Yup.object().shape({
           timeSelection: Yup.object().shape({
-            time1: Yup.number().required(),
-            time2: Yup.number().required(),
-            time3: Yup.number().required(),
-            time4: Yup.number().required(),
-            time5: Yup.number().required(),
-            time6: Yup.number().required(),
-            time7: Yup.number().required(),
-            time8: Yup.number().required(),
-            time9: Yup.number().required(),
-            time10: Yup.number().required()
+            _0to6AM: Yup.number().required(),
+            _6to8AM: Yup.number().required(),
+            _8to10AM: Yup.number().required(),
+            _10to12PM: Yup.number().required(),
+            _12to2PM: Yup.number().required(),
+            _2to4PM: Yup.number().required(),
+            _4to6PM: Yup.number().required(),
+            _6to8PM: Yup.number().required(),
+            _8to10PM: Yup.number().required(),
+            _10to12AM: Yup.number().required()
           })
           // bidirectionalChange: Yup.bool().required(), -> enlever
         })}
@@ -106,11 +106,6 @@ const TimeSelectionModal: React.SFC<IProps> = ({
           }
         }}
         render={({
-          handleChange, // -> enlever
-          values,
-          errors, // -> enlever
-          touched, // -> enlever
-          setFieldError // -> enlever
         }: FormikProps<IFormValues>) => (
           <Form noValidate>
             <div className="spon-seltime-modal__row"> {/** spon-timeselection-modal pour tout */}
@@ -118,14 +113,14 @@ const TimeSelectionModal: React.SFC<IProps> = ({
                 <Field
                   isPrefix
                   type="number"
-                  name="timeSelection.time1"
+                  name="timeSelection._0to6AM"
                   label="00:00 AM - 6:00 AM"
                   className="spon-seltime-modal__input"
                   component={Input}
                 />
 
                 <ErrorMessage
-                  name="timeSelection.time1"
+                  name="timeSelection._0to6AM"
                   component="div"
                   className="spon-seltime-modal__error"
                 />
@@ -135,14 +130,14 @@ const TimeSelectionModal: React.SFC<IProps> = ({
                 <Field
                   isPrefix
                   type="number"
-                  name="timeSelection.time2"
+                  name="timeSelection._6to8AM"
                   label="6:00 AM - 8:00 AM"
                   className="spon-seltime-modal__input"
                   component={Input}
                 />
 
                 <ErrorMessage
-                  name="timeSelection.time2"
+                  name="timeSelection._6to8AM"
                   component="div"
                   className="spon-seltime-modal__error"
                 />
@@ -152,14 +147,14 @@ const TimeSelectionModal: React.SFC<IProps> = ({
                 <Field
                   isPrefix
                   type="number"
-                  name="timeSelection.time3"
+                  name="timeSelection._8to10AM"
                   label="8:00 AM - 10:00 AM"
                   className="spon-seltime-modal__input"
                   component={Input}
                 />
 
                 <ErrorMessage
-                  name="timeSelection.time3"
+                  name="timeSelection._8to10AM"
                   component="div"
                   className="spon-seltime-modal__error"
                 />
@@ -169,14 +164,14 @@ const TimeSelectionModal: React.SFC<IProps> = ({
                 <Field
                   isPrefix
                   type="number"
-                  name="timeSelection.time4"
+                  name="timeSelection._10to12PM"
                   label="10:00 AM - 12:00 PM"
                   className="spon-seltime-modal__input"
                   component={Input}
                 />
 
                 <ErrorMessage
-                  name="timeSelection.time4"
+                  name="timeSelection._10to12PM"
                   component="div"
                   className="spon-seltime-modal__error"
                 />
@@ -186,15 +181,14 @@ const TimeSelectionModal: React.SFC<IProps> = ({
                 <Field
                   isPrefix
                   type="number"
-                  name="timeSelection.time5"
-                  value={values.timeSelection.defaultPrice}
+                  name="timeSelection._12to2PM"
                   label="12:00 PM - 2:00 PM"
                   className="spon-seltime-modal__input"
                   component={Input}
                 />
 
                 <ErrorMessage
-                  name="timeSelection.time5"
+                  name="timeSelection._12to2PM"
                   component="div"
                   className="spon-seltime-modal__error"
                 />
@@ -206,14 +200,14 @@ const TimeSelectionModal: React.SFC<IProps> = ({
                 <Field
                   isPrefix
                   type="number"
-                  name="timeSelection.time6"
+                  name="timeSelection._2to4PM"
                   label="2:00 PM - 4:00 PM"
                   className="spon-seltime-modal__input"
                   component={Input}
                 />
 
                 <ErrorMessage
-                  name="timeSelection.time6"
+                  name="timeSelection._2to4PM"
                   component="div"
                   className="spon-seltime-modal__error"
                 />
@@ -223,14 +217,14 @@ const TimeSelectionModal: React.SFC<IProps> = ({
                 <Field
                   isPrefix
                   type="number"
-                  name="timeSelection.time7"
+                  name="timeSelection._4to6PM"
                   label="4:00 PM - 6:00 PM"
                   className="spon-seltime-modal__input"
                   component={Input}
                 />
 
                 <ErrorMessage
-                  name="timeSelection.time7"
+                  name="timeSelection._4to6PM"
                   component="div"
                   className="spon-seltime-modal__error"
                 />
@@ -240,14 +234,14 @@ const TimeSelectionModal: React.SFC<IProps> = ({
                 <Field
                   isPrefix
                   type="number"
-                  name="timeSelection.time8"
+                  name="timeSelection._6to8PM"
                   label="6:00 PM - 8:00 PM"
                   className="spon-seltime-modal__input"
                   component={Input}
                 />
 
                 <ErrorMessage
-                  name="timeSelection.time8"
+                  name="timeSelection._6to8PM"
                   component="div"
                   className="spon-seltime-modal__error"
                 />
@@ -257,14 +251,14 @@ const TimeSelectionModal: React.SFC<IProps> = ({
                 <Field
                   isPrefix
                   type="number"
-                  name="timeSelection.time9"
+                  name="timeSelection._8to10PM"
                   label="8:00 PM - 10:00 PM"
                   className="spon-seltime-modal__input"
                   component={Input}
                 />
 
                 <ErrorMessage
-                  name="timeSelection.time9"
+                  name="timeSelection._8to10PM"
                   component="div"
                   className="spon-seltime-modal__error"
                 />
@@ -274,14 +268,14 @@ const TimeSelectionModal: React.SFC<IProps> = ({
                 <Field
                   isPrefix
                   type="number"
-                  name="timeSelection.time10"
+                  name="timeSelection._10to12AM"
                   label="10:00 PM - 00:00 AM"
                   className="spon-seltime-modal__input"
                   component={Input}
                 />
 
                 <ErrorMessage
-                  name="timeSelection.time10"
+                  name="timeSelection._10to12AM"
                   component="div"
                   className="spon-seltime-modal__error"
                 />
@@ -308,7 +302,7 @@ const TimeSelectionModal: React.SFC<IProps> = ({
             </div> */} {/* probablement commenté de la part des devs de redvike? */}
             
 
-            <div className="spon-seltime-modal__row--bordered"></div>
+            <div className="spon-seltime-modal__row--bordered"/>
             <div className="spon-seltime-modal__row">
               <div className="spon-seltime-modal__buttons">
                 <Button

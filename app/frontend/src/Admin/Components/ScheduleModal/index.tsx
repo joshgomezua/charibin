@@ -7,311 +7,299 @@ import {
   FormikProps,
   ErrorMessage
 } from 'formik'
-import moment from 'moment'
 import * as Yup from 'yup'
 
-
 import Input from '../Input'
-import Dropdown from '../Dropdown'
-import DatePicker from '../DatePicker'
 import Switch from '../Switch'
 import Button from '../../../Common/Components/Button'
-import { IProps, IState, IFormValues } from './types'
+import DatePicker from '../DatePicker'
+
+import { IProps, IFormValues } from './types'
 import './styles.scss'
 
-class ScheduleModal extends React.Component<IProps, IState> {
-  readonly state: IState = {
-    isRecurring: false
+const ScheduleModal: React.SFC<IProps> = ({
+  isLoading,
+  editDate,
+  closeModal,
+  handleEditSchedule,
+  handleSubmit
+}) => {
+  let editableData = null
+
+  if (editDate) {
+
+    editableData = {
+      price: editDate.price,
+      discount: editDate.discount,
+      duration: editDate.duration,
+      deselectionPrice: editDate.deselectionPrice,
+      timeSelection: {
+        defaultPrice: editDate.timeSelection.defaultPrice,
+      },
+      date: {
+        start: undefined,
+        end: undefined
+      },
+      active: editDate.active,
+    }
   }
 
-  render() {
-    const {
-      editDate,
-      tripSelected,
-      handleEditTicket,
-      destinations,
-      handleSubmit,
-      closeModal,
-      isLoading
-    } = this.props
-
-    return (
-      <div className="spon-ticket-modal">
-        <Formik
-          enableReinitialize
-          initialValues={
-            editDate
-              ? {
-                  ...editDate,
-                  date: new Date(editDate!.date.start),
-                  hours: `${moment
-                    .utc(editDate!.date.start)
-                    .format('h')}-${moment
-                    .utc(editDate!.date.end)
-                    .format('h')}`,
-                  direction: `${editDate.direction[0].toUpperCase()}${editDate.direction.substr(
-                    1
-                  )}`
-                }
-              : {
-                  trip: {
-                    _id: tripSelected ? tripSelected._id : '',
-                    departure: tripSelected ? tripSelected.departure : '',
-                    destination: tripSelected ? tripSelected.destination : ''
-                  },
-                  type: 'Train',
-                  quantity: 0,
-                  date: undefined,
-                  endDate: undefined,
-                  days: [0, 1, 2, 3, 4, 5, 6],
-                  hours: '',
-                  active: true,
-                  direction: 'Arrival'
-                }
-          }
-          validationSchema={Yup.object().shape({
-            trip: Yup.object().shape({
-              _id: Yup.string(),
-              name: Yup.string().required('Trip is required')
-            }),
-            type: Yup.string().required('Trip type is required'),
-            quantity: Yup.number()
-              .min(1)
-              .max(1000)
-              .required(),
-            date: Yup.string().required(),
-            hours: Yup.string().required(),
-            direction: Yup.string().required(),
-            isRecurring: Yup.boolean(),
-            endDate: Yup.string().when('isRecurring', {
-              is: true,
-              then: Yup.string().required('End date is required')
-            }),
-            days: Yup.array().when('isRecurring', {
-              is: true,
-              then: Yup.array().min(1)
-            })
-          })}
-          onSubmit={(
-            values: IFormValues,
-            { resetForm }: FormikActions<IFormValues>
-          ) => {
-            const splitedHours = values.hours!.split('-')
-            const startHours = splitedHours[0]
-            const endHour = splitedHours[1]
-            const offset = moment().utcOffset()
-
-            const dataToSubmit = {
-              trip: values.trip._id,
-              direction: values.direction.toLocaleLowerCase(),
-              quantity: values.quantity,
-              type: values.type,
-              hours: values.hours,
-              date: {
-                start: +moment
-                  .utc(values.date)
-                  .add(offset, 'minutes')
-                  .set({
-                    hour: +startHours,
-                    minute: 0,
-                    second: 0,
-                    millisecond: 0
-                  })
-                  .format('x'),
-                end: +moment
-                  .utc(values.date)
-                  .add(offset, 'minutes')
-                  .set({
-                    hour: +endHour,
-                    minute: 0,
-                    second: 0,
-                    millisecond: 0
-                  })
-                  .format('x')
-              },
-              active: values.active,
-              repeat: {
-                dateEnd: +moment
-                  .utc(values.endDate)
-                  .add(offset, 'minutes')
-                  .format('x'),
-                days: values.days as number[]
+  return (
+    <div className="spon-trip-modal">
+      <Formik
+        enableReinitialize
+        initialValues={
+          editableData
+            ? editableData
+            : {
+                price: 0,
+                discount: 0,
+                duration: 0,
+                deselectionPrice: 0,
+                timeSelection: {
+                  defaultPrice: 0,
+                },
+                date: {
+                  start: undefined,
+                  end: undefined
+                },
+                active: false,
               }
-            }
+        }
+        validationSchema={Yup.object().shape({
+          price: Yup.number()
+            .required()
+            .min(1),
+          discount: Yup.number()
+            .required()
+            .min(1),
+          duration: Yup.number()
+            .min(1)
+            .max(100000)
+            .required(),
+          timeSelection: Yup.object().shape({
+            defaultPrice: Yup.number()
+              .required()
+              .min(1),
+          }),
+          date: Yup.object().shape({
+            start: Yup.string()
+              .required(),
+            end: Yup.string()
+              .required()
+          }),
+          deselectionPrice: Yup.number()
+            .required()
+            .min(1),
+          active: Yup.bool().required()
+        })}
+        onSubmit={(
+          values: IFormValues,
+          { resetForm }: FormikActions<IFormValues>
+        ) => {
+          // const offset = moment().utcOffset()
 
-            if (editDate || !values.isRecurring) {
-              delete dataToSubmit.repeat
-            }
+          const dataToUpdate = {
+            price: values.price,
+            discount: values.discount,
+            timeSelection: {
+              defaultPrice: values.timeSelection.defaultPrice,
+            },
+            deselectionPrice: values.deselectionPrice,
+            duration: values.duration,
+            date: {
+              start: values.date.start,
+              end: values.date.end
+            },
+            active: values.active,
+          }
 
-            if (editDate && handleEditTicket) {
-              handleEditTicket(dataToSubmit).then(() => {
-                resetForm()
-                closeModal()
-              })
-            } else if (handleSubmit) {
-              handleSubmit(dataToSubmit).then(() => {
-                resetForm()
-                closeModal()
-              })
-            }
-          }}
-          render={({
-            handleChange,
-            values,
-            setFieldValue // à enlever
-          }: FormikProps<IFormValues>) => (
-            <Form noValidate>
-              <div className="spon-ticket-modal__row"> {/** à renommer tous les spon-ticket-modal par spon-schedule-modal  */}
-                <div className="spon-ticket-modal__input-cnt spon-ticket-modal__input-cnt--big"> 
-                  <Dropdown
-                    saveAsObject
-                    id="trip"
-                    label="Select the trip"
-                    placeholder="Select trip"
-                    className="spon-ticket-modal__dropdown"
-                    selectedValue={values.trip ? values.trip.destination : ''}
-                    options={destinations}
-                    onChange={handleChange}
-                  />
-
-                  <ErrorMessage
-                    name="trip.destination"
-                    component="div"
-                    className="spon-ticket-modal__error"
-                  />
-                </div>
-                <div className="spon-ticket-modal__input-cnt">
-                  <Dropdown
-                    id="type"
-                    label="Select the trip"
-                    placeholder="Best trip"
-                    className="spon-ticket-modal__dropdown"
-                    selectedValue={values.type ? values.type : ''}
-                    options={[
-                      {
-                        _id: '1',
-                        name: 'Train'
-                      },
-                      {
-                        _id: '1',
-                        name: 'Bus'
+          if (editDate && handleEditSchedule) {
+            handleEditSchedule(dataToUpdate).then(() => resetForm())
+          } else if (handleSubmit) {
+            handleSubmit(values).then(() => resetForm())
+          }
+        }}
+        render={({
+          handleChange,
+          values,
+          errors,
+          touched,
+          setFieldError
+        }: FormikProps<IFormValues>) => (
+          <Form noValidate>
+            <div className="spon-trip-modal__row">
+              <div className="spon-ticket-modal__input-cnt">
+                <DatePicker
+                  id="date.start"
+                  label="Start date"
+                  placeholder="Select date"
+                  selectedDate={editDate ? (values.date.start as Date) : undefined}
+                  onChange={(date: Date) => {
+                    handleChange({
+                      target: {
+                        id: 'date.start',
+                        value: date
                       }
-                    ]}
-                    onChange={handleChange}
-                  />
+                    })
+                  }}
+                />
 
-                  <ErrorMessage
-                    name="type"
-                    component="div"
-                    className="spon-ticket-modal__error"
-                  />
-                </div>
-                <div className="spon-ticket-modal__input-cnt spon-ticket-modal__input-cnt--small">
-                  <Field
-                    type="number"
-                    name="quantity"
-                    label="Quantity"
-                    className="spon-ticket-modal__input"
-                    component={Input}
-                  />
+                <ErrorMessage
+                  name="date.start"
+                  component="div"
+                  className="spon-ticket-modal__error"
+                />
+              </div>
+              <div className="spon-ticket-modal__input-cnt">
+                <DatePicker
+                  id="date.end"
+                  label="End date"
+                  placeholder="Select date"
+                  selectedDate={editDate ? (values.date.end as Date) : undefined}
+                  onChange={(date: Date) => {
+                    handleChange({
+                      target: {
+                        id: 'date.end',
+                        value: date
+                      }
+                    })
+                  }}
+                />
 
-                  <ErrorMessage
-                    name="quantity"
-                    component="div"
-                    className="spon-ticket-modal__error"
-                  />
-                </div>
+                <ErrorMessage
+                  name="date.end"
+                  component="div"
+                  className="spon-ticket-modal__error"
+                />
+              </div>
+              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt">
+                <Field
+                  isPrefix
+                  type="number"
+                  name="price"
+                  label="Set Price"
+                  className="spon-trip-modal__input"
+                  component={Input}
+                />
+
+                <ErrorMessage
+                  name="price"
+                  component="div"
+                  className="spon-trip-modal__error"
+                />
+              </div>
+            </div>
+            <div className="spon-trip-modal__row">
+              <div className="spon-trip-modal__input-cnt">
+                <Field
+                  isPrefix
+                  type="number"
+                  name="deselectionPrice"
+                  label="Deselection Price"
+                  className="spon-trip-modal__input"
+                  component={Input}
+                />
+
+                <ErrorMessage
+                  name="deselectionPrice"
+                  component="div"
+                  className="spon-trip-modal__error"
+                />
+              </div>
+              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt">
+                <Field
+                  isPrefix
+                  type="number"
+                  name="timeSelection.defaultPrice"
+                  label="Time Selection"
+                  className="spon-trip-modal__input"
+                  component={Input}
+                />
+
+                <ErrorMessage
+                  name="timeSelection.defaultPrice"
+                  component="div"
+                  className="spon-trip-modal__error"
+                />
               </div>
 
-              <div className="spon-ticket-modal__row">
-                <div className="spon-ticket-modal__input-cnt">
-                  <DatePicker
-                    id="date.start"
-                    label="Start date"
-                    placeholder="Select date"
-                    selectedDate={editDate ? (values.date as Date) : undefined}
-                    onChange={(date: Date) => {
+              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--small spon-trip-modal__input-cnt--last">
+                <Field
+                  isSuffix
+                  type="number"
+                  name="discount"
+                  label="Discount"
+                  className="spon-trip-modal__input"
+                  component={Input}
+                />
+
+                <ErrorMessage
+                  name="discount"
+                  component="div"
+                  className="spon-trip-modal__error"
+                />
+              </div>
+            </div>
+
+            <div className="spon-trip-modal__row  spon-trip-modal__row--bordered">
+              <div className="spon-trip-modal__input-cnt">
+                <Field
+                  type="number"
+                  name="duration"
+                  label="Duration (minutes)"
+                  className="spon-trip-modal__input"
+                  component={Input}
+                />
+
+                <ErrorMessage
+                  name="duration"
+                  component="div"
+                  className="spon-trip-modal__error"
+                />
+              </div>
+
+              <div className="spon-trip-modal__toggles">
+                <div className="spon-trip-modal__toggle-item">
+                  <p>Active:</p>
+                  <Switch
+                    checked={values.active}
+                    onChange={() =>
                       handleChange({
                         target: {
-                          id: 'date.start',
-                          value: date
+                          id: 'active',
+                          value: !values.active
                         }
                       })
-                    }}
-                  />
-
-                  <ErrorMessage
-                    name="date.start"
-                    component="div"
-                    className="spon-ticket-modal__error"
-                  />
-                </div>
-
-                <div className="spon-ticket-modal__input-cnt">
-                  <DatePicker
-                    id="date.end"
-                    label="End date"
-                    placeholder="Select date"
-                    selectedDate={editDate ? (values.date as Date) : undefined}
-                    onChange={(date: Date) => {
-                      handleChange({
-                        target: {
-                          id: 'date.end',
-                          value: date
-                        }
-                      })
-                    }}
-                  />
-
-                  <ErrorMessage
-                    name="date.end"
-                    component="div"
-                    className="spon-ticket-modal__error"
-                  />
-                </div>
-
-                <div className="spon-ticket-modal__toggles">
-                  <div className="spon-ticket-modal__toggle-item">
-                    <p>Active:</p>
-                    <Switch
-                      checked={values.active}
-                      onChange={() =>
-                        handleChange({
-                          target: {
-                            id: 'active',
-                            value: !values.active
-                          }
-                        })
-                      }
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="spon-ticket-modal__row">
-                <div className="spon-ticket-modal__buttons">
-                  <Button
-                    text="CANCEL"
-                    variant="adminSecondary"
-                    onClick={closeModal}
-                    className="spon-ticket-modal__button"
-                  />
-                  <Button
-                    text={editDate ? 'EDIT' : 'ADD'}
-                    type="submit"
-                    disabled={isLoading}
-                    isLoading={isLoading}
-                    variant="adminPrimary"
-                    className="spon-ticket-modal__button"
+                    }
                   />
                 </div>
               </div>
-            </Form>
-          )}
-        />
-      </div>
-    )
-  }
+            </div>
+
+            <div className="spon-trip-modal__row">
+              <div className="spon-trip-modal__buttons">
+                <Button
+                  text="CANCEL"
+                  variant="adminSecondary"
+                  onClick={closeModal}
+                  className="spon-trip-modal__button"
+                />
+                <Button
+                  text={editDate ? 'EDIT' : 'ADD'}
+                  disabled={isLoading}
+                  isLoading={isLoading}
+                  type="submit"
+                  variant="adminPrimary"
+                  className="spon-trip-modal__button"
+                />
+              </div>
+            </div>
+          </Form>
+        )}
+      />
+    </div>
+  )
 }
 
 export default ScheduleModal

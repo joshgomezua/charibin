@@ -12,8 +12,7 @@ export const logIn = (data: Types.ILoginForm) =>
 export const addTrip = (data: Types.INewTrip, token: string) => 
   axios.post(`${API_URL}/trip`, data, {
       headers: { 'Content-type': 'application/json', token }
-    })
-
+})
 
 export const getTrips = (page: number, limit: number, token: string) =>
   axios.get(`${API_URL}/trip/${page}/${limit}`, {
@@ -24,7 +23,8 @@ export const getTrips = (page: number, limit: number, token: string) =>
   })
 
 export const getSingleTrip = (id: string, token: string) =>
-  axios.get(`${API_URL}/trip/${id}`, { headers: { token } })
+  axios.get(`${API_URL}/trip/${id}`, { headers: { token } 
+})
 
 export const deleteTrip = (id: string, token: string) =>
   axios.delete(`${API_URL}/trip/${id}`, {
@@ -41,11 +41,24 @@ export const updateTimeSelection = (id: string, data: Types.IEditTimeSelect, tok
     headers: { 'Content-type': 'application/json', token }
   })
 
+  export const addSchedule = (data: Types.INewScheduledTrip, token: string) => 
+  axios.post(`${API_URL}/scheduledTrip`, data, {
+      headers: { 'Content-type': 'application/json', token }
+})
+
+export const updateSchedule = (id: string, data: Types.INewScheduledTrip, token: string) =>
+  axios.put(`${API_URL}/scheduledTrip/${id}`, data, {
+    headers: { 'Content-type': 'application/json', token }
+  })
+
 export const deleteScheduledTrip = (id: string, token: string) =>
   axios.delete(`${API_URL}/scheduledTrip/${id}`, {
     headers: { token }
   })
 
+export const getSingleScheduledTrip = (id: string, token: string) =>
+  axios.get(`${API_URL}/scheduledTrip/${id}`, { headers: { token } 
+})
 
 export const getTickets = (startDate: string, endDate: string, token: string) =>
   axios.get(`${API_URL}/ticket/${startDate}/${endDate}`, {

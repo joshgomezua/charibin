@@ -11,6 +11,7 @@ const Table: React.SFC<IProps> = ({
   data,
   detailsColumns,
   handleFetchData,
+  handleOpenModal,
   loading,
   pages,
   className,
@@ -39,8 +40,10 @@ const Table: React.SFC<IProps> = ({
           <div className={subComponentClassName}>
             <TripTable
               data={row.original.scheduledTrips}
+              parentTrip={row.original._id}
               columns={detailsColumns}
-            ></TripTable>
+              handleOpenModal={handleOpenModal}
+            />
           </div> 
         )}
       }

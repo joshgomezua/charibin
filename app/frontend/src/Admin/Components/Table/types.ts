@@ -1,5 +1,6 @@
 import { Column, TableProps } from 'react-table'
 
+
 export interface IProps {
   data: any
   pages: number
@@ -9,4 +10,5 @@ export interface IProps {
   subComponentClassName?: string,
   className?: string
   handleFetchData: TableProps['onFetchData']
+  handleOpenModal: (id: string) => void
 }

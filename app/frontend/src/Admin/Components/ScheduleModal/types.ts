@@ -1,67 +1,41 @@
-import { ICity } from '../../Utils/adminTypes'
-import { ITicket } from '../../../Common/Utils/globalTypes'
-
-export interface IState {
-  isRecurring: boolean
-}
+import { INewSchedule } from "src/Admin/Containers/Trips/types";
 
 export interface IProps {
-  isLoading?: boolean
   editDate?: {
-    trip: {
-      _id: string
-      departure: string
-      destination: string
+    price: number
+    discount: number
+    duration: number
+    timeSelection: {
+      defaultPrice: number
     }
-    type: string
-    quantity: number
     date: {
       start: string
       end: string
     }
+    deselectionPrice: number
     active: boolean
-    direction: string
-  }
-  tripSelected?: { _id: string; departure: string; destination: string } | null
-  destinations: ICity[]
+  } & { _id: string }
+  isLoading: boolean
   closeModal: () => void
-  handleSubmit?: (
-    ticket: Pick<ITicket, Exclude<keyof ITicket, 'trip' | '_id' | 'date'>> & {
-      trip: string
-      date: {
-        start: number
-        end: number
-      }
-      repeat?: {
-        dateEnd: number
-        days: number[]
-      }
-    }
-  ) => Promise<void>
-  handleEditTicket?: (
-    ticket: Pick<ITicket, Exclude<keyof ITicket, 'trip' | '_id' | 'date'>> & {
-      trip: string
-      date: {
-        start: number
-        end: number
-      }
-    }
-  ) => Promise<void>
+  handleSubmit?: (data: Pick<INewSchedule, Exclude<keyof INewSchedule, 
+      'trip' | '_id' | 'date' >>) => Promise<void>
+  handleEditSchedule?: (data: Pick<INewSchedule, Exclude<keyof INewSchedule, 
+      'trip' | '_id' | 'date' >>) => Promise<void>
 }
 
 export interface IFormValues {
-  trip: {
-    _id: string
-    departure: string
-    destination: string
+  price: number
+  discount: number
+  duration: number
+  timeSelection: {
+    defaultPrice: number
   }
-  type: string
-  quantity: number
-  date: Date | string | undefined
-  endDate?: Date | string | undefined
-  days?: number[]
-  hours?: string
+  date: {
+    start: Date | string | undefined
+    end: Date | string | undefined
+  }
+  deselectionPrice: number
   active: boolean
-  direction: string
-  isRecurring?: boolean
 }
+
+export type IEditValues = Partial<IFormValues>

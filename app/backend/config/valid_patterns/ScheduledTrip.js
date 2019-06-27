@@ -84,9 +84,9 @@ module.exports = {
       type: 'boolean',
       required: false,
       permission: {
-        create: [],
-        update: [],
-        find: []
+        create: [ROLE.ADMINISTRATOR],
+        update: [ROLE.ADMINISTRATOR],
+        find: [ROLE.ADMINISTRATOR]
       }
     },
 
@@ -113,7 +113,7 @@ module.exports = {
   
         attributes: {
           start: {
-            type: 'timestamp',
+            type: 'string',
             required: true,
             permission: {
               create: [ROLE.ADMINISTRATOR],
@@ -123,7 +123,7 @@ module.exports = {
           },
   
           end: {
-            type: 'timestamp',
+            type: 'string',
             required: true,
             permission: {
               create: [ROLE.ADMINISTRATOR],

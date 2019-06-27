@@ -68,17 +68,6 @@ module.exports = {
       }
     },
 
-    // photo: {
-    //   type: 'string',
-    //   required: true,
-    //   permission: {
-    //     create: [ROLE.ADMINISTRATOR],
-    //     update: [ROLE.ADMINISTRATOR],
-    //     find: [ROLE.ADMINISTRATOR, ROLE.GUEST]
-    //   },
-    //   maxLength: 7340032, // 5MB image in binary
-    // },
-
     price: {
       type: 'number',
       required: true,
@@ -141,8 +130,8 @@ module.exports = {
       type: 'array',
       required: false,
       permission: {
-        create: [],
-        update: [],
+        create: [ROLE.ADMINISTRATOR],
+        update: [ROLE.ADMINISTRATOR],
         find: [ROLE.ADMINISTRATOR, ROLE.GUEST]
       }
     },
