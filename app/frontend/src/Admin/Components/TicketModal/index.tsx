@@ -189,9 +189,6 @@ class TicketModal extends React.Component<IProps, IState> {
             setFieldValue
           }: FormikProps<IFormValues>) => (
             <Form noValidate>
-              {console.log('values', values)}
-              {console.log('editDate', editDate)}
-              {console.log('values', values)}
               <div className="spon-ticket-modal__row">
                 <div className="spon-ticket-modal__input-cnt spon-ticket-modal__input-cnt--big">
                   <DropDownTicket
