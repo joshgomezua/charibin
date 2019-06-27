@@ -42,7 +42,7 @@ class TicketModal extends React.Component<IProps, IState> {
 
   getTicketDestinations = (values: IFormValues) => {
     let i = 0
-    let ticketDestinations: any = []
+    const ticketDestinations: any = []
     ticketDestinations.push({
       _id: i++,
       name: values.trip.departure
@@ -51,7 +51,7 @@ class TicketModal extends React.Component<IProps, IState> {
       _id: i,
       name: values.trip.destination
     })
-    console.log('ticketDestinations', ticketDestinations)
+
     return ticketDestinations
   }
 
@@ -195,7 +195,6 @@ class TicketModal extends React.Component<IProps, IState> {
             }
 
             if (editDate && handleEditTicket) {
-              console.log('CreatedataToSubmit', dataToSubmit)
               handleEditTicket(dataToSubmit).then(() => {
                 resetForm()
                 closeModal()
@@ -213,7 +212,6 @@ class TicketModal extends React.Component<IProps, IState> {
             setFieldValue
           }: FormikProps<IFormValues>) => (
             <Form noValidate>
-              {console.log('values', values)}
               <div className="spon-ticket-modal__row">
                 <div className="spon-ticket-modal__input-cnt spon-ticket-modal__input-cnt--big">
                   <DropDownTicket

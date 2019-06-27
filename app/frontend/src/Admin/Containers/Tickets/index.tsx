@@ -19,7 +19,7 @@ import {
   deleteTicket,
   editTicket
 } from '../../Utils/api'
-import { MODAL_TYPE, /*ICity*/ } from '../../Utils/adminTypes'
+import { MODAL_TYPE } from '../../Utils/adminTypes'
 import { ITicket } from '../../../Common/Utils/globalTypes'
 import { getToken } from '../../../Common/Utils/helpers'
 import { ERRORS, SUCCESS, DEFULT_TICKET_DATA } from '../../Utils/constants'
@@ -96,13 +96,11 @@ class TicketsContainer extends React.Component<
 
     getTripNames(token)
       .then(({ data }) => {
-        console.log('data', data)
         const cityNames = data.map((item: any) => ({
           _id: item._id,
           departure: item.departure,
           destination: item.destination
         }))
-        console.log('cityNames', cityNames)
         this.props.changeFilters(cityNames)
         this.setState({ departures: cityNames })
       })
@@ -170,10 +168,8 @@ class TicketsContainer extends React.Component<
       .then(res => {
         let message = ''
         if (res.data.updated) {
-          /*tu pourrais faire SUCCESS.TICKET_OVERRIGHT  */
           message = 'Tickets was overright'
         } else if (!res.data.updated && res.data.dates) {
-          /*tu pourrais faire SUCCESS.TICKET_UPDATED  */
           message = 'Ticket was updated'
         } else {
           message = SUCCESS.TICKET_ADD
@@ -203,10 +199,7 @@ class TicketsContainer extends React.Component<
           departure: data.trip.departure,
           destination: data.trip.destination
         } 
-        console.log('data', data)
         data.trip = newData; 
-        //data.date = new Date()
-        //console.log('data.modal.trip', data.modal.trip)
         this.setState(
           (state: IState) => ({
             ...state,
@@ -219,7 +212,6 @@ class TicketsContainer extends React.Component<
             this.handleOpenModal(MODAL_TYPE.EDIT_TICKET, 'Edit ticket', id)
           }
         )
-        console.log('modal.data', this.state.modal.data)
       })
       .catch(err => {
         this.handleCloseModal()
@@ -313,13 +305,13 @@ class TicketsContainer extends React.Component<
       .then(({data}) => {
         const destinationsFiltered = data.filter((item: any) => item.departure === departure)
         const destinations = destinationsFiltered.map((item: any) => {
+        // tslint:disable-next-line: no-unused-expression
           ({  _id: item._id,
               departure: item.departure,
               destination: item.destinaton
           })
         })
         this.setState({destinations : destinations})
-        console.log('destinations', destinations)
       })
     .catch(err => {
         this.props.showError(err)

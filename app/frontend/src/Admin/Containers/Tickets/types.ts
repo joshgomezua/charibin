@@ -21,6 +21,7 @@ export interface IState {
     end: Date | undefined
   }
 }
+
 export interface IProps {
   selectedDate: Date
   filters: string[]

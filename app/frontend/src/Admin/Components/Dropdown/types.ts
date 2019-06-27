@@ -13,7 +13,6 @@ export interface IProps {
   onChange: (
     e: { target: { id: string; value: { _id: string; name: string } | string } }
   ) => void
-  onChangeDeparture?: (departure: string) => void
 }
 
 export interface IOption {
