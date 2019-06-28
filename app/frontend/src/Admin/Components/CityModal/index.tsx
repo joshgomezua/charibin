@@ -16,7 +16,7 @@ import { COUNTRIES } from '../../Utils/constants'
 import { IProps, IFormValues, IEditValues } from './types'
 import './styles.scss' 
 import Tag from '../Tag';
-import DropDownSelect from '../DropdownSelect';
+import DropDownSelect from '../DropdownSelect'
 
 const CityModal: React.SFC<IProps> = ({
   isLoading,
