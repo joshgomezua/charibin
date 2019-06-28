@@ -44,7 +44,8 @@ const UserModal: React.SFC<IProps> = ({
                 name: '',
                 email: '',
                 role: '',
-                active: true
+                active: true,
+                isDeleted: false
                 
               }
         }

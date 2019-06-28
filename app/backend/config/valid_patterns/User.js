@@ -64,7 +64,18 @@ module.exports = {
 
       //pattern: /^(Administrator)$/
     },
+    isDeleted: {
+      type: 'boolean',
+      required: true,
+      permission: {
+        create: [ROLE.ADMINISTRATOR],
+        update: [ROLE.ADMINISTRATOR],
+        find: [ROLE.ADMINISTRATOR]
+      }
+    
 
+      //pattern: /^(Administrator)$/
+    },
     password: {
       type: 'password',
       required: false,

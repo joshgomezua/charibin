@@ -15,7 +15,8 @@ const Header: React.SFC<IProps> = ({
   handleSearch,
   handleToggle,
   enable,
-  handleOpenModal
+  handleOpenModal,
+  
 }) => {
   return (
     <div className="spon-admin-header">
@@ -23,7 +24,7 @@ const Header: React.SFC<IProps> = ({
         <h1 className="spon-admin-header__heading">{title}</h1>
       </div> 
 
-     <div>  
+     <div>Active users  
 
         {handleToggle ? (
         

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Header from '../../Components/Header'
+import UserHeader from '../../Components/UserHeader'
 import Table from '../../Components/Table'
 import Modal from '../../Components/Modal'
 import UserModal from '../../Components/UserModal'
@@ -115,22 +115,29 @@ class UsersContainer extends React.Component<
   handleDeleteUser = () => {
     const {
       modal: { id },
-      currentPage
+      
     } = this.state
     const token = getToken()
 
     if (token) {
-      deleteUser(id, token)
-        .then(() => {
-          this.handleFetchItems(currentPage, 10)
-          this.handleCloseModal()
-          this.props.showSuccess(SUCCESS.USER_DELETE)
-          this.handleRestartModalType()
+      deleteUser(id, true, token)
+      .then(({ data }) => {
+        const updatedUsers = this.state.users.map((user: IUser) => {
+          if (user._id === data._id) {
+
+            return data
+          }
+
+          return user
         })
-        .catch(err => {
-          this.handleCloseModal()
-          this.props.showError(err, ERRORS.USER_DELETE)
-        })
+        this.modal.current!.close()
+        this.setState({ users:updatedUsers  })
+        this.setState({ usersTable: updatedUsers })
+        this.props.showSuccess(SUCCESS.USER_DELETE)
+        this.handleRestartModalType()
+        return Promise.resolve()
+      })
+      .catch(err => this.props.showError(err, ERRORS.USER_DELETE))
     }
   }
 
@@ -140,7 +147,7 @@ class UsersContainer extends React.Component<
 
     this.setState({ isModalLoading: true })
     return addUser(data, token)
-      .then(res => { // remplacer par res par ()
+      .then(res => { 
         this.modal.current!.close()
         this.handleFetchItems(currentPage, 10)
         this.props.showSuccess(SUCCESS.USER_ADD)
@@ -197,7 +204,8 @@ class UsersContainer extends React.Component<
           return user
         })
 
-        this.setState({ users: updatedUsers })
+        this.setState({ users:updatedUsers  })
+        this.setState({ usersTable: updatedUsers })
         this.props.showSuccess(SUCCESS.USER_UPDATE)
       })
       .catch(err => this.props.showError(err, ERRORS.USER_EDIT))
@@ -207,7 +215,7 @@ class UsersContainer extends React.Component<
   handleToggle = () =>{
     let newUsers
     const toggle = !this.state.enable
-    
+      
     if (toggle){
       newUsers = this.state.users.filter(user => user.active)
     } else {
@@ -248,7 +256,7 @@ class UsersContainer extends React.Component<
     } = this.state
     return (
       <div className="spon-container">
-        <Header
+        <UserHeader
           title="Manage Users"
           handleToggle={this.handleToggle}
           heading = 'Create User'
@@ -265,8 +273,8 @@ class UsersContainer extends React.Component<
             this.handleOpenDeleteModal,
             this.handleOpenEditModal,
             this.handlResetPassword,
-            debounce(this.handleToggleSwitch,300)
-            
+            debounce(this.handleToggleSwitch,300),
+           
            
           )}
           loading={isLoading}

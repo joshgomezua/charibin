@@ -332,10 +332,11 @@ export const COUNTRIES = [
 
 export const DEFAULT_USER_DATA = {
   _id: '',
-  active: false,
+  active: true,
   email: '',
   name: '',
   role: '',
-  password: ''
+  password: '',
+  isDeleted: false
 }
 

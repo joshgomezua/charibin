@@ -11,6 +11,7 @@ const userSchema = new Schema({
   password: String,
   createdAt: { type: Date, default: Date.now },
   active: { type: Boolean, default: true },
+  isDeleted:{ type: Boolean, default: false },
 });
 
 userSchema.pre('save', function (next) {

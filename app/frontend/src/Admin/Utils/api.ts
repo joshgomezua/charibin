@@ -25,7 +25,7 @@ export const getUsers = (page: number, limit: number, token: string) =>
     }
   })
   export const editUserState = (id: string, value: boolean, token: string) =>
-  axios.patch(
+  axios.put(
     `${API_URL}/user/${id}`,
     { active: value },
     {
@@ -40,10 +40,18 @@ export const getUsers = (page: number, limit: number, token: string) =>
 export const getSingleUser = (id: string, token: string) =>
   axios.get(`${API_URL}/user/${id}`, { headers: { token } })
 
-export const deleteUser = (id: string, token: string) =>
-  axios.delete(`${API_URL}/user/${id}`, {
-    headers: { token }
-})
+export const deleteUser = (id: string, value: boolean, token: string) =>
+axios.put(
+  `${API_URL}/user/${id}`,
+  { isDeleted: value },
+  {
+    headers: {
+      'Content-type': 'application/json',
+      token
+    }
+  }
+)
+
 
 export const updateUser = (id: string, data: Types.IEditUser, token: string) =>
   axios.put(`${API_URL}/user/${id}`, data, {

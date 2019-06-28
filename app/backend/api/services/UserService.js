@@ -37,12 +37,12 @@ module.exports = {
   async findOne (id) {
     const user = await User.findOne({ _id: id }) ;
     if(!user) throw { status: 404, message: 'USER.NOT.EXIST' };
-
+    
     return user;
   },
 
   async getListOfUsers () {
-    const users = await User.find({ deleted: false }).select('name email role active');
+    const users = await User.find({ isDeleted: {$all: false}}).select('name email role active ');
 
     return users;
   },
@@ -52,6 +52,12 @@ module.exports = {
       {
         $facet: {
           results: [
+            {
+              $match: {
+                isDeleted: false
+              }
+            },
+            
            
             ...Aggregate.skipAndLimit(page, limit)
           ],
@@ -65,7 +71,7 @@ module.exports = {
     ]).then(Aggregate.parseResults);
   },
   
-  async updateOne (id, data) {
+  async update (id, data) {
     let user = await User.findOne({ _id: id });
     if(!user) throw { status: 404, message: 'USER.NOT.EXIST' };
 
@@ -77,7 +83,7 @@ module.exports = {
     return User.findByIdAndUpdate(id, data, { new: true });
 },
   
-  async updateState (id, data) {
+  async updateOne (id, data) {
   return User.findByIdAndUpdate(id, data, { new: true });
 },
 
