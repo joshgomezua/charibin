@@ -1,4 +1,3 @@
-// import { min } from "moment";
 
 export enum ADMIN_ROUTING {
   MAIN = '/admin',
@@ -55,7 +54,8 @@ export const SUCCESS = {
 
 export const DEFULT_TICKET_DATA = {
   _id: '',
-  trip: { _id: '', name: '', departure: '', destination: '' },
+  trip: { _id: '', departure: '', destination: '' },
+  direction: '',
   quantity: 0,
   soldTickets: 0,
   reservedQuantity: 0,
@@ -67,6 +67,33 @@ export const DEFULT_TICKET_DATA = {
     end: ''
   },
   active: false
+}
+
+export const DEFAULT_TRIP_SCHEDULE = {
+  _id: '',
+  active: false,
+  deselectionPrice: 0,
+  date: {
+    start: '',
+    end: '',
+  },
+  timeSelection: {
+    defaultPrice: 0,
+    _0to6AM: 0,
+    _6to8AM: 0,
+    _8to10AM: 0,
+    _10to12PM: 0,
+    _12to2PM: 0,
+    _2to4PM: 0,
+    _4to6PM: 0,
+    _6to8PM: 0,
+    _8to10PM: 0,
+    _10to12AM: 0,
+  },
+  discount: 0,
+  duration: 0,
+  price: 0,
+  trip: ''
 }
 
 export const DEFAULT_TRIP_DATA = {
@@ -86,6 +113,7 @@ export const DEFAULT_TRIP_DATA = {
     _8to10PM: 0,
     _10to12AM: 0,
   },
+  scheduledTrips: [DEFAULT_TRIP_SCHEDULE],
   discount: 0,
   duration: 0,
   fake: false,
@@ -94,7 +122,7 @@ export const DEFAULT_TRIP_DATA = {
   carrier: '',
   photo: '',
   price: 0,
-  type: '',
+  type: ''
 }
 
 export const DEFAULT_CITY_DATA = {
@@ -151,16 +179,16 @@ export const COUNTRIES = [
     name: "Bulgaria"
   }, 
   {
+    _id: "11",
+    name: "Canada"
+  },
+  {
     _id: "9",
     name: "Croatia"
   },
   {
     _id: "10",
     name: "Cyprus"
-  },
-  {
-    _id: "11",
-    name: "Canada"
   },
   {
     _id: "12",
@@ -236,7 +264,7 @@ export const COUNTRIES = [
   },
   {
     _id: "31",
-    name: "Mexique"
+    name: "Mexico"
   },
   {
     _id: "32",
@@ -256,7 +284,7 @@ export const COUNTRIES = [
   },
   {
     _id: "36",
-    name: "North Macedonia (formerly Macedonia)"
+    name: "North Macedonia"
   },
   {
     _id: "37",
@@ -324,10 +352,15 @@ export const COUNTRIES = [
   },
   {
     _id: "53",
-    name:"Vatican City (Holy See)"
+    name:"Vatican City"
   },
   
 ]
+
+export const DEFAULT_SEARCH_RESULT = {
+  _id: '',
+  name: 'Country not found'
+}
 
 
 export const DEFAULT_USER_DATA = {

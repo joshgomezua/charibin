@@ -48,6 +48,11 @@
       height: rc(40);
       margin-right: rc(17);
     }
+
+    &:hover {
+      opacity: 0.5;
+    }
+  
   }
 
   .ReactTable {

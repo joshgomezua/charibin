@@ -60,7 +60,7 @@ module.exports = {
       }
     },
 
-    isModify: {
+    isManual: {
       type: 'boolean',
       required: false,
       permission: {

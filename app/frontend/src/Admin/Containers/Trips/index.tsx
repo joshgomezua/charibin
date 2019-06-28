@@ -16,6 +16,7 @@ import {
   ERRORS,
   SUCCESS,
   DEFAULT_TRIP_DATA,
+  DEFAULT_TRIP_SCHEDULE,
 } from '../../Utils/constants'
 import {
   getTrips,
@@ -24,9 +25,15 @@ import {
   getSingleTrip,
   updateTrip,
   updateTimeSelection,
+  deleteScheduledTrip,
+  getSingleScheduledTrip,
+  addSchedule,
+  updateSchedule
 } from '../../Utils/api'
-import { IState, IProps, INewData, IEditTimeSchedule } from './types'
+import { IState, IProps, INewData, IEditTimeSchedule, INewSchedule } from './types'
 import { columns } from './columns'
+import { rangeColumns } from './rangeColumns';
+import ScheduleModal from 'src/Admin/Components/ScheduleModal';
 
 class TripsContainer extends React.Component<
   RouteComponentProps<{}> & IProps,
@@ -41,6 +48,7 @@ class TripsContainer extends React.Component<
     isLoading: true,
     isModalLoading: false,
     editData: DEFAULT_TRIP_DATA,
+    editSchedule: DEFAULT_TRIP_SCHEDULE,
     modal: {
       id: '',
       type: null,
@@ -74,6 +82,26 @@ class TripsContainer extends React.Component<
     this.handleFetchTripData(id)
   }
 
+  handleOpenScheduleModal = (id: string) => {
+    this.handleFetchTripData(id)
+    this.handleOpenModal(MODAL_TYPE.ADD_SCHEDULE, 'Add schedule', id)
+  }
+
+  handleOpenEditScheduleModal = (id: string) => {
+    this.handleFetchTripSchedule(id)
+    this.handleOpenModal(MODAL_TYPE.EDIT_SCHEDULE, 'Edit schedule', id)
+  }
+
+  handleOpenTimeSelectionScheduleModal = (id: string) => {
+    this.handleFetchTripSchedule(id)
+    console.log(this.state)
+    this.handleOpenModal(MODAL_TYPE.EDIT_TIME_SELECTION_SCHEDULE, 'Edit time selection price settings of schedule', id)
+  }
+
+  handleOpenDeleteScheduleModal = (id: string) => {
+    this.handleOpenModal(MODAL_TYPE.DELETE_SCHEDULE, 'Delete schedule', id)
+  }
+
   handleFetchTripData = (id: string) => {
     const token = getToken()
 
@@ -89,9 +117,25 @@ class TripsContainer extends React.Component<
     }
   }
 
+  handleFetchTripSchedule = (id: string) => {
+    const token = getToken()
+    console.log(id)
+    if (token) {
+      getSingleScheduledTrip(id, token)
+        .then(res => {
+          this.setState({ editSchedule: res.data })
+          console.log(res.data)
+        })
+        .catch(err => {
+          this.modal.current!.close()
+          this.props.showError(err)
+        })
+    }
+  }
+
   handleFetchItems = (page: number, limit: number) => {
     const token = getToken()
-    console.log('2000')
+
     if (token) {
       getTrips(page, limit, token)
         .then(res =>
@@ -99,7 +143,6 @@ class TripsContainer extends React.Component<
             isLoading: false,
             trips: res.data.results,
             total: res.data.status.total
-            
           })
         )
         .catch(err => {
@@ -180,7 +223,6 @@ class TripsContainer extends React.Component<
       modal: { id }
     } = this.state
 
-    
     this.setState({ isModalLoading: true })
     return updateTrip(id, data, token)
       .then(res => {
@@ -205,7 +247,6 @@ class TripsContainer extends React.Component<
     const {
       modal: { id }
     } = this.state
-
     
     this.setState({ isModalLoading: true })
     return updateTimeSelection(id, data, token)
@@ -225,6 +266,142 @@ class TripsContainer extends React.Component<
       })
   }
 
+  handleEditScheduleTimeSelection = (data: IEditTimeSchedule) => {
+    const token = getToken()
+    const { currentPage } = this.state
+    const {
+      modal: { id }
+    } = this.state
+
+    const updatedSchedule: INewSchedule = {
+      _id: this.state.editSchedule._id,
+      active: this.state.editSchedule.active,
+      deselectionPrice: this.state.editSchedule.deselectionPrice,
+      timeSelection: {
+        defaultPrice: this.state.editSchedule.timeSelection.defaultPrice,
+        _0to6AM: data.timeSelection._0to6AM,
+        _6to8AM: data.timeSelection._6to8AM,
+        _8to10AM: data.timeSelection._8to10AM,
+        _10to12PM: data.timeSelection._10to12PM,
+        _12to2PM: data.timeSelection._12to2PM,
+        _2to4PM: data.timeSelection._2to4PM,
+        _4to6PM: data.timeSelection._4to6PM,
+        _6to8PM: data.timeSelection._6to8PM,
+        _8to10PM: data.timeSelection._8to10PM,
+        _10to12AM: data.timeSelection._10to12AM,
+      },
+      date: {
+        start: this.state.editSchedule.date.start,
+        end: this.state.editSchedule.date.end
+      },
+      discount: this.state.editSchedule.discount,
+      duration: this.state.editSchedule.duration,
+      price: this.state.editSchedule.price,
+    }
+    
+    this.setState({ isModalLoading: true })
+    return updateSchedule(id, updatedSchedule, token)
+      .then(res => {
+        this.modal.current!.close()
+        this.handleFetchItems(currentPage, 10)
+        this.props.showSuccess(SUCCESS.TRIP_EDIT)
+        this.handleRestartModalType()
+
+        return Promise.resolve()
+      })
+      .catch(err => {
+        this.setState({ isModalLoading: false })
+        this.props.showError(err, ERRORS.TRIP_EDIT)
+
+        return Promise.reject()
+      })
+  }
+
+  handleAddSchedule = (data: INewSchedule) => {
+    const token = getToken()
+    const { currentPage } = this.state
+    const newSchedule: INewSchedule = {
+      ...data,
+      timeSelection: {
+        defaultPrice: data.timeSelection.defaultPrice,
+        _0to6AM: data.timeSelection.defaultPrice,
+        _6to8AM: data.timeSelection.defaultPrice,
+        _8to10AM: data.timeSelection.defaultPrice,
+        _10to12PM: data.timeSelection.defaultPrice,
+        _12to2PM: data.timeSelection.defaultPrice,
+        _2to4PM: data.timeSelection.defaultPrice,
+        _4to6PM: data.timeSelection.defaultPrice,
+        _6to8PM: data.timeSelection.defaultPrice,
+        _8to10PM: data.timeSelection.defaultPrice,
+        _10to12AM: data.timeSelection.defaultPrice,
+      },
+      trip: this.state.editData._id
+    }
+    this.setState({ isModalLoading: true })
+    console.log(newSchedule)
+    return addSchedule(newSchedule, token)
+      .then(res => {
+        this.modal.current!.close()
+        this.handleFetchItems(currentPage, 10)
+        this.props.showSuccess(SUCCESS.DEFAULT)
+        this.handleRestartModalType()
+        console.log(this.state.trips)
+        return Promise.resolve()
+      })
+      .catch(err => {
+        this.setState({ isModalLoading: false })
+        this.props.showError(err, ERRORS.DEFAULT)
+
+        return Promise.reject()
+      })
+  }
+
+  handleEditSchedule = (data: INewSchedule) => {
+    const token = getToken()
+    const { currentPage } = this.state
+    const {
+      modal: { id }
+    } = this.state
+
+    this.setState({ isModalLoading: true })
+    return updateSchedule(id, data, token)
+      .then(res => {
+        this.modal.current!.close()
+        this.handleFetchItems(currentPage, 10)
+        this.props.showSuccess(SUCCESS.TRIP_EDIT)
+        this.handleRestartModalType()
+
+        return Promise.resolve()
+      })
+      .catch(err => {
+        this.setState({ isModalLoading: false })
+        this.props.showError(err, ERRORS.TRIP_EDIT)
+
+        return Promise.reject()
+      })
+  }
+
+  handleDeleteSchedule = () => {
+    const {
+      modal: { id },
+      currentPage
+    } = this.state
+    const token = getToken()
+
+    if (token) {
+      deleteScheduledTrip(id, token)
+        .then(() => {
+          this.handleFetchItems(currentPage, 10)
+          this.handleCloseModal()
+          this.props.showSuccess(SUCCESS.DEFAULT)
+          this.handleRestartModalType()
+        })
+        .catch(err => {
+          this.handleCloseModal()
+          this.props.showError(err, ERRORS.DEFAULT)
+        })
+    }
+  }
 
   handleRedirectToCreateTicket = (trip: { _id: string; departure: string; destination: string }) => {
     this.props.history.push({
@@ -251,15 +428,16 @@ class TripsContainer extends React.Component<
       isLoading,
       isModalLoading,
       editData,
+      editSchedule,
       modal: { type: modalType, heading: modalHeading }
     } = this.state
     return (
       <div className="spon-container">
-        
         <Header
           title="Routes & Prices"
           handleOpenModal={this.handleOpenModal}
         />
+
         <Table
           data={trips}
           handleFetchData={this.handleFetchTableData}
@@ -271,6 +449,14 @@ class TripsContainer extends React.Component<
           )}
           loading={isLoading}
           pages={Math.ceil(total / 10)}
+          subComponentClassName={"rangeTripTable"}
+          handleOpenModal={this.handleOpenScheduleModal}
+          detailsColumns={rangeColumns(
+            this.handleOpenDeleteScheduleModal,
+            this.handleOpenEditScheduleModal,
+            this.handleOpenTimeSelectionScheduleModal,
+            this.handleRedirectToCreateTicket
+          )}
         />
 
         <Modal
@@ -301,12 +487,45 @@ class TripsContainer extends React.Component<
             />
           ) : null}
 
+          {modalType === MODAL_TYPE.DELETE_SCHEDULE ? (
+            <DeleteModal
+              closeModal={this.handleCloseModal}
+              deleteItem={this.handleDeleteSchedule}
+            />
+          ) : null}
+
+          {modalType === MODAL_TYPE.ADD_SCHEDULE ? (
+            <ScheduleModal
+              isLoading={isModalLoading}
+              closeModal={this.handleCloseModal}
+              handleSubmit={this.handleAddSchedule}
+            />
+          ) : null}
+
+          {modalType === MODAL_TYPE.EDIT_SCHEDULE ? (
+            <ScheduleModal
+              isLoading={isModalLoading}
+              editDate={editSchedule}
+              closeModal={this.handleCloseModal}
+              handleEditSchedule={this.handleEditSchedule}
+            />
+          ) : null}
+
           {modalType === MODAL_TYPE.EDIT_TIME_SELECTION ? (
             <TimeSelectionModal
               isLoading={isModalLoading}
               editSchedule={editData}
               closeModal={this.handleCloseModal}
               handleEditTimeSelection={this.handleEditTimeSelection}
+            />
+          ) : null}
+
+          {modalType === MODAL_TYPE.EDIT_TIME_SELECTION_SCHEDULE ? (
+            <TimeSelectionModal
+              isLoading={isModalLoading}
+              editSchedule={editSchedule}
+              closeModal={this.handleCloseModal}
+              handleEditTimeSelection={this.handleEditScheduleTimeSelection}
             />
           ) : null}
         </Modal>
@@ -316,4 +535,3 @@ class TripsContainer extends React.Component<
 }
 
 export default withToast(TripsContainer)
-

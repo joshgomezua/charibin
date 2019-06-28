@@ -20,11 +20,7 @@
     max-width: 10rem;
     color: $white;
     background-color: $blue;
-
-    &:active {
-        background-color: $dark-deep-blue;
-    }
-
+    
     &.selected {
         background-color: $dark-deep-blue;
     }

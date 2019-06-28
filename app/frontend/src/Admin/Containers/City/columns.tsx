@@ -2,9 +2,7 @@ import React from 'react'
 import { RowRenderProps } from 'react-table'
 import Switch from '../../Components/Switch'
 
-
-let count: number = 0
-
+let count: number = 0;
 export const columns = (
   openDeleteModal: (id: string) => void,
   openEditModal: (id: string) => void,
@@ -12,39 +10,43 @@ export const columns = (
 ) => [
   {
     Header: 'City',
-    accessor: 'name'
+    accessor: 'name',
+    width: 300
   },
   {
     Header: 'Country',
     accessor: 'country',
+    width: 300
    
   },
   {
     Header: 'Keywords',
+    style: { 'white-space': 'unset' } ,
     accessor: 'tags',
+    width: 300,
     Cell: (props: RowRenderProps) => (
-
       props.value.map((tag: string) => {
-      
         const length: number = props.value.length
-
         if (count < (length - 1) ) {
           count ++
-          return (<React.Fragment key = {tag}>{tag.concat("; ")}</React.Fragment>)
-        }
-        else {
+    
+          return (<React.Fragment key={tag}>{tag.concat("; ")}</React.Fragment>)
+        }else {
           count = 0
-          return (<React.Fragment key = {tag}>{tag.concat(" ")}</React.Fragment>)
-        } 
-      })
-    )
+    
+          return (<React.Fragment key={tag}>{tag.concat(" ")}</React.Fragment>)
+          } 
+        }
+      )
+    )    
   },
   {
     Header: 'Photo',
     accessor: 'photo',
+    width: 90,
     Cell: (props: RowRenderProps) => (
       <div className="spon-table__photo">        
-        <img src={props.value} alt="Avatar photo"/>
+        <img src={props.value} alt="Avatar photo" title={props.row.name}/>
       </div>
     )
   },
@@ -54,34 +56,32 @@ export const columns = (
     accessor: 'isEnabled',
     Cell: (props: RowRenderProps) => (
       <Switch
-      onChange={() => {
-        onSwitchChange(props.row._original._id, !props.value)
-      }}
-      checked={props.value}
-    />)
+        onChange={() => {
+          onSwitchChange(props.row._original._id, !props.value)
+        }}
+        checked={props.value}
+      />
+    )
   },
-
   {
-    Header: '',
+    Header: 'Modify',
     width: 90,
-    accessor: 'isModify',
+    accessor: 'isManual',
     Cell: (props: RowRenderProps) => (
       <div  className="spon-table__actions">
-        <button disabled = {!(props.value)} onClick={() => openEditModal(props.row._original._id)}>
+        <button disabled={!props.value} onClick={() => openEditModal(props.row._original._id)}>
               Modify
         </button>
       </div>
-     
-      )
+    )
   },
-
   {
-    Header: '',
-    accessor: 'delete',
+    Header: 'Delete',
+    accessor: 'isManual',
     width: 90,
     Cell: (props: RowRenderProps) => (
-      <div  className="spon-table__actions">
-        <button onClick={() => openDeleteModal(props.row._original._id)}>
+      <div  className="spon-table__actions"> 
+        <button disabled={!props.value} onClick={() => openDeleteModal(props.row._original._id)}>
               Delete
         </button>
       </div>

@@ -126,6 +126,16 @@ module.exports = {
       max: 1000000,
     },
 
+    scheduledTrips: {
+      type: 'array',
+      required: false,
+      permission: {
+        create: [ROLE.ADMINISTRATOR],
+        update: [ROLE.ADMINISTRATOR],
+        find: [ROLE.ADMINISTRATOR, ROLE.GUEST]
+      }
+    },
+
     tickets: {
       type: 'array',
       required: false,

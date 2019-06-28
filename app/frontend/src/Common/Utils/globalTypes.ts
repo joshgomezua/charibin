@@ -34,15 +34,15 @@ export interface IResponseError {
 export interface ITicket {
   _id: string
   trip: { 
-    _id: string;
-    departure: string
+    _id: string; 
+    departure: string,
     destination: string
-   }
-  departure: string,
-  destination: string,
+  }
   quantity: number
   soldTickets: number,
   reservedQuantity: number,
+  destination: string,
+  departure: string,
   type: string
   hours?: string
   date: {

@@ -196,6 +196,7 @@ const TripModal: React.SFC<IProps> = ({
                   className="spon-trip-modal__error"
                 />
               </div>
+
               <div className="spon-trip-modal__input-cnt">
                 <Field
                   isPrefix
@@ -212,6 +213,7 @@ const TripModal: React.SFC<IProps> = ({
                   className="spon-trip-modal__error"
                 />
               </div>
+              
               <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt">
                 <Field
                   isPrefix

@@ -82,6 +82,11 @@
         "EXIST": "Trip not exist"
       }
     },
+    "CITY": {
+      "NOT": {
+        "EXIST": "City not exist"
+      }
+    },
     "BUY": {
       "OWNER": {
         "NOT": {
@@ -127,6 +132,12 @@
       "EXIST": "Trip with that desittion already exist",
       "NAME": {
         "EXIST": "Name of trip already in use"
+      }
+    },
+    "CITY": {
+      "EXIST": "City already exist",
+      "NAME": {
+        "EXIST": "Name of city already in use"
       }
     }
   }

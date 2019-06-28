@@ -1,0 +1,101 @@
+@import '../../../Common/Utils/Styles/mixin.scss';
+@import '../../../Common/Utils/Styles/colors.scss';
+.spon-table {
+  &--transactions {
+    .rt-td,
+    .rt-th {
+      white-space: normal;
+      word-break: break-word;
+    }
+  }
+
+  &__actions {
+    display: flex;
+
+    button {
+      font-size: 0.8rem;
+      box-shadow: 0;
+      border: none;
+      background: transparent;
+      color: $darker-blue;
+      text-decoration: underline;
+      cursor: pointer;
+
+      &:not(:last-child) {
+        margin-right: 0.5rem;
+      }
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+
+  &__photo {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    img {
+      width: rc(40);
+      height: rc(40);
+      margin-right: rc(17);
+    }
+  }
+
+  .ReactTable {
+    .rt-noData {
+      top: 8%;
+      transform: translate(-50%, 0);
+      bottom: 5.15rem;
+    }
+    .rt-thead {
+      padding-top: rc(55);
+      padding-bottom: rc(44);
+      box-shadow: none;
+
+      .rt-tr {
+        padding: 0 2rem;
+      }
+
+      .rt-th {
+        text-align: left;
+        font-weight: 600;
+        font-size: 1rem;
+        color: $input;
+        border-right: none;
+
+        &:focus {
+          outline: none;
+        }
+      }
+    }
+
+    .rt-tr-group {
+      padding: rc(20) 2rem;
+      border-bottom: none;
+
+      &:nth-child(2n + 1) {
+        background: $row;
+      }
+    }
+
+    .rt-tfoot {
+      height: 70px;
+    
+      .rt-td {
+        border-right: none;
+      }
+    }
+
+    .rt-tr {
+      align-items: center;
+      color: $input;
+      font-size: 1rem;
+    }
+
+    .select-wrap {
+      display: none;
+    }
+  }
+}

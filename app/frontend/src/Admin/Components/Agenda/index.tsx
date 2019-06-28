@@ -43,7 +43,7 @@ const Agenda: React.SFC<IProps> = ({
     if (filters.length) {
       return tickets.filter(
         (ticket: ITicket) =>
-          filters.includes(ticket.trip[direction])
+          filters.includes(ticket[direction])
       )
     }
     return tickets
@@ -89,13 +89,13 @@ const Agenda: React.SFC<IProps> = ({
           <th className="spon-agenda__cell spon-agenda__cell--head">From</th>
           <th className="spon-agenda__cell spon-agenda__cell--head">To</th>
           <th className="spon-agenda__cell spon-agenda__cell--head">
-            Qte of tickets
+            Qty<br/>of tickets
           </th>
           <th className="spon-agenda__cell spon-agenda__cell--head">
             Available tickets
           </th>
           <th className="spon-agenda__cell spon-agenda__cell--head">
-            Sold    tickets
+            Sold<br/>tickets
           </th>
           <th className="spon-agenda__cell spon-agenda__cell--head">Type</th>
           <th className="spon-agenda__cell spon-agenda__cell--head">

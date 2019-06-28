@@ -1,9 +1,11 @@
-import { ICity, DIRECTION_TYPE, MODAL_TYPE } from '../../Utils/adminTypes'
+import { DIRECTION_TYPE, MODAL_TYPE } from '../../Utils/adminTypes'
 import { IResponseError, ITicket } from '../../../Common/Utils/globalTypes'
+import { IOptionTicket } from 'src/Admin/Components/DropdownTicket/types';
 
 export interface IState {
   tickets: ITicket[]
-  destinations: ICity[]
+  departures: IOptionTicket[]
+  destinations: IOptionTicket[]
   isModalLoading: boolean
   isLoading: boolean
   isError: boolean
@@ -19,6 +21,7 @@ export interface IState {
     end: Date | undefined
   }
 }
+
 export interface IProps {
   selectedDate: Date
   filters: string[]
@@ -44,4 +47,10 @@ export interface IEditedData {
     end: number
   }
   active?: boolean
+}
+
+export interface ITripData {
+  _id: string,
+  departure: string,
+  destination: string
 }

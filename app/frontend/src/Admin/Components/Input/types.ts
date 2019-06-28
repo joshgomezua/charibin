@@ -3,6 +3,7 @@ export interface IProps {
   label: string
   placeholder?: string
   className?: string
+  classNamelabel?:string
   isPrefix?: boolean
   isSuffix?: boolean
 }

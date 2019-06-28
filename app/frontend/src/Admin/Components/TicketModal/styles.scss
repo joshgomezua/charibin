@@ -3,6 +3,7 @@
 
 .spon-ticket-modal {
   padding: rc(14) rc(68);
+  width: rc(800);
 
   &__row {
     display: flex;
@@ -58,6 +59,7 @@
   }
 
   &__input {
+    width: rc(60);
     .spon-input__cnt {
       border: 1px solid $gray;
       height: rc(50);
@@ -242,4 +244,44 @@
       }
     }
   }
+
+
+.spon-label {
+  &__element {
+    position: relative;
+    width: 100%;
+    height: rc(50);
+    border: solid 1px $gray;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+
+  &__label {
+    margin-top: 0;
+    margin-bottom: rc(10);
+    font-size: rc(12);
+    color: $label;
+  }
+
+  &__placeholder {
+    position: relative;
+    height: 100%;
+    width: rc(125);
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 rc(10) 0 rc(10);
+    color: $dark-blue;
+    font-size: rc(14);
+
+    & p {
+      margin: 0 !important;
+      font-size: rc(14);
+    }
+  }
+
+}
+
+
 }

@@ -83,6 +83,7 @@ export const columns = (
         </div>
       </>
     )}
+
     
   },
   {
@@ -93,6 +94,17 @@ export const columns = (
       const duration = moment.duration({ minutes: props.value }) as IDuration
       return `${duration.format('h[h]mm[m]')}`
     }
+  },
+  {
+    expander: true,
+    width: 80,
+    Expander: (props: RowRenderProps) => (
+      <div className="spon-table__actions">{
+        props.isExpanded
+          ? <button> Range ⬆︎ </button>
+          : <button> Range ⬇︎ </button>
+      }</div>
+    )
   },
   {
     Header: '',

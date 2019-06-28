@@ -27,13 +27,13 @@ import { IStore } from '../../../Common/Redux/types'
 import { IState, IProps, IEditedData } from './types'
 import './styles.scss'
 
-
 class TicketsContainer extends React.Component<
   RouteComponentProps<{ tripName: string }> & IProps,
   IState
 > {
   readonly state: IState = {
     tickets: [],
+    departures: [],
     destinations: [],
     isLoading: false,
     isModalLoading: false,
@@ -96,10 +96,13 @@ class TicketsContainer extends React.Component<
 
     getTripNames(token)
       .then(({ data }) => {
-        const newData = data.map((item: any) => ({_id: item._id, name: item.destination}))
-        const cityNames = newData.map((item: any) => item.name)
+        const cityNames = data.map((item: any) => ({
+          _id: item._id,
+          departure: item.departure,
+          destination: item.destination
+        }))
         this.props.changeFilters(cityNames)
-        this.setState({ destinations: newData })
+        this.setState({ departures: cityNames })
       })
       .catch(err => {
         this.props.showError(err)
@@ -165,10 +168,8 @@ class TicketsContainer extends React.Component<
       .then(res => {
         let message = ''
         if (res.data.updated) {
-          /*tu pourrais faire SUCCESS.TICKET_OVERRIGHT  */
           message = 'Tickets was overright'
         } else if (!res.data.updated && res.data.dates) {
-          /*tu pourrais faire SUCCESS.TICKET_UPDATED  */
           message = 'Ticket was updated'
         } else {
           message = SUCCESS.TICKET_ADD
@@ -193,6 +194,12 @@ class TicketsContainer extends React.Component<
 
     getSingleTicket(id, token)
       .then(({ data }) => {
+        const newData = {
+          _id: data.trip._id,
+          departure: data.trip.departure,
+          destination: data.trip.destination
+        } 
+        data.trip = newData; 
         this.setState(
           (state: IState) => ({
             ...state,
@@ -291,6 +298,26 @@ class TicketsContainer extends React.Component<
     })
   }
 
+  handleSelectTicketDeparture = (departure: string) => {
+    const token = getToken()
+
+    getTripNames(token)
+      .then(({data}) => {
+        const destinationsFiltered = data.filter((item: any) => item.departure === departure)
+        const destinations = destinationsFiltered.map((item: any) => {
+        // tslint:disable-next-line: no-unused-expression
+          ({  _id: item._id,
+              departure: item.departure,
+              destination: item.destinaton
+          })
+        })
+        this.setState({destinations : destinations})
+      })
+    .catch(err => {
+        this.props.showError(err)
+    })    
+  }
+
   render() {
     const {
       tickets,
@@ -298,6 +325,7 @@ class TicketsContainer extends React.Component<
       isLoading,
       isModalLoading,
       isError,
+      departures,
       destinations,
       calendarFilter
     } = this.state
@@ -346,20 +374,24 @@ class TicketsContainer extends React.Component<
           {modal.type === MODAL_TYPE.ADD_TICKET ? (
             <TicketModal
               tripSelected={modal.trip ? modal.trip : null}
+              departures={departures}
               destinations={destinations}
               isLoading={isModalLoading}
               closeModal={this.handleCloseModal}
               handleSubmit={this.handleAddTicket}
+              handleSelectDeparture={this.handleSelectTicketDeparture}
             />
           ) : null}
 
           {modal.type === MODAL_TYPE.EDIT_TICKET ? (
             <TicketModal
+              departures={departures}
               destinations={destinations}
               editDate={modal.data}
               isLoading={isModalLoading}
               closeModal={this.handleCloseModal}
               handleEditTicket={this.handleEditTicket}
+              handleSelectDeparture={this.handleSelectTicketDeparture}
             />
           ) : null}
 

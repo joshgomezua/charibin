@@ -95,6 +95,25 @@ export const updateTimeSelection = (id: string, data: Types.IEditTimeSelect, tok
     headers: { 'Content-type': 'application/json', token }
   })
 
+  export const addSchedule = (data: Types.INewScheduledTrip, token: string) => 
+  axios.post(`${API_URL}/scheduledTrip`, data, {
+      headers: { 'Content-type': 'application/json', token }
+})
+
+export const updateSchedule = (id: string, data: Types.INewScheduledTrip, token: string) =>
+  axios.put(`${API_URL}/scheduledTrip/${id}`, data, {
+    headers: { 'Content-type': 'application/json', token }
+  })
+
+export const deleteScheduledTrip = (id: string, token: string) =>
+  axios.delete(`${API_URL}/scheduledTrip/${id}`, {
+    headers: { token }
+  })
+
+export const getSingleScheduledTrip = (id: string, token: string) =>
+  axios.get(`${API_URL}/scheduledTrip/${id}`, { headers: { token } 
+})
+
 export const getTickets = (startDate: string, endDate: string, token: string) =>
   axios.get(`${API_URL}/ticket/${startDate}/${endDate}`, {
     headers: {
@@ -167,7 +186,7 @@ export const editOrderState = (id: string, value: boolean, token: string) =>
       }
     }
   )
-export const addCity = (data: Types.ICity, token: string) => 
+  export const addCity = (data: Types.ICity, token: string) => 
   axios.post(`${API_URL}/city`, data, {
     headers: { 'Content-type': 'application/json', token }
 })
@@ -175,7 +194,8 @@ export const addCity = (data: Types.ICity, token: string) =>
 export const updateCity = (id: string, data: Types.ICity, token: string) =>
   axios.put(`${API_URL}/city/${id}`, data, {
     headers: { 'Content-type': 'application/json', token }
-})
+  }
+)
 
 export const getCities = (page: number, limit: number, token: string) =>
   axios.get(`${API_URL}/city/${page}/${limit}`, {
@@ -183,17 +203,20 @@ export const getCities = (page: number, limit: number, token: string) =>
       'Content-type': 'application/json',
       token
     }
-  })
+  }
+)
 
 export const getSingleCity = (id: string, token: string) =>
-  axios.get(`${API_URL}/city/${id}`, { headers: { token } })
+  axios.get(`${API_URL}/city/${id}`, { headers: { token } }
+)
 
 export const deleteCity = (id: string, token: string) =>
   axios.delete(`${API_URL}/city/${id}`, {
     headers: { token }
-  })
+  }
+)
 
-  export const editCityState = (id: string, value: boolean, token: string) =>
+export const editCityState = (id: string, value: boolean, token: string) =>
   axios.patch(
     `${API_URL}/city/${id}`,
     { isEnabled: value },
@@ -203,5 +226,5 @@ export const deleteCity = (id: string, token: string) =>
         token
       }
     }
-  )
+)
 

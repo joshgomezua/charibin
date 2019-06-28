@@ -59,13 +59,13 @@ const dataTemplate = {
     country: () => faker.name.lastName(),
     photo: getImage,
     tags: () => [faker.name.firstName()],
-    isModify: false,
+    isManual: false,
     isEnabled: false
 
   },
 
   ticket: {
-    quantity: 5,
+    quantity: () => faker.random.number({ min: 5, max: 20 }),
     soldTickets: 0,
     reservedQuantity: 0,
     departure: '',

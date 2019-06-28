@@ -175,8 +175,6 @@ class DeselectContainer extends Component<
               (deselected: ISelectedData) => deselected.tripId === item.tripId
             )
 
-            console.log(item)
-
             return !isSome ? (
               <Destination
                 index={item.tripId}
