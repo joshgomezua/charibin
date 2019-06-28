@@ -10,6 +10,17 @@ export const logIn = (data: Types.ILoginForm) =>
     headers: { 'Content-type': 'application/json' }
   })
 
+  export const resetUserPassword = (id: string, token: string) =>
+  axios.post(
+    `${API_URL}/user/${id}`,
+    
+    {
+      headers: {
+        'Content-type': 'application/json',
+        token
+      }
+    }
+  )
 
 
 export const addUser = (data: Types.IUser, token: string) =>

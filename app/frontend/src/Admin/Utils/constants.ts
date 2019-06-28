@@ -30,6 +30,8 @@ export const ERRORS = {
   USER_EDIT: 'Error when edit user',
   USER_DELETE: 'Error when delete user',
   USER_UPDATE: 'Error when update user',
+  USER_RESET: 'Error when reset user password',
+
   DEFAULT: 'Error'
 }
 
@@ -49,6 +51,7 @@ export const SUCCESS = {
   USER_EDIT: 'user edited successfully' ,
   USER_DELETE: 'User deleted succesfully',
   USER_UPDATE: 'user updated successfully' ,
+  USER_RESET: 'User password reset successfully',
   DEFAULT: 'Success'
 }
 

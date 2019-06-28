@@ -1,7 +1,7 @@
 @import '../../../Common/Utils/Styles/mixin.scss';
 @import '../../../Common/Utils/Styles/colors.scss';
 
-.spon-trip-modal {
+.spon-user-modal {
   padding: rc(14) rc(68);
 
   &__row {
@@ -79,7 +79,7 @@
   &__dropdown {
     margin-right: rc(17);
   }
-
+/**
   &__toggles {
     margin-left: rc(20);
     margin-top: rc(25);
@@ -103,7 +103,7 @@
     font-size: rc(12);
     color: $label;
   }
-
+/*
   &__buttons {
     display: flex;
     justify-content: center;
@@ -118,11 +118,11 @@
       margin-right: 1rem;
     }
   }
-
+/*
   &__avatar {
     display: flex;
   }
-
+/*
   &__photo {
     margin-right: rc(20);
 
@@ -148,5 +148,5 @@
       width: rc(24);
       height: rc(19);
     }
-  }
+  }*/
 }

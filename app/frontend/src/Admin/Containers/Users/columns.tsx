@@ -14,7 +14,7 @@ export const columns = (
   onSwitchChange: ((id: string, value: boolean) => void),
 ) => [
   {
-    Header: 'User',
+    Header: 'Name',
     accessor: 'name'
   },
   {

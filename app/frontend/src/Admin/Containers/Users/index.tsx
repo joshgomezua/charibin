@@ -229,8 +229,7 @@ class UsersContainer extends React.Component<
  
   handlResetPassword(id: string){
 
-    console.log('aaaaaa')
-  }
+      }
 
 
   handleRestartModalType = () => {
