@@ -13,7 +13,6 @@ import { RouteComponentProps } from 'react-router-dom'
 import { MODAL_TYPE, ICity } from '../../Utils/adminTypes'
 import { getToken } from '../../../Common/Utils/helpers'
 import {
- // ADMIN_ROUTING,
   ERRORS,
   SUCCESS,
   DEFAULT_CITY_DATA
@@ -29,14 +28,12 @@ import {
 import { IState, IProps } from './types'
 import { columns } from './columns'
 
-
-
 class CityContainer extends React.Component<
   RouteComponentProps<{}> & IProps,
   IState
 > {
   private modal = React.createRef<Modal>()
-
+  
   readonly state: IState = {
     cities: [{
       _id: '0',
@@ -45,7 +42,7 @@ class CityContainer extends React.Component<
       tags:['Beach', 'Nigthlife'],
         
       photo: "https://s3.eu-west-2.amazonaws.com/spon-staging/staging_5c91210fb4f0e3003452a581.png",
-      isModify: false,
+      isManual: false,
       isEnabled: false
     }],
     total: 0,
@@ -63,8 +60,7 @@ class CityContainer extends React.Component<
   handleOpenModal = (type: MODAL_TYPE, heading: string, id: string = '') => {
     this.setState({ modal: { type, heading, id } }, () => {
       this.modal.current!.open()
-    })
-    
+    })  
   }
 
   handleCloseModal = () => {
@@ -148,8 +144,9 @@ class CityContainer extends React.Component<
   handleAddCity = (data: ICity) => {
     const token = getToken()
     const { currentPage } = this.state
-    data.isModify = true
+    data.isManual = true
     this.setState({ isModalLoading: true })
+
     return addCity(data, token)
       .then(res => {
         this.modal.current!.close()
@@ -175,6 +172,7 @@ class CityContainer extends React.Component<
     } = this.state
 
     this.setState({ isModalLoading: true })
+
     return updateCity(id, data, token)
       .then(res => {
         this.modal.current!.close()
@@ -199,6 +197,7 @@ class CityContainer extends React.Component<
       .then(({ data }) => {
         const updatedCities = this.state.cities.map((city: ICity) => {
           if (city._id === data._id) {
+
             return data
           }
 
@@ -210,13 +209,6 @@ class CityContainer extends React.Component<
       })
       .catch(err => this.props.showError(err, ERRORS.CITY_EDIT))
   }
-
-/*  handleRedirectToCreateCity = (city: { _id: string; name: string }) => {
-    this.props.history.push({
-      pathname: `${ADMIN_ROUTING.MAIN}${ADMIN_ROUTING.CITIES}`,
-       state: { city }
-    })
-  }*/
 
   handleVoidFunction = () => {};
 

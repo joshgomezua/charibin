@@ -10,6 +10,7 @@ const Input: React.SFC<FieldProps & IProps> = ({
   label,
   placeholder,
   className,
+  classNamelabel,
   isPrefix,
   isSuffix
 }) => {
@@ -21,7 +22,7 @@ const Input: React.SFC<FieldProps & IProps> = ({
 
   return (
     <div className={inputClassName}>
-      {label ? <label className="spon-input__label">{label}</label> : null}
+      {label ? <label className={classNamelabel? classNamelabel:"spon-input__label"}>{label}</label> : null}
 
       <div className="spon-input__cnt">
         {isPrefix ? <span>£</span> : null}

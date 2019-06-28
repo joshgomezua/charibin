@@ -113,7 +113,7 @@ export interface ICity {
   country?:string
   tags?: string[]
   photo?: string
-  isModify?: boolean
+  isManual?: boolean
   isEnabled?: boolean
 }
 

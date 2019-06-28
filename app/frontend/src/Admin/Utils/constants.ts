@@ -179,16 +179,16 @@ export const COUNTRIES = [
     name: "Bulgaria"
   }, 
   {
+    _id: "11",
+    name: "Canada"
+  },
+  {
     _id: "9",
     name: "Croatia"
   },
   {
     _id: "10",
     name: "Cyprus"
-  },
-  {
-    _id: "11",
-    name: "Canada"
   },
   {
     _id: "12",
@@ -264,7 +264,7 @@ export const COUNTRIES = [
   },
   {
     _id: "31",
-    name: "Mexique"
+    name: "Mexico"
   },
   {
     _id: "32",
@@ -284,7 +284,7 @@ export const COUNTRIES = [
   },
   {
     _id: "36",
-    name: "North Macedonia (formerly Macedonia)"
+    name: "North Macedonia"
   },
   {
     _id: "37",
@@ -352,10 +352,15 @@ export const COUNTRIES = [
   },
   {
     _id: "53",
-    name:"Vatican City (Holy See)"
+    name:"Vatican City"
   },
   
 ]
+
+export const DEFAULT_SEARCH_RESULT = {
+  _id: '',
+  name: 'Country not found'
+}
 
 
 export const DEFAULT_USER_DATA = {

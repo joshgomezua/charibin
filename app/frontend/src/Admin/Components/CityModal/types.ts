@@ -1,5 +1,3 @@
-
-
 export interface IProps {
     editDate?: IFormValues & { _id: string }
     isLoading: boolean
@@ -8,14 +6,12 @@ export interface IProps {
     handleEditCity?: (data: IEditValues) => Promise<void>
 }
 
-
-
 export interface IFormValues {
     name: string
     country?: string
     tags?: string[]
     photo?: string
-    isModify?: boolean
+    isManual?: boolean
     isEnabled?: boolean
 }
 

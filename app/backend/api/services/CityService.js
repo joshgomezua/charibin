@@ -2,7 +2,6 @@
 
 const { City } = require('../models');
 const Aggregate = require('./Aggregate');
-//const Utilities = require('./Utilities');
 
 module.exports = {
   async create (data) {
@@ -17,6 +16,7 @@ module.exports = {
       {
         $facet: {
           results: [
+              { $sort: { name: 1 } },
             ...Aggregate.skipAndLimit(page, limit)
           ],
           status: Aggregate.getStatusWithSimpleMatch(
@@ -60,12 +60,4 @@ module.exports = {
   updateOne (id, data) {
     return City.findByIdAndUpdate(id, data, { new: true });
   },
-  /*
-  async getListOfTripsNames () {
-    const names = await Trip.find({ deleted: false }).select('name');
-
-    return names;
-  },
-  */
-
 };

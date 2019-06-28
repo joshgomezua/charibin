@@ -13,7 +13,7 @@ export interface ICity {
   country?: string;
   photo?: string;
   tags?: string[];   
-  isModify?: boolean;
+  isManual?: boolean;
   isEnabled?: boolean;
 }
 

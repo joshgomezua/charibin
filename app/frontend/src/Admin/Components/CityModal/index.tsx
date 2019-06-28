@@ -9,17 +9,14 @@ import {
 } from 'formik'
 import FileInput from '../../Components/FileInput'
 import * as Yup from 'yup'
-
 import Input from '../Input'
 import Button from '../../../Common/Components/Button'
 import photoSvg from '../../../Common/Utils/Media/photo.svg'
-import Dropdown from '../Dropdown'
-
 import { COUNTRIES } from '../../Utils/constants'
-
 import { IProps, IFormValues, IEditValues } from './types'
 import './styles.scss' 
 import Tag from '../Tag';
+import DropDownSelect from '../DropdownSelect';
 
 const CityModal: React.SFC<IProps> = ({
   isLoading,
@@ -52,13 +49,12 @@ const CityModal: React.SFC<IProps> = ({
                 country: '',
                 tags: [],
                 photo: '',
-                isModify: false
+                isManual: false
             }
         }
         validationSchema={Yup.object().shape({
           name: Yup.string().required(),
           country: Yup.string().required(),
-          tags: Yup.string().required(),
           photo: Yup.string().required(),
         })}
         onSubmit={(
@@ -99,6 +95,7 @@ const CityModal: React.SFC<IProps> = ({
                   name="name"
                   label="Name of city"
                   className="spon-trip-modal__input"
+                  classNamelabel="spon-trip-modal__label"
                   component={Input}
                 />
               
@@ -110,16 +107,14 @@ const CityModal: React.SFC<IProps> = ({
               </div>
 
               <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--big">
-                <Dropdown
+                <DropDownSelect
                   id="country"
-                  label="Select the country"
+                  label="Name of the country"
                   placeholder="Select country"
                   className="spon-trip-modal__dropdown"
-                  selectedValue={values.country  ? values.country  : ''}
-                  options={COUNTRIES}
+                  options={COUNTRIES.sort()}
                   onChange={handleChange}
                 />
-
 
                 <ErrorMessage
                   name="country"
@@ -128,7 +123,6 @@ const CityModal: React.SFC<IProps> = ({
                 />
               </div>
             </div>
-
             <div className="spon-trip-modal__row spon-trip-modal__row--bordered spon-trip-modal__row--noflex">
               <p className="spon-trip-modal__label">Upload photo</p>
 
@@ -163,16 +157,12 @@ const CityModal: React.SFC<IProps> = ({
             <div className="spon-trip-modal__row">
               <div className="spon-trip-modal__tagsbtn">
                   <Tag
-                  tags = {values[TAG] as string []}
-                  editDate = {editDate}
+                    tags = {values[TAG] as string []}
+                    editDate = {editDate}
                   />
               </div>
-                <ErrorMessage
-                  name="tags"
-                  component="div"
-                  className="spon-trip-modal__error"
-                />
-              </div>
+            </div>
+
             <div className="spon-trip-modal__row">
               <div className="spon-trip-modal__buttons">
                 <Button
