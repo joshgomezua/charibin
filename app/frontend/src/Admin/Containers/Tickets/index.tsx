@@ -304,15 +304,14 @@ class TicketsContainer extends React.Component<
 
     getTripNames(token)
       .then(({data}) => {
-        console.log('data', data)
         const destinationsFiltered = data.filter((item: any) => item.departure === departure)
-        const destinations = destinationsFiltered.map((item: any) => {
-          ({  _id: item._id,
-              departure: item.departure,
-              destination: item.destinaton
-          })
-        })
-        this.setState({destinations : destinations})
+        const destinationsMapped = destinationsFiltered.map((item: any) => ({
+          _id: item._id,
+          departure: item.departure,
+          destination: item.destination
+        }))
+        this.setState({destinations : destinationsMapped})
+        console.log('destinationsMapped', destinationsMapped)
       })
     .catch(err => {
         this.props.showError(err)
