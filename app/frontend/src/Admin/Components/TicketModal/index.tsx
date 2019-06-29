@@ -40,21 +40,6 @@ class TicketModal extends React.Component<IProps, IState> {
     : values.trip.departure : ''
   }
 
-  getTicketDestinations = (values: IFormValues) => {
-    let i = 0
-    const ticketDestinations: any = []
-    ticketDestinations.push({
-      _id: i++,
-      name: values.trip.departure
-    })
-    ticketDestinations.push({
-      _id: i,
-      name: values.trip.destination
-    })
-
-    return ticketDestinations
-  }
-
   render() {
     const {
       editDate,
@@ -249,40 +234,6 @@ class TicketModal extends React.Component<IProps, IState> {
                     component="div"
                     className="spon-ticket-modal__error"
                   />
-                </div>
-                <div className="spon-ticket-modal__input-cnt">
-                  <Dropdown
-                    id="departure"
-                    label="Select ticket departure"
-                    placeholder="Select ticket departure"
-                    className="spon-ticket-modal__dropdown"
-                    selectedValue={values.departure ? values.departure : ''}
-                    options={values.trip.destination ? this.getTicketDestinations(values): []}
-                    onChange={handleChange}
-                  />
-
-                  <ErrorMessage
-                    name="departure"
-                    component="div"
-                    className="spon-ticket-modal__error"
-                  />
-                </div>
-                <div className="spon-ticket-modal__input-cnt spon-ticket-modal__input-cnt--big">
-
-                  {
-                     <div className={"spon-label"}>
-                     <p className="spon-label__label">{"Ticket Destination"}</p>
-                     <div
-                       className={"spon-label__element"}>
-                       <div className="spon-label__placeholder">
-                         <p>{
-                           values.destination = this.getTicketDestination(values)
-                          }</p>
-                       </div>
-                     </div>
-                   </div>
-                  }
-
                 </div>
                 <div className="spon-ticket-modal__input-cnt">
                   <Dropdown

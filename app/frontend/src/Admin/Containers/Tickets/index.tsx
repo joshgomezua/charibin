@@ -300,12 +300,13 @@ class TicketsContainer extends React.Component<
 
   handleSelectTicketDeparture = (departure: string) => {
     const token = getToken()
+    console.log('test')
 
     getTripNames(token)
       .then(({data}) => {
+        console.log('data', data)
         const destinationsFiltered = data.filter((item: any) => item.departure === departure)
         const destinations = destinationsFiltered.map((item: any) => {
-        // tslint:disable-next-line: no-unused-expression
           ({  _id: item._id,
               departure: item.departure,
               destination: item.destinaton
