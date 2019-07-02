@@ -4,14 +4,18 @@ import classnames from 'classnames'
 import { IProps } from './types'
 import './styles.scss'
 import './table.scss'
+import TripTable from '../TripTable';
 
-const Table: React.SFC<IProps> = ({
+const ExpandableTable: React.SFC<IProps> = ({
   columns,
   data,
+  detailsColumns,
   handleFetchData,
+  handleOpenModal,
   loading,
   pages,
   className,
+  subComponentClassName
 }) => {
   const tableClass = classnames('spon-table', {
     [`${className}`]: className
@@ -31,9 +35,21 @@ const Table: React.SFC<IProps> = ({
         loading={loading}
         pages={pages}
         onFetchData={handleFetchData}
+        SubComponent={(row) => { 
+          return(
+          <div className={subComponentClassName}>
+            <TripTable
+              data={row.original.scheduledTrips}
+              parentTrip={row.original._id}
+              columns={detailsColumns}
+              handleOpenModal={handleOpenModal}
+            />
+          </div> 
+        )}
+      }
       />
     </div>
   )
 }
 
-export default Table
+export default ExpandableTable

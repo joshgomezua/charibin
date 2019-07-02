@@ -210,8 +210,6 @@ class CityContainer extends React.Component<
       .catch(err => this.props.showError(err, ERRORS.CITY_EDIT))
   }
 
-  handleVoidFunction = () => {};
-
   handleRestartModalType = () => {
     this.setState({
       isModalLoading: false,
@@ -249,7 +247,6 @@ class CityContainer extends React.Component<
             this.handleOpenEditModal,
             debounce(this.handleToggleButton,300)
           )}
-          handleOpenModal={this.handleVoidFunction}
           loading={isLoading}
           pages={Math.ceil(total / 10)}
         />
