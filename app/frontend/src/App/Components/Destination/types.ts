@@ -36,4 +36,7 @@ export interface IState {
 
   parsedDepartureTickets: ITicket[]
   parsedDestinationTickets: ITicket[]
+
+  startDatesTab: string[]
+  endDatesTab: string[]
 }
