@@ -7,7 +7,7 @@ module.exports = app => {
     console.log('first')
     console.log('Out', departure, destination)
     Valid.onCreate({ departure, destination }, 'TicketGetDestination', role)
-      .then(({ departure, destination }) => {TicketService.findDestinationTickets(departure, destination); console.log('second')})
+      .then(({ departure, destination }) => TicketService.findDestinationTickets(departure, destination))
       .then(res.ok)
       .catch(res.error);
   });

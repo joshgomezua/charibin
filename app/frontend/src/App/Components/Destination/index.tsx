@@ -45,14 +45,19 @@ export default class Destination extends Component<IProps, IState> {
   }
 
 
-  getTickets = async (departure: string, destination: string, token: string) => {
+  getTickets = (departure: string, destination: string, token: string) => {
     console.log('getTickets', departure, destination, token)
-    const destinationTickets = await getDestinationTickets(departure, destination, token)
-    this.setState({parsedDepartureTickets : destinationTickets.data})
-    //const test = this.state.parsedDepartureTickets.map((item: ITicket) =>
-    //moment.utc(item.date.start).format('YYYY-MM-DD')
+    getDestinationTickets(departure, destination, token)
+    .then(res => {
+      console.log('res', res)
+      this.setState({parsedDepartureTickets : res.data})
+    })
     
-    console.log('test', this.state.parsedDepartureTickets)
+    let test : string[] = []
+    test = this.state.parsedDepartureTickets.map((item: ITicket) => moment.utc(item.date.start).format('YYYY-MM-DD'))
+    console.log('testTab', test)
+    return test
+    //onsole.log('test', this.state.parsedDepartureTickets)
   }
 
   
@@ -63,35 +68,35 @@ export default class Destination extends Component<IProps, IState> {
       hours,
       hoursToSelect: { start, end },
     } = this.state
-    const { data, quantity } = this.props
+    const { data, /*quantity*/ } = this.props
     const HOURS_SET_PRICE = process.env.REACT_APP_TICKET_CHOOSE_TIME_PRICE
     const token = getToken()
     
     const startDates =
-      data.type === 'trip' && this.getTickets(data.departure, data.destination, token)
+      data.type === 'trip'
         ? 
-            data.tickets
-            .filter(
-              (item: ITicket) =>
-                item.departure === data.departure &&
-                moment
-                  .utc(item.date.start)
-                  .set({ hour: 0, minutes: 0, seconds: 0, milliseconds: 0 })
-                  .isAfter() &&
-                item.quantity >= quantity!
-            )
-            .map((item: ITicket) =>
-              moment.utc(item.date.start).format('YYYY-MM-DD')
-            )
-            .filter((item, index, array) => array.indexOf(item) === index) 
+        /* data.tickets
+        .filter(
+          (item: ITicket) =>
+            item.destination === data.destination &&
+            moment
+              .utc(item.date.start)
+              .set({ hour: 0, minutes: 0, seconds: 0, milliseconds: 0 })
+              .isAfter() &&
+            item.quantity >= quantity!
+        )
+        .map((item: ITicket) =>
+          moment.utc(item.date.start).format('YYYY-MM-DD')
+        )
+        .filter((item, index, array) => array.indexOf(item) === index) */
              
             
-            //this.getTickets(data.departure, data.destination, token)
+            this.getTickets(data.departure, data.destination, token)
         : []
     const endDates =
       data.type === 'trip'
         ? 
-        data.tickets
+        /*data.tickets
             .filter(
               (item: ITicket) =>
                 item.destination === data.destination &&
@@ -104,8 +109,8 @@ export default class Destination extends Component<IProps, IState> {
             .map((item: ITicket) =>
               moment.utc(item.date.start).format('YYYY-MM-DD')
             )
-            .filter((item, index, array) => array.indexOf(item) === index) 
-            //this.getTickets(data.destination, data.departure, token)
+            .filter((item, index, array) => array.indexOf(item) === index) */
+            this.getTickets(data.destination, data.departure, token)
         : []
 
     return (
