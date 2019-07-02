@@ -135,27 +135,30 @@ async function createManyTickets (data) {
 }
 
 async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
+  console.log('firsst', new Date(selectedTrip.dateStart).setHours(0,0,0,0))
+  console.log('second', Date.now() + global.config.custom.time.day)
   if(new Date(selectedTrip.dateStart).setHours(0,0,0,0) < Date.now() + global.config.custom.time.day)
     throw { status: 400, message: 'TICKET.DATE.START.INVALID%', args: [new Date(Date.now() + global.config.custom.time.day).toDateString()] };
   if(new Date(selectedTrip.dateEnd).setHours(0,0,0,0) < Date.now() + global.config.custom.time.day)
     throw { status: 400, message: 'TICKET.DATE.END.INVALID%', args: [new Date(Date.now() + global.config.custom.time.day).toDateString()] };
-
+  console.log('ça passe')
   const trip = await Trip.findOne({ _id: selectedTrip.id, deleted: false, active: true });
   if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
-
+  console.log('ça passe ici????')
+  console.log('----selectedTrip-----, ', selectedTrip)
   const [arrivalTicket] = await Ticket.find({
-    trip: trip._id,
+    //trip: trip._id,
     active: true,
     deleted: false,
     quantity: { $gte: quantity },
     departure: trip.departure,
-    destination: destination.departure,
+    destination: trip.destination,
     'date.start': { $gte: new Date(selectedTrip.dateStart).setHours(0,0,0,0), $lte: new Date(selectedTrip.dateStart).setHours(23,59,59,999) }
   }).limit(1);
   if(!arrivalTicket) throw { status: 404, message: 'TICKET.ARRIVAL.NOT.EXIST%', args: [new Date(selectedTrip.dateStart).toDateString()] };
-
+  console.log('troll1')
   const [departureTicket] = await Ticket.find({
-    trip: trip._id,
+    //trip: trip._id,
     active: true,
     deleted: false,
     quantity: { $gte: quantity },
@@ -164,7 +167,7 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
     'date.start': { $gte: new Date(selectedTrip.dateEnd).setHours(0,0,0,0), $lte: new Date(selectedTrip.dateEnd).setHours(23,59,59,999) }
   }).limit(1);
   if(!departureTicket) throw { status: 404, message: 'TICKET.DEPARTURE.NOT.EXIST%', args: [new Date(selectedTrip.dateEnd).toDateString()] };
-
+  console.log('troll2')
   let reservedArrivalTicket;
   console.log(`
     quantity: ${quantity}\n
@@ -183,7 +186,7 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
   } else {
     throw {status: 404, message: 'TICKET.BOOK.NOT.ENOUGH', args:[new Date(selectedTrip.dateEnd).toDateString()] }
   }
-  
+  console.log('troll3')
   let reservedDepartureTicket;
   console.log(`
     quantity: ${quantity}\n
@@ -202,7 +205,7 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
   } else {
     throw {status: 404, message: 'TICKET.BOOK.NOT.ENOUGH', args:[new Date(selectedTrip.dateEnd).toDateString()] }
   }
-
+  console.log('troll4')
   const updatedTicketOwner = await TicketOwner.findOneAndUpdate({
     owner
   },{

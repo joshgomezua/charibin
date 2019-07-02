@@ -132,12 +132,14 @@ class SelectContainer extends Component<
     const bookedTrips = selected.map((selectedItem: ISelectedData) => {
       if (selectedItem.departureTicket && selectedItem.arrivalTicket) {
         return {
-          arrivalTicket: selectedItem.arrivalTicket,
-          departureTicket: selectedItem.departureTicket
+          departure: selectedItem.departure,
+          destination: selectedItem.departureTicket
         }
       } else {
         return {
           id: selectedItem.tripId,
+          departure: selectedItem.departure,
+          destination: selectedItem.destination,
           dateStart: selectedItem.dateStart,
           dateEnd: selectedItem.dateEnd
         }
