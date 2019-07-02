@@ -52,7 +52,6 @@ class SelectContainer extends Component<
   componentDidMount() {
     window.scrollTo(0, 0)
     const { quantity } = this.props
-
     this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity).then(
       () => {
         this.setState({ isLoading: false })
@@ -74,6 +73,7 @@ class SelectContainer extends Component<
     dateEnd: number,
     qunatity: number
   ) => {
+    console.log('handleFetchTrips')
     return API.getTrips(
       page,
       limit,

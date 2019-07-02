@@ -551,6 +551,7 @@ module.exports = {
   },
 
   async findDashboard ({ page, limit, quantity, priceStart, priceEnd , dateStart, dateEnd }) {
+    console.log('findDashboard')
     page = +page;
     quantity = +quantity;
     limit = +limit;
@@ -580,11 +581,13 @@ module.exports = {
       ticketMatch.$and.push({ $lte: [ '$$tickets.date.start', new Date(dateEnd) ] });
     } else {
       ticketMatch.$and.push({ $cond: [
-        //{ $eq: ['$$tickets.direction', 'departure'] }, à y penser
+        { $eq: ['$$tickets.departure', 'London'] },
         { $gte: [ '$$tickets.date.start', new Date(Date.now() + 2 * global.config.custom.time.day) ] },
         { $gte: [ '$$tickets.date.start', new Date(Date.now() + global.config.custom.time.day) ] }
       ] });
     }
+
+    console.log('TicketMatch', ticketMatch)
 
     return Trip.aggregate([
       {
