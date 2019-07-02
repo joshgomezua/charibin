@@ -551,7 +551,7 @@ module.exports = {
   },
 
   async findDashboard ({ page, limit, quantity, priceStart, priceEnd , dateStart, dateEnd }) {
-    console.log('findDashboard')
+    console.log('before', page, limit, quantity, priceStart, priceEnd, dateStart, dateEnd)
     page = +page;
     quantity = +quantity;
     limit = +limit;
@@ -559,7 +559,7 @@ module.exports = {
     priceEnd = +priceEnd;
     dateStart = +dateStart;
     dateEnd = +dateEnd;
-
+    console.log('after', page, limit, quantity, priceStart, priceEnd, dateStart, dateEnd)
     const tripMatch = { active: true };
     const ticketMatch = {
       $and: [
@@ -577,9 +577,11 @@ module.exports = {
       tripMatch.price = { $gte: priceStart, $lte: priceEnd };
 
     if(dateStart > 0 && dateEnd > 0) {
+      console.log('-----if-----')
       ticketMatch.$and.push({ $gte: [ '$$tickets.date.start', new Date(dateStart) ] });
       ticketMatch.$and.push({ $lte: [ '$$tickets.date.start', new Date(dateEnd) ] });
     } else {
+      console.log('----else----')
       ticketMatch.$and.push({ $cond: [
         { $eq: ['$$tickets.departure', 'London'] },
         { $gte: [ '$$tickets.date.start', new Date(Date.now() + 2 * global.config.custom.time.day) ] },
@@ -605,6 +607,8 @@ module.exports = {
           discount: 1,
           duration: 1,
           deselectionPrice: 1,
+          departure: 1,
+          destination: 1,
           tickets: {
             $filter: {
               input: '$tickets',
@@ -640,6 +644,29 @@ module.exports = {
       }
     ])
       .then(data => {
+        return data[0].results;
+      });
+  },
+  async findDestinationTickets (departure, destination) {
+    console.log('in', departure, destination)
+    return Ticket.aggregate([
+      {
+        $facet: {
+          results: [
+            {
+              $match: {
+                deleted: false,
+                'date.start': { $gte: new Date()},
+                'departure': departure,
+                'destination': destination
+              }
+            },
+          ]
+        }
+      }
+    ])
+      .then(data => {
+        console.log('---result---', data[0].results)
         return data[0].results;
       });
   },

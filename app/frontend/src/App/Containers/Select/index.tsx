@@ -52,6 +52,7 @@ class SelectContainer extends Component<
   componentDidMount() {
     window.scrollTo(0, 0)
     const { quantity } = this.props
+    console.log('quantity', quantity)
     this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity).then(
       () => {
         this.setState({ isLoading: false })
@@ -337,6 +338,7 @@ class SelectContainer extends Component<
               {!isLoading &&
                 trips.length > 0 &&
                 trips.map((trip: ITrip, index) => {
+                  console.log('Itrip', trip)
                   trip.type = 'trip'
                   const filtered = this.props.selected.filter(
                     (item: ISelectedData) => {
@@ -351,7 +353,7 @@ class SelectContainer extends Component<
                     }
                   )
                   const isSelected = filtered.length > 0
-
+                  console.log('destination data', trip)
                   return trip.tickets.length > 0 ? (
                     <Destination
                       key={index}

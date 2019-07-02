@@ -29,6 +29,8 @@ export interface ISelectedData {
   type: 'selectedTrid'
   arrivalTicket?: string
   departureTicket?: string
+  departure: string,
+  destination: string
 }
 
 export interface IFinalSelected {
