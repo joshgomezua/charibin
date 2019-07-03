@@ -27,13 +27,15 @@ import {
 } from '../../Utils/api'
 import { IState, IProps } from './types'
 import { columns } from './columns'
+import Search from 'src/Admin/Components/Search';
+import { IResponseError } from 'src/Common/Utils/globalTypes';
 
 class CityContainer extends React.Component<
   RouteComponentProps<{}> & IProps,
   IState
 > {
   private modal = React.createRef<Modal>()
-  
+
   readonly state: IState = {
     cities: [{
       _id: '0',
@@ -45,6 +47,7 @@ class CityContainer extends React.Component<
       isManual: false,
       isEnabled: false
     }],
+    filteredData: [],
     total: 0,
     currentPage: 0,
     isLoading: false,
@@ -164,6 +167,17 @@ class CityContainer extends React.Component<
       })
   }
 
+  handleUpdateCities = (filteredCities:ICity[]) => {
+    const response: IResponseError = {
+        response:{statusText: "city not found"}
+    }
+    !filteredCities.length ? this.props.showError(response)
+      : this.props.showSuccess("city found")
+    
+
+    this.setState({filteredData: filteredCities})
+  }
+
   handleEditCity = (data: ICity) => {
     const token = getToken()
     const { currentPage } = this.state
@@ -226,6 +240,7 @@ class CityContainer extends React.Component<
   render() {
     const {
       cities,
+      filteredData,
       total,
       isLoading,
       isModalLoading,
@@ -241,8 +256,14 @@ class CityContainer extends React.Component<
           handleOpenModal={this.handleOpenModal}
         />
 
-        <Table
+        <Search
+          placeholder= "enter your search here"
           data={cities}
+          handleUpdateCities={this.handleUpdateCities}
+        />
+
+        <Table
+          data={filteredData.length===0? cities:filteredData}
           handleFetchData={this.handleFetchTableData}
           columns={columns(
             this.handleOpenDeleteModal,
