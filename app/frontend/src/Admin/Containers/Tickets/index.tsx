@@ -101,9 +101,16 @@ class TicketsContainer extends React.Component<
           departure: item.departure,
           destination: item.destination
         }))
-        
+
+        const uniqueCitiesNames = cityNames.reduce((unique: any, other: any) => {
+          if(!unique.some((obj: { departure: any; }) => obj.departure === other.departure)) {
+            unique.push(other);
+          }
+          return unique;
+        },[]);
+
         this.props.changeFilters(cityNames)
-        this.setState({ departures: cityNames })
+        this.setState({ departures: uniqueCitiesNames })
       })
       .catch(err => {
         this.props.showError(err)
