@@ -196,8 +196,8 @@ class TicketModal extends React.Component<IProps, IState> {
                   <DropDownTicket
                     saveAsObject
                     id="trip"
-                    label="Select trip departure"
-                    placeholder="Select trip departure"
+                    label="From"
+                    placeholder="From"
                     className="spon-ticket-modal__dropdown"
                     selectedValue={values.trip ? values.trip.departure : ''}
                     options={departures}
@@ -215,8 +215,8 @@ class TicketModal extends React.Component<IProps, IState> {
                   <DropDownTicket
                     saveAsObject
                     id="trip"
-                    label="Select trip destination"
-                    placeholder="Select trip destination"
+                    label="To"
+                    placeholder="To"
                     className="spon-ticket-modal__dropdown"
                     selectedValue={values.trip ? values.trip.destination : ''}
                     options={destinations}
