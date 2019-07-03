@@ -101,17 +101,7 @@ class TicketsContainer extends React.Component<
           departure: item.departure,
           destination: item.destination
         }))
-        /**
-         * for (let item in cityNames) {
-          if (!filteredCityNames.length) {
-            filteredCityNames.push(item)
-          } else {
-            for (let i = 0 ; i <  filteredCityNames.length; i++) {
-              if ()
-            }
-          }
-        }
-         */
+        
         this.props.changeFilters(cityNames)
         this.setState({ departures: cityNames })
       })
