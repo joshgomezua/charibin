@@ -52,7 +52,6 @@ class SelectContainer extends Component<
   componentDidMount() {
     window.scrollTo(0, 0)
     const { quantity } = this.props
-    console.log('quantity', quantity)
     this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity).then(
       () => {
         this.setState({ isLoading: false })
@@ -74,7 +73,7 @@ class SelectContainer extends Component<
     dateEnd: number,
     qunatity: number
   ) => {
-    console.log('handleFetchTrips')
+
     return API.getTrips(
       page,
       limit,
@@ -96,7 +95,6 @@ class SelectContainer extends Component<
   }
 
   handleFetchInitialTripsWithFilter = () => {
-    console.log("handleFetchInitialTripsWithFilter")
     this.setState(
       {
         page: 0,
@@ -127,15 +125,16 @@ class SelectContainer extends Component<
     console.log('handleBookTrips')
     const { selected, quantity } = this.props
     console.log('selected', selected)
-    console.log('quantity', quantity)
     const token = getOwnerToken()
     const bookedTrips = selected.map((selectedItem: ISelectedData) => {
-      if (selectedItem.departureTicket && selectedItem.arrivalTicket) {
+      if (selectedItem.arrivalTicket && selectedItem.departureTicket) {
+        console.log('yes')
         return {
-          departure: selectedItem.departure,
-          destination: selectedItem.departureTicket
+          arrivalTicket: selectedItem.arrivalTicket,
+          departureTicket: selectedItem.departureTicket
         }
       } else {
+        console.log('no')
         return {
           id: selectedItem.tripId,
           departure: selectedItem.departure,
@@ -259,7 +258,6 @@ class SelectContainer extends Component<
   }
 
   handleClearFilterDates = () => {
-    console.log("handleClearFilterDates")
     const {
       filters: { start, end }
     } = this.state
@@ -340,7 +338,6 @@ class SelectContainer extends Component<
               {!isLoading &&
                 trips.length > 0 &&
                 trips.map((trip: ITrip, index) => {
-                  console.log('Itrip', trip)
                   trip.type = 'trip'
                   const filtered = this.props.selected.filter(
                     (item: ISelectedData) => {
@@ -355,7 +352,6 @@ class SelectContainer extends Component<
                     }
                   )
                   const isSelected = filtered.length > 0
-                  console.log('destination data', trip)
                   return trip.tickets.length > 0 ? (
                     <Destination
                       key={index}

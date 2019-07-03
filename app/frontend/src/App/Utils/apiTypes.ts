@@ -9,8 +9,8 @@ interface ISelectedTrips {
 }
 
 interface ISelectedTickets {
-  departure: string
-  destination: string
+  arrivalTicket: string
+  departureTicket: string
 }
 
 export interface IBookedData {

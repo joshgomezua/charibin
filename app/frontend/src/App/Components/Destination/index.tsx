@@ -46,7 +46,6 @@ export default class Destination extends Component<IProps, IState> {
 
   componentDidMount = () => {
     const { data } = this.props
-    console.log('data', data)
     const token = getToken() 
     
     this.getTickets(data.departure, data.destination, token, 'startDates')
@@ -60,7 +59,6 @@ export default class Destination extends Component<IProps, IState> {
 
     getDestinationTickets(departure, destination, token)
       .then(res => {
-        console.log('res', res)
         dates = res.data.map((item: ITicket) => moment.utc(item.date.start).format('YYYY-MM-DD'))
         
         returnedDates[datePoint] = dates
@@ -225,6 +223,7 @@ export default class Destination extends Component<IProps, IState> {
       }
 
       if (hours.start && hours.end) {
+        console.log(`start: ${hours.start.id}\n end: ${hours.end.id}`)
         selectedData.arrivalTicket = hours.start.id
         selectedData.departureTicket = hours.end.id
       }

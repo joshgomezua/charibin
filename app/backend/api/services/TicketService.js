@@ -348,6 +348,7 @@ module.exports = {
       if(isOwnerExist) return isOwnerExist;
     }
     const owner = crypto.randomBytes(40).toString('hex');
+    console.log('trips', trips)
 
     for (let selectedTrip of trips) {
       if(selectedTrip.arrivalTicket || selectedTrip.departureTicket) {
