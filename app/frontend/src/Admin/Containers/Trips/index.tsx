@@ -119,7 +119,7 @@ class TripsContainer extends React.Component<
 
   handleFetchTripSchedule = (id: string) => {
     const token = getToken()
-    console.log(id)
+
     if (token) {
       getSingleScheduledTrip(id, token)
         .then(res => {
@@ -154,6 +154,14 @@ class TripsContainer extends React.Component<
   handleFetchTableData = (boardState: any) => {
     this.setState({ currentPage: boardState.page })
     this.handleFetchItems(boardState.page, 10)
+  }
+
+  handleBidirectionalChange = (data: IEditTimeSchedule) => {
+    const token = getToken();
+
+    if( token ){
+
+    }
   }
 
   handleDeleteTrip = () => {
@@ -247,6 +255,11 @@ class TripsContainer extends React.Component<
     const {
       modal: { id }
     } = this.state
+
+
+    if(this.state.editData.bidirectionalChange) {
+
+    }
     
     this.setState({ isModalLoading: true })
     return updateTimeSelection(id, data, token)
@@ -338,7 +351,7 @@ class TripsContainer extends React.Component<
       trip: this.state.editData._id
     }
     this.setState({ isModalLoading: true })
-    console.log(newSchedule)
+
     return addSchedule(newSchedule, token)
       .then(res => {
         this.modal.current!.close()
@@ -514,6 +527,7 @@ class TripsContainer extends React.Component<
           {modalType === MODAL_TYPE.EDIT_TIME_SELECTION ? (
             <TimeSelectionModal
               isLoading={isModalLoading}
+              isASchedule={false}
               editSchedule={editData}
               closeModal={this.handleCloseModal}
               handleEditTimeSelection={this.handleEditTimeSelection}
@@ -523,6 +537,7 @@ class TripsContainer extends React.Component<
           {modalType === MODAL_TYPE.EDIT_TIME_SELECTION_SCHEDULE ? (
             <TimeSelectionModal
               isLoading={isModalLoading}
+              isASchedule={true}
               editSchedule={editSchedule}
               closeModal={this.handleCloseModal}
               handleEditTimeSelection={this.handleEditScheduleTimeSelection}
