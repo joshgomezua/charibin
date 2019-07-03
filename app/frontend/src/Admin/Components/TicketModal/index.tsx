@@ -124,7 +124,6 @@ class TicketModal extends React.Component<IProps, IState> {
             values: IFormValues,
             { resetForm }: FormikActions<IFormValues>
           ) => {
-            console.log('retest')
             const splitedHours = values.hours!.split('-')
             const startHours = splitedHours[0]
             const endHour = splitedHours[1]
@@ -192,7 +191,6 @@ class TicketModal extends React.Component<IProps, IState> {
             setFieldValue
           }: FormikProps<IFormValues>) => (
             <Form noValidate>
-              {console.log('values', values)}
               <div className="spon-ticket-modal__row">
                 <div className="spon-ticket-modal__input-cnt spon-ticket-modal__input-cnt--big">
                   <DropDownTicket

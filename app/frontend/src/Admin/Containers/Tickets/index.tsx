@@ -301,7 +301,6 @@ class TicketsContainer extends React.Component<
 
   handleSelectTicketDeparture = (departure: string) => {
     const token = getToken()
-    console.log('test')
 
     getTripNames(token)
       .then(({data}) => {
@@ -312,7 +311,6 @@ class TicketsContainer extends React.Component<
           destination: item.destination
         }))
         this.setState({destinations : destinationsMapped})
-        console.log('destinationsMapped', destinationsMapped)
       })
     .catch(err => {
         this.props.showError(err)
