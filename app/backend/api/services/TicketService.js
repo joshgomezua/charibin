@@ -135,6 +135,7 @@ async function createManyTickets (data) {
 }
 
 async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
+  console.log(`selectedTrip ${selectedTrip.departure} ${selectedTrip.destination}`)
   console.log('firsst', new Date(selectedTrip.dateStart).setHours(0,0,0,0))
   console.log('second', Date.now() + global.config.custom.time.day)
   if(new Date(selectedTrip.dateStart).setHours(0,0,0,0) < Date.now() + global.config.custom.time.day)
