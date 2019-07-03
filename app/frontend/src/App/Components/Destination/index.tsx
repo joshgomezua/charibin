@@ -46,6 +46,7 @@ export default class Destination extends Component<IProps, IState> {
 
   componentDidMount = () => {
     const { data } = this.props
+    console.log('data', data)
     const token = getToken() 
     
     this.getTickets(data.departure, data.destination, token, 'startDates')
@@ -260,7 +261,9 @@ export default class Destination extends Component<IProps, IState> {
   }
 
   handleSelectDates = (dates: [Date, Date]) => {
+    console.log('handleSelectDates')
     const { tickets, departure, destination } = this.props.data as ITripSelect
+    console.log('props', tickets, departure, destination)
     const offset = moment(dates[0]).utcOffset()
 
     const hours = tickets.reduce(
@@ -283,7 +286,7 @@ export default class Destination extends Component<IProps, IState> {
             .format('YYYY-MM-DD')
         )
 
-        if (isStartSameFirst && ticket.departure === departure) {
+        if (isStartSameFirst && ticket.departure === departure && ticket.destination === destination) {
           total.start.push({
             id: ticket._id,
             name: `${moment
@@ -292,7 +295,7 @@ export default class Destination extends Component<IProps, IState> {
               .utc(ticket.date.end)
               .format('HH:mm')}`
           })
-        } else if (isStartSameSecond && ticket.destination === destination) {
+        } else if (isStartSameSecond && ticket.departure === destination && ticket.destination === departure) {
           total.end.push({
             id: ticket._id,
             name: `${moment
