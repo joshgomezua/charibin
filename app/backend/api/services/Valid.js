@@ -9,12 +9,10 @@ class Validator {
     global.log.debug(`Validation start:\n\tName of model: ${nameOfModel}\n\tAction: ${action}\n\tPermission: ${permission}\n`);
     this.action = action;
 
-    console.log('just avant')
     if(global.patterns[nameOfModel] === undefined) {
       global.log.error(`Pattern '${nameOfModel}' was not found`);
       throw { status: 400, message : 'VALIDATION.PATTERN_INVALID%', args : [nameOfModel] };
     }
-    console.log('just apres')
 
     this.pattern = global.patterns[nameOfModel];
     this.data = this._prepare(data, permission);
@@ -32,29 +30,24 @@ class Validator {
       }, err => {
         if(err)
           return reject({ status: 400, ...err });
-        console.log('data lol', data)
         return resolve(data);
       });
     });
   }
 
   requiredParser (pattern = this.pattern, data = this.data) {
-    console.log(`pattern: ${this.pattern}, data: ${this.data}`)
     return new Promise((resolve, reject) => {
       async.eachSeries(Object.keys(pattern), (key, next) => {
         global.log.debug(`requiredParser start for: ${key}`);
 
         if(pattern[key].type === 'object' && data[key] !== undefined){
-          console.log('test1')
           this._requiredNodeParser(pattern[key].attributes, data[key], key)
             .then(next)
             .catch(next);
         } else if (data[key] === undefined && pattern[key].required) {
-          console.log('test2')
           global.log.debug(`\trequired: ${key}`);
 
           if(pattern[key].default !== undefined) {
-            console.log('test3')
             if (typeof pattern[key].default === 'function') data[key] = pattern[key].default();
             else data[key] = pattern[key].default;
             next();
@@ -63,7 +56,6 @@ class Validator {
           }
 
         } else {
-          console.log('test4')
           if(data[key] === undefined && !pattern[key].required)
             delete pattern[key];
 
@@ -411,10 +403,8 @@ class Validator {
 
 module.exports = {
   onCreate (data, nameOfModel, permission) {
-    console.log('OnCreate')
     return new Promise((resolve, reject) => {
       const validator = new Validator(nameOfModel, data, 'create', permission);
-      console.log('validator', validator)
       validator.requiredParser()
         .then(() => {
           return validator.valid();

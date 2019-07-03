@@ -135,18 +135,16 @@ async function createManyTickets (data) {
 }
 
 async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
-  console.log(`selectedTrip ${selectedTrip.departure} ${selectedTrip.destination}`)
-  console.log('firsst', new Date(selectedTrip.dateStart).setHours(0,0,0,0))
-  console.log('second', Date.now() + global.config.custom.time.day)
+  console.log('bookWithOutTime')
+  console.log(`selectedTrip: ${selectedTrip.departure} ${selectedTrip.destination}`)
+  console.log('selectedTrip date: ', new Date(selectedTrip.dateStart).setHours(0,0,0,0))
+  console.log('Date now: ', Date.now() + global.config.custom.time.day)
   if(new Date(selectedTrip.dateStart).setHours(0,0,0,0) < Date.now() + global.config.custom.time.day)
     throw { status: 400, message: 'TICKET.DATE.START.INVALID%', args: [new Date(Date.now() + global.config.custom.time.day).toDateString()] };
   if(new Date(selectedTrip.dateEnd).setHours(0,0,0,0) < Date.now() + global.config.custom.time.day)
     throw { status: 400, message: 'TICKET.DATE.END.INVALID%', args: [new Date(Date.now() + global.config.custom.time.day).toDateString()] };
-  console.log('ça passe')
   const trip = await Trip.findOne({ _id: selectedTrip.id, deleted: false, active: true });
   if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
-  console.log('ça passe ici????')
-  console.log('----selectedTrip-----, ', selectedTrip)
   const [arrivalTicket] = await Ticket.find({
     //trip: trip._id,
     active: true,
@@ -157,7 +155,6 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
     'date.start': { $gte: new Date(selectedTrip.dateStart).setHours(0,0,0,0), $lte: new Date(selectedTrip.dateStart).setHours(23,59,59,999) }
   }).limit(1);
   if(!arrivalTicket) throw { status: 404, message: 'TICKET.ARRIVAL.NOT.EXIST%', args: [new Date(selectedTrip.dateStart).toDateString()] };
-  console.log('troll1')
   const [departureTicket] = await Ticket.find({
     //trip: trip._id,
     active: true,
@@ -168,16 +165,8 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
     'date.start': { $gte: new Date(selectedTrip.dateEnd).setHours(0,0,0,0), $lte: new Date(selectedTrip.dateEnd).setHours(23,59,59,999) }
   }).limit(1);
   if(!departureTicket) throw { status: 404, message: 'TICKET.DEPARTURE.NOT.EXIST%', args: [new Date(selectedTrip.dateEnd).toDateString()] };
-  console.log('troll2')
   let reservedArrivalTicket;
-  console.log(`
-    quantity: ${quantity}\n
-    arrivalTicket.quantity: ${arrivalTicket.quantity}\n
-    arrivalTicket.soldTickets: ${arrivalTicket.soldTickets}\n
-    arrivalTicket.reservedQuantity: ${arrivalTicket.reservedQuantity}\n
-    ${quantity} <= ${arrivalTicket.quantity - (arrivalTicket.soldTickets + arrivalTicket.reservedQuantity)}
-    --------------------------
-  `)
+  
   if (quantity <= (arrivalTicket.quantity - (arrivalTicket.soldTickets + arrivalTicket.reservedQuantity))) {
     reservedArrivalTicket = await Ticket.findOneAndUpdate({ _id: arrivalTicket._id, active: true, deleted: false, quantity: { $gte: quantity } }, {
       $inc: {reservedQuantity: quantity},
@@ -187,16 +176,8 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
   } else {
     throw {status: 404, message: 'TICKET.BOOK.NOT.ENOUGH', args:[new Date(selectedTrip.dateEnd).toDateString()] }
   }
-  console.log('troll3')
   let reservedDepartureTicket;
-  console.log(`
-    quantity: ${quantity}\n
-    departureTicket.quantity: ${departureTicket.quantity}\n
-    departureTicket.soldTickets: ${departureTicket.soldTickets}\n
-    departureTicket.reservedQuantity: ${departureTicket.reservedQuantity}\n
-    ${quantity} <= ${departureTicket.quantity - (departureTicket.soldTickets + departureTicket.reservedQuantity)}
-    ----------------------
-  `)
+  
   if (quantity <= (departureTicket.quantity - (departureTicket.soldTickets + departureTicket.reservedQuantity))) {
     reservedDepartureTicket = await Ticket.findOneAndUpdate({ _id: departureTicket._id, active: true, deleted: false, quantity: { $gte: quantity } }, {
       $inc: {reservedQuantity: quantity},
@@ -206,7 +187,6 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
   } else {
     throw {status: 404, message: 'TICKET.BOOK.NOT.ENOUGH', args:[new Date(selectedTrip.dateEnd).toDateString()] }
   }
-  console.log('troll4')
   const updatedTicketOwner = await TicketOwner.findOneAndUpdate({
     owner
   },{
@@ -266,6 +246,7 @@ async function unbook ({ owner, selectedTrip }) {
 }
 
 async function bookWithTime ({ quantity, selectedTrip, owner }) {
+  console.log('bookWithTime')
   const arrivalTicket = await Ticket.findOne({ _id: selectedTrip.arrivalTicket, active: true, deleted: false, quantity: { $gte: quantity } });
   if(!arrivalTicket) throw { status: 404, message: 'TICKET.ARRIVAL.NOT.EXIST' };
 
@@ -279,15 +260,7 @@ async function bookWithTime ({ quantity, selectedTrip, owner }) {
   // Check if ticket are in future
   if(+new Date(departureTicket.date.start) < Date.now() + global.config.custom.time.day)
     throw { status: 400, message: 'TICKET.DATE.END.INVALID%', args: [new Date(Date.now() + global.config.custom.time.day).toDateString()] };
-
-    console.log(`
-    quantity: ${quantity}\n
-    arrivalTicket.quantity: ${arrivalTicket.quantity}\n
-    arrivalTicket.soldTickets: ${arrivalTicket.soldTickets}\n
-    arrivalTicket.reservedQuantity: ${arrivalTicket.reservedQuantity}\n
-    ${quantity} <= ${arrivalTicket.quantity - (arrivalTicket.soldTickets + arrivalTicket.reservedQuantity)}
-    ------------------------------
-  `)  
+    
   let reservedArrivalTicket;
   if (quantity <= arrivalTicket.quantity - (arrivalTicket.soldTickets + arrivalTicket.reservedQuantity))
   {
@@ -299,14 +272,6 @@ async function bookWithTime ({ quantity, selectedTrip, owner }) {
     throw { status: 404, message: 'TICKET.BOOK.NOT.ENOUGH', args: [new Date(Date.now() + global.config.custom.time.day).toDateString()] };
   }
   
-  console.log(`
-    quantity: ${quantity}\n
-    arrivalTicket.quantity: ${departureTicket.quantity}\n
-    arrivalTicket.soldTickets: ${departureTicket.soldTickets}\n
-    arrivalTicket.reservedQuantity: ${departureTicket.reservedQuantity}\n
-    ${quantity} <= ${departureTicket.quantity - (departureTicket.soldTickets + departureTicket.reservedQuantity)}
-    -------------------------
-  `)
   let reservedDepartureTicket;
   if (quantity <= departureTicket.quantity - (departureTicket.soldTickets + departureTicket.reservedQuantity))
   {
@@ -555,7 +520,6 @@ module.exports = {
   },
 
   async findDashboard ({ page, limit, quantity, priceStart, priceEnd , dateStart, dateEnd }) {
-    console.log('before', page, limit, quantity, priceStart, priceEnd, dateStart, dateEnd)
     page = +page;
     quantity = +quantity;
     limit = +limit;
@@ -563,7 +527,6 @@ module.exports = {
     priceEnd = +priceEnd;
     dateStart = +dateStart;
     dateEnd = +dateEnd;
-    console.log('after', page, limit, quantity, priceStart, priceEnd, dateStart, dateEnd)
     const tripMatch = { active: true };
     const ticketMatch = {
       $and: [
@@ -581,19 +544,15 @@ module.exports = {
       tripMatch.price = { $gte: priceStart, $lte: priceEnd };
 
     if(dateStart > 0 && dateEnd > 0) {
-      console.log('-----if-----')
       ticketMatch.$and.push({ $gte: [ '$$tickets.date.start', new Date(dateStart) ] });
       ticketMatch.$and.push({ $lte: [ '$$tickets.date.start', new Date(dateEnd) ] });
     } else {
-      console.log('----else----')
       ticketMatch.$and.push({ $cond: [
         { $eq: ['$$tickets.departure', 'London'] },
         { $gte: [ '$$tickets.date.start', new Date(Date.now() + 2 * global.config.custom.time.day) ] },
         { $gte: [ '$$tickets.date.start', new Date(Date.now() + global.config.custom.time.day) ] }
       ] });
     }
-
-    console.log('TicketMatch', ticketMatch)
 
     return Trip.aggregate([
       {
@@ -652,7 +611,6 @@ module.exports = {
       });
   },
   async findDestinationTickets (departure, destination) {
-    console.log('in', departure, destination)
     return Ticket.aggregate([
       {
         $facet: {
@@ -670,7 +628,6 @@ module.exports = {
       }
     ])
       .then(data => {
-        console.log('---result---', data[0].results)
         return data[0].results;
       });
   },
