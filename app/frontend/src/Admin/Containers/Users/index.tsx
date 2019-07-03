@@ -243,8 +243,6 @@ class UsersContainer extends React.Component<
     })
   }
 
-  handleVoidFunction = () => {};
-
   render() {
     const {
       usersTable,
@@ -264,7 +262,6 @@ class UsersContainer extends React.Component<
           enable = {enable}
 	        modal = {MODAL_TYPE.ADD_USER}
           handleOpenModal={this.handleOpenModal}
-	  
         />
 
         <Table
@@ -278,7 +275,6 @@ class UsersContainer extends React.Component<
            
            
           )}
-          handleOpenModal={this.handleVoidFunction}
           loading={isLoading}
           pages={Math.ceil(total / 10)}
         />
