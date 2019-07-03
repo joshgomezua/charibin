@@ -33,13 +33,6 @@ class TicketModal extends React.Component<IProps, IState> {
     this.setState((state: IState) => ({ isRecurring: !state.isRecurring }))
   }
 
-  getTicketDestination = (values: IFormValues) => {
-    return values.departure ? 
-    values.departure === values.trip.departure ? 
-    values.trip.destination 
-    : values.trip.departure : ''
-  }
-
   render() {
     const {
       editDate,
@@ -113,7 +106,8 @@ class TicketModal extends React.Component<IProps, IState> {
             reservedQuantity: Yup.number()
               .min(0)
               .max(1000),
-            departure: Yup.string().required('Ticket departure is required'),
+            //departure: Yup.string().required('Ticket departure is required'),
+            //destination: Yup.string().required('Ticket destination is required'),
             date: Yup.string().required(),
             hours: Yup.string().required(),
             isRecurring: Yup.boolean(),
@@ -130,6 +124,7 @@ class TicketModal extends React.Component<IProps, IState> {
             values: IFormValues,
             { resetForm }: FormikActions<IFormValues>
           ) => {
+            console.log('retest')
             const splitedHours = values.hours!.split('-')
             const startHours = splitedHours[0]
             const endHour = splitedHours[1]
@@ -137,8 +132,8 @@ class TicketModal extends React.Component<IProps, IState> {
 
             const dataToSubmit = {
               trip: values.trip._id,
-              departure: values.departure,
-              destination: this.getTicketDestination(values),
+              departure: values.trip.departure,
+              destination: values.trip.destination,
               quantity: values.quantity,
               soldTickets: values.soldTickets,
               reservedQuantity: values.reservedQuantity,
@@ -197,6 +192,7 @@ class TicketModal extends React.Component<IProps, IState> {
             setFieldValue
           }: FormikProps<IFormValues>) => (
             <Form noValidate>
+              {console.log('values', values)}
               <div className="spon-ticket-modal__row">
                 <div className="spon-ticket-modal__input-cnt spon-ticket-modal__input-cnt--big">
                   <DropDownTicket
