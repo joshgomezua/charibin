@@ -1,6 +1,6 @@
 import { ITrip, ISelectedData } from '../../Utils/appTypes'
 import { IOption } from '../Dropdown/types'
-import { ITicket } from 'src/Common/Utils/globalTypes';
+
 export interface IProps {
   index: string
   selected?: boolean
@@ -34,9 +34,6 @@ export interface IState {
     end: IOption[]
   }
 
-  parsedDepartureTickets: ITicket[]
-  parsedDestinationTickets: ITicket[]
-
-  startDatesTab: string[]
-  endDatesTab: string[]
+  startDates: string[]
+  endDates: string[]
 }

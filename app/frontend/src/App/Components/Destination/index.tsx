@@ -40,48 +40,32 @@ export default class Destination extends Component<IProps, IState> {
       start: [],
       end: []
     },
-    parsedDepartureTickets: [],
-    parsedDestinationTickets: [],
-    startDatesTab: [],
-    endDatesTab: []
+    startDates: [],
+    endDates: []
   }
 
   componentDidMount = () => {
     const { data } = this.props
     const token = getToken() 
     
-    const tempStart: string[] = this.getTickets(data.departure, data.destination, token, 'start')
-    this.setState( {startDatesTab: tempStart} )
-
-    const tempEnd = this.getTickets(data.destination, data.departure, token, 'end')
-    this.setState( {endDatesTab: tempEnd} )
+    this.getTickets(data.departure, data.destination, token, 'startDates')
+    this.getTickets(data.destination, data.departure, token, 'endDates')
 
   }
 
-  getTickets = (departure: string, destination: string, token: string, date: string) => {
-    let test: any = []
-    console.log('getTickets', departure, destination, token)
+  getTickets = (departure: string, destination: string, token: string, datePoint: string) => {
+    let dates: string[] = []
+    let returnedDates = {}
+
     getDestinationTickets(departure, destination, token)
-    .then(res => {
-      console.log('res.data', res.data)
-      test = res.data.map((item: ITicket) => moment.utc(item.date.start).format('YYYY-MM-DD'))
-      console.log('test', test)
-      if (date === 'start')
-        this.setState( {startDatesTab: test} )
-      else (date === 'end')
-        this.setState( {endDatesTab: test} )
-    })
-    
-    return test
-    //let test : string[] = []
-    //console.log('this.state.parsedDepartureTickets', this.state.parsedDepartureTickets)
-    //test = this.state.parsedDepartureTickets.map((item: ITicket) => moment.utc(item.date.start).format('YYYY-MM-DD'))
-    //console.log('test', test)
-    //return test
-    //onsole.log('test', this.state.parsedDepartureTickets)
+      .then(res => {
+        console.log('res', res)
+        dates = res.data.map((item: ITicket) => moment.utc(item.date.start).format('YYYY-MM-DD'))
+        
+        returnedDates[datePoint] = dates
+        this.setState( returnedDates )
+      })
   }
-
-  
 
   CalendarBlock = () => {
     const {
@@ -91,8 +75,7 @@ export default class Destination extends Component<IProps, IState> {
     } = this.state
     const { data, /*quantity*/ } = this.props
     const HOURS_SET_PRICE = process.env.REACT_APP_TICKET_CHOOSE_TIME_PRICE
-    //const token = getToken()
-    console.log('loop')
+
     const startDates =
       data.type === 'trip'
         ? 
@@ -112,7 +95,7 @@ export default class Destination extends Component<IProps, IState> {
         .filter((item, index, array) => array.indexOf(item) === index) */
              
             
-        this.state.startDatesTab
+        this.state.startDates
         : []
     const endDates =
       data.type === 'trip'
@@ -131,7 +114,7 @@ export default class Destination extends Component<IProps, IState> {
               moment.utc(item.date.start).format('YYYY-MM-DD')
             )
             .filter((item, index, array) => array.indexOf(item) === index) */
-            this.state.endDatesTab
+            this.state.endDates
         : []
 
     return (
