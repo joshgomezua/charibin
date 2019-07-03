@@ -23,7 +23,7 @@ export const columns = (
     Header: 'Keywords',
     style: { 'white-space': 'unset' } ,
     accessor: 'tags',
-    width: 300,
+    width: 280,
     Cell: (props: RowRenderProps) => (
       props.value.map((tag: string) => {
         const length: number = props.value.length

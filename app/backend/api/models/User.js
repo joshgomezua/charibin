@@ -7,7 +7,7 @@ const bcrypt = require('bcryptjs');
 const userSchema = new Schema({
   email: { type: String, unique: true },
   name: String,
-  role: { type: String, enum: ['Administrator', 'Modify', 'Read Only'] },
+  role: { type: String, enum: ['Administrator', 'Modify', 'Read Only','Client'] },
   password: String,
   createdAt: { type: Date, default: Date.now },
   active: { type: Boolean, default: true },
