@@ -102,8 +102,8 @@ loadModels();
     console.log(`Creating Cities: ${i + 1}/${20}`);
     await helpers.createCity(helpers.dataClone(globals.dataTemplate.city));
 
-    //console.log(`Creating Users: ${i + 1}/${20}`);
-    //await helpers.createUser(helpers.dataClone(globals.dataTemplate.user));
+    // console.log(`Creating Users: ${i + 1}/${20}`);
+    // await helpers.createUser(helpers.dataClone(globals.dataTemplate.user));
   }
 
   process.exit(0);
@@ -151,10 +151,11 @@ function loadModels () {
 function connect () {
   const options = { keepAlive: 1, useNewUrlParser: true };
   const { user, password, host, port, name } = global.config.connection.database;
+  
   return mongoose.connect(`mongodb://mongo:27017/db?authSource=admin`, {
   useNewUrlParser: true,
   user: 'username',
   pass: 'password',
   keepAlive: true,
-});
+  });
 }

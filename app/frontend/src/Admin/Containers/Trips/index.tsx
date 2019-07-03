@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Header from '../../Components/Header'
-import Table from '../../Components/Table'
+import ExpandableTable from '../../Components/ExpandableTable'
 import Modal from '../../Components/Modal'
 import TripModal from '../../Components/TripModal'
 import DeleteModal from '../../Components/DeleteModal'
@@ -438,7 +438,7 @@ class TripsContainer extends React.Component<
           handleOpenModal={this.handleOpenModal}
         />
 
-        <Table
+        <ExpandableTable
           data={trips}
           handleFetchData={this.handleFetchTableData}
           columns={columns(

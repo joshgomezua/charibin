@@ -14,7 +14,7 @@ export interface IState {
     type: MODAL_TYPE | null
     heading: string
     data: ITicket
-    trip: { _id: string; departure: string, destination: string } | null
+    trip: { _id: string; departure: string, destination: string, carrier: string } | null
   }
   calendarFilter: {
     start: Date | undefined
