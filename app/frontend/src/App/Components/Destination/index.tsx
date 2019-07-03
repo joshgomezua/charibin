@@ -261,21 +261,11 @@ export default class Destination extends Component<IProps, IState> {
   }
 
   handleSelectDates = (dates: [Date, Date]) => {
-    console.log('handleSelectDates')
-    console.log('datesOnly', dates)
     const { tickets, departure, destination } = this.props.data as ITripSelect
-    console.log('props', tickets, departure, destination)
     const offset = moment(dates[0]).utcOffset()
 
     const hours = tickets.reduce(
       (total, ticket: ITicket) => {
-        console.log(` isStartSameFirst checking\n
-          before: ${moment.utc(ticket.date.start).format('YYYY-MM-DD')}\n
-          after: ${moment
-            .utc(dates[0])
-            .add(offset, 'minutes')
-            .format('YYYY-MM-DD')}
-        `)
         const isStartSameFirst = moment(
           moment.utc(ticket.date.start).format('YYYY-MM-DD')
         ).isSame(
@@ -283,15 +273,7 @@ export default class Destination extends Component<IProps, IState> {
             .utc(dates[0])
             .add(offset, 'minutes')
             .format('YYYY-MM-DD')
-        )
-        
-        console.log(` isStartSameSecond checking\n
-          before: ${moment.utc(ticket.date.start).format('YYYY-MM-DD')}\n
-          after: ${moment
-            .utc(dates[1])
-            .add(offset, 'minutes')
-            .format('YYYY-MM-DD')}
-        `)
+        )       
 
         const isStartSameSecond = moment(
           moment.utc(ticket.date.start).format('YYYY-MM-DD')
@@ -302,13 +284,7 @@ export default class Destination extends Component<IProps, IState> {
             .format('YYYY-MM-DD')
         )
 
-        console.log(`
-        isStartSameFirst: ${isStartSameFirst}\n
-        isStartSameSecond: ${isStartSameSecond}\n
-        `)
-
         if (isStartSameFirst && ticket.departure === departure && ticket.destination === destination) {
-          console.log('first if')
           total.start.push({
             id: ticket._id,
             name: `${moment
@@ -318,7 +294,6 @@ export default class Destination extends Component<IProps, IState> {
               .format('HH:mm')}`
           })
         } else if (isStartSameSecond && ticket.departure === destination && ticket.destination === departure) {
-          console.log('else if')
           total.end.push({
             id: ticket._id,
             name: `${moment
@@ -328,7 +303,6 @@ export default class Destination extends Component<IProps, IState> {
               .format('HH:mm')}`
           })
         }
-        console.log('total', total)
         return total
       },
       { start: [], end: [] } as { start: IOption[]; end: IOption[] }
@@ -348,10 +322,6 @@ export default class Destination extends Component<IProps, IState> {
         end: hours.end
       }
     })
-    console.log(`
-      dates.start: ${this.state.dates.start}\n
-      dates.end: ${this.state.dates.end}\n
-    `)
   }
 
   handleSelectHour = (data: {

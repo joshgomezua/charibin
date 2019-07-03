@@ -25,9 +25,7 @@ export default class Calendar extends React.Component<IProps, IState> {
   handleDisableDays = (props: { date: Date }) => {
     const { startDates, endDates } = this.props
     const dateString = moment(props.date).format('YYYY-MM-DD')
-    //console.log('dateString', dateString)
     if (startDates && !this.state.startFillingEndRange) {
-      //console.log(startDates)
       return !startDates.includes(dateString)
     } else if (endDates && this.state.startFillingEndRange) {
       const filteredEndDates = endDates.filter(
