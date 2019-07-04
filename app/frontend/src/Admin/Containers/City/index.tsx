@@ -30,7 +30,6 @@ class CityContainer extends React.Component<
   IState
 > {
   private modal = React.createRef<Modal>()
-
   readonly state: IState = {
     cities: [{
       _id: '0',
@@ -241,7 +240,6 @@ class CityContainer extends React.Component<
     return (
       <div className="spon-container">
         <Header
-          title="Destination & Departure Database"
           heading = 'Create city'
           modal = {MODAL_TYPE.ADD_CITY}
           handleOpenModal={this.handleOpenModal}

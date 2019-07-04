@@ -19,13 +19,15 @@ const Header: React.SFC<IProps> = ({
   return (
     <div className="spon-admin-header">
       <div className="spon-admin-header__inner">
-        <h1 className="spon-admin-header__heading">{title}</h1>
+        {title? <h1 className="spon-admin-header__heading">{title}</h1> : null
+        }
       </div>
 
       {handleSearch ? (
         <input type="text"
           onChange={handleSearch}
           value={query}
+          placeholder="search here"
         />
       ): null}
 

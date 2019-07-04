@@ -2,6 +2,7 @@ import React from 'react'
 import { RowRenderProps } from 'react-table'
 import Switch from '../../Components/Switch'
 
+
 let count: number = 0;
 export const columns = (
   openDeleteModal: (id: string) => void,
