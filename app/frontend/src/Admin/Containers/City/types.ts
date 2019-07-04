@@ -4,10 +4,11 @@ import { IResponseError } from '../../../Common/Utils/globalTypes'
 
 export interface IState {
     cities: ICity[];
-    filteredData: ICity[];
     total: number
     isModalLoading: boolean
     isLoading: boolean
+    search: string
+    results: ICity[],
     currentPage: number
     editData: ICity
     modal: {

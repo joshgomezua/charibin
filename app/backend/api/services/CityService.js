@@ -35,6 +35,27 @@ module.exports = {
 
     return city;
   },
+
+  async findCity (name,page,limit) {
+   
+    let city = City.aggregate([
+      {
+        $facet: {
+          results: [
+            { $match: { name: name }  },
+            ...Aggregate.skipAndLimit(page, limit)
+          ],
+          status: Aggregate.getStatusWithSimpleMatch(
+            {name:name},
+            page,
+            limit
+          )
+        }
+      }
+    ]).then(Aggregate.parseResults);
+
+    return city
+  },
   
   async update (id, data) {
     let city = await City.findOne({ _id: id });

@@ -27,8 +27,6 @@ import {
 } from '../../Utils/api'
 import { IState, IProps } from './types'
 import { columns } from './columns'
-import Search from 'src/Admin/Components/Search';
-import { IResponseError } from 'src/Common/Utils/globalTypes';
 
 class CityContainer extends React.Component<
   RouteComponentProps<{}> & IProps,
@@ -36,18 +34,19 @@ class CityContainer extends React.Component<
 > {
   private modal = React.createRef<Modal>()
 
+ 
   readonly state: IState = {
     cities: [{
       _id: '0',
       name: 'Paris',
       country: 'France',
       tags:['Beach', 'Nigthlife'],
-        
       photo: "https://s3.eu-west-2.amazonaws.com/spon-staging/staging_5c91210fb4f0e3003452a581.png",
       isManual: false,
       isEnabled: false
     }],
-    filteredData: [],
+    search:'',
+    results: [],
     total: 0,
     currentPage: 0,
     isLoading: false,
@@ -98,9 +97,22 @@ class CityContainer extends React.Component<
     }
   }
 
+  handleSearchCity = (name: string) => {
+    const {cities} = this.state
+    const tableau: ICity[] = cities.filter((city) => {
+        if (city.name.toLowerCase() === name.toLowerCase())
+        {
+          return city
+        }
+        return
+    })
+     
+    this.setState(({cities: tableau}))
+    this.setState({total: tableau.length})
+  }
+
   handleFetchItems = (page: number, limit: number) => {
     const token = getToken()
-    
     if (token) {
       getCities(page, limit, token)
         .then(res =>{
@@ -109,7 +121,7 @@ class CityContainer extends React.Component<
             cities: res.data.results,
             total: res.data.status.total
           })
-          
+        
         })
         .catch(err => {
           this.props.showError(err, ERRORS.CITY_FETCH)
@@ -165,17 +177,6 @@ class CityContainer extends React.Component<
 
         return Promise.reject()
       })
-  }
-
-  handleUpdateCities = (filteredCities:ICity[]) => {
-    const response: IResponseError = {
-        response:{statusText: "city not found"}
-    }
-    !filteredCities.length ? this.props.showError(response)
-      : this.props.showSuccess("city found")
-    
-
-    this.setState({filteredData: filteredCities})
   }
 
   handleEditCity = (data: ICity) => {
@@ -238,15 +239,26 @@ class CityContainer extends React.Component<
   }
 
   render() {
+    let {cities,total} = this.state
     const {
-      cities,
-      filteredData,
-      total,
+      search,
       isLoading,
       isModalLoading,
       editData,
+      results,
       modal: { type: modalType, heading: modalHeading }
     } = this.state
+    const token = getToken()
+    getCities(0,100,token).then(res =>{
+      this.setState({results: res.data.results})
+    })
+    
+    if (search) {
+			cities = results.filter(city => {
+        return city.name.toLowerCase().includes(search) || (city.country as string).toLowerCase().includes(search)
+      })
+      total = cities.length
+		}
     return (
       <div className="spon-container">
         <Header
@@ -256,14 +268,13 @@ class CityContainer extends React.Component<
           handleOpenModal={this.handleOpenModal}
         />
 
-        <Search
-          placeholder= "enter your search here"
-          data={cities}
-          handleUpdateCities={this.handleUpdateCities}
-        />
+        <input 
+					value={search}
+					onChange={(e:React.ChangeEvent<HTMLInputElement>) => this.setState({search: e.target.value})}
+				/>
 
         <Table
-          data={filteredData.length===0? cities:filteredData}
+          data={cities}
           handleFetchData={this.handleFetchTableData}
           columns={columns(
             this.handleOpenDeleteModal,

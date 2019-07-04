@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { IProps , IState} from './types'
 import arrowRight from '../../../Common/Utils/Media/arrowRight.svg'
 import './styles.scss'
-import { ICity } from 'src/Admin/Utils/adminTypes';
 
 class Search extends Component<IProps,IState> {
     state = {
@@ -25,27 +24,15 @@ class Search extends Component<IProps,IState> {
         )
     }
 
-    onClick = () => {
-        const {data,handleUpdateCities} = this.props
+    Search = () => {
+        const {handleSearchCity} = this.props
         const {inputValue} = this.state
-
-        const tableau: ICity[] = data.filter((city: ICity) => {
-            const name = city.name.toLowerCase()
-            const country = (city.country as string).toLowerCase()
-            if (name.includes(inputValue) || country.includes(inputValue))
-                {
-                    return city
-                }
-                return
-            })
-        
-        handleUpdateCities(tableau)
-        
+        handleSearchCity(inputValue)
     }
 
     Button = () => {
         return (
-          <button className="search-button" onClick={this.onClick}>
+          <button className="search-button" onClick={this.Search}>
             <div>
               <img src={arrowRight} alt="arrow" className="button-arrow" />
             </div>

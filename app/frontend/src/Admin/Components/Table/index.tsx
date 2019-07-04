@@ -6,6 +6,7 @@ import './styles.scss'
 import './table.scss'
 import TripTable from '../TripTable';
 
+
 const Table: React.SFC<IProps> = ({
   columns,
   data,

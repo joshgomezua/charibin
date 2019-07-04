@@ -2,8 +2,7 @@ import { ICity } from "src/Admin/Utils/adminTypes";
 
 export interface IProps {
     placeholder: string
-    data: ICity[]
-    handleUpdateCities: (cities: ICity[]) => void
+    handleSearchCity: (name: string) => void
 }
 
 
