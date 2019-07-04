@@ -86,9 +86,16 @@ const Agenda: React.SFC<IProps> = ({
           <th className="spon-agenda__cell spon-agenda__cell--head spon-agenda__cell--first-item">
             Date
           </th>
+          <th className="spon-agenda__cell spon-agenda__cell--head">
+            Time of departure
+          </th>
+          <th className="spon-agenda__cell spon-agenda__cell--head">
+            Time of Arrival
+          </th>
           <th className="spon-agenda__cell spon-agenda__cell--head">From</th>
           <th className="spon-agenda__cell spon-agenda__cell--head">To</th>
           <th className="spon-agenda__cell spon-agenda__cell--head">Carrier</th>
+          <th className="spon-agenda__cell spon-agenda__cell--head">Type</th>
           <th className="spon-agenda__cell spon-agenda__cell--head">
             Qty of tickets
           </th>
@@ -98,10 +105,7 @@ const Agenda: React.SFC<IProps> = ({
           <th className="spon-agenda__cell spon-agenda__cell--head">
             Sold tickets
           </th>
-          <th className="spon-agenda__cell spon-agenda__cell--head">Type</th>
-          <th className="spon-agenda__cell spon-agenda__cell--head">
-            Time of departure
-          </th>
+          
           <th className="spon-agenda__cell spon-agenda__cell--head">Active</th>
           <th className="spon-agenda__cell spon-agenda__cell--head">
             <Button
