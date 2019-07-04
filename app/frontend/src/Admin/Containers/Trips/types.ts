@@ -3,6 +3,7 @@ import { IResponseError, IScheduledTrip } from '../../../Common/Utils/globalType
 
 export interface IState {
   trips: ITrip[]
+  oppositeTrips: ITrip[]
   total: number
   isModalLoading: boolean
   isLoading: boolean
@@ -94,7 +95,7 @@ export interface IEditTimeSchedule {
     _8to10PM: number
     _10to12AM: number
   }
-  
+  bidirectionalChange?: boolean
   discount?: number
   duration?: number
   fake?: boolean

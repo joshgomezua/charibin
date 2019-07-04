@@ -125,6 +125,10 @@ export const getSingleScheduledTrip = (id: string, token: string) =>
   axios.get(`${API_URL}/scheduledTrip/${id}`, { headers: { token } 
 })
 
+export const getOpposites = (id: string, token: string) =>
+  axios.get(`${API_URL}/opposites/${id}`, { headers: { token } 
+})
+
 export const getTickets = (startDate: string, endDate: string, token: string) =>
   axios.get(`${API_URL}/ticket/${startDate}/${endDate}`, {
     headers: {

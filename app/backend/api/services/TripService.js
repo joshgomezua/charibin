@@ -10,8 +10,8 @@ module.exports = {
     if(trip) throw { status: 409, message: 'TRIP.EXIST' };
 
     if(data.fake) {
-      const feakedTripsCount = await Trip.countDocuments({ fake: true });
-      if(feakedTripsCount === 2) throw { status: 403, message: 'TRIP.FAKE.LIMIT' };
+      const fakedTripsCount = await Trip.countDocuments({ fake: true });
+      if(fakedTripsCount === 2) throw { status: 403, message: 'TRIP.FAKE.LIMIT' };
     }
 
     return Trip.create(data);
@@ -36,11 +36,19 @@ module.exports = {
     return trip;
   },
 
-  //Changer pour liste des villes de départs, ou liste selon les id ?
   async getListOfTripsNames () {
     const names = await Trip.find({ deleted: false }).select('departure').select('destination');
 
     return names;
+  },
+
+  async getOpposites (id) {
+    let trip = await Trip.findOne({ _id: id, deleted: false });
+    if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
+    
+    const opposites = await Trip.find({ deleted: false, departure: trip.destination, destination: trip.departure, carrier: trip.carrier });
+    console.log(opposites);
+    return opposites;
   },
 
   async findCRM (page, limit) {
