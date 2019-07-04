@@ -96,6 +96,7 @@ function setMonday (date) {
 async function createManyTickets (data) {
   if(data.repeat.dateEnd <= data.date.start) throw { status: 400, message: 'TICKET.REPEAT.BAD.DATEEND' };
   if(!data.repeat.days.includes(new Date(data.date.start).getDay())) throw { status: 400, message: 'TICKET.REPEAT.BAD.DATESTART' };
+  console.log('days', data.repeat.days)
 
   // set correctly hour
   data.repeat.dateEnd = new Date(data.repeat.dateEnd).setHours(new Date(data.date.start).getHours(), 0, 0, 0);

@@ -179,6 +179,7 @@ class TicketModal extends React.Component<IProps, IState> {
                 closeModal()
               })
             } else if (handleSubmit) {
+              console.log('dataToSubmit', dataToSubmit)
               handleSubmit(dataToSubmit).then(() => {
                 resetForm()
                 closeModal()
@@ -337,6 +338,35 @@ class TicketModal extends React.Component<IProps, IState> {
                     className="spon-ticket-modal__error"
                   />
                 </div>
+                {/**
+                <div className="spon-ticket-modal__input-cnt">
+                <MultiSwitch
+                  isMulti
+                  className="spon-ticket-modal__days-of-week"
+                  onChange={(name: string, id: number) => {
+                    if (values.days!.includes(id)) {
+                      const daysFiltered = values.days!.filter(
+                        (day: number) => day !== id
+                      )
+                      handleChange({
+                        target: { value: daysFiltered, name: 'days' }
+                      })
+                    } else {
+                      handleChange({
+                        target: {
+                          value: [...values.days!, id],
+                          name: 'days'
+                        }
+                      })
+                    }
+                  }}
+                  selectedValues={values.days!}
+                  items={departureHours}
+                />
+                </div>
+                 */}
+                
+
                 <div className="spon-ticket-modal__toggles">
                   <div className="spon-ticket-modal__toggle-item">
                     <p>Active:</p>
@@ -422,7 +452,7 @@ class TicketModal extends React.Component<IProps, IState> {
                             selectedValues={values.days!}
                             items={daysOfWeek}
                           />
-
+                          {console.log('days', values.days)}
                           <ErrorMessage
                             name="days"
                             component="div"
