@@ -16,7 +16,7 @@ module.exports = {
       {
         $facet: {
           results: [
-              { $sort: { name: 1 } },
+              { $sort: { name: 1 ,country: 1} },
             ...Aggregate.skipAndLimit(page, limit)
           ],
           status: Aggregate.getStatusWithSimpleMatch(
