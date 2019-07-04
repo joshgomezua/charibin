@@ -37,8 +37,8 @@ const AgendaItem: React.SFC<IProps> = ({
         {moment.utc(ticket.date.end).format('HH:mm')}
       </td>
       <td className="spon-agenda__cell spon-agenda__cell--body">
-        {moment.utc(ticket.date.start).format('HH:mm')}-
-        {moment.utc(ticket.date.end).format('HH:mm')}
+        {moment.utc(ticket.date.start).add(ticket.trip.duration, 'minutes').format('HH:mm')}-
+        {moment.utc(ticket.date.end).add(ticket.trip.duration, 'minutes').format('HH:mm')}
       </td>
       <td className="spon-agenda__cell spon-agenda__cell--body">
         {ticket.departure}

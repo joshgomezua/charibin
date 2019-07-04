@@ -137,6 +137,7 @@ class TicketsContainer extends React.Component<
     this.setState({ isLoading: true, isError: false })
     getTickets(startDate, endDate, token)
       .then(res => {
+        console.log('res.data', res.data)
         this.setState({ isLoading: false, tickets: res.data })
       })
       .catch(err => {
