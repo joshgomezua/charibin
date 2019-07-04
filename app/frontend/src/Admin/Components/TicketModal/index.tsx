@@ -130,6 +130,46 @@ class TicketModal extends React.Component<IProps, IState> {
             const endHour = splitedHours[1]
             const offset = moment().utcOffset()
 
+            const tempDepartureHours: any[] = []
+
+            for (let hours in values.departureHours) {
+
+              const splitedHours = hours!.split('-')
+              const startHours = splitedHours[0]
+              const endHour = splitedHours[1]
+              const startDate = +moment
+              .utc(values.date)
+              .add(offset, 'minutes')
+              .set({
+                hour: +startHours,
+                minute: 0,
+                second: 0,
+                millisecond: 0
+              })
+              .format('x')
+
+             const endDate = +moment
+             .utc(values.date)
+             .add(offset, 'minutes')
+             .set({
+               hour: +endHour,
+               minute: 0,
+               second: 0,
+               millisecond: 0
+             })
+             .format('x')
+
+             const date = {
+               start: startDate,
+               end: endDate
+             }
+
+             tempDepartureHours.push(date)
+
+            }
+
+            console.log('tempDepartureHours', tempDepartureHours)
+
             const dataToSubmit = {
               trip: values.trip._id,
               departure: values.trip.departure,
@@ -168,7 +208,8 @@ class TicketModal extends React.Component<IProps, IState> {
                   .add(offset, 'minutes')
                   .format('x'),
                 days: values.days as number[]
-              }
+              },
+              departureHours: tempDepartureHours
             }
             if (editDate || !values.isRecurring) {
               delete dataToSubmit.repeat
