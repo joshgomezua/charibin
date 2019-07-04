@@ -1,12 +1,9 @@
 import React from 'react'
-
 import Header from '../../Components/Header'
 import Table from '../../Components/Table'
 import Modal from '../../Components/Modal'
 import CityModal from '../../Components/CityModal'
 import DeleteModal from '../../Components/DeleteModal'
- 
-
 import withToast from '../../../Common/HOC/withToast'
 import { debounce } from 'lodash'
 import { RouteComponentProps } from 'react-router-dom'
@@ -34,7 +31,6 @@ class CityContainer extends React.Component<
 > {
   private modal = React.createRef<Modal>()
 
- 
   readonly state: IState = {
     cities: [{
       _id: '0',
@@ -87,28 +83,12 @@ class CityContainer extends React.Component<
       getSingleCity(id, token)
         .then(res => {
           this.setState({ editData: res.data })
-          
         })
         .catch(err => {
-          
           this.modal.current!.close()
           this.props.showError(err)
         })
     }
-  }
-
-  handleSearchCity = (name: string) => {
-    const {cities} = this.state
-    const tableau: ICity[] = cities.filter((city) => {
-        if (city.name.toLowerCase() === name.toLowerCase())
-        {
-          return city
-        }
-        return
-    })
-     
-    this.setState(({cities: tableau}))
-    this.setState({total: tableau.length})
   }
 
   handleFetchItems = (page: number, limit: number) => {
@@ -126,6 +106,9 @@ class CityContainer extends React.Component<
         .catch(err => {
           this.props.showError(err, ERRORS.CITY_FETCH)
         })
+      getCities(0,10000,token).then(res =>{
+        this.setState({results: res.data.results})
+      })
     }
   }
 
@@ -248,11 +231,7 @@ class CityContainer extends React.Component<
       results,
       modal: { type: modalType, heading: modalHeading }
     } = this.state
-    const token = getToken()
-    getCities(0,100,token).then(res =>{
-      this.setState({results: res.data.results})
-    })
-    
+
     if (search) {
 			cities = results.filter(city => {
         return city.name.toLowerCase().includes(search) || (city.country as string).toLowerCase().includes(search)
@@ -266,12 +245,9 @@ class CityContainer extends React.Component<
           heading = 'Create city'
           modal = {MODAL_TYPE.ADD_CITY}
           handleOpenModal={this.handleOpenModal}
+          query={search}
+          handleSearch={(e) => this.setState({search: e.target.value})}
         />
-
-        <input 
-					value={search}
-					onChange={(e:React.ChangeEvent<HTMLInputElement>) => this.setState({search: e.target.value})}
-				/>
 
         <Table
           data={cities}

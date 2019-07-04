@@ -6,7 +6,6 @@ import { IProps } from './types'
 import './styles.scss'
 import Switch from '../Switch';
 
-
 const Header: React.SFC<IProps> = ({
   title,
   query,
@@ -21,20 +20,22 @@ const Header: React.SFC<IProps> = ({
     <div className="spon-admin-header">
       <div className="spon-admin-header__inner">
         <h1 className="spon-admin-header__heading">{title}</h1>
-      </div> 
+      </div>
+
+      {handleSearch ? (
+        <input type="text"
+          onChange={handleSearch}
+          value={query}
+        />
+      ): null}
 
      <div>  
-
-        {handleToggle ? (
-        
+      {handleToggle ? (  
         <Switch
-
-        checked={enable ? enable : false}
-        onChange={() => { handleToggle() }}
-    />
-        ) : null} 
-
-      </div>
+          checked={enable ? enable : false}
+          onChange={() => { handleToggle() }}
+        />) : null} 
+    </div>
 
       {(handleOpenModal && heading && modal) ? (
         <Button
@@ -53,6 +54,7 @@ const Header: React.SFC<IProps> = ({
             onClick={() => handleOpenModal(MODAL_TYPE.ADD_TRIP, 'Create trip')}
           />
       ):null}
+
     </div>
   )
 }
