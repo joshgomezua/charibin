@@ -22,7 +22,7 @@ import {
 import { MODAL_TYPE } from '../../Utils/adminTypes'
 import { ITicket } from '../../../Common/Utils/globalTypes'
 import { getToken } from '../../../Common/Utils/helpers'
-import { ERRORS, SUCCESS, DEFULT_TICKET_DATA } from '../../Utils/constants'
+import { ERRORS, SUCCESS, DEFAULT_TICKET_DATA } from '../../Utils/constants'
 import { IStore } from '../../../Common/Redux/types'
 import { IState, IProps, IEditedData } from './types'
 import './styles.scss'
@@ -42,7 +42,7 @@ class TicketsContainer extends React.Component<
       id: '',
       type: null,
       heading: '',
-      data: DEFULT_TICKET_DATA,
+      data: DEFAULT_TICKET_DATA,
       trip: null
     },
     calendarFilter: {
@@ -300,7 +300,7 @@ class TicketsContainer extends React.Component<
         id: '',
         type: null,
         heading: '',
-        data: DEFULT_TICKET_DATA,
+        data: DEFAULT_TICKET_DATA,
         trip: null
       }
     })

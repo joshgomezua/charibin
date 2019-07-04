@@ -106,8 +106,6 @@ class TicketModal extends React.Component<IProps, IState> {
             reservedQuantity: Yup.number()
               .min(0)
               .max(1000),
-            //departure: Yup.string().required('Ticket departure is required'),
-            //destination: Yup.string().required('Ticket destination is required'),
             date: Yup.string().required(),
             hours: Yup.string().required(),
             isRecurring: Yup.boolean(),
