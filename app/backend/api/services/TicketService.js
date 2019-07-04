@@ -96,7 +96,6 @@ function setMonday (date) {
 async function createManyTickets (data) {
   if(data.repeat.dateEnd <= data.date.start) throw { status: 400, message: 'TICKET.REPEAT.BAD.DATEEND' };
   if(!data.repeat.days.includes(new Date(data.date.start).getDay())) throw { status: 400, message: 'TICKET.REPEAT.BAD.DATESTART' };
-  console.log('days', data.repeat.days)
 
   // set correctly hour
   data.repeat.dateEnd = new Date(data.repeat.dateEnd).setHours(new Date(data.date.start).getHours(), 0, 0, 0);
@@ -328,12 +327,10 @@ module.exports = {
   async create (data) {
     const trip = await Trip.findOne({ _id: data.trip, deleted: false });
     if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
-    console.log('data', data)
 
     if (data.departureHours.length > 1) {
-      console.log(data.departureHours.length)
       for (let hours in data.departureHours) {
-        console.log('count')
+        console.log('hours', new Date(hours))
         const tempData = data
         tempData.hours = hours
         if(data.repeat) { // create many

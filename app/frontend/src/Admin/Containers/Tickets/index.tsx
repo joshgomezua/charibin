@@ -153,6 +153,15 @@ class TicketsContainer extends React.Component<
       }
     )
   }
+  
+  displayHours = (tab?: any[]) => {
+    tab?tab.map(item => {
+      console.log(`
+      start: ${moment(item.start).utc().format('HH:mm')} \n
+      end: ${moment(item.end).utc().format('HH:mm')}
+      `)
+    }): []
+  }
 
   handleAddTicket = (
     ticketData: Pick<
@@ -172,7 +181,7 @@ class TicketsContainer extends React.Component<
     }
   ) => {
     const token = getToken()
-    console.log('ticketData', ticketData)
+    console.log('ticketData', this.displayHours(ticketData.departureHours))
 
     this.setState({ isModalLoading: true })
     return createTicket(ticketData, token)
