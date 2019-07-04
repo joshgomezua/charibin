@@ -26,8 +26,8 @@ const AgendaItem: React.SFC<IProps> = ({
     <tr className="spon-agenda__row">
       {index === 0 ? (
         <td className={isTodayClassname} rowSpan={rowSpan}>
-          <p>{moment(ticket.date.start).format('dddd')}</p>
-          <p>{moment(ticket.date.start).format('D MMM YYYY')}</p>
+          <p>{moment.utc(ticket.date.start).format('ddd')}</p>
+          <p>{moment.utc(ticket.date.start).format('D MMM YYYY')}</p>
         </td>
       ) : (
         <td className="spon-agenda__cell spon-agenda__cell--body  spon-agenda__cell--first-item" />

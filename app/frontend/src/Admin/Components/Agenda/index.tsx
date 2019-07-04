@@ -52,7 +52,7 @@ const Agenda: React.SFC<IProps> = ({
   const prepareRows = () => {
     const filtered = getFilteredTickets()
     const segregated = filtered.reduce((acc, ticket: ITicket) => {
-      const day = moment(ticket.date.start).format('D')
+      const day = moment.utc(ticket.date.start).format('D')
       if (day in acc) {
         acc[day].push(ticket)
       } else {
