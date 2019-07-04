@@ -48,30 +48,26 @@ export const departureHours = [
   },
   {
     _id: 5,
-    name: '12-2'
+    name: '12-14'
   },
   {
     _id: 6,
-    name: '2-4'
+    name: '14-16'
   },
   {
     _id: 7,
-    name: '4-6'
+    name: '16-18'
   },
   {
     _id: 8,
-    name: '6-8'
+    name: '18-20'
   },
   {
     _id: 9,
-    name: '8-10'
+    name: '20-22'
   },
   {
     _id: 10,
-    name: '10-12'
+    name: '22-24'
   },
-  {
-    _id: 11,
-    name: '10-12'
-  }
 ]

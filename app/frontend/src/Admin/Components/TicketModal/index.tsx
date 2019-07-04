@@ -19,7 +19,7 @@ import Button from '../../../Common/Components/Button'
 import MultiSwitch from '../../Components/MultiSwitch'
 import arrowDown from '../../../Common/Utils/Media/arrowDown.svg'
 
-import { daysOfWeek } from './_data'
+import { daysOfWeek, departureHours } from './_data'
 import { IProps, IState, IFormValues } from './types'
 import './styles.scss'
 import DropDownTicket from '../DropdownTicket';
@@ -85,6 +85,7 @@ class TicketModal extends React.Component<IProps, IState> {
                   date: undefined,
                   endDate: undefined,
                   days: [0, 1, 2, 3, 4, 5, 6],
+                  departureHours: [],
                   hours: '',
                   active: true,
                 }
@@ -338,34 +339,35 @@ class TicketModal extends React.Component<IProps, IState> {
                     className="spon-ticket-modal__error"
                   />
                 </div>
-                {/**
+                
                 <div className="spon-ticket-modal__input-cnt">
                 <MultiSwitch
                   isMulti
                   className="spon-ticket-modal__days-of-week"
                   onChange={(name: string, id: number) => {
-                    if (values.days!.includes(id)) {
-                      const daysFiltered = values.days!.filter(
-                        (day: number) => day !== id
+                    if (values.departureHours!.includes(name)) {
+                      const hoursFiltered = values.departureHours!.filter(
+                        (departuresHours: string) => departuresHours !== name
                       )
                       handleChange({
-                        target: { value: daysFiltered, name: 'days' }
+                        target: { value: hoursFiltered, name: 'departureHours' }
                       })
                     } else {
                       handleChange({
                         target: {
-                          value: [...values.days!, id],
-                          name: 'days'
+                          value: [...values.departureHours!, name],
+                          name: 'departureHours'
                         }
                       })
                     }
                   }}
-                  selectedValues={values.days!}
+                  selectedValues={values.departureHours!}
                   items={departureHours}
                 />
+                {console.log('test', values.departureHours)}
                 </div>
-                 */}
-                
+                 
+            
 
                 <div className="spon-ticket-modal__toggles">
                   <div className="spon-ticket-modal__toggle-item">

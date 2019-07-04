@@ -67,6 +67,7 @@ export interface IFormValues {
   soldTickets: number,
   reservedQuantity: number,
   date: Date | string | undefined
+  departureHours?:string[]
   endDate?: Date | string | undefined
   days?: number[]
   hours?: string
