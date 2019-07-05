@@ -94,7 +94,7 @@ class CityContainer extends React.Component<
     const token = getToken()
     if (token) {
       getCities(page, limit, token)
-        .then(res =>{
+        .then(res => {
           this.setState({
             isLoading: false,
             cities: res.data.results,
@@ -105,9 +105,12 @@ class CityContainer extends React.Component<
         .catch(err => {
           this.props.showError(err, ERRORS.CITY_FETCH)
         })
-      getCities(0,10000,token).then(res =>{
+
+      getCities(0,10000,token).then(res => {
         this.setState({results: res.data.results})
-      })
+      }).catch(err => {
+        this.props.showError(err, ERRORS.CITY_FETCH)
+      }) 
     }
   }
 
@@ -187,21 +190,29 @@ class CityContainer extends React.Component<
       })
   }
 
+  handleUpdate = (value: any) => {
+    const updatedCities = this.state.cities.map((city: ICity) => {
+      if (city._id === value._id) {
+        return value
+      }
+      return city
+    })
+
+    const updatedResults = this.state.results.map((city: ICity) => {
+      if (city._id === value._id) {
+        return value
+      }
+      return city
+    })
+    this.setState({ cities: updatedCities,
+                    results: updatedResults})
+  }
+
   handleToggleButton = (id: string, value:boolean) => {
     const token = getToken()
-    
     editCityState(id, value, token)
       .then(({ data }) => {
-        const updatedCities = this.state.cities.map((city: ICity) => {
-          if (city._id === data._id) {
-
-            return data
-          }
-
-          return city
-        })
-
-        this.setState({ cities: updatedCities })
+        this.handleUpdate(data)
         this.props.showSuccess(SUCCESS.CITY_UPDATE)
       })
       .catch(err => this.props.showError(err, ERRORS.CITY_EDIT))
@@ -236,7 +247,8 @@ class CityContainer extends React.Component<
         return city.name.toLowerCase().includes(search) || (city.country as string).toLowerCase().includes(search)
       })
       total = cities.length
-		}
+    }
+    
     return (
       <div className="spon-container">
         <Header
