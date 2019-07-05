@@ -145,7 +145,7 @@ class CityContainer extends React.Component<
     this.setState({ isModalLoading: true })
 
     return addCity(data, token)
-      .then(res => { // res -> ()
+      .then(res => { 
         this.modal.current!.close()
         this.handleFetchItems(currentPage, 10)
         this.props.showSuccess(SUCCESS.CITY_ADD)
@@ -171,7 +171,7 @@ class CityContainer extends React.Component<
     this.setState({ isModalLoading: true })
 
     return updateCity(id, data, token)
-      .then(res => { // res -> ()
+      .then(res => { 
         this.modal.current!.close()
         this.handleFetchItems(currentPage, 10)
         this.props.showSuccess(SUCCESS.CITY_EDIT)
