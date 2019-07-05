@@ -242,7 +242,8 @@ class CityContainer extends React.Component<
 
     if (search) {
 			cities = results.filter(city => {
-        return city.name.toLowerCase().includes(search) || (city.country as string).toLowerCase().includes(search)
+        return city.name.toLowerCase().includes(search.toLowerCase()) 
+                                || (city.country as string).toLowerCase().includes(search.toLowerCase())
       })
       total = cities.length
     }
