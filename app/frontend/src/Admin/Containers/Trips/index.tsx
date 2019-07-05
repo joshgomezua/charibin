@@ -34,6 +34,7 @@ import { IState, IProps, INewData, IEditTimeSchedule, INewSchedule } from './typ
 import { columns } from './columns'
 import { rangeColumns } from './rangeColumns';
 import ScheduleModal from 'src/Admin/Components/ScheduleModal';
+import { SortingRule, ControlledStateOverrideProps } from 'react-table';
 
 class TripsContainer extends React.Component<
   RouteComponentProps<{}> & IProps,
@@ -133,11 +134,11 @@ class TripsContainer extends React.Component<
     }
   }
 
-  handleFetchItems = (page: number, limit: number) => {
+  handleFetchItems = (page: number, limit: number, sort?: SortingRule) => {
     const token = getToken()
 
     if (token) {
-      getTrips(page, limit, token)
+      getTrips(page, limit, token, sort)
         .then(res =>
           this.setState({
             isLoading: false,
@@ -151,9 +152,13 @@ class TripsContainer extends React.Component<
     }
   }
 
-  handleFetchTableData = (boardState: any) => {
-    this.setState({ currentPage: boardState.page })
-    this.handleFetchItems(boardState.page, 10)
+  handleFetchTableData = ({ page, sorted }: ControlledStateOverrideProps) => {
+    this.setState({ currentPage: page! })
+    if (sorted) {
+      this.handleFetchItems(page!, 10, sorted[0])
+    } else {
+      this.handleFetchItems(page!, 10)
+    }
   }
 
   handleDeleteTrip = () => {

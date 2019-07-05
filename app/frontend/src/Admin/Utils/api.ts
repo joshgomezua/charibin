@@ -79,13 +79,26 @@ export const addTrip = (data: Types.INewTrip, token: string) =>
       headers: { 'Content-type': 'application/json', token }
 })
 
-export const getTrips = (page: number, limit: number, token: string) =>
-  axios.get(`${API_URL}/trip/${page}/${limit}`, {
-    headers: {
-      'Content-type': 'application/json',
-      token
-    }
+export const getTrips = (
+  page: number, 
+  limit: number, 
+  token: string,
+  sortBy?: SortingRule
+  ) => {
+  if(sortBy){
+    return axios.get(
+      `${API_URL}/trip/${page}/${limit}/${sortBy.id}/${
+        sortBy.desc ? 'ascending' : 'descending'
+      }`,
+      {
+        headers: { token }
+      }
+    )
+  }
+  return axios.get(`${API_URL}/trip/${page}/${limit}`, {
+    headers: { token }
   })
+}
 
 export const getSingleTrip = (id: string, token: string) =>
   axios.get(`${API_URL}/trip/${id}`, { headers: { token } 
