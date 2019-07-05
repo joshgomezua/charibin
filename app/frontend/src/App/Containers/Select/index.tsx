@@ -122,19 +122,15 @@ class SelectContainer extends Component<
   }
 
   handleBookTrips = () => {
-    console.log('handleBookTrips')
     const { selected, quantity } = this.props
-    console.log('selected', selected)
     const token = getOwnerToken()
     const bookedTrips = selected.map((selectedItem: ISelectedData) => {
       if (selectedItem.arrivalTicket && selectedItem.departureTicket) {
-        console.log('yes')
         return {
           arrivalTicket: selectedItem.arrivalTicket,
           departureTicket: selectedItem.departureTicket
         }
       } else {
-        console.log('no')
         return {
           id: selectedItem.tripId,
           departure: selectedItem.departure,
@@ -144,7 +140,6 @@ class SelectContainer extends Component<
         }
       }
     })
-    console.log('bookedTrips', bookedTrips)
 
     const data: IBookedData = {
       quantity,
@@ -158,18 +153,15 @@ class SelectContainer extends Component<
     API.bookTrips(data)
       .then(res => {
         const bookedTrips = res.data.trips
-        console.log('bookedTrips in API call of Select', bookedTrips)
         const selectedTrips = this.props.selected.map((item: ISelectedData) => {
           const filteredTrip: IBookedType = bookedTrips.find(
             (trip: IBookedType) => item.tripId === trip.trip
           )
-          console.log('filteredTrip', filteredTrip)
           if (filteredTrip) {
             item.price = filteredTrip.cost
           }
           return item
         })
-        console.log('selectedTrips', selectedTrips)
 
         saveToLS('owner', {
           billing: res.data.billing,
@@ -241,9 +233,6 @@ class SelectContainer extends Component<
   }
 
   handleFilterChange = (filters: IFiltersChange, callback?: () => void) => {
-    console.log("handleFilterChange")
-    console.log("filters", filters)
-    console.log("state before", this.state)
     this.setState(
       (state: IState) => ({
         filters: {
