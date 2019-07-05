@@ -36,7 +36,8 @@ export interface ITicket {
   trip: { 
     _id: string; 
     departure: string,
-    destination: string
+    destination: string,
+    carrier: string
   }
   quantity: number
   soldTickets: number,

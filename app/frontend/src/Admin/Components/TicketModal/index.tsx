@@ -33,28 +33,6 @@ class TicketModal extends React.Component<IProps, IState> {
     this.setState((state: IState) => ({ isRecurring: !state.isRecurring }))
   }
 
-  getTicketDestination = (values: IFormValues) => {
-    return values.departure ? 
-    values.departure === values.trip.departure ? 
-    values.trip.destination 
-    : values.trip.departure : ''
-  }
-
-  getTicketDestinations = (values: IFormValues) => {
-    let i = 0
-    const ticketDestinations: any = []
-    ticketDestinations.push({
-      _id: i++,
-      name: values.trip.departure
-    })
-    ticketDestinations.push({
-      _id: i,
-      name: values.trip.destination
-    })
-
-    return ticketDestinations
-  }
-
   render() {
     const {
       editDate,
@@ -128,7 +106,8 @@ class TicketModal extends React.Component<IProps, IState> {
             reservedQuantity: Yup.number()
               .min(0)
               .max(1000),
-            departure: Yup.string().required('Ticket departure is required'),
+            //departure: Yup.string().required('Ticket departure is required'),
+            //destination: Yup.string().required('Ticket destination is required'),
             date: Yup.string().required(),
             hours: Yup.string().required(),
             isRecurring: Yup.boolean(),
@@ -152,8 +131,8 @@ class TicketModal extends React.Component<IProps, IState> {
 
             const dataToSubmit = {
               trip: values.trip._id,
-              departure: values.departure,
-              destination: this.getTicketDestination(values),
+              departure: values.trip.departure,
+              destination: values.trip.destination,
               quantity: values.quantity,
               soldTickets: values.soldTickets,
               reservedQuantity: values.reservedQuantity,
@@ -217,8 +196,8 @@ class TicketModal extends React.Component<IProps, IState> {
                   <DropDownTicket
                     saveAsObject
                     id="trip"
-                    label="Select trip departure"
-                    placeholder="Select trip departure"
+                    label="From"
+                    placeholder="From"
                     className="spon-ticket-modal__dropdown"
                     selectedValue={values.trip ? values.trip.departure : ''}
                     options={departures}
@@ -236,8 +215,8 @@ class TicketModal extends React.Component<IProps, IState> {
                   <DropDownTicket
                     saveAsObject
                     id="trip"
-                    label="Select trip destination"
-                    placeholder="Select trip destination"
+                    label="To"
+                    placeholder="To"
                     className="spon-ticket-modal__dropdown"
                     selectedValue={values.trip ? values.trip.destination : ''}
                     options={destinations}
@@ -249,40 +228,6 @@ class TicketModal extends React.Component<IProps, IState> {
                     component="div"
                     className="spon-ticket-modal__error"
                   />
-                </div>
-                <div className="spon-ticket-modal__input-cnt">
-                  <Dropdown
-                    id="departure"
-                    label="Select ticket departure"
-                    placeholder="Select ticket departure"
-                    className="spon-ticket-modal__dropdown"
-                    selectedValue={values.departure ? values.departure : ''}
-                    options={values.trip.destination ? this.getTicketDestinations(values): []}
-                    onChange={handleChange}
-                  />
-
-                  <ErrorMessage
-                    name="departure"
-                    component="div"
-                    className="spon-ticket-modal__error"
-                  />
-                </div>
-                <div className="spon-ticket-modal__input-cnt spon-ticket-modal__input-cnt--big">
-
-                  {
-                     <div className={"spon-label"}>
-                     <p className="spon-label__label">{"Ticket Destination"}</p>
-                     <div
-                       className={"spon-label__element"}>
-                       <div className="spon-label__placeholder">
-                         <p>{
-                           values.destination = this.getTicketDestination(values)
-                          }</p>
-                       </div>
-                     </div>
-                   </div>
-                  }
-
                 </div>
                 <div className="spon-ticket-modal__input-cnt">
                   <Dropdown

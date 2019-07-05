@@ -166,14 +166,7 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
   if(!departureTicket) throw { status: 404, message: 'TICKET.DEPARTURE.NOT.EXIST%', args: [new Date(selectedTrip.dateEnd).toDateString()] };
 
   let reservedArrivalTicket;
-  console.log(`
-    quantity: ${quantity}\n
-    arrivalTicket.quantity: ${arrivalTicket.quantity}\n
-    arrivalTicket.soldTickets: ${arrivalTicket.soldTickets}\n
-    arrivalTicket.reservedQuantity: ${arrivalTicket.reservedQuantity}\n
-    ${quantity} <= ${arrivalTicket.quantity - (arrivalTicket.soldTickets + arrivalTicket.reservedQuantity)}
-    --------------------------
-  `)
+
   if (quantity <= (arrivalTicket.quantity - (arrivalTicket.soldTickets + arrivalTicket.reservedQuantity))) {
     reservedArrivalTicket = await Ticket.findOneAndUpdate({ _id: arrivalTicket._id, active: true, deleted: false, quantity: { $gte: quantity } }, {
       $inc: {reservedQuantity: quantity},
@@ -185,14 +178,7 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
   }
   
   let reservedDepartureTicket;
-  console.log(`
-    quantity: ${quantity}\n
-    departureTicket.quantity: ${departureTicket.quantity}\n
-    departureTicket.soldTickets: ${departureTicket.soldTickets}\n
-    departureTicket.reservedQuantity: ${departureTicket.reservedQuantity}\n
-    ${quantity} <= ${departureTicket.quantity - (departureTicket.soldTickets + departureTicket.reservedQuantity)}
-    ----------------------
-  `)
+
   if (quantity <= (departureTicket.quantity - (departureTicket.soldTickets + departureTicket.reservedQuantity))) {
     reservedDepartureTicket = await Ticket.findOneAndUpdate({ _id: departureTicket._id, active: true, deleted: false, quantity: { $gte: quantity } }, {
       $inc: {reservedQuantity: quantity},
@@ -276,14 +262,6 @@ async function bookWithTime ({ quantity, selectedTrip, owner }) {
   if(+new Date(departureTicket.date.start) < Date.now() + global.config.custom.time.day)
     throw { status: 400, message: 'TICKET.DATE.END.INVALID%', args: [new Date(Date.now() + global.config.custom.time.day).toDateString()] };
 
-    console.log(`
-    quantity: ${quantity}\n
-    arrivalTicket.quantity: ${arrivalTicket.quantity}\n
-    arrivalTicket.soldTickets: ${arrivalTicket.soldTickets}\n
-    arrivalTicket.reservedQuantity: ${arrivalTicket.reservedQuantity}\n
-    ${quantity} <= ${arrivalTicket.quantity - (arrivalTicket.soldTickets + arrivalTicket.reservedQuantity)}
-    ------------------------------
-  `)  
   let reservedArrivalTicket;
   if (quantity <= arrivalTicket.quantity - (arrivalTicket.soldTickets + arrivalTicket.reservedQuantity))
   {
@@ -295,14 +273,6 @@ async function bookWithTime ({ quantity, selectedTrip, owner }) {
     throw { status: 404, message: 'TICKET.BOOK.NOT.ENOUGH', args: [new Date(Date.now() + global.config.custom.time.day).toDateString()] };
   }
   
-  console.log(`
-    quantity: ${quantity}\n
-    arrivalTicket.quantity: ${departureTicket.quantity}\n
-    arrivalTicket.soldTickets: ${departureTicket.soldTickets}\n
-    arrivalTicket.reservedQuantity: ${departureTicket.reservedQuantity}\n
-    ${quantity} <= ${departureTicket.quantity - (departureTicket.soldTickets + departureTicket.reservedQuantity)}
-    -------------------------
-  `)
   let reservedDepartureTicket;
   if (quantity <= departureTicket.quantity - (departureTicket.soldTickets + departureTicket.reservedQuantity))
   {

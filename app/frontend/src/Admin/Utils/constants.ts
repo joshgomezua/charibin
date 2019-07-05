@@ -57,8 +57,7 @@ export const SUCCESS = {
 
 export const DEFULT_TICKET_DATA = {
   _id: '',
-  trip: { _id: '', departure: '', destination: '' },
-  direction: '',
+  trip: { _id: '', departure: '', destination: '', carrier: '' },
   quantity: 0,
   soldTickets: 0,
   reservedQuantity: 0,

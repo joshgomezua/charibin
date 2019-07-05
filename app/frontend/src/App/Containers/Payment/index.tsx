@@ -105,12 +105,10 @@ class PaymentContainer extends Component<
         zipCode: payment.zipCode
       }
     }
-    console.log('dataToSubmit', dataToSubmit)
-
+    
     this.setState({ isLoading: true })
     buyTickets(dataToSubmit)
       .then(({ data }: { data: IFinalSelected }) => {
-        console.log('data', data)
         this.props.setFinalDestination(data)
         this.props.history.push('/destinations/summary')
       })

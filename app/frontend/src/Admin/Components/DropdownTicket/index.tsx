@@ -22,7 +22,7 @@ class DropDown extends React.Component<IProps, IState> {
   }
 
   handleSelectOption = (el: IOptionTicket): void => {
-    const { onChange, saveAsObject } = this.props
+    const { onChange, saveAsObject, onSelectDeparture} = this.props
     this.setState({ isListVisible: false })
     onChange({
       target: {
@@ -34,6 +34,9 @@ class DropDown extends React.Component<IProps, IState> {
         } : el.departure + el.destination
       }
     })
+    console.log('el', el)
+
+    onSelectDeparture && onSelectDeparture(el.departure)
   }
 
   renderOptions = (optionsArr: IOptionTicket[]): JSX.Element[] => {
@@ -44,7 +47,7 @@ class DropDown extends React.Component<IProps, IState> {
             key={el._id}
             onClick={() => this.handleSelectOption(el)}
             className="spon-dropdown__list-item">
-            <p>{el.departure}</p>
+            <p>{this.props.onSelectDeparture ? el.departure : el.destination}</p>
           </div>
         )
       }

@@ -101,8 +101,16 @@ class TicketsContainer extends React.Component<
           departure: item.departure,
           destination: item.destination
         }))
+
+        const uniqueCitiesNames = cityNames.reduce((unique: any, other: any) => {
+          if(!unique.some((obj: { departure: any; }) => obj.departure === other.departure)) {
+            unique.push(other);
+          }
+          return unique;
+        },[]);
+
         this.props.changeFilters(cityNames)
-        this.setState({ departures: cityNames })
+        this.setState({ departures: uniqueCitiesNames })
       })
       .catch(err => {
         this.props.showError(err)
@@ -304,14 +312,12 @@ class TicketsContainer extends React.Component<
     getTripNames(token)
       .then(({data}) => {
         const destinationsFiltered = data.filter((item: any) => item.departure === departure)
-        const destinations = destinationsFiltered.map((item: any) => {
-        // tslint:disable-next-line: no-unused-expression
-          ({  _id: item._id,
-              departure: item.departure,
-              destination: item.destinaton
-          })
-        })
-        this.setState({destinations : destinations})
+        const destinationsMapped = destinationsFiltered.map((item: any) => ({
+          _id: item._id,
+          departure: item.departure,
+          destination: item.destination
+        }))
+        this.setState({destinations : destinationsMapped})
       })
     .catch(err => {
         this.props.showError(err)
