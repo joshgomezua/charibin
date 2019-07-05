@@ -28,14 +28,14 @@ export default class Search extends Component<IProps, IState> {
   selectDecrement = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     if (this.props.quantity > 1) {
-      this.props.setQuantity!(this.props.quantity - 1)
+      this.props.setQuantity!(this.props.quantity - 1) // this.props.quantity-- pour faire plus fancy
     }
   }
 
   selectIncrement = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
     if (this.props.quantity < 6) {
-      this.props.setQuantity!(this.props.quantity + 1)
+      this.props.setQuantity!(this.props.quantity + 1) // this.props.quantity++ pour faire plus fancy
     }
   }
 
@@ -44,7 +44,7 @@ export default class Search extends Component<IProps, IState> {
     return (
       <div className="search-input">
         <input type="text" value={inputValue} onChange={this.changeInput} />
-        <label className={inputValue.length > 0 ? 'dirty' : ''}>
+        <label className={inputValue.length > 0 ? 'dirty' : ''}> {/** juste inputValue.length  */}
           DEPARTURE CITY
         </label>
       </div>
