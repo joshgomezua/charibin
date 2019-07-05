@@ -166,7 +166,6 @@ class TripsContainer extends React.Component<
             oppositeTrips: res.data
           })
           for(let index: number = 0; index < this.state.oppositeTrips.length; index++){
-            console.log(this.state.oppositeTrips[index]._id)
             updateTimeSelection(this.state.oppositeTrips[index]._id, data, token)
           }
         })
@@ -407,9 +406,6 @@ class TripsContainer extends React.Component<
       modal: { id }
     } = this.state
 
-    this.handleFetchTripData(this.state.editSchedule.trip)
-    this.handleDuplicateSchedule(data, this.state.editData)
-    console.log(this.state.editData)
     const editedSchedule: INewSchedule = {
       ...data,
       timeSelection: {
