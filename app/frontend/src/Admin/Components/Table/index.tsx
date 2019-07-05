@@ -25,6 +25,7 @@ const Table: React.SFC<IProps> = ({
   return (
     <div className={tableClass}>
       <ReactTable
+        className={tableClass}
         manual
         minRows={1}
         sortable={true}
