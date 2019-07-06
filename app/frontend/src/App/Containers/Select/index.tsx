@@ -46,7 +46,8 @@ class SelectContainer extends Component<
     },
     page: 0,
     isLoading: true,
-    isCalendarOpen: false
+    isCalendarOpen: false,
+    tripsFilteredQty: 0
   }
 
   componentDidMount() {
@@ -87,8 +88,14 @@ class SelectContainer extends Component<
       .then(({ data }) => {
         this.setState((state: IState) => ({
           isLoading: false,
-          trips: [...state.trips, ...data]
+          trips: [...state.trips, ...data],
         }))
+
+        data.map((item: any) => {
+          if (item.info.arrivalTicketsQty && item.info.departureTicketsQty) {
+            this.setState({ tripsFilteredQty: this.state.tripsFilteredQty + 1 })
+          }
+        })
 
         return data.length
       })
@@ -290,7 +297,7 @@ class SelectContainer extends Component<
   calendarClosed = () => this.setState({ isCalendarOpen: false })
 
   render() {
-    const { isCalendarOpen, isLoading, trips, filters } = this.state
+    const { isCalendarOpen, isLoading, trips, filters, tripsFilteredQty } = this.state
     const { isMax, quantity, selected } = this.props
 
     return (
@@ -316,8 +323,8 @@ class SelectContainer extends Component<
           <section className="select-cnt-inner-destinations">
             <Title
               className="select-cnt-inner-title"
-              text={`We found ${trips.length} destinations for you`}
-              selected={[`${trips.length} destinations`]}
+              text={`We found ${tripsFilteredQty} destinations for you`}
+              selected={[`${tripsFilteredQty} destinations`]}
             />
             <div className="select-cnt-inner-destination-list">
               {isLoading ? <div>Loading..</div> : null}

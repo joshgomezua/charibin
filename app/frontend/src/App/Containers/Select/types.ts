@@ -26,6 +26,7 @@ export interface IState {
   page: number
   isLoading: boolean
   isCalendarOpen: boolean
+  tripsFilteredQty: number
 }
 
 export interface IProps {
