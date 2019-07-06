@@ -18,7 +18,7 @@ class DropDownSelect extends React.Component<IProps, IState> {
           document.addEventListener('click', this.toggleListVisibility)
         } else if (!this.state.isListVisible) {
           document.removeEventListener('click', this.toggleListVisibility)
-        }
+        } 
       }
     
       toggleListVisibility = (): void => {

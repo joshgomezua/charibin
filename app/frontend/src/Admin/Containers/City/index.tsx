@@ -24,6 +24,7 @@ import {
 } from '../../Utils/api'
 import { IState, IProps } from './types'
 import { columns } from './columns'
+import { ControlledStateOverrideProps, SortingRule } from 'react-table';
 
 class CityContainer extends React.Component<
   RouteComponentProps<{}> & IProps,
@@ -90,10 +91,10 @@ class CityContainer extends React.Component<
     }
   }
 
-  handleFetchItems = (page: number, limit: number) => {
+  handleFetchItems = (page: number, limit: number, sort?: SortingRule) => {
     const token = getToken()
     if (token) {
-      getCities(page, limit, token)
+      getCities(page, limit, token,sort)
         .then(res => {
           this.setState({
             isLoading: false,
@@ -114,9 +115,13 @@ class CityContainer extends React.Component<
     }
   }
 
-  handleFetchTableData = (boardState: any) => {
-    this.setState({ currentPage: boardState.page })
-    this.handleFetchItems(boardState.page, 10)
+  handleFetchTableData = ({ page, sorted }: ControlledStateOverrideProps) => {
+    this.setState({ currentPage: page! })
+    if (sorted) {
+      this.handleFetchItems(page!, 10, sorted[0])
+    } else {
+      this.handleFetchItems(page!, 10)
+    }
   }
 
   handleDeleteCity = () => {
@@ -243,7 +248,7 @@ class CityContainer extends React.Component<
     if (search) {
 			cities = results.filter(city => {
         return city.name.toLowerCase().includes(search.toLowerCase()) 
-                                || (city.country as string).toLowerCase().includes(search.toLowerCase())
+                  || (city.country as string).toLowerCase().includes(search.toLowerCase())
       })
       total = cities.length
     }
