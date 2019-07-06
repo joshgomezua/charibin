@@ -51,10 +51,7 @@ export default class CalendarDoubleFilter extends React.Component<IProps, IState
   render() {
     const debouncedChange = debounce(
         ({ activeStartDate, view }: { activeStartDate: Date; view: string }) => {
-          console.log("activeStartDate\n", activeStartDate, 
-          "this.state.rangeIsDisplayed", this.state.rangeIsDisplayed)
           if (view === 'month' && !this.state.rangeIsDisplayed) {
-            console.log("in")
             this.props.handleChangeDate(activeStartDate)
           }
         },
