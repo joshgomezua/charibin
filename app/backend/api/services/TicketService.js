@@ -642,6 +642,7 @@ module.exports = {
       });
   },
   async findDestinationTickets (departure, destination) {
+    console.log('icitte')
     return Ticket.aggregate([
       {
         $facet: {
