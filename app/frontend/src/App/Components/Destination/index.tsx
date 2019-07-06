@@ -383,6 +383,7 @@ export default class Destination extends Component<IProps, IState> {
               approx. {formatedDuration}
             </p>
           </div>
+          <p>{`${this.props.data.departure} - ${this.props.data.destination}`}</p>
           <p className="destination-bottom-title">{name}</p>
           <p className="destination-bottom-luggage">Luggage included</p>
           <p className="destination-bottom-price">{`£ ${price}/person`}</p>

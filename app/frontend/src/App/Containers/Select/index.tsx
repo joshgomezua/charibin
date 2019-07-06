@@ -74,7 +74,7 @@ class SelectContainer extends Component<
     dateEnd: number,
     qunatity: number
   ) => {
-
+    this.setState({ tripsFilteredQty: 0 })
     return API.getTrips(
       page,
       limit,
@@ -86,6 +86,7 @@ class SelectContainer extends Component<
       true
     )
       .then(({ data }) => {
+        console.log('data', data)
         this.setState((state: IState) => ({
           isLoading: false,
           trips: [...state.trips, ...data],
@@ -115,6 +116,7 @@ class SelectContainer extends Component<
           filters: { min, max, start, end }
         } = this.state
         const { quantity } = this.props
+        console.log('filters', this.state.filters)
 
         this.handleFetchTrips(
           page,
@@ -352,6 +354,7 @@ class SelectContainer extends Component<
                   return (trip.info ?
                      trip.info.arrivalTicketsQty && trip.info.departureTicketsQty :
                       0 > 0) ? (
+                    
                     <Destination
                       key={index}
                       index={trip._id}
