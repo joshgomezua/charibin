@@ -15,8 +15,8 @@ export interface ITrip {
   departure: string,
   destination: string
   info?: {
-    arrivalTickets: number
-    departureTickets: number
+    arrivalTicketsQty: number
+    departureTicketsQty: number
   }
   
 }

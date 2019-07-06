@@ -135,10 +135,6 @@ async function createManyTickets (data) {
 }
 
 async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
-  console.log('bookWithOutTime')
-  console.log(`selectedTrip: ${selectedTrip.departure} ${selectedTrip.destination}`)
-  console.log('selectedTrip date: ', new Date(selectedTrip.dateStart).setHours(0,0,0,0))
-  console.log('Date now: ', Date.now() + global.config.custom.time.day)
   if(new Date(selectedTrip.dateStart).setHours(0,0,0,0) < Date.now() + global.config.custom.time.day)
     throw { status: 400, message: 'TICKET.DATE.START.INVALID%', args: [new Date(Date.now() + global.config.custom.time.day).toDateString()] };
   if(new Date(selectedTrip.dateEnd).setHours(0,0,0,0) < Date.now() + global.config.custom.time.day)
@@ -244,7 +240,6 @@ async function unbook ({ owner, selectedTrip }) {
 }
 
 async function bookWithTime ({ quantity, selectedTrip, owner }) {
-  console.log('bookWithTime')
   const arrivalTicket = await Ticket.findOne({ _id: selectedTrip.arrivalTicket, active: true, deleted: false, quantity: { $gte: quantity } });
   if(!arrivalTicket) throw { status: 404, message: 'TICKET.ARRIVAL.NOT.EXIST' };
 
@@ -348,7 +343,6 @@ module.exports = {
       if(isOwnerExist) return isOwnerExist;
     }
     const owner = crypto.randomBytes(40).toString('hex');
-    console.log('trips', trips)
 
     for (let selectedTrip of trips) {
       if(selectedTrip.arrivalTicket || selectedTrip.departureTicket) {
@@ -534,8 +528,8 @@ module.exports = {
     };
 
     return {
-      arrivalTickets: arrivalTickets.length,
-      departureTickets: departureTickets.length
+      arrivalTicketsQty: arrivalTickets.length,
+      departureTicketsQty: departureTickets.length
     }
   },
 
@@ -605,14 +599,14 @@ module.exports = {
       if (inSelect === 'false') {
         return data;
       } else {
-        const theres = await Promise.all(data.map(async(item) => {
+        const res = await Promise.all(data.map(async(item) => {
           const info = await this.getTripsTicketsQuantity(item);
           return {
             ...item,
             info
           };
         }));
-        return theres;
+        return res;
       }
 
   },
@@ -642,7 +636,6 @@ module.exports = {
       });
   },
   async findDestinationTickets (departure, destination) {
-    console.log('icitte')
     return Ticket.aggregate([
       {
         $facet: {
@@ -650,7 +643,7 @@ module.exports = {
             {
               $match: {
                 deleted: false,
-                'date.start': { $gte: new Date()},
+                'date.start': { $gte: new Date() + global.config.custom.time.day},
                 'departure': departure,
                 'destination': destination
               }

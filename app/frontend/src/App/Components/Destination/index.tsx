@@ -77,43 +77,13 @@ export default class Destination extends Component<IProps, IState> {
 
     const startDates =
       data.type === 'trip'
-        ? 
-        /* data.tickets
-        .filter(
-          (item: ITicket) =>
-            item.destination === data.destination &&
-            moment
-              .utc(item.date.start)
-              .set({ hour: 0, minutes: 0, seconds: 0, milliseconds: 0 })
-              .isAfter() &&
-            item.quantity >= quantity!
-        )
-        .map((item: ITicket) =>
-          moment.utc(item.date.start).format('YYYY-MM-DD')
-        )
-        .filter((item, index, array) => array.indexOf(item) === index) */
-             
-            
+        ?             
         this.state.startDates
         : []
     const endDates =
       data.type === 'trip'
         ? 
-        /*data.tickets
-            .filter(
-              (item: ITicket) =>
-                item.destination === data.destination &&
-                moment
-                  .utc(item.date.start)
-                  .set({ hour: 0, minutes: 0, seconds: 0, milliseconds: 0 })
-                  .isAfter() &&
-                item.quantity >= quantity!
-            )
-            .map((item: ITicket) =>
-              moment.utc(item.date.start).format('YYYY-MM-DD')
-            )
-            .filter((item, index, array) => array.indexOf(item) === index) */
-            this.state.endDates
+        this.state.endDates
         : []
 
     return (
@@ -223,7 +193,6 @@ export default class Destination extends Component<IProps, IState> {
       }
 
       if (hours.start && hours.end) {
-        console.log(`start: ${hours.start.id}\n end: ${hours.end.id}`)
         selectedData.arrivalTicket = hours.start.id
         selectedData.departureTicket = hours.end.id
       }
