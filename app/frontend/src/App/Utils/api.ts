@@ -10,10 +10,11 @@ export const getTrips = (
   priceEnd: number,
   dateStart: number,
   dateEnd: number,
-  quantity: number
+  quantity: number,
+  inSelect: boolean
 ) =>
   axios.get(
-    `${API_URL}/dashboard/ticket/${page}/${limit}/${priceStart}/${priceEnd}/${dateStart}/${dateEnd}/${quantity}`
+    `${API_URL}/dashboard/ticket/${page}/${limit}/${priceStart}/${priceEnd}/${dateStart}/${dateEnd}/${quantity}/${inSelect}`
   )
 
 export const bookTrips = (data: IBookedData) =>

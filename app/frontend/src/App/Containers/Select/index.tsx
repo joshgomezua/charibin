@@ -81,9 +81,11 @@ class SelectContainer extends Component<
       priceEnd,
       dateStart,
       dateEnd,
-      qunatity
+      qunatity,
+      true
     )
       .then(({ data }) => {
+        console.log('data', data)
         this.setState((state: IState) => ({
           isLoading: false,
           trips: [...state.trips, ...data]
@@ -341,7 +343,7 @@ class SelectContainer extends Component<
                     }
                   )
                   const isSelected = filtered.length > 0
-                  return trip.tickets.length > 0 ? (
+                  return (trip.info ? trip.info.arrivalTickets : 0 > 0) ? (
                     <Destination
                       key={index}
                       index={trip._id}

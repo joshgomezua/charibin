@@ -517,7 +517,29 @@ module.exports = {
     return ticket;
   },
 
-  async findDashboard ({ page, limit, quantity, priceStart, priceEnd , dateStart, dateEnd }) {
+  async getTripsTicketsQuantity (data) {
+    let arrivalTickets = await Ticket.find({ 
+      departure: { $in : [data.departure] }, 
+      destination: { $in : [data.destination] } 
+    });
+    if(!arrivalTickets) throw { 
+      status: 404, message: 'TICKET.ARRIVAL.NOT.EXIST%', 
+    };
+    let departureTickets = await Ticket.find({ 
+      departure: { $in : [data.destination] }, 
+      destination: { $in : [data.departure] } 
+    });
+    if(!departureTickets) throw { 
+      status: 404, message: 'TICKET.DEPARTURE.NOT.EXIST%', 
+    };
+
+    return {
+      arrivalTickets: arrivalTickets.length,
+      departureTickets: departureTickets.length
+    }
+  },
+
+  async findDashboard ({ page, limit, quantity, priceStart, priceEnd , dateStart, dateEnd, inSelect }) {
     page = +page;
     quantity = +quantity;
     limit = +limit;
@@ -552,7 +574,7 @@ module.exports = {
       ] });
     }
 
-    return Trip.aggregate([
+    let data = await Trip.aggregate([
       {
         $match: tripMatch
       },
@@ -579,9 +601,20 @@ module.exports = {
           }
         }
       }
-    ]).then(data => {
-      return data;
-    });
+    ]);
+      if (inSelect === 'false') {
+        return data;
+      } else {
+        const theres = await Promise.all(data.map(async(item) => {
+          const info = await this.getTripsTicketsQuantity(item);
+          return {
+            ...item,
+            info
+          };
+        }));
+        return theres;
+      }
+
   },
 
   async findCRM (dateStart, dateEnd) {
@@ -627,6 +660,28 @@ module.exports = {
     ])
       .then(data => {
         return data[0].results;
+      });
+  },
+
+  async findDestinationTicketsQuantity (departure, destination) {
+    return Ticket.aggregate([
+      {
+        $facet: {
+          results: [
+            {
+              $match: {
+                deleted: false,
+                'date.start': { $gte: new Date()},
+                'departure': departure,
+                'destination': destination
+              }
+            },
+          ]
+        }
+      }
+    ])
+      .then(data => {
+        return data[0].results.length;
       });
   },
 
