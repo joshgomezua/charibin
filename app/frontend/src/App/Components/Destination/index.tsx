@@ -63,6 +63,7 @@ export default class Destination extends Component<IProps, IState> {
         
         returnedDates[datePoint] = dates
         this.setState( returnedDates )
+        console.log('res', res)
       })
   }
 

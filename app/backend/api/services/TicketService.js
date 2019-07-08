@@ -638,7 +638,7 @@ module.exports = {
             {
               $match: {
                 deleted: false,
-                'date.start': { $gte: new Date() + global.config.custom.time.day},
+                'date.start': { $gte: new Date()},
                 'departure': departure,
                 'destination': destination
               }
