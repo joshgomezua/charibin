@@ -46,13 +46,13 @@ class SelectContainer extends Component<
     },
     page: 0,
     isLoading: true,
-    isCalendarOpen: false
+    isCalendarOpen: false,
+    tripsFilteredQty: 0
   }
 
   componentDidMount() {
     window.scrollTo(0, 0)
     const { quantity } = this.props
-
     this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity).then(
       () => {
         this.setState({ isLoading: false })
@@ -74,6 +74,7 @@ class SelectContainer extends Component<
     dateEnd: number,
     qunatity: number
   ) => {
+    this.setState({ tripsFilteredQty: 0 })
     return API.getTrips(
       page,
       limit,
@@ -81,13 +82,20 @@ class SelectContainer extends Component<
       priceEnd,
       dateStart,
       dateEnd,
-      qunatity
+      qunatity,
     )
       .then(({ data }) => {
+        console.log('data', data)
         this.setState((state: IState) => ({
           isLoading: false,
-          trips: [...state.trips, ...data]
+          trips: [...state.trips, ...data],
         }))
+
+        data.map((item: any) => {
+          if (item.info.arrivalTicketsQty && item.info.departureTicketsQty) {
+            this.setState({ tripsFilteredQty: this.state.tripsFilteredQty + 1 })
+          }
+        })
 
         return data.length
       })
@@ -107,6 +115,7 @@ class SelectContainer extends Component<
           filters: { min, max, start, end }
         } = this.state
         const { quantity } = this.props
+        console.log('filters', this.state.filters)
 
         this.handleFetchTrips(
           page,
@@ -125,7 +134,7 @@ class SelectContainer extends Component<
     const { selected, quantity } = this.props
     const token = getOwnerToken()
     const bookedTrips = selected.map((selectedItem: ISelectedData) => {
-      if (selectedItem.departureTicket && selectedItem.arrivalTicket) {
+      if (selectedItem.arrivalTicket && selectedItem.departureTicket) {
         return {
           arrivalTicket: selectedItem.arrivalTicket,
           departureTicket: selectedItem.departureTicket
@@ -133,6 +142,8 @@ class SelectContainer extends Component<
       } else {
         return {
           id: selectedItem.tripId,
+          departure: selectedItem.departure,
+          destination: selectedItem.destination,
           dateStart: selectedItem.dateStart,
           dateEnd: selectedItem.dateEnd
         }
@@ -287,7 +298,7 @@ class SelectContainer extends Component<
   calendarClosed = () => this.setState({ isCalendarOpen: false })
 
   render() {
-    const { isCalendarOpen, isLoading, trips, filters } = this.state
+    const { isCalendarOpen, isLoading, trips, filters, tripsFilteredQty } = this.state
     const { isMax, quantity, selected } = this.props
 
     return (
@@ -313,8 +324,8 @@ class SelectContainer extends Component<
           <section className="select-cnt-inner-destinations">
             <Title
               className="select-cnt-inner-title"
-              text={`We found ${trips.length} destinations for you`}
-              selected={[`${trips.length} destinations`]}
+              text={`We found ${tripsFilteredQty} destinations for you`}
+              selected={[`${tripsFilteredQty} destinations`]}
             />
             <div className="select-cnt-inner-destination-list">
               {isLoading ? <div>Loading..</div> : null}
@@ -339,8 +350,10 @@ class SelectContainer extends Component<
                     }
                   )
                   const isSelected = filtered.length > 0
-
-                  return trip.tickets.length > 0 ? (
+                  return (trip.info ?
+                     trip.info.arrivalTicketsQty && trip.info.departureTicketsQty :
+                      0 > 0) ? (
+                    
                     <Destination
                       key={index}
                       index={trip._id}

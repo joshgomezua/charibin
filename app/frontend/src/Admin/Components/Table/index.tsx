@@ -5,6 +5,7 @@ import { IProps } from './types'
 import './styles.scss'
 import './table.scss'
 
+
 const Table: React.SFC<IProps> = ({
   columns,
   data,
@@ -20,6 +21,7 @@ const Table: React.SFC<IProps> = ({
   return (
     <div className={tableClass}>
       <ReactTable
+        className={tableClass}
         manual
         minRows={1}
         sortable={true}

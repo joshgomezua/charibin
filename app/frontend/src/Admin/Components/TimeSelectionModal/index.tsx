@@ -14,9 +14,11 @@ import Button from '../../../Common/Components/Button'
 
 import { IProps, IFormValues, IEditValues } from './types'
 import './styles.scss'
+import Switch from '../Switch';
 
 const TimeSelectionModal: React.SFC<IProps> = ({
   isLoading,
+  isASchedule,
   editSchedule,
   closeModal,
   handleEditTimeSelection,
@@ -38,7 +40,8 @@ const TimeSelectionModal: React.SFC<IProps> = ({
         _6to8PM: editSchedule.timeSelection._6to8PM,
         _8to10PM: editSchedule.timeSelection._8to10PM,
         _10to12AM: editSchedule.timeSelection._10to12AM,
-      }
+      },
+      bidirectionalChange: false,
     }
   }
 
@@ -63,6 +66,7 @@ const TimeSelectionModal: React.SFC<IProps> = ({
                   _8to10PM: 0,
                   _10to12AM: 0
                 },
+                bidirectionalChange: false,
               }
         }
         validationSchema={Yup.object().shape({
@@ -102,6 +106,8 @@ const TimeSelectionModal: React.SFC<IProps> = ({
           }
         }}
         render={({
+          handleChange,
+          values
         }: FormikProps<IFormValues>) => (
           <Form noValidate>
             <div className="spon-seltime-modal__row">
@@ -277,6 +283,27 @@ const TimeSelectionModal: React.SFC<IProps> = ({
                 />
               </div>
             </div>
+
+            {isASchedule === false ? (
+              <div className="spon-seltime-modal__row">
+                <div className="spon-seltime-modal__toggles">
+                  <div className="spon-seltime-modal__toggle-item">
+                    <p>Bidirectional Change:</p>
+                    <Switch
+                      checked={values.bidirectionalChange as boolean}
+                      onChange={() =>
+                        handleChange({
+                          target: {
+                            id: 'bidirectionalChange',
+                            value: !values.bidirectionalChange
+                          }
+                        })
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+            ) : null} 
 
             <div className="spon-seltime-modal__row--bordered"/>
             <div className="spon-seltime-modal__row">

@@ -2,7 +2,7 @@
 @import '../../../Common/Utils/Styles/colors.scss';
 .spon-table {
   border: 1px solid rgba(0, 0, 0, 0.1);
-
+  
   &--transactions {
     .rt-td,
     .rt-th {
@@ -57,9 +57,12 @@
 
   .ReactTable {
     .rt-noData {
+      position: relative;
       top: initial;
       bottom: rc(50);
-      transform: translate(-50%, 0);
+      transform: translate(-50%,0);
+      height: 10px;
+      width: 170px;
     }
     .rt-thead {
       padding-top: rc(55);
