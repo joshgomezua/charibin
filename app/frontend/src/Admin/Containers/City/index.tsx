@@ -92,6 +92,7 @@ class CityContainer extends React.Component<
   }
 
   handleFetchItems = (page: number, limit: number, sort?: SortingRule) => {
+    console.log((sort as SortingRule) )
     const token = getToken()
     if (token) {
       getCities(page, limit, token,sort)
@@ -107,7 +108,7 @@ class CityContainer extends React.Component<
           this.props.showError(err, ERRORS.CITY_FETCH)
         })
 
-      getCities(0,10000,token).then(res => {
+      getCities(0,10000,token,sort).then(res => {
         this.setState({results: res.data.results})
       }).catch(err => {
         this.props.showError(err, ERRORS.CITY_FETCH)

@@ -227,7 +227,6 @@ export const getCities = (
   
   return axios.get(`${API_URL}/city/${page}/${limit}`, {
     headers: {
-      'Content-type': 'application/json',
       token
     }
   })

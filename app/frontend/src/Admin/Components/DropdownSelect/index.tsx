@@ -27,14 +27,26 @@ class DropDownSelect extends React.Component<IProps, IState> {
     
       handleSelectOption = (el: IOption): void => {
         const { onChange} = this.props
-        this.setState({ isListVisible: false })
-        this.setState({inputValue: el.name})
+        this.setState({ isListVisible: false,
+                        inputValue: el.name})
         onChange({
           target: {
             id: this.props.id,
             value: el.name === DEFAULT_SEARCH_RESULT.name ? "" : el.name
           }
         })
+      }
+
+      verifyCountry = (country: string) => {
+        const{options} = this.props
+    
+        for (const value of options) {
+          if (value.name.toLowerCase() === country)
+          {
+            return value
+          } 
+        }
+        return null
       }
 
       handleSearch = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -51,6 +63,11 @@ class DropDownSelect extends React.Component<IProps, IState> {
           tableau.push(DEFAULT_SEARCH_RESULT)
         }
         this.setState({results: tableau })
+        
+        const country= this.verifyCountry(e.target.value)
+        if(country!== null) {
+          this.handleSelectOption(country)
+        }
       }
       
       renderOptions = (optionsArr: IOption[]): JSX.Element[] => {
