@@ -15,11 +15,6 @@ import {
   ITrip as ITripSelect
 } from '../../../App/Utils/appTypes'
 import { IOption } from '../Dropdown/types'
-import { getDestinationTickets } from 'src/Admin/Utils/api';
-import { getToken } from 'src/Common/Utils/helpers';
-// import { ERRORS } from 'src/Common/Utils/constants';
-
-
 
 export default class Destination extends Component<IProps, IState> {
   readonly state: IState = {
@@ -44,48 +39,49 @@ export default class Destination extends Component<IProps, IState> {
     endDates: []
   }
 
-  componentDidMount = () => {
-    const { data } = this.props
-    const token = getToken() 
-    
-    this.getTickets(data.departure, data.destination, token, 'startDates')
-    this.getTickets(data.destination, data.departure, token, 'endDates')
-
-  }
-
-  getTickets = (departure: string, destination: string, token: string, datePoint: string) => {
-    let dates: string[] = []
-    let returnedDates = {}
-
-    getDestinationTickets(departure, destination, token)
-      .then(res => {
-        dates = res.data.map((item: ITicket) => moment.utc(item.date.start).format('YYYY-MM-DD'))
-        
-        returnedDates[datePoint] = dates
-        this.setState( returnedDates )
-        console.log('res', res)
-      })
-  }
-
   CalendarBlock = () => {
     const {
       error,
       hours,
       hoursToSelect: { start, end },
     } = this.state
-    const { data, /*quantity*/ } = this.props
+    const { data, quantity } = this.props
     const HOURS_SET_PRICE = process.env.REACT_APP_TICKET_CHOOSE_TIME_PRICE
 
     const startDates =
       data.type === 'trip'
-        ?             
-        this.state.startDates
-        : []
+        ? data.tickets
+        .filter(
+          (item: ITicket) =>
+            (item.departure === data.departure && item.destination === data.destination) &&
+            moment
+              .utc(item.date.start)
+              .set({ hour: 0, minutes: 0, seconds: 0, milliseconds: 0 })
+              .isAfter() &&
+            item.quantity >= quantity!
+        )
+        .map((item: ITicket) =>
+          moment.utc(item.date.start).format('YYYY-MM-DD')
+        )
+        .filter((item, index, array) => array.indexOf(item) === index)
+    : []
     const endDates =
       data.type === 'trip'
-        ? 
-        this.state.endDates
-        : []
+        ? data.tickets
+        .filter(
+          (item: ITicket) =>
+            (item.departure === data.destination && item.destination === data.departure) &&
+            moment
+              .utc(item.date.start)
+              .set({ hour: 0, minutes: 0, seconds: 0, milliseconds: 0 })
+              .isAfter() &&
+            item.quantity >= quantity!
+        )
+        .map((item: ITicket) =>
+          moment.utc(item.date.start).format('YYYY-MM-DD')
+        )
+        .filter((item, index, array) => array.indexOf(item) === index)
+    : []
 
     return (
       <div className="destination-calendar">

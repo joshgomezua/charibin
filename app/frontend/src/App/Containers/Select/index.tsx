@@ -91,12 +91,6 @@ class SelectContainer extends Component<
           trips: [...state.trips, ...data],
         }))
 
-        data.map((item: any) => {
-          if (item.info.arrivalTicketsQty && item.info.departureTicketsQty) {
-            this.setState({ tripsFilteredQty: this.state.tripsFilteredQty + 1 })
-          }
-        })
-
         return data.length
       })
       .catch(err => console.log(err.response))
@@ -324,7 +318,7 @@ class SelectContainer extends Component<
           <section className="select-cnt-inner-destinations">
             <Title
               className="select-cnt-inner-title"
-              text={`We found ${tripsFilteredQty} destinations for you`}
+              text={`We found ${trips.length} destinations for you`}
               selected={[`${tripsFilteredQty} destinations`]}
             />
             <div className="select-cnt-inner-destination-list">
@@ -350,10 +344,8 @@ class SelectContainer extends Component<
                     }
                   )
                   const isSelected = filtered.length > 0
-                  return (trip.info ?
-                     trip.info.arrivalTicketsQty && trip.info.departureTicketsQty :
-                      0 > 0) ? (
-                    
+                  return (
+                  
                     <Destination
                       key={index}
                       index={trip._id}
@@ -365,8 +357,7 @@ class SelectContainer extends Component<
                       isMax={isMax}
                       onCalendarOpen={this.calendarOpened}
                       onCalendarClose={this.calendarClosed}
-                    />
-                  ) : null
+                    />)
                 })}
             </div>
           </section>
