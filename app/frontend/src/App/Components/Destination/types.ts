@@ -1,5 +1,6 @@
 import { ITrip, ISelectedData } from '../../Utils/appTypes'
 import { IOption } from '../Dropdown/types'
+
 export interface IProps {
   index: string
   selected?: boolean
@@ -32,4 +33,7 @@ export interface IState {
     start: IOption[]
     end: IOption[]
   }
+
+  startDates: string[]
+  endDates: string[]
 }

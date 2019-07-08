@@ -26,6 +26,7 @@ export interface IState {
   page: number
   isLoading: boolean
   isCalendarOpen: boolean
+  tripsFilteredQty: number
 }
 
 export interface IProps {
@@ -47,4 +48,10 @@ export interface IBookedType {
   trip: string
   withTime: boolean
   _id: string
+}
+
+export interface ITripInfo {
+  _id: string
+  arrivalTicketsQty: number
+  departureTicketsQty: number
 }

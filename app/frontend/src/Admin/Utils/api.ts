@@ -79,13 +79,26 @@ export const addTrip = (data: Types.INewTrip, token: string) =>
       headers: { 'Content-type': 'application/json', token }
 })
 
-export const getTrips = (page: number, limit: number, token: string) =>
-  axios.get(`${API_URL}/trip/${page}/${limit}`, {
-    headers: {
-      'Content-type': 'application/json',
-      token
-    }
+export const getTrips = (
+  page: number, 
+  limit: number, 
+  token: string,
+  sortBy?: SortingRule
+  ) => {
+  if(sortBy){
+    return axios.get(
+      `${API_URL}/trip/${page}/${limit}/${sortBy.id}/${
+        sortBy.desc ? 'ascending' : 'descending'
+      }`,
+      {
+        headers: { token }
+      }
+    )
+  }
+  return axios.get(`${API_URL}/trip/${page}/${limit}`, {
+    headers: { token }
   })
+}
 
 export const getSingleTrip = (id: string, token: string) =>
   axios.get(`${API_URL}/trip/${id}`, { headers: { token } 
@@ -125,6 +138,10 @@ export const getSingleScheduledTrip = (id: string, token: string) =>
   axios.get(`${API_URL}/scheduledTrip/${id}`, { headers: { token } 
 })
 
+export const getOpposites = (id: string, token: string) =>
+  axios.get(`${API_URL}/opposites/${id}`, { headers: { token } 
+})
+
 export const getTickets = (startDate: string, endDate: string, token: string) =>
   axios.get(`${API_URL}/ticket/${startDate}/${endDate}`, {
     headers: {
@@ -132,6 +149,24 @@ export const getTickets = (startDate: string, endDate: string, token: string) =>
       token
     }
   })
+
+export const getDestinationTickets = (departure: string, destination: string, token: string) => {
+  return axios.get(`${API_URL}/ticket/destination/${departure}/${destination}`, {
+    headers: {
+      'Content-type': 'application/json',
+      token
+    }
+  })
+}
+
+export const getDestinationTicketsQty = (departure: string, destination: string, token: string) => {
+  return axios.get(`${API_URL}/ticket/destination/quantity/${departure}/${destination}`, {
+    headers: {
+      'Content-type': 'application/json',
+      token
+    }
+  })
+}
 
 export const createTicket = (data: Types.ITicket, token: string) =>
   axios.post(`${API_URL}/ticket`, data, {

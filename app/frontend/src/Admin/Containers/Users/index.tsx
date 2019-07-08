@@ -87,7 +87,6 @@ class UsersContainer extends React.Component<
 
   handleFetchItems = (page: number, limit: number) => {
     const token = getToken()
-    console.log('2000')
     if (token) {
       getUsers(page, limit, token)
         .then(res => {
