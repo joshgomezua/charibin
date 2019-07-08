@@ -6,8 +6,8 @@ export interface ILoginForm {
 }
 
 export interface ITrip {
-  destination: string
-  departure: string
+  destination: ICity
+  departure: ICity
   carrier: string
   photo?: string
   price: number
@@ -33,8 +33,8 @@ export interface ITrip {
 
 
 export interface INewTrip {
-  destination: string
-  departure: string
+  destination: ICity
+  departure: ICity
   carrier: string
   price: number
   discount: number
@@ -83,8 +83,8 @@ export interface INewScheduledTrip {
 }
 
 export interface IEditTimeSelect {
-  destination?: string
-  departure?: string
+  destination?: ICity
+  departure?: ICity
   carrier?: string
   photo?: string
   price?: number

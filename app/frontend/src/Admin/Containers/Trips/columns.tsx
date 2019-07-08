@@ -13,11 +13,11 @@ export const columns = (
 ) => [
   {
     Header: 'From',
-    accessor: 'departure',
+    accessor: 'departure.name',
   },
   {
     Header: 'To',
-    accessor: 'destination'
+    accessor: 'destination.name'
   },
   {
     Header: 'Fake',

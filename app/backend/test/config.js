@@ -30,8 +30,6 @@ const dataTemplate = {
 
 
   trip: {
-    departure: faker.address.city,
-    destination: faker.address.city,
     carrier: 'Flexibus',
     photo: getImage,
     type: 'Train',

@@ -25,8 +25,8 @@ export interface IUser {
   role: string
   password: string
   isDeleted: boolean
-
 }
+
 export interface IScheduledTrip {
   _id: string
   active: boolean
@@ -76,8 +76,8 @@ export interface ITrip {
   discount: number
   duration: number
   fake: boolean
-  departure: string
-  destination: string
+  departure: ICity
+  destination: ICity
   carrier: string
   photo?: string
   price: number
