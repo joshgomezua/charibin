@@ -115,6 +115,7 @@
   }
 
   &__input {
+    text-transform: capitalize;
     position: relative;
     width: 100%;
     height: rc(22);
