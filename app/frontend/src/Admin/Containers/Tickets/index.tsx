@@ -226,11 +226,14 @@ class TicketsContainer extends React.Component<
 
     getSingleTicket(id, token)
       .then(({ data }) => {
+        console.log('data', data)
         const newData = {
           _id: data.trip._id,
-          departure: data.trip.departure,
-          destination: data.trip.destination
+          departure: data.departure,
+          destination: data.destination
         } 
+        console.log('newDAta', newData)
+
         data.trip = newData; 
         this.setState(
           (state: IState) => ({
