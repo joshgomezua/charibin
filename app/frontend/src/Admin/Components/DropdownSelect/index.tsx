@@ -53,7 +53,7 @@ class DropDownSelect extends React.Component<IProps, IState> {
         const {options} = this.props
            const tableau: IOption[] = options.filter((value: IOption) => {
             const name = value.name.toLowerCase()
-            if(name.includes(e.target.value)){
+            if(name.includes(e.target.value.toLowerCase())){
               return value
             } 
               return
@@ -118,6 +118,7 @@ class DropDownSelect extends React.Component<IProps, IState> {
                     placeholder={placeholder} 
                     value={inputValue}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      console.log(e.target.value)
                       this.setState({inputValue: e.target.value})
                       this.handleSearch(e)
                     }}
