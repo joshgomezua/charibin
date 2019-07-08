@@ -32,7 +32,7 @@ class DropDownSelect extends React.Component<IProps, IState> {
         onChange({
           target: {
             id: this.props.id,
-            value: el.name === DEFAULT_SEARCH_RESULT.name || !this.verifyCountry(el.name)  ? "" : el.name
+            value: (el.name === DEFAULT_SEARCH_RESULT.name || !this.verifyCountry(el.name))  ? "" : el.name
           }
         })
       }
@@ -41,7 +41,7 @@ class DropDownSelect extends React.Component<IProps, IState> {
         const{options} = this.props
     
         for (const value of options) {
-          if (value.name.toLowerCase() === country)
+          if (value.name.toLowerCase() === country.toLowerCase())
           {
             return true
           } 
