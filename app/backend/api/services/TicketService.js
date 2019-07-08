@@ -612,49 +612,6 @@ module.exports = {
         return data[0].results;
       });
   },
-  async findDestinationTickets (departure, destination) {
-    return Ticket.aggregate([
-      {
-        $facet: {
-          results: [
-            {
-              $match: {
-                deleted: false,
-                'date.start': { $gte: new Date()},
-                'departure': departure,
-                'destination': destination
-              }
-            },
-          ]
-        }
-      }
-    ])
-      .then(data => {
-        return data[0].results;
-      });
-  },
-
-  async findDestinationTicketsQuantity (departure, destination) {
-    return Ticket.aggregate([
-      {
-        $facet: {
-          results: [
-            {
-              $match: {
-                deleted: false,
-                'date.start': { $gte: new Date()},
-                'departure': departure,
-                'destination': destination
-              }
-            },
-          ]
-        }
-      }
-    ])
-      .then(data => {
-        return data[0].results.length;
-      });
-  },
 
   async destroy (id) {
     const ticket = await Ticket.findById(id);
