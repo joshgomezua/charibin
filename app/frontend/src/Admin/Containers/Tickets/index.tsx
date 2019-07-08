@@ -48,7 +48,8 @@ class TicketsContainer extends React.Component<
     calendarFilter: {
       start: undefined,
       end: undefined
-    }
+    },
+    modalOptions: []
 
   }
 
@@ -101,13 +102,35 @@ class TicketsContainer extends React.Component<
           departure: item.departure,
           destination: item.destination
         }))
+        console.log('cityNames', cityNames)
 
-        const uniqueCitiesNames = cityNames.reduce((unique: any, other: any) => {
+        const oppositeDirectionCityNames =  cityNames.map((item: any) => ({
+          _id: item._id,
+          departure: item.destination,
+          destination: item.departure
+        }))
+
+        console.log('oppositeDirectionCityNames', oppositeDirectionCityNames)
+
+        this.setState( {  
+          modalOptions: 
+            [
+              ...this.state.modalOptions,
+              ...cityNames,
+              ...oppositeDirectionCityNames
+            ]
+        })
+
+        console.log('modalOptions', this.state.modalOptions)
+
+        const uniqueCitiesNames = this.state.modalOptions.reduce((unique: any, other: any) => {
           if(!unique.some((obj: { departure: any; }) => obj.departure === other.departure)) {
             unique.push(other);
           }
           return unique;
         },[]);
+
+        console.log('uniqueCitiesNames', uniqueCitiesNames)
 
         this.props.changeFilters(cityNames)
         this.setState({ departures: uniqueCitiesNames })

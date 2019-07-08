@@ -62,12 +62,6 @@ loadModels();
     trips.push(trip);
     console.log(`Creating Trips: ${i + 1}/${5}`);
 
-    trips.push(await helpers.createTrip({...helpers.dataClone(globals.dataTemplate.trip), 
-      departure: trip.destination,
-      destination: trip.departure,
-      }));
-      console.log(`Creating Trips: ${i + 1}/${5}`);
-
     // Create tickets
     for (let j = 0; j < 1; j++) {
     const ticketArrivalTemp = { ...helpers.dataClone(globals.dataTemplate.ticket), 
@@ -88,11 +82,6 @@ loadModels();
         destination: trips[i].departure
       };
     const ticketDeparture = await helpers.createTicket(ticketDepartureTemp)
-
-    
-    
-
-
 
       process.stdout.clearLine();
       process.stdout.cursorTo(0);
