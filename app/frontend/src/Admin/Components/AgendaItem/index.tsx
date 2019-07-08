@@ -26,12 +26,20 @@ const AgendaItem: React.SFC<IProps> = ({
     <tr className="spon-agenda__row">
       {index === 0 ? (
         <td className={isTodayClassname} rowSpan={rowSpan}>
-          <p>{moment(ticket.date.start).format('dddd')}</p>
-          <p>{moment(ticket.date.start).format('D MMM YYYY')}</p>
+          <p>{moment.utc(ticket.date.start).format('ddd')}</p>
+          <p>{moment.utc(ticket.date.start).format('D MMM YYYY')}</p>
         </td>
       ) : (
         <td className="spon-agenda__cell spon-agenda__cell--body  spon-agenda__cell--first-item" />
       )}
+      <td className="spon-agenda__cell spon-agenda__cell--body">
+        {moment.utc(ticket.date.start).format('HH:mm')}-
+        {moment.utc(ticket.date.end).format('HH:mm')}
+      </td>
+      <td className="spon-agenda__cell spon-agenda__cell--body">
+        {moment.utc(ticket.date.start).add(ticket.trip.duration, 'minutes').format('HH:mm')}-
+        {moment.utc(ticket.date.end).add(ticket.trip.duration, 'minutes').format('HH:mm')}
+      </td>
       <td className="spon-agenda__cell spon-agenda__cell--body">
         {ticket.departure}
       </td>
@@ -42,6 +50,9 @@ const AgendaItem: React.SFC<IProps> = ({
         {ticket.trip.carrier}
       </td>
       <td className="spon-agenda__cell spon-agenda__cell--body">
+        {ticket.type}
+      </td>
+      <td className="spon-agenda__cell spon-agenda__cell--body">
         {ticket.quantity}
       </td>
       <td className="spon-agenda__cell spon-agenda__cell--body">
@@ -50,13 +61,7 @@ const AgendaItem: React.SFC<IProps> = ({
       <td className="spon-agenda__cell spon-agenda__cell--body">
         {ticket.soldTickets}
       </td>
-      <td className="spon-agenda__cell spon-agenda__cell--body">
-        {ticket.type}
-      </td>
-      <td className="spon-agenda__cell spon-agenda__cell--body">
-        {moment.utc(ticket.date.start).format('HH:mm')}-
-        {moment.utc(ticket.date.end).format('HH:mm')}
-      </td>
+      
       <td className="spon-agenda__cell spon-agenda__cell--body">
         <Switch
           checked={ticket.active}

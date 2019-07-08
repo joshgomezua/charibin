@@ -44,7 +44,7 @@ export const SUCCESS = {
   TICKET_DELETE: 'Ticket deleted successfully',
   ORDER_UPDATE: 'Order update successfully',
   CITY_ADD: 'City added successfully',
-  CITY_EDIT: 'City edited successfully',
+  CITY_EDIT: 'City updated successfully',
   CITY_DELETE: 'City deleted successfully',
   CITY_UPDATE: 'city update successfully',
   USER_ADD: 'user added successfully' ,
@@ -57,7 +57,7 @@ export const SUCCESS = {
 
 export const DEFAULT_TICKET_DATA = {
   _id: '',
-  trip: { _id: '', departure: '', destination: '', carrier: '' },
+  trip: { _id: '', departure: '', destination: '', carrier: '', duration: 0 },
   quantity: 0,
   soldTickets: 0,
   reservedQuantity: 0,

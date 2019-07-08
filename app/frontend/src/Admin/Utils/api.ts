@@ -235,6 +235,15 @@ export const getCities = (page: number, limit: number, token: string) =>
   }
 )
 
+export const searchCity = (name: string,page:number, limit: number,token: string) => 
+  axios.get(`${API_URL}/city/${page}/${limit}/${name}`, {
+    headers: {
+      'Content-type': 'application/json',
+      token
+    }
+  }
+)
+
 export const getSingleCity = (id: string, token: string) =>
   axios.get(`${API_URL}/city/${id}`, { headers: { token } }
 )

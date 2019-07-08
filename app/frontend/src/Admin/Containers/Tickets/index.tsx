@@ -123,13 +123,14 @@ class TicketsContainer extends React.Component<
 
   handleFetchTicketsByDate = (initialDate: Date, finalDate?: Date) => {
     const token = getToken()
+    const offset = moment(initialDate).utcOffset()
 
-    const startDate = finalDate ? moment(initialDate).format('x') : 
-      moment(initialDate)
+    const startDate = finalDate ? moment(initialDate).add(offset, 'minutes').format('x') : 
+      moment(initialDate).utc()
       .startOf('month')
       .format('x')
-    const endDate = finalDate ? moment(finalDate).format('x') : 
-      moment(initialDate)
+    const endDate = finalDate ? moment(finalDate).add(offset, 'minutes').format('x') : 
+      moment(initialDate).utc()
       .endOf('month')
       .format('x')
 

@@ -94,7 +94,6 @@ class TripsContainer extends React.Component<
 
   handleOpenTimeSelectionScheduleModal = (id: string) => {
     this.handleFetchTripSchedule(id)
-    console.log(this.state)
     this.handleOpenModal(MODAL_TYPE.EDIT_TIME_SELECTION_SCHEDULE, 'Edit time selection price settings of schedule', id)
   }
 
@@ -119,12 +118,10 @@ class TripsContainer extends React.Component<
 
   handleFetchTripSchedule = (id: string) => {
     const token = getToken()
-    console.log(id)
     if (token) {
       getSingleScheduledTrip(id, token)
         .then(res => {
           this.setState({ editSchedule: res.data })
-          console.log(res.data)
         })
         .catch(err => {
           this.modal.current!.close()
@@ -338,14 +335,12 @@ class TripsContainer extends React.Component<
       trip: this.state.editData._id
     }
     this.setState({ isModalLoading: true })
-    console.log(newSchedule)
     return addSchedule(newSchedule, token)
       .then(res => {
         this.modal.current!.close()
         this.handleFetchItems(currentPage, 10)
         this.props.showSuccess(SUCCESS.DEFAULT)
         this.handleRestartModalType()
-        console.log(this.state.trips)
         return Promise.resolve()
       })
       .catch(err => {
