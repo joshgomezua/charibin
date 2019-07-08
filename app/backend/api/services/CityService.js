@@ -12,11 +12,14 @@ module.exports = {
   },
 
   async findCRM (page, limit, sortOrder, sortField) {
+    if(sortOrder == undefined){
+      sortOrder = 'ascending'
+    }
     const query = {
       page: ~~Number(page),
       limit: ~~Number(limit),
       sortOrder: 'ascending' === sortOrder ? 1 : -1,
-      sortField: sortField || '_id',
+      sortField: sortField || 'name',
     };
 
     return City.aggregate([
