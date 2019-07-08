@@ -22,7 +22,7 @@ import {
 import { MODAL_TYPE } from '../../Utils/adminTypes'
 import { ITicket } from '../../../Common/Utils/globalTypes'
 import { getToken } from '../../../Common/Utils/helpers'
-import { ERRORS, SUCCESS, DEFULT_TICKET_DATA } from '../../Utils/constants'
+import { ERRORS, SUCCESS, DEFAULT_TICKET_DATA } from '../../Utils/constants'
 import { IStore } from '../../../Common/Redux/types'
 import { IState, IProps, IEditedData } from './types'
 import './styles.scss'
@@ -42,7 +42,7 @@ class TicketsContainer extends React.Component<
       id: '',
       type: null,
       heading: '',
-      data: DEFULT_TICKET_DATA,
+      data: DEFAULT_TICKET_DATA,
       trip: null
     },
     calendarFilter: {
@@ -101,9 +101,16 @@ class TicketsContainer extends React.Component<
           departure: item.departure,
           destination: item.destination
         }))
-        
+
+        const uniqueCitiesNames = cityNames.reduce((unique: any, other: any) => {
+          if(!unique.some((obj: { departure: any; }) => obj.departure === other.departure)) {
+            unique.push(other);
+          }
+          return unique;
+        },[]);
+
         this.props.changeFilters(cityNames)
-        this.setState({ departures: cityNames })
+        this.setState({ departures: uniqueCitiesNames })
       })
       .catch(err => {
         this.props.showError(err)
@@ -116,13 +123,14 @@ class TicketsContainer extends React.Component<
 
   handleFetchTicketsByDate = (initialDate: Date, finalDate?: Date) => {
     const token = getToken()
+    const offset = moment(initialDate).utcOffset()
 
-    const startDate = finalDate ? moment(initialDate).format('x') : 
-      moment(initialDate)
+    const startDate = finalDate ? moment(initialDate).add(offset, 'minutes').format('x') : 
+      moment(initialDate).utc()
       .startOf('month')
       .format('x')
-    const endDate = finalDate ? moment(finalDate).format('x') : 
-      moment(initialDate)
+    const endDate = finalDate ? moment(finalDate).add(offset, 'minutes').format('x') : 
+      moment(initialDate).utc()
       .endOf('month')
       .format('x')
 
@@ -293,7 +301,7 @@ class TicketsContainer extends React.Component<
         id: '',
         type: null,
         heading: '',
-        data: DEFULT_TICKET_DATA,
+        data: DEFAULT_TICKET_DATA,
         trip: null
       }
     })

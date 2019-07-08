@@ -2,6 +2,7 @@ import React from 'react'
 import { RowRenderProps } from 'react-table'
 import Switch from '../../Components/Switch'
 
+
 let count: number = 0;
 export const columns = (
   openDeleteModal: (id: string) => void,
@@ -11,19 +12,19 @@ export const columns = (
   {
     Header: 'City',
     accessor: 'name',
-    width: 300
+   
   },
   {
     Header: 'Country',
     accessor: 'country',
-    width: 300
+    
    
   },
   {
     Header: 'Keywords',
     style: { 'white-space': 'unset' } ,
     accessor: 'tags',
-    width: 300,
+  
     Cell: (props: RowRenderProps) => (
       props.value.map((tag: string) => {
         const length: number = props.value.length
@@ -43,7 +44,7 @@ export const columns = (
   {
     Header: 'Photo',
     accessor: 'photo',
-    width: 90,
+   
     Cell: (props: RowRenderProps) => (
       <div className="spon-table__photo">        
         <img src={props.value} alt="Avatar photo" title={props.row.name}/>

@@ -137,6 +137,24 @@ export const getTickets = (startDate: string, endDate: string, token: string) =>
     }
   })
 
+export const getDestinationTickets = (departure: string, destination: string, token: string) => {
+  return axios.get(`${API_URL}/ticket/destination/${departure}/${destination}`, {
+    headers: {
+      'Content-type': 'application/json',
+      token
+    }
+  })
+}
+
+export const getDestinationTicketsQty = (departure: string, destination: string, token: string) => {
+  return axios.get(`${API_URL}/ticket/destination/quantity/${departure}/${destination}`, {
+    headers: {
+      'Content-type': 'application/json',
+      token
+    }
+  })
+}
+
 export const createTicket = (data: Types.ITicket, token: string) =>
   axios.post(`${API_URL}/ticket`, data, {
     headers: {
@@ -214,6 +232,15 @@ export const updateCity = (id: string, data: Types.ICity, token: string) =>
 
 export const getCities = (page: number, limit: number, token: string) =>
   axios.get(`${API_URL}/city/${page}/${limit}`, {
+    headers: {
+      'Content-type': 'application/json',
+      token
+    }
+  }
+)
+
+export const searchCity = (name: string,page:number, limit: number,token: string) => 
+  axios.get(`${API_URL}/city/${page}/${limit}/${name}`, {
     headers: {
       'Content-type': 'application/json',
       token

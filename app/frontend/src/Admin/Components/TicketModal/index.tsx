@@ -106,8 +106,6 @@ class TicketModal extends React.Component<IProps, IState> {
             reservedQuantity: Yup.number()
               .min(0)
               .max(1000),
-            //departure: Yup.string().required('Ticket departure is required'),
-            //destination: Yup.string().required('Ticket destination is required'),
             date: Yup.string().required(),
             hours: Yup.string().required(),
             isRecurring: Yup.boolean(),
@@ -196,8 +194,8 @@ class TicketModal extends React.Component<IProps, IState> {
                   <DropDownTicket
                     saveAsObject
                     id="trip"
-                    label="Select trip departure"
-                    placeholder="Select trip departure"
+                    label="From"
+                    placeholder="From"
                     className="spon-ticket-modal__dropdown"
                     selectedValue={values.trip ? values.trip.departure : ''}
                     options={departures}
@@ -215,8 +213,8 @@ class TicketModal extends React.Component<IProps, IState> {
                   <DropDownTicket
                     saveAsObject
                     id="trip"
-                    label="Select trip destination"
-                    placeholder="Select trip destination"
+                    label="To"
+                    placeholder="To"
                     className="spon-ticket-modal__dropdown"
                     selectedValue={values.trip ? values.trip.destination : ''}
                     options={destinations}

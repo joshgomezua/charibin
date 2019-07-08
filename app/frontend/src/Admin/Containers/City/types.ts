@@ -7,6 +7,8 @@ export interface IState {
     total: number
     isModalLoading: boolean
     isLoading: boolean
+    search: string
+    results: ICity[],
     currentPage: number
     editData: ICity
     modal: {
