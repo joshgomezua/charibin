@@ -52,7 +52,7 @@ const Header: React.SFC<IProps> = ({
             text="ADD NEW"
             onClick={() => handleOpenModal(MODAL_TYPE.ADD_TRIP, 'Create trip')}
           />
-      ):null}
+      ) : null}
     </div>
   )
 }

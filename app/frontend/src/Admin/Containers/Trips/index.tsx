@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Header from '../../Components/Header'
+import TripHeader from '../../Components/TripHeader'
 import ExpandableTable from '../../Components/ExpandableTable'
 import Modal from '../../Components/Modal'
 import TripModal from '../../Components/TripModal'
@@ -431,13 +431,24 @@ class TripsContainer extends React.Component<
       editSchedule,
       modal: { type: modalType, heading: modalHeading }
     } = this.state
+
+    const {
+      filterFrom,
+      filterTo,
+      changeFilterFrom,
+      changeFilterTo,
+    } = this.props
+
     return (
       <div className="spon-container">
-        <Header
+        <TripHeader
           title="Routes & Prices"
           handleOpenModal={this.handleOpenModal}
+          filterFrom={filterFrom}
+          filterTo={filterTo}
+          changeFilterFrom={changeFilterFrom}
+          changeFilterTo={changeFilterTo}
         />
-
         <ExpandableTable
           data={trips}
           handleFetchData={this.handleFetchTableData}
