@@ -47,7 +47,6 @@ module.exports = {
     if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
     
     const opposites = await Trip.find({ deleted: false, departure: trip.destination, destination: trip.departure, carrier: trip.carrier }); // à indenter
-    console.log(opposites); // à enlever
     return opposites;
   },
 

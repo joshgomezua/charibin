@@ -165,8 +165,8 @@ class TripsContainer extends React.Component<
           this.setState({
             oppositeTrips: res.data
           })
-          for(let index: number = 0; index < this.state.oppositeTrips.length; index++){ // pour faire plus fancy tu peux essayer de faire 
-            updateTimeSelection(this.state.oppositeTrips[index]._id, data, token) // for (const item in this.state.oppositeTrips) { ... }, mais pas obligé
+          for(let index: number = 0; index < this.state.oppositeTrips.length; index++){
+            updateTimeSelection(this.state.oppositeTrips[index]._id, data, token)
           }
         })
         .catch(err => {

@@ -100,7 +100,6 @@ const TimeSelectionModal: React.SFC<IProps> = ({
           }
 
           if (editSchedule && handleEditTimeSelection) {
-            console.log(dataToUpdate) // à enlever
             handleEditTimeSelection(dataToUpdate).then(() => resetForm())
           } else if (handleSubmit) {
             handleSubmit(values).then(() => resetForm())
