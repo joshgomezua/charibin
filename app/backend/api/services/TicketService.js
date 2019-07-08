@@ -518,7 +518,6 @@ module.exports = {
     const destinationTickets =  trip.tickets.filter((ticket) => {
       return (trip.departure === ticket.destination && trip.destination === ticket.departure)
     })
-    console.log((departureTickets.length && destinationTickets.length))
     return (departureTickets.length && destinationTickets.length) 
   },
 
@@ -586,7 +585,6 @@ module.exports = {
     ]);
     
     const res = data.filter((trip) => this.hasEnoughTickets(trip))
-    console.log('res', res.length)  
     return res;
   },
 

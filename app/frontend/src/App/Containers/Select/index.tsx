@@ -85,7 +85,6 @@ class SelectContainer extends Component<
       qunatity,
     )
       .then(({ data }) => {
-        console.log('data', data)
         this.setState((state: IState) => ({
           isLoading: false,
           trips: [...state.trips, ...data],
@@ -109,7 +108,6 @@ class SelectContainer extends Component<
           filters: { min, max, start, end }
         } = this.state
         const { quantity } = this.props
-        console.log('filters', this.state.filters)
 
         this.handleFetchTrips(
           page,
