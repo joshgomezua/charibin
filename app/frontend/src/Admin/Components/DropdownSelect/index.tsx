@@ -118,7 +118,6 @@ class DropDownSelect extends React.Component<IProps, IState> {
                     placeholder={placeholder} 
                     value={inputValue}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      console.log(e.target.value)
                       this.setState({inputValue: e.target.value})
                       this.handleSearch(e)
                     }}

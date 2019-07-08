@@ -92,7 +92,6 @@ class CityContainer extends React.Component<
   }
 
   handleFetchItems = (page: number, limit: number, sort?: SortingRule) => {
-    console.log((sort as SortingRule) )
     const token = getToken()
     if (token) {
       getCities(page, limit, token,sort)
