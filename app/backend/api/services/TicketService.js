@@ -533,7 +533,7 @@ module.exports = {
     }
   },
 
-  async findDashboard ({ page, limit, quantity, priceStart, priceEnd , dateStart, dateEnd, inSelect }) {
+  async findDashboard ({ page, limit, quantity, priceStart, priceEnd , dateStart, dateEnd }) {
     page = +page;
     quantity = +quantity;
     limit = +limit;
@@ -596,19 +596,14 @@ module.exports = {
         }
       }
     ]);
-      if (inSelect === 'false') {
-        return data;
-      } else {
-        const res = await Promise.all(data.map(async(item) => {
-          const info = await this.getTripsTicketsQuantity(item);
-          return {
-            ...item,
-            info
-          };
-        }));
-        return res;
-      }
-
+    const res = await Promise.all(data.map(async(item) => {
+      const info = await this.getTripsTicketsQuantity(item);
+      return {
+        ...item,
+        info
+      };
+    }));
+    return res;
   },
 
   async findCRM (dateStart, dateEnd) {

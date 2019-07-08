@@ -83,7 +83,6 @@ class SelectContainer extends Component<
       dateStart,
       dateEnd,
       qunatity,
-      true
     )
       .then(({ data }) => {
         console.log('data', data)
