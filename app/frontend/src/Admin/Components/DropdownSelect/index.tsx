@@ -110,7 +110,8 @@ class DropDownSelect extends React.Component<IProps, IState> {
             <p className="spon-dropdown__label">{label}</p>
             <div
               className={dropdownElementClass}
-              onClick={this.toggleListVisibility}>
+              onClick={this.toggleListVisibility}
+              onChange={() => this.setState({isListVisible:true})}>
               <div className="spon-dropdown__placeholder">
                   <input type="text" 
                     className="spon-dropdown__input"
