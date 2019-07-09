@@ -132,7 +132,7 @@ class TicketModal extends React.Component<IProps, IState> {
 
             const tempDepartureHours: any[] = []
 
-            for (let hours in values.departureHours) {
+            for (let hours of values.departureHours ? values.departureHours : []) {
 
               const splitedHours = hours!.split('-')
               const startHours = splitedHours[0]
@@ -167,8 +167,13 @@ class TicketModal extends React.Component<IProps, IState> {
              tempDepartureHours.push(date)
 
             }
-
-            console.log('tempDepartureHours', tempDepartureHours)
+            const test  = tempDepartureHours.map((item) => {
+              return new Date(item.start)
+            })
+            tempDepartureHours.map((item) => {
+              test.push(new Date(item.end))
+            })
+            console.log('tempDepartureHours', test)
 
             const dataToSubmit = {
               trip: values.trip._id,

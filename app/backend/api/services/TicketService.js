@@ -327,23 +327,22 @@ module.exports = {
   async create (data) {
     const trip = await Trip.findOne({ _id: data.trip, deleted: false });
     if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
+    console.log('')
 
     if (data.departureHours.length > 1) {
-      for (let hours in data.departureHours) {
-        console.log('hours', new Date(hours))
-        const tempData = data
-        tempData.hours = hours
+      for (let hours of data.departureHours) {
+        data.date = hours
         if(data.repeat) { // create many
-          createManyTickets(tempData);
+          createManyTickets(data);
         } else { // create one
-          let ticket = await Ticket.findOne({ trip: tempData.trip, departure: tempData.departure, destination: tempData.destination, tempData: { start: new Date(tempData.date.start), end: new Date(tempData.date.end) } });
+          let ticket = await Ticket.findOne({ trip: data.trip, departure: data.departure, destination: data.destination, date: { start: new Date(data.date.start), end: new Date(data.date.end) } });
           if(ticket) {
-            ticket = await Ticket.updateOne({ _id: ticket._id }, { $inc: { quantity: tempData.quantity } }, { new: true });
+            ticket = await Ticket.updateOne({ _id: ticket._id }, { $inc: { quantity: data.quantity } }, { new: true });
     
             //return { ...ticket, updated: true };
           } else {
-            ticket = await Ticket.create(tempData);
-            await Trip.findByIdAndUpdate(tempData.trip, { $addToSet: { tickets: ticket._id } }, { new: true });
+            ticket = await Ticket.create(data);
+            await Trip.findByIdAndUpdate(data.trip, { $addToSet: { tickets: ticket._id } }, { new: true });
     
             //return { ...ticket.toObject(), updated: false };
           }
