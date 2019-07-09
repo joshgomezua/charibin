@@ -358,22 +358,22 @@ export default class Destination extends Component<IProps, IState> {
             )}
             {deselect && (
               <div destination-bottom-types>
-                <span
+                {<span
                   className={`destination-bottom-type destination-bottom-type--left`}
                   style={{
                     borderColor: '#12b459',
                     color: '#12b459'
                   }}>
                   Bus
-                </span>
-                {/* <span
+                </span>}
+                {<span
                   className={`destination-bottom-type destination-bottom-type--right`}
                   style={{
                     borderColor: '#12b459',
                     color: '#12b459'
                   }}>
                   Train
-                </span> */}
+                </span>}
               </div>
             )}
             <p className="destination-bottom-duration">
