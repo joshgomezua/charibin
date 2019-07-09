@@ -88,7 +88,13 @@ module.exports = {
     return;
   },
 
-  updateOne (id, data) {
+  async updateOne (id, data) {
     return City.findByIdAndUpdate(id, data, { new: true });
   },
+
+  async getListOfCitiesNames() {
+    const names = await City.find({isEnable: true}).select("name")
+
+    return names
+  }
 };

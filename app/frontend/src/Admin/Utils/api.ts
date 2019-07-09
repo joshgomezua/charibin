@@ -276,6 +276,11 @@ export const searchCity = (name: string,page:number, limit: number,token: string
   }
 )
 
+export const getCitiesNames = (token: string) =>
+  axios.get(`${API_URL}/citynames`, {
+    headers: { token }
+  })
+
 export const getSingleCity = (id: string, token: string) =>
   axios.get(`${API_URL}/city/${id}`, { headers: { token } }
 )
