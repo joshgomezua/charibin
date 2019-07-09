@@ -63,10 +63,10 @@ class TicketModal extends React.Component<IProps, IState> {
             editDate
               ? {
                   ...editDate,
-                  date: new Date(editDate!.date.start),
+                  date: new Date(new Date(editDate!.date.start).getTime()+(new Date(editDate!.date.start).getTimezoneOffset() * 60000)),
                   hours: `${moment
                     .utc(editDate!.date.start)
-                    .format('h')}-${moment
+                    .format('H')}-${moment
                     .utc(editDate!.date.end)
                     .format('h')}`,
                 }
@@ -189,6 +189,7 @@ class TicketModal extends React.Component<IProps, IState> {
             setFieldValue
           }: FormikProps<IFormValues>) => (
             <Form noValidate>
+              {console.log('values.date', values.date)}
               <div className="spon-ticket-modal__row">
                 <div className="spon-ticket-modal__input-cnt spon-ticket-modal__input-cnt--big">
                   <DropDownTicket
