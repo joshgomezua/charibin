@@ -324,21 +324,14 @@ class TicketsContainer extends React.Component<
   }
 
   handleSelectTicketDeparture = (departure: string) => {
-    const token = getToken()
-
-    getTripNames(token)
-      .then(({data}) => {
-        const destinationsFiltered = data.filter((item: any) => item.departure === departure)
-        const destinationsMapped = destinationsFiltered.map((item: any) => ({
-          _id: item._id,
-          departure: item.departure,
-          destination: item.destination
-        }))
-        this.setState({destinations : destinationsMapped})
-      })
-    .catch(err => {
-        this.props.showError(err)
-    })    
+    const { modalOptions } = this.state
+    const destinationsFiltered = modalOptions.filter((item: any) => item.departure === departure)
+    const destinationsMapped = destinationsFiltered.map((item: any) => ({
+      _id: item._id,
+      departure: item.departure,
+      destination: item.destination
+    }))
+    this.setState({destinations : destinationsMapped})  
   }
 
   render() {
