@@ -19,14 +19,14 @@ module.exports = {
       page: ~~Number(page),
       limit: ~~Number(limit),
       sortOrder: 'ascending' === sortOrder ? 1 : -1,
-      sortField: sortField || 'name',
+      sortField: sortField || 'country',
     };
 
     return City.aggregate([
       {
         $facet: {
           results: [
-            { $sort: { [query.sortField]: query.sortOrder} },
+            { $sort: { country:1,name:1 } },
             ...Aggregate.skipAndLimit(query.page, query.limit)
           ],
           status: Aggregate.getStatusWithSimpleMatch(
