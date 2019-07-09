@@ -68,7 +68,7 @@ class TicketModal extends React.Component<IProps, IState> {
                     .utc(editDate!.date.start)
                     .format('H')}-${moment
                     .utc(editDate!.date.end)
-                    .format('h')}`,
+                    .format('H')}`,
                 }
               : {
                   trip: {
