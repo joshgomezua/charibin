@@ -511,26 +511,14 @@ module.exports = {
     return ticket;
   },
 
-  async getTripsTicketsQuantity (data) {
-    let arrivalTickets = await Ticket.find({ 
-      departure: { $in : [data.departure] }, 
-      destination: { $in : [data.destination] } 
-    });
-    if(!arrivalTickets) throw { 
-      status: 404, message: 'TICKET.ARRIVAL.NOT.EXIST%', 
-    };
-    let departureTickets = await Ticket.find({ 
-      departure: { $in : [data.destination] }, 
-      destination: { $in : [data.departure] } 
-    });
-    if(!departureTickets) throw { 
-      status: 404, message: 'TICKET.DEPARTURE.NOT.EXIST%', 
-    };
-
-    return {
-      arrivalTicketsQty: arrivalTickets.length,
-      departureTicketsQty: departureTickets.length
-    }
+   hasEnoughTickets (trip) {
+    const departureTickets =  trip.tickets.filter((ticket) => {
+      return (trip.departure === ticket.departure && trip.destination === ticket.destination)
+    })
+    const destinationTickets =  trip.tickets.filter((ticket) => {
+      return (trip.departure === ticket.destination && trip.destination === ticket.departure)
+    })
+    return (departureTickets.length && destinationTickets.length) 
   },
 
   async findDashboard ({ page, limit, quantity, priceStart, priceEnd , dateStart, dateEnd }) {
@@ -561,11 +549,10 @@ module.exports = {
       ticketMatch.$and.push({ $gte: [ '$$tickets.date.start', new Date(dateStart) ] });
       ticketMatch.$and.push({ $lte: [ '$$tickets.date.start', new Date(dateEnd) ] });
     } else {
-      ticketMatch.$and.push({ $cond: [
-        { $eq: ['$$tickets.departure', 'London'] },
-        { $gte: [ '$$tickets.date.start', new Date(Date.now() + 2 * global.config.custom.time.day) ] },
+      ticketMatch.$and.push(
+        { $gte: [ '$$tickets.date.start', new Date(Date.now() + 1 * global.config.custom.time.day) ] }, //used to be 2
         { $gte: [ '$$tickets.date.start', new Date(Date.now() + global.config.custom.time.day) ] }
-      ] });
+       );
     }
 
     let data = await Trip.aggregate([
@@ -596,13 +583,8 @@ module.exports = {
         }
       }
     ]);
-    const res = await Promise.all(data.map(async(item) => {
-      const info = await this.getTripsTicketsQuantity(item);
-      return {
-        ...item,
-        info
-      };
-    }));
+    
+    const res = data.filter((trip) => this.hasEnoughTickets(trip))
     return res;
   },
 
@@ -628,49 +610,6 @@ module.exports = {
     ])
       .then(data => {
         return data[0].results;
-      });
-  },
-  async findDestinationTickets (departure, destination) {
-    return Ticket.aggregate([
-      {
-        $facet: {
-          results: [
-            {
-              $match: {
-                deleted: false,
-                'date.start': { $gte: new Date()},
-                'departure': departure,
-                'destination': destination
-              }
-            },
-          ]
-        }
-      }
-    ])
-      .then(data => {
-        return data[0].results;
-      });
-  },
-
-  async findDestinationTicketsQuantity (departure, destination) {
-    return Ticket.aggregate([
-      {
-        $facet: {
-          results: [
-            {
-              $match: {
-                deleted: false,
-                'date.start': { $gte: new Date()},
-                'departure': departure,
-                'destination': destination
-              }
-            },
-          ]
-        }
-      }
-    ])
-      .then(data => {
-        return data[0].results.length;
       });
   },
 
