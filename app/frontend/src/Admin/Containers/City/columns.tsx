@@ -22,9 +22,9 @@ export const columns = (
   },
   {
     Header: 'Keywords',
-    style: { 'white-space': 'unset' } ,
+    style: { 'white-space': 'unset' },
     accessor: 'tags',
-  
+    sortable: false,
     Cell: (props: RowRenderProps) => (
       props.value.map((tag: string) => {
         const length: number = props.value.length
@@ -44,7 +44,7 @@ export const columns = (
   {
     Header: 'Photo',
     accessor: 'photo',
-   
+    sortable: false,
     Cell: (props: RowRenderProps) => (
       <div className="spon-table__photo">        
         <img src={props.value} alt="Avatar photo" title={props.row.name}/>
@@ -55,6 +55,7 @@ export const columns = (
     Header: 'Enable',
     width: 90,
     accessor: 'isEnabled',
+    sortable: false,
     Cell: (props: RowRenderProps) => (
       <Switch
         onChange={() => {
@@ -68,6 +69,7 @@ export const columns = (
     Header: 'Modify',
     width: 90,
     accessor: 'isManual',
+    sortable: false,
     Cell: (props: RowRenderProps) => (
       <div  className="spon-table__actions">
         <button disabled={!props.value} onClick={() => openEditModal(props.row._original._id)}>
@@ -79,6 +81,7 @@ export const columns = (
   {
     Header: 'Delete',
     accessor: 'isManual',
+    sortable: false,
     width: 90,
     Cell: (props: RowRenderProps) => (
       <div  className="spon-table__actions"> 

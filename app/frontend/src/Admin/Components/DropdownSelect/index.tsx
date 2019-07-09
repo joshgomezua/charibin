@@ -18,7 +18,7 @@ class DropDownSelect extends React.Component<IProps, IState> {
           document.addEventListener('click', this.toggleListVisibility)
         } else if (!this.state.isListVisible) {
           document.removeEventListener('click', this.toggleListVisibility)
-        }
+        } 
       }
     
       toggleListVisibility = (): void => {
@@ -27,21 +27,33 @@ class DropDownSelect extends React.Component<IProps, IState> {
     
       handleSelectOption = (el: IOption): void => {
         const { onChange} = this.props
-        this.setState({ isListVisible: false })
-        this.setState({inputValue: el.name})
+        this.setState({ isListVisible: false,
+                        inputValue: el.name})
         onChange({
           target: {
             id: this.props.id,
-            value: el.name === DEFAULT_SEARCH_RESULT.name ? "" : el.name
+            value: (el.name === DEFAULT_SEARCH_RESULT.name || !this.verifyCountry(el.name))  ? "" : el.name
           }
         })
+      }
+
+      verifyCountry = (country: string): boolean => {
+        const{options} = this.props
+    
+        for (const value of options) {
+          if (value.name.toLowerCase() === country.toLowerCase())
+          {
+            return true
+          } 
+        }
+        return false
       }
 
       handleSearch = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const {options} = this.props
            const tableau: IOption[] = options.filter((value: IOption) => {
             const name = value.name.toLowerCase()
-            if(name.includes(e.target.value)){
+            if(name.includes(e.target.value.toLowerCase())){
               return value
             } 
               return
@@ -51,6 +63,12 @@ class DropDownSelect extends React.Component<IProps, IState> {
           tableau.push(DEFAULT_SEARCH_RESULT)
         }
         this.setState({results: tableau })
+
+        const country: IOption = {
+          _id:'54',
+          name: e.target.value
+        }
+        this.handleSelectOption(country)  
       }
       
       renderOptions = (optionsArr: IOption[]): JSX.Element[] => {
@@ -92,7 +110,8 @@ class DropDownSelect extends React.Component<IProps, IState> {
             <p className="spon-dropdown__label">{label}</p>
             <div
               className={dropdownElementClass}
-              onClick={this.toggleListVisibility}>
+              onClick={this.toggleListVisibility}
+              onChange={() => this.setState({isListVisible:true})}>
               <div className="spon-dropdown__placeholder">
                   <input type="text" 
                     className="spon-dropdown__input"

@@ -23,6 +23,7 @@ export const columns = (
     Header: 'Fake',
     accessor: 'fake',
     width: 80,
+    sortable: false,
     Cell: (props: RowRenderProps) => (
       <Checkbox id={`isFake${props.index}`} isChecked={props.value} />
     )
@@ -31,6 +32,7 @@ export const columns = (
     Header: 'Active',
     accessor: 'active',
     width: 80,
+    sortable: false,
     Cell: (props: RowRenderProps) => (
       <Checkbox id={`isActive${props.index}`} isChecked={props.value} />
     )
@@ -61,22 +63,25 @@ export const columns = (
     Header: 'Deselection Price',
     accessor: 'deselectionPrice',
     width: 160,
+    sortable: false,
     Cell: (props: RowRenderProps) => `£ ${props.value}`
   },
   {
     Header: 'Time Selection',
     accessor: 'timeSelection.defaultPrice',
     width: 150,
+    sortable: false,
     Cell: (props: RowRenderProps) => { 
       let multiplePrices: boolean = false;
       for(const key in props.row._original.timeSelection){
-        if(props.row._original.timeSelection[key] != props.value)
+        if(props.row._original.timeSelection[key] !== props.value) {
           multiplePrices = true;
+        }
       }
       return(
       <> 
         <div className="spon-table__actions">
-           {multiplePrices == true ? ( <> £ {props.value} * </> ) : ( <> £ {props.value} </> ) }
+           {multiplePrices === true ? ( <> £ {props.value} * </> ) : ( <> £ {props.value} </> ) }
           <button onClick={() => openTimeSelectionModal(props.row._original._id)}>
             Advanced
           </button>
@@ -98,6 +103,7 @@ export const columns = (
   {
     expander: true,
     width: 80,
+    sortable: false,
     Expander: (props: RowRenderProps) => (
       <div className="spon-table__actions">{
         props.isExpanded
@@ -110,6 +116,7 @@ export const columns = (
     Header: '',
     accessor: 'isFromAPI',
     width: 210,
+    sortable: false,
     Cell: (props: RowRenderProps) => (
       <>
         <div className="spon-table__actions">

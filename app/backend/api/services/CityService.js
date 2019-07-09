@@ -11,17 +11,28 @@ module.exports = {
     return City.create(data);
   },
 
-  async findCRM (page, limit) {
+  async findCRM (page, limit, sortOrder, sortField) {
+    if(sortOrder == undefined){
+      sortOrder = 'ascending'
+    }
+    const query = {
+      page: ~~Number(page),
+      limit: ~~Number(limit),
+      sortOrder: 'ascending' === sortOrder ? 1 : -1,
+      sortField: sortField || 'name',
+    };
+
     return City.aggregate([
       {
         $facet: {
           results: [
-            ...Aggregate.skipAndLimit(page, limit)
+            { $sort: { [query.sortField]: query.sortOrder} },
+            ...Aggregate.skipAndLimit(query.page, query.limit)
           ],
           status: Aggregate.getStatusWithSimpleMatch(
             {},
-            page,
-            limit
+            query.page,
+            query.limit
           )
         }
       }

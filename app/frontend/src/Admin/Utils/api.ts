@@ -79,13 +79,26 @@ export const addTrip = (data: Types.INewTrip, token: string) =>
       headers: { 'Content-type': 'application/json', token }
 })
 
-export const getTrips = (page: number, limit: number, token: string) =>
-  axios.get(`${API_URL}/trip/${page}/${limit}`, {
-    headers: {
-      'Content-type': 'application/json',
-      token
-    }
+export const getTrips = (
+  page: number, 
+  limit: number, 
+  token: string,
+  sortBy?: SortingRule
+  ) => {
+  if(sortBy){
+    return axios.get(
+      `${API_URL}/trip/${page}/${limit}/${sortBy.id}/${
+        sortBy.desc ? 'ascending' : 'descending'
+      }`,
+      {
+        headers: { token }
+      }
+    )
+  }
+  return axios.get(`${API_URL}/trip/${page}/${limit}`, {
+    headers: { token }
   })
+}
 
 export const getSingleTrip = (id: string, token: string) =>
   axios.get(`${API_URL}/trip/${id}`, { headers: { token } 
@@ -123,6 +136,10 @@ export const deleteScheduledTrip = (id: string, token: string) =>
 
 export const getSingleScheduledTrip = (id: string, token: string) =>
   axios.get(`${API_URL}/scheduledTrip/${id}`, { headers: { token } 
+})
+
+export const getOpposites = (id: string, token: string) =>
+  axios.get(`${API_URL}/opposites/${id}`, { headers: { token } 
 })
 
 export const getTickets = (startDate: string, endDate: string, token: string) =>
@@ -217,14 +234,29 @@ export const updateCity = (id: string, data: Types.ICity, token: string) =>
   }
 )
 
-export const getCities = (page: number, limit: number, token: string) =>
-  axios.get(`${API_URL}/city/${page}/${limit}`, {
+export const getCities = (
+  page: number, 
+  limit: number, 
+  token: string, 
+  sortBy?: SortingRule
+) => {
+  if (sortBy) {
+    return axios.get(
+      `${API_URL}/city/${page}/${limit}/${sortBy.id}/${
+        sortBy.desc ? 'ascending' : 'descending'
+      }`,
+      {
+        headers: { token }
+      }
+    )
+  }
+  
+  return axios.get(`${API_URL}/city/${page}/${limit}`, {
     headers: {
-      'Content-type': 'application/json',
       token
     }
-  }
-)
+  })
+}
 
 export const searchCity = (name: string,page:number, limit: number,token: string) => 
   axios.get(`${API_URL}/city/${page}/${limit}/${name}`, {
