@@ -93,7 +93,7 @@ module.exports = {
   },
 
   async getListOfCitiesNames() {
-    const names = await City.find({isEnable: true}).select("name")
+    const names = await City.find({isEnabled: true}).select("name")
 
     return names
   }

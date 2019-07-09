@@ -22,4 +22,9 @@ export interface IFormValues {
   active: boolean
 }
 
+export interface IOption {
+  _id: string,
+  name: string
+}
+
 export type IEditValues = Partial<IFormValues>
