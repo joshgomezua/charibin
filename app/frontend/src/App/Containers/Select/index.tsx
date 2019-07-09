@@ -232,6 +232,12 @@ class SelectContainer extends Component<
   }
 
   handleFilterChange = (filters: IFiltersChange, callback?: () => void) => {
+    const start = filters.start ? new Date(filters.start.getTime() - (filters.start.getTimezoneOffset() * 60000)) : undefined
+    const end = filters.end ? new Date(filters.end.getTime() - (filters.end.getTimezoneOffset() * 60000)) : undefined
+
+    filters.start = start
+    filters.end = end
+
     this.setState(
       (state: IState) => ({
         filters: {
