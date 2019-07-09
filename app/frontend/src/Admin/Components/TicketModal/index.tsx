@@ -204,6 +204,7 @@ class TicketModal extends React.Component<IProps, IState> {
             setFieldValue
           }: FormikProps<IFormValues>) => (
             <Form noValidate>
+              {console.log('departureHours', values.departureHours)}
               <div className="spon-ticket-modal__row">
                 <div className="spon-ticket-modal__input-cnt spon-ticket-modal__input-cnt--big">
                   <DropDownTicket
@@ -313,7 +314,7 @@ class TicketModal extends React.Component<IProps, IState> {
                 <MultiSwitch
                   isMulti
                   className="spon-ticket-modal__days-of-week"
-                  onChange={(name: string, id: number) => {
+                  onChange={(name: string, id: string) => {
                     if (values.departureHours!.includes(name)) {
                       const hoursFiltered = values.departureHours!.filter(
                         (departuresHours: string) => departuresHours !== name

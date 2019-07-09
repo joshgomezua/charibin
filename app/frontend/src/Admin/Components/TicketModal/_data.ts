@@ -31,43 +31,43 @@ export const daysOfWeek = [
 
 export const departureHours = [
   {
-    _id: 1,
+    _id: '0-6',
     name: '0-6'
   },
   {
-    _id: 2,
+    _id: '6-8',
     name: '6-8'
   },
   {
-    _id: 3,
+    _id: '8-10',
     name: '8-10'
   },
   {
-    _id: 4,
+    _id: '10-12',
     name: '10-12'
   },
   {
-    _id: 5,
+    _id: '12-14',
     name: '12-14'
   },
   {
-    _id: 6,
+    _id: '14-16',
     name: '14-16'
   },
   {
-    _id: 7,
+    _id: '16-18',
     name: '16-18'
   },
   {
-    _id: 8,
+    _id: '18-20',
     name: '18-20'
   },
   {
-    _id: 9,
+    _id: '20-22',
     name: '20-22'
   },
   {
-    _id: 10,
+    _id: '22-24',
     name: '22-24'
   },
 ]
