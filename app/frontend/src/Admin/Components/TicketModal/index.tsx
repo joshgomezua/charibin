@@ -277,6 +277,7 @@ class TicketModal extends React.Component<IProps, IState> {
                     id="date"
                     label="Start date"
                     placeholder="Select date"
+                    isInTicketModal={true}
                     selectedDate={editDate ? (values.date as Date) : undefined}
                     onChange={(date: Date) => {
                       handleChange({

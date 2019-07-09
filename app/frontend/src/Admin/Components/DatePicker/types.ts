@@ -10,5 +10,6 @@ export interface IProps {
   className?: string
   selectedDate?: Date | undefined
   isRelative?: boolean
+  isInTicketModal?: boolean
   onChange: (date: Date) => void
 }
