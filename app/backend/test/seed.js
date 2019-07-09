@@ -55,10 +55,11 @@ loadModels();
 
   // Create trips and tickets
   for (let i = 0; i < 5; i++) {
-    trips.push(await helpers.createTrip({...helpers.dataClone(globals.dataTemplate.trip), 
+    const trip = await helpers.createTrip({...helpers.dataClone(globals.dataTemplate.trip), 
     departure: getRandomCities(),
     destination: getRandomCities(),
-    }));
+    });
+    trips.push(trip);
     console.log(`Creating Trips: ${i + 1}/${5}`);
 
     // Create tickets
@@ -81,8 +82,6 @@ loadModels();
         destination: trips[i].departure
       };
     const ticketDeparture = await helpers.createTicket(ticketDepartureTemp)
-
-
 
       process.stdout.clearLine();
       process.stdout.cursorTo(0);

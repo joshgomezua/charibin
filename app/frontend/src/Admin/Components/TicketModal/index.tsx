@@ -63,12 +63,12 @@ class TicketModal extends React.Component<IProps, IState> {
             editDate
               ? {
                   ...editDate,
-                  date: new Date(editDate!.date.start),
+                  date: new Date(new Date(editDate!.date.start).getTime()+(new Date(editDate!.date.start).getTimezoneOffset() * 60000)),
                   hours: `${moment
                     .utc(editDate!.date.start)
-                    .format('h')}-${moment
+                    .format('H')}-${moment
                     .utc(editDate!.date.end)
-                    .format('h')}`,
+                    .format('H')}`,
                 }
               : {
                   trip: {
@@ -106,8 +106,6 @@ class TicketModal extends React.Component<IProps, IState> {
             reservedQuantity: Yup.number()
               .min(0)
               .max(1000),
-            //departure: Yup.string().required('Ticket departure is required'),
-            //destination: Yup.string().required('Ticket destination is required'),
             date: Yup.string().required(),
             hours: Yup.string().required(),
             isRecurring: Yup.boolean(),
@@ -278,6 +276,7 @@ class TicketModal extends React.Component<IProps, IState> {
                     id="date"
                     label="Start date"
                     placeholder="Select date"
+                    isInTicketModal={true}
                     selectedDate={editDate ? (values.date as Date) : undefined}
                     onChange={(date: Date) => {
                       handleChange({

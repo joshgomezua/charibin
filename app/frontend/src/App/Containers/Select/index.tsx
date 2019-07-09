@@ -46,13 +46,12 @@ class SelectContainer extends Component<
     },
     page: 0,
     isLoading: true,
-    isCalendarOpen: false
+    isCalendarOpen: false,
   }
 
   componentDidMount() {
     window.scrollTo(0, 0)
     const { quantity } = this.props
-
     this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity).then(
       () => {
         this.setState({ isLoading: false })
@@ -81,12 +80,12 @@ class SelectContainer extends Component<
       priceEnd,
       dateStart,
       dateEnd,
-      qunatity
+      qunatity,
     )
       .then(({ data }) => {
         this.setState((state: IState) => ({
           isLoading: false,
-          trips: [...state.trips, ...data]
+          trips: [...state.trips, ...data],
         }))
 
         return data.length
@@ -95,7 +94,6 @@ class SelectContainer extends Component<
   }
 
   handleFetchInitialTripsWithFilter = () => {
-    console.log("handleFetchInitialTripsWithFilter")
     this.setState(
       {
         page: 0,
@@ -123,13 +121,10 @@ class SelectContainer extends Component<
   }
 
   handleBookTrips = () => {
-    console.log('handleBookTrips')
     const { selected, quantity } = this.props
-    console.log('selected', selected)
-    console.log('quantity', quantity)
     const token = getOwnerToken()
     const bookedTrips = selected.map((selectedItem: ISelectedData) => {
-      if (selectedItem.departureTicket && selectedItem.arrivalTicket) {
+      if (selectedItem.arrivalTicket && selectedItem.departureTicket) {
         return {
           arrivalTicket: selectedItem.arrivalTicket,
           departureTicket: selectedItem.departureTicket
@@ -137,12 +132,13 @@ class SelectContainer extends Component<
       } else {
         return {
           id: selectedItem.tripId,
+          departure: selectedItem.departure,
+          destination: selectedItem.destination,
           dateStart: selectedItem.dateStart,
           dateEnd: selectedItem.dateEnd
         }
       }
     })
-    console.log('bookedTrips', bookedTrips)
 
     const data: IBookedData = {
       quantity,
@@ -156,18 +152,15 @@ class SelectContainer extends Component<
     API.bookTrips(data)
       .then(res => {
         const bookedTrips = res.data.trips
-        console.log('bookedTrips in API call of Select', bookedTrips)
         const selectedTrips = this.props.selected.map((item: ISelectedData) => {
           const filteredTrip: IBookedType = bookedTrips.find(
             (trip: IBookedType) => item.tripId === trip.trip
           )
-          console.log('filteredTrip', filteredTrip)
           if (filteredTrip) {
             item.price = filteredTrip.cost
           }
           return item
         })
-        console.log('selectedTrips', selectedTrips)
 
         saveToLS('owner', {
           billing: res.data.billing,
@@ -239,9 +232,12 @@ class SelectContainer extends Component<
   }
 
   handleFilterChange = (filters: IFiltersChange, callback?: () => void) => {
-    console.log("handleFilterChange")
-    console.log("filters", filters)
-    console.log("state before", this.state)
+    const start = filters.start ? new Date(filters.start.getTime() - (filters.start.getTimezoneOffset() * 60000)) : undefined
+    const end = filters.end ? new Date(filters.end.getTime() - (filters.end.getTimezoneOffset() * 60000)) : undefined
+
+    filters.start = start
+    filters.end = end
+
     this.setState(
       (state: IState) => ({
         filters: {
@@ -256,7 +252,6 @@ class SelectContainer extends Component<
   }
 
   handleClearFilterDates = () => {
-    console.log("handleClearFilterDates")
     const {
       filters: { start, end }
     } = this.state
@@ -351,8 +346,8 @@ class SelectContainer extends Component<
                     }
                   )
                   const isSelected = filtered.length > 0
-
-                  return trip.tickets.length > 0 ? (
+                  return (
+                  
                     <Destination
                       key={index}
                       index={trip._id}
@@ -364,8 +359,7 @@ class SelectContainer extends Component<
                       isMax={isMax}
                       onCalendarOpen={this.calendarOpened}
                       onCalendarClose={this.calendarClosed}
-                    />
-                  ) : null
+                    />)
                 })}
             </div>
           </section>

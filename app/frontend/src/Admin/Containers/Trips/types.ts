@@ -3,12 +3,13 @@ import { IResponseError, IScheduledTrip } from '../../../Common/Utils/globalType
 
 export interface IState {
   trips: ITrip[]
+  oppositeTrips: ITrip[]
   total: number
   isModalLoading: boolean
   isLoading: boolean
   currentPage: number
-  editData: ITrip
-  editSchedule: IScheduledTrip
+  editData: ITrip & { bidirectionalChange?: boolean}
+  editSchedule: IScheduledTrip & { bidirectionalChange?: boolean}
   modal: {
     id: string
     type: MODAL_TYPE | null
@@ -100,6 +101,7 @@ export interface IEditTimeSchedule {
     _8to10PM: number
     _10to12AM: number
   }
+  bidirectionalChange?: boolean
   discount?: number
   duration?: number
   fake?: boolean

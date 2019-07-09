@@ -34,8 +34,6 @@ class DropDown extends React.Component<IProps, IState> {
         } : el.departure + el.destination
       }
     })
-    console.log('el', el)
-
     onSelectDeparture && onSelectDeparture(el.departure)
   }
 

@@ -10,7 +10,7 @@ export const getTrips = (
   priceEnd: number,
   dateStart: number,
   dateEnd: number,
-  quantity: number
+  quantity: number,
 ) =>
   axios.get(
     `${API_URL}/dashboard/ticket/${page}/${limit}/${priceStart}/${priceEnd}/${dateStart}/${dateEnd}/${quantity}`

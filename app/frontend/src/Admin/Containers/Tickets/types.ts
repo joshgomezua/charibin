@@ -14,12 +14,13 @@ export interface IState {
     type: MODAL_TYPE | null
     heading: string
     data: ITicket
-    trip: { _id: string; departure: string, destination: string, carrier: string } | null
+    trip: { _id: string; departure: string, destination: string, carrier: string, duration: number } | null
   }
   calendarFilter: {
     start: Date | undefined
     end: Date | undefined
   }
+  modalOptions: any[]
 }
 
 export interface IProps {
