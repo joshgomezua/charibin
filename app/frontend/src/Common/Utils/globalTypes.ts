@@ -46,7 +46,6 @@ export interface ITicket {
   destination: string,
   departure: string,
   type: string
-  hours?: string
   date: {
     start: string
     end: string

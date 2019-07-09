@@ -328,9 +328,8 @@ module.exports = {
     const trip = await Trip.findOne({ _id: data.trip, deleted: false });
     if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
 
-    if (data.departureHours.length > 1) {
+    if (data.departureHours.length) {
       for (let hours of data.departureHours) {
-        console.log(new Date(hours.start), ' - ', new Date(hours.end))
         data.date = hours
         if(data.repeat) { // create many
           createManyTickets(data);
@@ -620,7 +619,7 @@ module.exports = {
                 'date.start': { $gte: new Date(dateStart), $lte: new Date(dateEnd) },
               }
             },
-            { $sort: { _id: 1 } },
+            { $sort: { 'date.start': 1} },
             Aggregate.populateOne('trips', 'trip', '_id'),
             {
               $unwind: '$trip'

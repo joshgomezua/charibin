@@ -70,7 +70,6 @@ export interface IFormValues {
   departureHours?:string[]
   endDate?: Date | string | undefined
   days?: number[]
-  hours?: string
   active: boolean
   isRecurring?: boolean
 }

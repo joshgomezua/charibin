@@ -181,7 +181,6 @@ class TicketsContainer extends React.Component<
     }
   ) => {
     const token = getToken()
-    console.log('ticketData', this.displayHours(ticketData.departureHours))
 
     this.setState({ isModalLoading: true })
     return createTicket(ticketData, token)

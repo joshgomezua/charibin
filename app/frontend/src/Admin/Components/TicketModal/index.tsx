@@ -64,11 +64,11 @@ class TicketModal extends React.Component<IProps, IState> {
               ? {
                   ...editDate,
                   date: new Date(editDate!.date.start),
-                  hours: `${moment
+                  departureHours: [`${moment
                     .utc(editDate!.date.start)
                     .format('h')}-${moment
                     .utc(editDate!.date.end)
-                    .format('h')}`,
+                    .format('h')}`],
                 }
               : {
                   trip: {
@@ -86,7 +86,6 @@ class TicketModal extends React.Component<IProps, IState> {
                   endDate: undefined,
                   days: [0, 1, 2, 3, 4, 5, 6],
                   departureHours: [],
-                  hours: '',
                   active: true,
                 }
           }
@@ -107,10 +106,8 @@ class TicketModal extends React.Component<IProps, IState> {
             reservedQuantity: Yup.number()
               .min(0)
               .max(1000),
-            //departure: Yup.string().required('Ticket departure is required'),
-            //destination: Yup.string().required('Ticket destination is required'),
             date: Yup.string().required(),
-            hours: Yup.string().required(),
+            departureHours: Yup.array().required('At least one option is required'),
             isRecurring: Yup.boolean(),
             endDate: Yup.string().when('isRecurring', {
               is: true,
@@ -125,11 +122,7 @@ class TicketModal extends React.Component<IProps, IState> {
             values: IFormValues,
             { resetForm }: FormikActions<IFormValues>
           ) => {
-            const splitedHours = values.hours!.split('-')
-            const startHours = splitedHours[0]
-            const endHour = splitedHours[1]
             const offset = moment().utcOffset()
-
             const tempDepartureHours: any[] = []
 
             for (let hours of values.departureHours ? values.departureHours : []) {
@@ -165,15 +158,7 @@ class TicketModal extends React.Component<IProps, IState> {
              }
 
              tempDepartureHours.push(date)
-
             }
-            const test  = tempDepartureHours.map((item) => {
-              return new Date(item.start)
-            })
-            tempDepartureHours.map((item) => {
-              test.push(new Date(item.end))
-            })
-            console.log('tempDepartureHours', test)
 
             const dataToSubmit = {
               trip: values.trip._id,
@@ -183,28 +168,9 @@ class TicketModal extends React.Component<IProps, IState> {
               soldTickets: values.soldTickets,
               reservedQuantity: values.reservedQuantity,
               type: values.type,
-              hours: values.hours,
               date: {
-                start: +moment
-                  .utc(values.date)
-                  .add(offset, 'minutes')
-                  .set({
-                    hour: +startHours,
-                    minute: 0,
-                    second: 0,
-                    millisecond: 0
-                  })
-                  .format('x'),
-                end: +moment
-                  .utc(values.date)
-                  .add(offset, 'minutes')
-                  .set({
-                    hour: +endHour,
-                    minute: 0,
-                    second: 0,
-                    millisecond: 0
-                  })
-                  .format('x')
+                start: +'',
+                end: +''
               },
               active: values.active,
               repeat: {
@@ -226,7 +192,6 @@ class TicketModal extends React.Component<IProps, IState> {
                 closeModal()
               })
             } else if (handleSubmit) {
-              console.log('dataToSubmit', dataToSubmit)
               handleSubmit(dataToSubmit).then(() => {
                 resetForm()
                 closeModal()
@@ -343,48 +308,6 @@ class TicketModal extends React.Component<IProps, IState> {
                     className="spon-ticket-modal__error"
                   />
                 </div>
-                <div className="spon-ticket-modal__input-cnt">
-                  <Dropdown
-                    id="hours"
-                    label="Hours"
-                    placeholder="Select hours"
-                    className="spon-ticket-modal__dropdown"
-                    selectedValue={values.hours ? values.hours : ''}
-                    options={[
-                      {
-                        _id: '0-6',
-                        name: '0-6'
-                      },
-                      {
-                        _id: '6-9',
-                        name: '6-9'
-                      },
-                      {
-                        _id: '9-12',
-                        name: '9-12'
-                      },
-                      {
-                        _id: '12-18',
-                        name: '12-18'
-                      },
-                      {
-                        _id: '18-21',
-                        name: '18-21'
-                      },
-                      {
-                        _id: '21-24',
-                        name: '21-24'
-                      }
-                    ]}
-                    onChange={handleChange}
-                  />
-
-                  <ErrorMessage
-                    name="hours"
-                    component="div"
-                    className="spon-ticket-modal__error"
-                  />
-                </div>
                 
                 <div className="spon-ticket-modal__input-cnt">
                 <MultiSwitch
@@ -410,10 +333,12 @@ class TicketModal extends React.Component<IProps, IState> {
                   selectedValues={values.departureHours!}
                   items={departureHours}
                 />
-                {console.log('test', values.departureHours)}
+                <ErrorMessage
+                    name="departureHours"
+                    component="div"
+                    className="spon-ticket-modal__error"
+                />
                 </div>
-                 
-            
 
                 <div className="spon-ticket-modal__toggles">
                   <div className="spon-ticket-modal__toggle-item">
@@ -500,7 +425,6 @@ class TicketModal extends React.Component<IProps, IState> {
                             selectedValues={values.days!}
                             items={daysOfWeek}
                           />
-                          {console.log('days', values.days)}
                           <ErrorMessage
                             name="days"
                             component="div"
