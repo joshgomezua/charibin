@@ -18,11 +18,22 @@ class TripHeader extends React.Component<IProps, IState> {
     const filters: string[] = []
 
     territories.map(territory => {
+      if (territory.country === "country") {
+        this.setState({selectedColor: COLOR.GREEN})
+        data.map(dataTerritory => {
+          if (dataTerritory.country !== "country" && dataTerritory.country === territory.label) {
+            filters.push(dataTerritory.label)
+          }
+        })
+      } else {
         this.setState({selectedColor: COLOR.BLUE})
         filters.push(territory.label)
+      }
     })
-  }
 
+//    changeFilter(filters)
+  }
+  
   handleFiltersFromChange = (territories: ITerritory[]) => {
     this.handleFiltersChange(territories, this.props.changeFilterFrom)
   }
@@ -46,15 +57,14 @@ class TripHeader extends React.Component<IProps, IState> {
     } = this.props
 
     return (
-      <div className="spon-admin-header">
-        <div className="spon-admin-header__inner">
-          <h1 className="spon-admin-header__heading">{title}</h1>
+      <div className="spon-admin-trip-header">
+        <div className="spon-admin-trip-header__inner">
+          <h1 className="spon-admin-trip-header__heading">{title}</h1>
         </div> 
 
-        <div className="spon-admin-header__select">
-          <div className="spon-admin-header__select__From">
-            <Select  
-              className="spon-admin-header__select__From"
+        <div className="spon-admin-trip-header__select">
+          <div className="spon-admin-trip-header__select__From">
+            <Select  className="spon-admin-trip-header__select__From"
                   multi
                   placeholder={'From'}
                   options={data} 
@@ -65,8 +75,8 @@ class TripHeader extends React.Component<IProps, IState> {
                 >
             </Select>
           </div>
-            <div className="spon-admin-header__select__To">
-              <Select 
+            <div className="spon-admin-trip-header__select__To">
+              <Select className="spon-admin-trip-header__select__To"
                   multi
                   placeholder={'To'} 
                   options={data} 
@@ -81,7 +91,7 @@ class TripHeader extends React.Component<IProps, IState> {
 
         {(handleOpenModal && heading && modal) ? (
           <Button
-            className="spon-admin-header__add-button"
+            className="spon-admin-trip-header__add-button"
             variant="blue"
             icon="plus"
             text="ADD NEW"
@@ -89,7 +99,7 @@ class TripHeader extends React.Component<IProps, IState> {
           />
         ) : handleOpenModal ? (
             <Button
-              className="spon-admin-header__add-button"
+              className="spon-admin-trip-header__add-button"
               variant="blue"
               icon="plus"
               text="ADD NEW"

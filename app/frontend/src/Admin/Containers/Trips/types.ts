@@ -19,6 +19,8 @@ export interface IState {
 export interface IProps {
   filterFrom: string[]
   filterTo: string[]
+  filters: string[]
+  changeFilters: (filters: string[]) => void
   changeFilterFrom: (filterFrom: string[]) => void
   changeFilterTo: (filterTo: string[]) => void
   showError: (err: IResponseError, defaultText?: string) => void
