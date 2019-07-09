@@ -224,7 +224,6 @@ class TicketsContainer extends React.Component<
           departure: data.departure,
           destination: data.destination
         } 
-        console.log('data', data)
         data.trip = newData; 
         this.setState(
           (state: IState) => ({
