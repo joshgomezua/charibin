@@ -42,6 +42,10 @@
       width: rc(245);
     }
 
+    &--really-big {
+      width: rc(375);
+    }
+
     &--last {
       position: relative;
       margin-left: auto;

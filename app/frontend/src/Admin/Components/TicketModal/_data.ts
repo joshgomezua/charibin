@@ -67,7 +67,7 @@ export const departureHours = [
     name: '20-22'
   },
   {
-    _id: '22-24',
-    name: '22-24'
+    _id: '22-0',
+    name: '22-0'
   },
 ]

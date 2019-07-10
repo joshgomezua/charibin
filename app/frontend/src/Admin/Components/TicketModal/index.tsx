@@ -310,7 +310,10 @@ class TicketModal extends React.Component<IProps, IState> {
                   />
                 </div>
                 
-                <div className="spon-ticket-modal__input-cnt">
+              <div className="spon-ticket-modal__input-cnt--really-big">
+                <p className="spon-ticket-modal__label spon-ticket-modal__label--nmt">
+                  Hours of Day
+                </p>
                 <MultiSwitch
                   isMulti
                   className="spon-ticket-modal__days-of-week"
