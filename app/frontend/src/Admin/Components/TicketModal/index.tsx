@@ -64,11 +64,11 @@ class TicketModal extends React.Component<IProps, IState> {
               ? {
                   ...editDate,
                   date: new Date(new Date(editDate!.date.start).getTime()+(new Date(editDate!.date.start).getTimezoneOffset() * 60000)),
-                  hours: `${moment
+                  departureHours: [`${moment
                     .utc(editDate!.date.start)
                     .format('H')}-${moment
                     .utc(editDate!.date.end)
-                    .format('H')}`,
+                    .format('H')}`,]
                 }
               : {
                   trip: {
