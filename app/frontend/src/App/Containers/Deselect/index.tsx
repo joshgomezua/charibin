@@ -110,7 +110,7 @@ class DeselectContainer extends Component<
   }
 
   onNext = (e: React.MouseEvent<HTMLButtonElement>) => {
-    console.log('Deselect')
+    
     e.preventDefault()
     const token = getOwnerToken()
     const deselectedTripsId = this.props.deselected.map(
@@ -122,7 +122,7 @@ class DeselectContainer extends Component<
         owner: token,
         trips: deselectedTripsId
       }
-      console.log('apiData', apiData)
+      
       unbookTrips(apiData)
         .then(() => {
           this.props.history.push('/destinations/payment')
