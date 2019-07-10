@@ -11,18 +11,28 @@ module.exports = {
     return City.create(data);
   },
 
-  async findCRM (page, limit) {
+  async findCRM (page, limit, sortOrder, sortField) {
+    if(sortOrder == undefined){
+      sortOrder = 'ascending'
+    }
+    const query = {
+      page: ~~Number(page),
+      limit: ~~Number(limit),
+      sortOrder: 'ascending' === sortOrder ? 1 : -1,
+      sortField: sortField || 'country',
+    };
+
     return City.aggregate([
       {
         $facet: {
           results: [
-              { $sort: { name: 1 } },
-            ...Aggregate.skipAndLimit(page, limit)
+            { $sort: { country:1,name:1 } },
+            ...Aggregate.skipAndLimit(query.page, query.limit)
           ],
           status: Aggregate.getStatusWithSimpleMatch(
             {},
-            page,
-            limit
+            query.page,
+            query.limit
           )
         }
       }
@@ -34,6 +44,27 @@ module.exports = {
     if(!city) throw { status: 404, message: 'CITY.NOT.EXIST' };
 
     return city;
+  },
+
+  async findCity (name,page,limit) {
+   
+    let city = City.aggregate([
+      {
+        $facet: {
+          results: [
+            { $match: { name: name }  },
+            ...Aggregate.skipAndLimit(page, limit)
+          ],
+          status: Aggregate.getStatusWithSimpleMatch(
+            {name:name},
+            page,
+            limit
+          )
+        }
+      }
+    ]).then(Aggregate.parseResults);
+
+    return city
   },
   
   async update (id, data) {

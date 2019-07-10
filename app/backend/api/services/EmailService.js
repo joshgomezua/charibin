@@ -36,12 +36,9 @@ class Email {
 
   __send () {
     return new Promise((resolve, reject) => {
-      if (process.env.NODE_ENV === 'development') { console.log('transport:', transporter);
+      if (process.env.NODE_ENV === 'development') {
         transporter.sendMail(this.options, err => {
           if (err) return reject(err);
-          console.log('reject', reject);
-          console.log('resolve;', resolve);
-          console.log('options', this.options);
           return resolve();
         });
       } else {

@@ -48,3 +48,9 @@ export interface IBookedType {
   withTime: boolean
   _id: string
 }
+
+export interface ITripInfo {
+  _id: string
+  arrivalTicketsQty: number
+  departureTicketsQty: number
+}

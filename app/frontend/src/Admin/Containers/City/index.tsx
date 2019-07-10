@@ -1,12 +1,9 @@
 import React from 'react'
-
 import Header from '../../Components/Header'
 import Table from '../../Components/Table'
 import Modal from '../../Components/Modal'
 import CityModal from '../../Components/CityModal'
 import DeleteModal from '../../Components/DeleteModal'
- 
-
 import withToast from '../../../Common/HOC/withToast'
 import { debounce } from 'lodash'
 import { RouteComponentProps } from 'react-router-dom'
@@ -27,24 +24,25 @@ import {
 } from '../../Utils/api'
 import { IState, IProps } from './types'
 import { columns } from './columns'
+import { ControlledStateOverrideProps, SortingRule } from 'react-table';
 
 class CityContainer extends React.Component<
   RouteComponentProps<{}> & IProps,
   IState
 > {
   private modal = React.createRef<Modal>()
-  
   readonly state: IState = {
     cities: [{
       _id: '0',
       name: 'Paris',
       country: 'France',
       tags:['Beach', 'Nigthlife'],
-        
       photo: "https://s3.eu-west-2.amazonaws.com/spon-staging/staging_5c91210fb4f0e3003452a581.png",
       isManual: false,
       isEnabled: false
     }],
+    search:'',
+    results: [],
     total: 0,
     currentPage: 0,
     isLoading: false,
@@ -85,38 +83,45 @@ class CityContainer extends React.Component<
       getSingleCity(id, token)
         .then(res => {
           this.setState({ editData: res.data })
-          
         })
         .catch(err => {
-          
           this.modal.current!.close()
           this.props.showError(err)
         })
     }
   }
 
-  handleFetchItems = (page: number, limit: number) => {
+  handleFetchItems = (page: number, limit: number, sort?: SortingRule) => {
     const token = getToken()
-    
     if (token) {
-      getCities(page, limit, token)
-        .then(res =>{
+      getCities(page, limit, token,sort)
+        .then(res => {
           this.setState({
             isLoading: false,
             cities: res.data.results,
             total: res.data.status.total
           })
-          
+        
         })
         .catch(err => {
           this.props.showError(err, ERRORS.CITY_FETCH)
         })
+
+      getCities(0,10000,token,sort).then(res => {
+        this.setState({results: res.data.results})
+      }).catch(err => {
+        this.props.showError(err, ERRORS.CITY_FETCH)
+      }) 
     }
   }
 
-  handleFetchTableData = (boardState: any) => {
-    this.setState({ currentPage: boardState.page })
-    this.handleFetchItems(boardState.page, 10)
+  handleFetchTableData = ({ page, sorted }: ControlledStateOverrideProps) => {
+    this.setState({ currentPage: page! })
+    if (sorted) {
+      this.handleFetchItems(page!, 10, sorted[0])
+    } else {
+      this.handleFetchItems(page!, 10)
+    }
   }
 
   handleDeleteCity = () => {
@@ -148,7 +153,7 @@ class CityContainer extends React.Component<
     this.setState({ isModalLoading: true })
 
     return addCity(data, token)
-      .then(res => {
+      .then(res => { 
         this.modal.current!.close()
         this.handleFetchItems(currentPage, 10)
         this.props.showSuccess(SUCCESS.CITY_ADD)
@@ -174,7 +179,7 @@ class CityContainer extends React.Component<
     this.setState({ isModalLoading: true })
 
     return updateCity(id, data, token)
-      .then(res => {
+      .then(res => { 
         this.modal.current!.close()
         this.handleFetchItems(currentPage, 10)
         this.props.showSuccess(SUCCESS.CITY_EDIT)
@@ -190,21 +195,29 @@ class CityContainer extends React.Component<
       })
   }
 
+  handleUpdate = (value: any) => {
+    const updatedCities = this.state.cities.map((city: ICity) => {
+      if (city._id === value._id) {
+        return value
+      }
+      return city
+    })
+
+    const updatedResults = this.state.results.map((city: ICity) => {
+      if (city._id === value._id) {
+        return value
+      }
+      return city
+    })
+    this.setState({ cities: updatedCities,
+                    results: updatedResults})
+  }
+
   handleToggleButton = (id: string, value:boolean) => {
     const token = getToken()
-    
     editCityState(id, value, token)
       .then(({ data }) => {
-        const updatedCities = this.state.cities.map((city: ICity) => {
-          if (city._id === data._id) {
-
-            return data
-          }
-
-          return city
-        })
-
-        this.setState({ cities: updatedCities })
+        this.handleUpdate(data)
         this.props.showSuccess(SUCCESS.CITY_UPDATE)
       })
       .catch(err => this.props.showError(err, ERRORS.CITY_EDIT))
@@ -222,21 +235,32 @@ class CityContainer extends React.Component<
   }
 
   render() {
+    let {cities,total} = this.state
     const {
-      cities,
-      total,
+      search,
       isLoading,
       isModalLoading,
       editData,
+      results,
       modal: { type: modalType, heading: modalHeading }
     } = this.state
+
+    if (search) {
+			cities = results.filter(city => {
+        return city.name.toLowerCase().includes(search.toLowerCase()) 
+                  || (city.country as string).toLowerCase().includes(search.toLowerCase())
+      })
+      total = cities.length
+    }
+    
     return (
       <div className="spon-container">
         <Header
-          title="Destination & Departure Database"
           heading = 'Create city'
           modal = {MODAL_TYPE.ADD_CITY}
           handleOpenModal={this.handleOpenModal}
+          query={search}
+          handleSearch={(e) => this.setState({search: e.target.value})}
         />
 
         <Table

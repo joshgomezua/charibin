@@ -19,7 +19,7 @@
 
   &__label {
     margin-top: 0;
-    margin-bottom: rc(10);
+    margin-bottom: rc(7);
     font-size: rc(12);
     color: $label;
 
@@ -115,6 +115,7 @@
   }
 
   &__input {
+    text-transform: capitalize;
     position: relative;
     width: 100%;
     height: rc(22);

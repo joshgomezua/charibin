@@ -4,6 +4,8 @@ interface ISelectedTrips {
   id: string
   dateStart: number
   dateEnd: number
+  departure: string
+  destination: string
 }
 
 interface ISelectedTickets {

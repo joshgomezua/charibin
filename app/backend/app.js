@@ -23,16 +23,16 @@ connect().then(
 );
 
 function connect () {
-  // const options = { keepAlive: 1, useNewUrlParser: true };
+  const options = { keepAlive: 1, useNewUrlParser: true };
   // const { user, password, host, port, name } = global.config.connection.database;
   
-  // return mongoose.connect(`mongodb+srv://${user}:${password}@${host}/${name}`, options);
+  //return mongoose.connect(`mongodb+srv://ericchao:ShxJNUGZFNOuWHVc@sponteous-dev-rjoqe.mongodb.net/Sponteous`, options);
   return mongoose.connect(`mongodb://mongo:27017/db?authSource=admin`, {
   useNewUrlParser: true,
   user: 'username',
   pass: 'password',
   keepAlive: true,
-  });
+  }); 
 }
 
 // Every time when req comming clear console screen

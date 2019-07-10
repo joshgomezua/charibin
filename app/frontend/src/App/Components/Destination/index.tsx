@@ -34,14 +34,16 @@ export default class Destination extends Component<IProps, IState> {
     hoursToSelect: {
       start: [],
       end: []
-    }
+    },
+    startDates: [],
+    endDates: []
   }
 
   CalendarBlock = () => {
     const {
       error,
       hours,
-      hoursToSelect: { start, end }
+      hoursToSelect: { start, end },
     } = this.state
     const { data, quantity } = this.props
     const HOURS_SET_PRICE = process.env.REACT_APP_TICKET_CHOOSE_TIME_PRICE
@@ -49,38 +51,37 @@ export default class Destination extends Component<IProps, IState> {
     const startDates =
       data.type === 'trip'
         ? data.tickets
-            .filter(
-              (item: ITicket) =>
-                item.departure === data.departure &&
-                moment
-                  .utc(item.date.start)
-                  .set({ hour: 0, minutes: 0, seconds: 0, milliseconds: 0 })
-                  .isAfter() &&
-                item.quantity >= quantity!
-            )
-            .map((item: ITicket) =>
-              moment.utc(item.date.start).format('YYYY-MM-DD')
-            )
-            .filter((item, index, array) => array.indexOf(item) === index)
-        : []
-
+        .filter(
+          (item: ITicket) =>
+            (item.departure === data.departure && item.destination === data.destination) &&
+            moment
+              .utc(item.date.start)
+              .set({ hour: 0, minutes: 0, seconds: 0, milliseconds: 0 })
+              .isAfter() &&
+            item.quantity >= quantity!
+        )
+        .map((item: ITicket) =>
+          moment.utc(item.date.start).format('YYYY-MM-DD')
+        )
+        .filter((item, index, array) => array.indexOf(item) === index)
+    : []
     const endDates =
       data.type === 'trip'
         ? data.tickets
-            .filter(
-              (item: ITicket) =>
-                item.destination === data.destination &&
-                moment
-                  .utc(item.date.start)
-                  .set({ hour: 0, minutes: 0, seconds: 0, milliseconds: 0 })
-                  .isAfter() &&
-                item.quantity >= quantity!
-            )
-            .map((item: ITicket) =>
-              moment.utc(item.date.start).format('YYYY-MM-DD')
-            )
-            .filter((item, index, array) => array.indexOf(item) === index)
-        : []
+        .filter(
+          (item: ITicket) =>
+            (item.departure === data.destination && item.destination === data.departure) &&
+            moment
+              .utc(item.date.start)
+              .set({ hour: 0, minutes: 0, seconds: 0, milliseconds: 0 })
+              .isAfter() &&
+            item.quantity >= quantity!
+        )
+        .map((item: ITicket) =>
+          moment.utc(item.date.start).format('YYYY-MM-DD')
+        )
+        .filter((item, index, array) => array.indexOf(item) === index)
+    : []
 
     return (
       <div className="destination-calendar">
@@ -178,6 +179,8 @@ export default class Destination extends Component<IProps, IState> {
         name: data.name,
         photo: data.photo,
         price: data.price,
+        departure: data.departure,
+        destination: data.destination,
         type: 'selectedTrid',
         dateStart: +moment.utc(dates.start).add(offset, 'minutes'),
         dateEnd: +moment
@@ -235,7 +238,7 @@ export default class Destination extends Component<IProps, IState> {
             .utc(dates[0])
             .add(offset, 'minutes')
             .format('YYYY-MM-DD')
-        )
+        )       
 
         const isStartSameSecond = moment(
           moment.utc(ticket.date.start).format('YYYY-MM-DD')
@@ -246,7 +249,7 @@ export default class Destination extends Component<IProps, IState> {
             .format('YYYY-MM-DD')
         )
 
-        if (isStartSameFirst && ticket.departure === departure) {
+        if (isStartSameFirst && ticket.departure === departure && ticket.destination === destination) {
           total.start.push({
             id: ticket._id,
             name: `${moment
@@ -255,7 +258,7 @@ export default class Destination extends Component<IProps, IState> {
               .utc(ticket.date.end)
               .format('HH:mm')}`
           })
-        } else if (isStartSameSecond && ticket.destination === destination) {
+        } else if (isStartSameSecond && ticket.departure === destination && ticket.destination === departure) {
           total.end.push({
             id: ticket._id,
             name: `${moment
@@ -265,7 +268,6 @@ export default class Destination extends Component<IProps, IState> {
               .format('HH:mm')}`
           })
         }
-
         return total
       },
       { start: [], end: [] } as { start: IOption[]; end: IOption[] }
@@ -356,28 +358,29 @@ export default class Destination extends Component<IProps, IState> {
             )}
             {deselect && (
               <div destination-bottom-types>
-                <span
+                {<span
                   className={`destination-bottom-type destination-bottom-type--left`}
                   style={{
                     borderColor: '#12b459',
                     color: '#12b459'
                   }}>
                   Bus
-                </span>
-                {/* <span
+                </span>}
+                {<span
                   className={`destination-bottom-type destination-bottom-type--right`}
                   style={{
                     borderColor: '#12b459',
                     color: '#12b459'
                   }}>
                   Train
-                </span> */}
+                </span>}
               </div>
             )}
             <p className="destination-bottom-duration">
               approx. {formatedDuration}
             </p>
           </div>
+          <p>{`${this.props.data.departure} - ${this.props.data.destination}`}</p>
           <p className="destination-bottom-title">{name}</p>
           <p className="destination-bottom-luggage">Luggage included</p>
           <p className="destination-bottom-price">{`£ ${price}/person`}</p>
