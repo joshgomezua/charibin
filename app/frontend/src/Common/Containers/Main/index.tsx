@@ -90,7 +90,8 @@ class MainContainer extends Component<
           />
         ) : null}
 
-        <Modal ref={this.modal} title="Are you sure you want logout?">
+        <Modal ref={this.modal} title="Logout">
+          <div>Are you sure you want to logout?</div>
           <div className="spon-main__popup">
             <Button
               onClick={() => this.modal.current!.close()}
