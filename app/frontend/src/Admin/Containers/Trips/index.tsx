@@ -121,7 +121,6 @@ class TripsContainer extends React.Component<
 
   handleFetchTripSchedule = (id: string) => {
     const token = getToken()
-
     if (token) {
       getSingleScheduledTrip(id, token)
         .then(res => {
@@ -386,7 +385,6 @@ class TripsContainer extends React.Component<
       trip: this.state.editData._id,
     }
     this.setState({ isModalLoading: true })
-
     return addSchedule(newSchedule, token)
       .then(res => {
         this.modal.current!.close()

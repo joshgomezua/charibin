@@ -131,7 +131,7 @@ async function createManyTickets (data) {
     if(data.repeat.dateEnd < seedDate.start) break;
   }
 
-  return updateMessages.length ? { updated: true, dates: updateMessages } : {};
+  //return updateMessages.length ? { updated: true, dates: updateMessages } : {};
 }
 
 async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
@@ -319,21 +319,43 @@ module.exports = {
     const trip = await Trip.findOne({ _id: data.trip, deleted: false });
     if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
 
-    if(data.repeat) { // create many
-      return createManyTickets(data);
-    } else { // create one
-      let ticket = await Ticket.findOne({ trip: data.trip, departure: data.departure, destination: data.destination, date: { start: new Date(data.date.start), end: new Date(data.date.end) } });
-      if(ticket) {
-        ticket = await Ticket.updateOne({ _id: ticket._id }, { $inc: { quantity: data.quantity } }, { new: true });
-
-        return { ...ticket, updated: true };
-      } else {
-        ticket = await Ticket.create(data);
-        await Trip.findByIdAndUpdate(data.trip, { $addToSet: { tickets: ticket._id } }, { new: true });
-
-        return { ...ticket.toObject(), updated: false };
+    if (data.departureHours.length) {
+      for (let hours of data.departureHours) {
+        data.date = hours
+        if(data.repeat) { // create many
+          createManyTickets(data);
+        } else { // create one
+          let ticket = await Ticket.findOne({ trip: data.trip, departure: data.departure, destination: data.destination, date: { start: new Date(data.date.start), end: new Date(data.date.end) } });
+          if(ticket) {
+            ticket = await Ticket.updateOne({ _id: ticket._id }, { $inc: { quantity: data.quantity } }, { new: true });
+    
+            //return { ...ticket, updated: true };
+          } else {
+            ticket = await Ticket.create(data);
+            await Trip.findByIdAndUpdate(data.trip, { $addToSet: { tickets: ticket._id } }, { new: true });
+    
+            //return { ...ticket.toObject(), updated: false };
+          }
       }
-
+    }
+  }
+    else {
+      if(data.repeat) { // create many
+        return createManyTickets(data);
+      } else { // create one
+        let ticket = await Ticket.findOne({ trip: data.trip, departure: data.departure, destination: data.destination, date: { start: new Date(data.date.start), end: new Date(data.date.end) } });
+        if(ticket) {
+          ticket = await Ticket.updateOne({ _id: ticket._id }, { $inc: { quantity: data.quantity } }, { new: true });
+  
+          return { ...ticket, updated: true };
+        } else {
+          ticket = await Ticket.create(data);
+          await Trip.findByIdAndUpdate(data.trip, { $addToSet: { tickets: ticket._id } }, { new: true });
+  
+          return { ...ticket.toObject(), updated: false };
+        }
+  
+      }
     }
   },
 
@@ -599,7 +621,7 @@ module.exports = {
                 'date.start': { $gte: new Date(dateStart), $lte: new Date(dateEnd) },
               }
             },
-            { $sort: { _id: -1 } },
+            { $sort: { 'date.start': 1} },
             Aggregate.populateOne('trips', 'trip', '_id'),
             {
               $unwind: '$trip'

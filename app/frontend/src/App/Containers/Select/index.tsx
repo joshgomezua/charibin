@@ -326,7 +326,7 @@ class SelectContainer extends Component<
             <div className="select-cnt-inner-destination-list">
               {isLoading ? <div>Loading..</div> : null}
               {!isLoading && trips.length === 0 ? (
-                <div>No ticket find</div>
+                <div>No ticket found</div>
               ) : null}
 
               {!isLoading &&
