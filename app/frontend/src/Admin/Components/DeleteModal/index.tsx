@@ -7,7 +7,7 @@ const DeleteModal: React.SFC<IProps> = ({ closeModal, deleteItem, text }) => (
   <div className="spon-delete-modal">
     <p className="spon-delete-modal__heading">Are you sure?</p>
     <div className="spon-delete-modal__text">
-      {text}
+      {text},this action cannot be undone
     </div>
     <div className="spon-delete-modal__buttons">
       <Button text="Cancel" variant="adminSecondary" onClick={closeModal} />
