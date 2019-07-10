@@ -9,6 +9,7 @@ import { MODAL_TYPE } from '../../Utils/adminTypes'
 import { ITicket } from '../../../Common/Utils/globalTypes'
 import { IProps, DIRECTION } from './types'
 import './styles.scss'
+import Pagination from 'src/App/Components/Pagination';
 
 const Agenda: React.SFC<IProps> = ({
   tickets,
@@ -63,7 +64,7 @@ const Agenda: React.SFC<IProps> = ({
     if (filters.length === 0) {
       return null
     } else {
-      return Object.keys(segregated).map(key => {
+      const row = Object.keys(segregated).map(key => {
         return segregated[key].map((ticket: ITicket, index: number) => (
           <AgendaItem
             key={index}
@@ -76,6 +77,8 @@ const Agenda: React.SFC<IProps> = ({
           />
         ))
       })
+
+      return row
     }
   }
 
@@ -168,8 +171,22 @@ const Agenda: React.SFC<IProps> = ({
               </td>
             </tr>
           )}
-        {!loading && !error && tickets.length > 0 && prepareRows()}
+        {!loading && !error && tickets.length > 0 && prepareRows() 
+        }
       </tbody>
+      <tfoot>
+      <tr className="spon-agenda__pagination">
+            <td>
+              <div >
+                <Pagination 
+                  qtyOfItems={4}
+                  pageLimit={10}
+                  onChange={()=>console.log()}
+                />
+              </div>
+            </td>
+          </tr>
+      </tfoot>
     </table>
   )
 }
