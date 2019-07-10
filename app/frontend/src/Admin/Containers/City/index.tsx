@@ -300,6 +300,7 @@ class CityContainer extends React.Component<
             <DeleteModal
               closeModal={this.handleCloseModal}
               deleteItem={this.handleDeleteCity}
+              text="This city will be deleted"
             />
           ) : null}
         </Modal>
