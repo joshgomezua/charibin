@@ -36,5 +36,5 @@ module.exports.custom = {
     chooseTimePrice: +process.env.TICKET_CHOOSE_TIME_PRICE || 1, // it must be in £
   },
 
-  timezone: 0
+  TodayWithTimezone: 0
 };
