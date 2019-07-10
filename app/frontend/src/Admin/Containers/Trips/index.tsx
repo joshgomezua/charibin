@@ -581,6 +581,7 @@ class TripsContainer extends React.Component<
             <DeleteModal
               closeModal={this.handleCloseModal}
               deleteItem={this.handleDeleteTrip}
+              text="trip will be deleted"
             />
           ) : null}
 
@@ -588,6 +589,7 @@ class TripsContainer extends React.Component<
             <DeleteModal
               closeModal={this.handleCloseModal}
               deleteItem={this.handleDeleteSchedule}
+              text="schedule will be deleted"
             />
           ) : null}
 

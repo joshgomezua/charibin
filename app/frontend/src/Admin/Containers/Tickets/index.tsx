@@ -415,6 +415,7 @@ class TicketsContainer extends React.Component<
             <DeleteModal
               closeModal={this.handleCloseModal}
               deleteItem={this.handleDeleteTicket}
+              text="the ticket will be deleted"
             />
           ) : null}
         </Modal>

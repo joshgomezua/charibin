@@ -303,6 +303,7 @@ class UsersContainer extends React.Component<
             <DeleteModal
               closeModal={this.handleCloseModal}
               deleteItem={this.handleDeleteUser}
+              text="user will be deleted"
             />
           ) : null}
         </Modal>
