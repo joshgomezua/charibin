@@ -136,7 +136,6 @@ async function createManyTickets (data) {
 }
 
 async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
-  console.log('bookWithOutTime')
   if(new Date(selectedTrip.dateStart) < custom.TodayWithTimezone + global.config.custom.time.day)
     throw { status: 400, message: 'TICKET.DATE.START.INVALID%', args: [new Date(Date.now() + global.config.custom.time.day).toDateString()] };
   if(new Date(selectedTrip.dateEnd) < custom.TodayWithTimezone + global.config.custom.time.day)
@@ -242,7 +241,6 @@ async function unbook ({ owner, selectedTrip }) {
 }
 
 async function bookWithTime ({ quantity, selectedTrip, owner }) {
-  console.log('bookWithTime')
   const arrivalTicket = await Ticket.findOne({ _id: selectedTrip.arrivalTicket, active: true, deleted: false, quantity: { $gte: quantity } });
   if(!arrivalTicket) throw { status: 404, message: 'TICKET.ARRIVAL.NOT.EXIST' };
 
