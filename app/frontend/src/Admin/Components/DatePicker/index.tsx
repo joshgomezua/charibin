@@ -44,7 +44,7 @@ class DatePicker extends React.Component<IProps, IState> {
 
   render() {
     const { isDatePickerVisible, date } = this.state
-    const { label, placeholder, className, selectedDate } = this.props
+    const { label, placeholder, className, selectedDate, isInTicketModal } = this.props
 
     const datepickerClass = classnames('spon-datepicker', {
       [`${className}`]: className
@@ -70,7 +70,7 @@ class DatePicker extends React.Component<IProps, IState> {
             <ReactCalendar
               value={this.state.date}
               onChange={this.handleSelectDate}
-              minDate={selectedDate ? selectedDate : new Date()}
+              minDate={ isInTicketModal ? new Date : (selectedDate ? selectedDate : new Date())}
               formatShortWeekday={value => moment(value).format('dd')}
               showNeighboringMonth={false}
               next2Label={null}

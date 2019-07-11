@@ -83,5 +83,15 @@ module.exports = {
       min: 0,
       max: 6,
     },
+
+    timezone: {
+      type: 'number',
+      required: true,
+      permission: {
+        create: [ROLE.ADMINISTRATOR, ROLE.GUEST],
+        update: [],
+        find: []
+      },
+    },
   }
 };

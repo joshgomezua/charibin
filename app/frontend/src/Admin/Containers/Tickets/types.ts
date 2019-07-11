@@ -20,6 +20,7 @@ export interface IState {
     start: Date | undefined
     end: Date | undefined
   }
+  modalOptions: any[]
 }
 
 export interface IProps {

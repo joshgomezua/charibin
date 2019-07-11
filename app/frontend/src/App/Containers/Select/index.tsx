@@ -47,7 +47,6 @@ class SelectContainer extends Component<
     page: 0,
     isLoading: true,
     isCalendarOpen: false,
-    tripsFilteredQty: 0
   }
 
   componentDidMount() {
@@ -74,7 +73,6 @@ class SelectContainer extends Component<
     dateEnd: number,
     qunatity: number
   ) => {
-    this.setState({ tripsFilteredQty: 0 })
     return API.getTrips(
       page,
       limit,
@@ -85,17 +83,10 @@ class SelectContainer extends Component<
       qunatity,
     )
       .then(({ data }) => {
-        console.log('data', data)
         this.setState((state: IState) => ({
           isLoading: false,
           trips: [...state.trips, ...data],
         }))
-
-        data.map((item: any) => {
-          if (item.info.arrivalTicketsQty && item.info.departureTicketsQty) {
-            this.setState({ tripsFilteredQty: this.state.tripsFilteredQty + 1 })
-          }
-        })
 
         return data.length
       })
@@ -115,7 +106,6 @@ class SelectContainer extends Component<
           filters: { min, max, start, end }
         } = this.state
         const { quantity } = this.props
-        console.log('filters', this.state.filters)
 
         this.handleFetchTrips(
           page,
@@ -242,6 +232,12 @@ class SelectContainer extends Component<
   }
 
   handleFilterChange = (filters: IFiltersChange, callback?: () => void) => {
+    const start = filters.start ? new Date(filters.start.getTime() - (filters.start.getTimezoneOffset() * 60000)) : undefined
+    const end = filters.end ? new Date(filters.end.getTime() - (filters.end.getTimezoneOffset() * 60000)) : undefined
+
+    filters.start = start
+    filters.end = end
+
     this.setState(
       (state: IState) => ({
         filters: {
@@ -298,7 +294,7 @@ class SelectContainer extends Component<
   calendarClosed = () => this.setState({ isCalendarOpen: false })
 
   render() {
-    const { isCalendarOpen, isLoading, trips, filters, tripsFilteredQty } = this.state
+    const { isCalendarOpen, isLoading, trips, filters } = this.state
     const { isMax, quantity, selected } = this.props
 
     return (
@@ -324,13 +320,13 @@ class SelectContainer extends Component<
           <section className="select-cnt-inner-destinations">
             <Title
               className="select-cnt-inner-title"
-              text={`We found ${tripsFilteredQty} destinations for you`}
-              selected={[`${tripsFilteredQty} destinations`]}
+              text={`We found ${trips.length} destinations for you`}
+              selected={[`${trips.length} destinations`]}
             />
             <div className="select-cnt-inner-destination-list">
               {isLoading ? <div>Loading..</div> : null}
               {!isLoading && trips.length === 0 ? (
-                <div>No ticket find</div>
+                <div>No ticket found</div>
               ) : null}
 
               {!isLoading &&
@@ -350,10 +346,8 @@ class SelectContainer extends Component<
                     }
                   )
                   const isSelected = filtered.length > 0
-                  return (trip.info ?
-                     trip.info.arrivalTicketsQty && trip.info.departureTicketsQty :
-                      0 > 0) ? (
-                    
+                  return (
+                  
                     <Destination
                       key={index}
                       index={trip._id}
@@ -365,8 +359,7 @@ class SelectContainer extends Component<
                       isMax={isMax}
                       onCalendarOpen={this.calendarOpened}
                       onCalendarClose={this.calendarClosed}
-                    />
-                  ) : null
+                    />)
                 })}
             </div>
           </section>
