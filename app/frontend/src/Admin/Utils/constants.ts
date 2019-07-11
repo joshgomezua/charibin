@@ -361,7 +361,7 @@ export const COUNTRIES = [
 
 export const DEFAULT_SEARCH_RESULT = {
   _id: '',
-  name: 'Country not found'
+  name: 'No data found'
 }
 
 

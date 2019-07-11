@@ -4,7 +4,7 @@ import Switch from '../../Components/Switch'
 import { RowRenderProps } from 'react-table'
 
 export const columns = (
-  onSwitchChange: ((id: string, value: boolean) => void)
+  onSwitchChange: ((id: string, value: boolean) => void),
 ) => [
   {
     Header: 'ID',
@@ -15,7 +15,7 @@ export const columns = (
   {
     Header: 'Bought date',
     accessor: 'createdAt',
-    width: 70,
+    width: 150,
     Cell: (props: RowRenderProps) => (
       <div>
         <div>{moment(props.value).format('DD.MM.YY')}</div>
@@ -34,7 +34,7 @@ export const columns = (
   {
     Header: 'Date of birth',
     accessor: 'buyer.birthDate',
-    width: 100,
+    width: 120,
     Cell: (props: RowRenderProps) => moment(props.value).format('DD.MM.YY')
   },
   {
@@ -59,12 +59,13 @@ export const columns = (
   },
   {
     Header: 'Final destination',
-    accessor: 'finalDestination'
+    accessor: 'finalDestination',
+    minWidth: 140
   },
   {
     Header: 'Arrival Time',
     accessor: 'date.arrival',
-    width: 145,
+    width: 160,
     Cell: (props: RowRenderProps) =>
       `${moment.utc(props.value.start).format('DD.MM.YY HH:mm')} - ${moment
         .utc(props.value.end)
@@ -98,7 +99,7 @@ export const columns = (
     Header: 'Sent',
     accessor: 'sent',
     sortable: false,
-    width: 50,
+    width: 70,
     Cell: (props: RowRenderProps) => (
       <Switch
         onChange={() => {
@@ -107,5 +108,8 @@ export const columns = (
         checked={props.value}
       />
     )
+  },
+  {
+    Header:'User',
   }
 ]

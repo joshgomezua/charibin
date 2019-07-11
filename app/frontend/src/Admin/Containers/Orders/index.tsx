@@ -64,7 +64,6 @@ class OrdersContainer extends React.Component<IProps, IState> {
 
   render() {
     const { isLoading, orders, total } = this.state
-
     return (
       <>
         <Header title="Transactions" />
