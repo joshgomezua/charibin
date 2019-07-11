@@ -151,7 +151,7 @@ class TicketsContainer extends React.Component<
       .format('x')
 
     this.setState({ isLoading: true, isError: false })
-    getTickets(startDate, endDate, token)
+    getTickets(startDate, endDate, 'null', 'null', 'null', 0, 100, token)
       .then(res => {
         this.setState({ isLoading: false, tickets: res.data })
       })

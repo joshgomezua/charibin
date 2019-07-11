@@ -142,8 +142,8 @@ export const getOpposites = (id: string, token: string) =>
   axios.get(`${API_URL}/opposites/${id}`, { headers: { token } 
 })
 
-export const getTickets = (startDate: string, endDate: string, token: string) =>
-  axios.get(`${API_URL}/ticket/${startDate}/${endDate}`, {
+export const getTickets = (startDate: string, endDate: string, from: string, to: string, carrier: string, page: number, limit: number, token: string) =>
+  axios.get(`${API_URL}/ticket/${startDate}/${endDate}/${from}/${to}/${carrier}/${page}/${limit}`, {
     headers: {
       'Content-type': 'application/json',
       token

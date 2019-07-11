@@ -614,8 +614,13 @@ module.exports = {
     return res;
   },
 
-  async findCRM (dateStart, dateEnd) {
-    return Ticket.aggregate([
+  async findCRM ({dateStart, dateEnd, from, to, carrier, page, limit}) {
+    dateStart = +dateStart;
+    dateEnd = +dateEnd;
+    page = +page;
+    limit = +limit;
+
+    let pipeline = [
       {
         $facet: {
           results: [
@@ -630,13 +635,24 @@ module.exports = {
             {
               $unwind: '$trip'
             },
+            ...Aggregate.skipAndLimit(page, limit)
           ]
         }
       }
-    ])
-      .then(data => {
-        return data[0].results;
-      });
+    ];
+
+    if (from !== 'null') {
+      pipeline.unshift({ $match: { departure: from } })
+    }
+    if (to !== 'null') {
+      pipeline.unshift({ $match: { destination: to } })
+    }
+    if (carrier !== 'null') {
+      pipeline.unshift({ $match: { carrier: carrier } })
+    }
+    return Ticket.aggregate(pipeline).then(data => {
+      return data[0].results;
+    });
   },
 
   async destroy (id) {

@@ -21,6 +21,51 @@ module.exports = {
         update: [],
         find: []
       }
-    }
+    },
+    from: {
+      type: 'string',
+      required: true,
+      permission: {
+        create: [ROLE.ADMINISTRATOR],
+        update: [],
+        find: []
+      }
+    },
+    to: {
+      type: 'string',
+      required: true,
+      permission: {
+        create: [ROLE.ADMINISTRATOR],
+        update: [],
+        find: []
+      }
+    },
+    carrier: {
+      type: 'string',
+      required: true,
+      permission: {
+        create: [ROLE.ADMINISTRATOR],
+        update: [],
+        find: []
+      }
+    },
+    page: {
+      type: 'number',
+      required: true,
+      permission: {
+        create: [ROLE.ADMINISTRATOR],
+        update: [],
+        find: []
+      }
+    },
+    limit: {
+      type: 'number',
+      required: true,
+      permission: {
+        create: [ROLE.ADMINISTRATOR],
+        update: [],
+        find: []
+      }
+    },
   }
 };
