@@ -169,15 +169,6 @@ class TicketsContainer extends React.Component<
       }
     )
   }
-  
-  displayHours = (tab?: any[]) => {
-    tab?tab.map(item => {
-      console.log(`
-      start: ${moment(item.start).utc().format('HH:mm')} \n
-      end: ${moment(item.end).utc().format('HH:mm')}
-      `)
-    }): []
-  }
 
   handleAddTicket = (
     ticketData: Pick<
