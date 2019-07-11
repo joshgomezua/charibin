@@ -180,7 +180,7 @@ const Agenda: React.SFC<IProps> = ({
               <div >
                 <Pagination 
                   qtyOfItems={4}
-                  pageLimit={10}
+                  pageLimit={100}
                   onChange={()=>console.log()}
                 />
               </div>

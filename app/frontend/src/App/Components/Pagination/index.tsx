@@ -46,25 +46,21 @@ class Pagination extends React.Component<IProps, IState> {
 
         return (
             <div className="pagination">
-
                     <Button
                         className="leftBtn"
                         text="Previous"
                         disabled={disabledLeft}
                         onClick={this.handleOnClick}
                     />
-
                 <div className="pagination-text">
                     <p>page {currentPage} of {currentPage}</p>
                 </div>
-
                     <Button
                         className="rightBtn"
                         text="Next"
                         disabled={disabledRight}
                         onClick={this.handleOnClick}
                     />
-
             </div>
         )
     }
