@@ -2,7 +2,9 @@ import React from 'react'
 //import classnames from 'classnames'
 import { IProps, IState } from './types'
 //import arrowDown from '../../../Common/Utils/Media/arrowDown.svg'
-//import './styles.scss'
+import './styles.scss'
+
+
 import Button from 'src/Common/Components/Button';
 
 class Pagination extends React.Component<IProps, IState> {
@@ -40,27 +42,29 @@ class Pagination extends React.Component<IProps, IState> {
 
 
     render() {
-        const { disabledLeft, disabledRight, currentPage } = this.state
+        const { currentPage, disabledRight, disabledLeft } = this.state
 
         return (
-            <div>
-                <Button
-                    text="clear dates"
-                    variant="gray"
-                    icon="cross"
-                    disabled={disabledLeft}
-                    onClick={this.handleOnClick}
-                />
+            <div className="pagination">
 
-                <p>{ currentPage }</p>
+                    <Button
+                        className="leftBtn"
+                        text="Previous"
+                        disabled={disabledLeft}
+                        onClick={this.handleOnClick}
+                    />
 
-                <Button
-                    text="clear dates"
-                    variant="gray"
-                    icon="cross"
-                    disabled={disabledRight}
-                    onClick={this.handleOnClick}
-                />
+                <div className="pagination-text">
+                    <p>page {currentPage} of {currentPage}</p>
+                </div>
+
+                    <Button
+                        className="rightBtn"
+                        text="Next"
+                        disabled={disabledRight}
+                        onClick={this.handleOnClick}
+                    />
+
             </div>
         )
     }

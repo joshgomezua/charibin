@@ -1,0 +1,32 @@
+@import '../../../Common/Utils/Styles/mixin.scss';
+@import '../../../Common/Utils/Styles/colors.scss';
+
+.pagination {
+    display: flex;
+    justify-content: space-between;
+
+    .leftBtn {
+        span {
+            margin: auto;
+            display: table;
+        }
+    }
+
+    .rightBtn {
+        span {
+            margin: auto;
+            display: table;
+        }
+    }
+
+    &-text {
+        margin: auto;
+    }
+}
+
+
+
+
+
+
+
