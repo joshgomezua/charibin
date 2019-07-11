@@ -21,6 +21,7 @@ export interface IState {
     end: Date | undefined
   }
   modalOptions: any[]
+  pagination: IPagination
 }
 
 export interface IProps {
@@ -54,4 +55,9 @@ export interface ITripData {
   _id: string,
   departure: string,
   destination: string
+}
+
+export interface IPagination {
+  qtyOfItems: number,
+  pageLimit: number,
 }

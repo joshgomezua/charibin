@@ -21,9 +21,9 @@ const Agenda: React.SFC<IProps> = ({
   filterFrom,
   filterTo,
   changeActiveState,
-  openEditModal
+  openEditModal,
+  pagination
 }) => {
-
   const getFilteredTickets = () => {
     const areFromToFiltersUsed = (
       filterFrom.length && filterFrom ||
@@ -179,8 +179,8 @@ const Agenda: React.SFC<IProps> = ({
             <td>
               <div >
                 <Pagination 
-                  qtyOfItems={4}
-                  pageLimit={100}
+                  qtyOfItems={pagination.qtyOfItems}
+                  pageLimit={pagination.pageLimit}
                   onChange={()=>console.log()}
                 />
               </div>

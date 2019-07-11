@@ -49,8 +49,8 @@ class TicketsContainer extends React.Component<
       start: undefined,
       end: undefined
     },
-    modalOptions: []
-
+    modalOptions: [],
+    pagination: { qtyOfItems: 0, pageLimit: 0 }
   }
 
   private modal = React.createRef<Modal>()
@@ -154,6 +154,15 @@ class TicketsContainer extends React.Component<
     getTickets(startDate, endDate, 'null', 'null', 'null', 0, 100, token)
       .then(res => {
         this.setState({ isLoading: false, tickets: res.data })
+
+        this.setState(prevState => ({
+          pagination: {
+            ...prevState.pagination,
+            qtyOfItems: res.data.length,
+            pageLimit: 100
+          }
+        }))
+
       })
       .catch(err => {
         this.setState({ isLoading: false, isError: true })
@@ -344,7 +353,8 @@ class TicketsContainer extends React.Component<
       isError,
       departures,
       destinations,
-      calendarFilter
+      calendarFilter,
+      pagination
     } = this.state
     const {
       filters,
@@ -381,6 +391,7 @@ class TicketsContainer extends React.Component<
             changeActiveState={this.handleChangeActiveState}
             retry={() => this.handleFetchTicketsByDate(selectedDate)}
             filters={filters}
+            pagination={pagination}
           />
         </div>
 

@@ -16,8 +16,57 @@ class Pagination extends React.Component<IProps, IState> {
     }
 
     componentDidMount() {
-        // calculate if more page is required before setting the 2 buttons disablement
+        const { currentPage } = this.state
+        const { qtyOfItems, pageLimit } =  this.props
+    
+        
+        if (currentPage === 1) {
+            this.setState({ disabledLeft: true })
+        } 
+        else if (currentPage > 1) {
+            this.setState({ disabledLeft: false })
+        }
+
+        if (qtyOfItems <= pageLimit) {
+            this.setState({ disabledRight: true })
+        }
+        else {
+            this.setState({ disabledRight: false })
+        }
     }
+
+    componentDidUpdate(prevProps: IProps) {
+        const { currentPage, disabledLeft, disabledRight } = this.state
+        const { qtyOfItems, pageLimit } =  this.props
+
+        console.log(`
+            qtyOfItems: ${qtyOfItems} \n
+            pageLimit: ${pageLimit} \n'
+            currentPage: ${currentPage} \n
+            disabledLeft: ${disabledLeft} \n
+            disabledRight: ${disabledRight}
+        `)
+        if (prevProps !== this.props) {
+            if (currentPage === 1) {
+                console.log('cond 1');
+                this.setState({ disabledLeft: true })
+            } 
+            else if (currentPage > 1) {
+                console.log('cond 2');
+                this.setState({ disabledLeft: false })
+            }
+    
+            if (qtyOfItems <= pageLimit) {
+                console.log('cond 3');
+                this.setState({ disabledRight: true })
+            }
+            else {
+                console.log('cond 4');
+                this.setState({ disabledRight: false })
+            }
+        }
+    }
+        
 
     handleOnClick = (page: number) => {
         const { currentPage } = this.state
