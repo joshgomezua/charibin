@@ -543,14 +543,14 @@ class TripsContainer extends React.Component<
       for(let tripIndex: number = 0; tripIndex < results.length; tripIndex++){
         if(filtersFrom.length) {
           for(let index: number = 0; index < filtersFrom.length; index++){
-            if(results[tripIndex].departure.toLowerCase() == filtersFrom[index].toLowerCase()) {
+            if(results[tripIndex].departure.name.toLowerCase() == filtersFrom[index].toLowerCase()) {
               filteredTrips.push(results[tripIndex]);
             }
           }
         }
         if(filtersTo.length) {
           for(let index: number = 0; index < filtersTo.length; index++){
-            if(results[tripIndex].destination.toLowerCase() == filtersTo[index].toLowerCase() && filteredTrips.includes(results[tripIndex]) == false) {
+            if(results[tripIndex].destination.name.toLowerCase() == filtersTo[index].toLowerCase() && filteredTrips.includes(results[tripIndex]) == false) {
              filteredTrips.push(results[tripIndex]);
             }
           }

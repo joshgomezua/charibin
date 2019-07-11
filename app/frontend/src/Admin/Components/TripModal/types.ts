@@ -1,3 +1,5 @@
+import { ICity } from "src/Admin/Utils/adminTypes";
+
 export interface IProps {
   editDate?: IFormValues & { _id: string }
   isLoading: boolean
@@ -7,8 +9,8 @@ export interface IProps {
 }
 
 export interface IFormValues {
-  departure: string
-  destination: string
+  departure: ICity
+  destination: ICity
   carrier: string
   price: number
   discount: number
