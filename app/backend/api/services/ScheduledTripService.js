@@ -6,7 +6,7 @@ var ObjectId = require('mongoose').Types.ObjectId;
 module.exports = {
 
   async findOne (id) {
-    const sTrip = await ScheduledTrip.findOne({ _id: id, deleted: false }).populate('trip');
+    const sTrip = await ScheduledTrip.findOne({ _id: id, deleted: false });
     if(!sTrip) throw { status: 404, message: 'SCHEDULED_TRIP.NOT.EXIST' };
 
     return sTrip;

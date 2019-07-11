@@ -1,14 +1,18 @@
 import { ITrip, MODAL_TYPE, ICity } from '../../Utils/adminTypes'
 import { IResponseError, IScheduledTrip } from '../../../Common/Utils/globalTypes'
 
-export interface IState {
+export interface  IState {
   trips: ITrip[]
+  oppositeTrips: ITrip[]
+  filtersFrom: string[]
+  filtersTo: string[]
+  results: ITrip[]
   total: number
   isModalLoading: boolean
   isLoading: boolean
   currentPage: number
-  editData: ITrip
-  editSchedule: IScheduledTrip
+  editData: ITrip & { bidirectionalChange?: boolean}
+  editSchedule: IScheduledTrip & { bidirectionalChange?: boolean}
   modal: {
     id: string
     type: MODAL_TYPE | null
@@ -17,6 +21,12 @@ export interface IState {
 }
 
 export interface IProps {
+  filterFrom: string[]
+  filterTo: string[]
+  filters: string[]
+  changeFilters: (filters: string[]) => void
+  changeFilterFrom: (filterFrom: string[]) => void
+  changeFilterTo: (filterTo: string[]) => void
   showError: (err: IResponseError, defaultText?: string) => void
   showSuccess: (msg: string) => void
 }
@@ -94,6 +104,7 @@ export interface IEditTimeSchedule {
     _8to10PM: number
     _10to12AM: number
   }
+  bidirectionalChange?: boolean
   discount?: number
   duration?: number
   fake?: boolean

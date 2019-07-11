@@ -1,6 +1,7 @@
 export interface IProps {
-  editSchedule?: IFormValues  /*& { _id: string } */
+  editSchedule?: IFormValues
   isLoading: boolean
+  isASchedule: boolean
   closeModal: () => void
   handleSubmit?: (data: any) => Promise<void>
   handleEditTimeSelection?: (data: IEditValues) => Promise<void>
@@ -20,6 +21,7 @@ export interface IFormValues {
     _8to10PM: number
     _10to12AM: number
   }
+  bidirectionalChange?: boolean
 }
 
 export type IEditValues = Partial<IFormValues>

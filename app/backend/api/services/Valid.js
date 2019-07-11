@@ -30,7 +30,6 @@ class Validator {
       }, err => {
         if(err)
           return reject({ status: 400, ...err });
-
         return resolve(data);
       });
     });

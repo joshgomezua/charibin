@@ -55,15 +55,7 @@ export const SUCCESS = {
   DEFAULT: 'Success'
 }
 
-export const DEFAULT_CITY_DATA = {
-  _id: '',
-  name: 'London',
-  country: 'United Kingdom',
-  tags: ["beach"],
-  photo: ''
-}
-
-export const DEFULT_TICKET_DATA = {
+export const DEFAULT_TICKET_DATA = {
   _id: '',
   trip: { _id: '', departure: '', destination: '', carrier: '', duration: 0 },
   quantity: 0,

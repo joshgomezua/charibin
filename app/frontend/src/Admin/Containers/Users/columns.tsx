@@ -1,7 +1,4 @@
 import React from 'react'
-//import * as moment from 'moment'
-//i//mport { IDuration } from '../../../Common/Utils/globalTypes'
-//import Checkbox from '../../Components/Checkbox'
 import { RowRenderProps } from 'react-table'
 import 'moment-duration-format'
 import Switch from 'src/Admin/Components/Switch';

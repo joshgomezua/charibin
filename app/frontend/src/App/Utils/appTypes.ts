@@ -4,7 +4,6 @@ export interface ITrip {
   _id: string
   deselectionPrice: number
   discount: number
-  name: string
   photo: string
   price: number
   duration: number
@@ -14,6 +13,11 @@ export interface ITrip {
   dateEnd?: number
   departure: string,
   destination: string
+  info?: {
+    arrivalTicketsQty: number
+    departureTicketsQty: number
+  }
+  
 }
 
 export interface ISelectedData {
@@ -23,12 +27,13 @@ export interface ISelectedData {
   deselectionPrice: number
   discount: number
   duration: number
-  name: string
   photo: string
   price: number
   type: 'selectedTrid'
   arrivalTicket?: string
   departureTicket?: string
+  departure: string,
+  destination: string
 }
 
 export interface IFinalSelected {

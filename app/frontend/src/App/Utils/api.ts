@@ -2,6 +2,7 @@ import axios from 'axios'
 import { IBookedData, IUnbookedData, ISupportData, IBuyData } from './apiTypes'
 
 const API_URL = process.env.REACT_APP_API_URL
+const TIMEZONE_OFFSET = (new Date()).getTimezoneOffset() * 60000 
 
 export const getTrips = (
   page: number,
@@ -10,11 +11,12 @@ export const getTrips = (
   priceEnd: number,
   dateStart: number,
   dateEnd: number,
-  quantity: number
+  quantity: number,
 ) =>
   axios.get(
-    `${API_URL}/dashboard/ticket/${page}/${limit}/${priceStart}/${priceEnd}/${dateStart}/${dateEnd}/${quantity}`
+    `${API_URL}/dashboard/ticket/${page}/${limit}/${priceStart}/${priceEnd}/${dateStart}/${dateEnd}/${quantity}/${TIMEZONE_OFFSET}`
   )
+  
 
 export const bookTrips = (data: IBookedData) =>
   axios.post(`${API_URL}/ticket/book`, data, {

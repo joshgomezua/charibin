@@ -87,7 +87,6 @@ class UsersContainer extends React.Component<
 
   handleFetchItems = (page: number, limit: number) => {
     const token = getToken()
-    console.log('2000')
     if (token) {
       getUsers(page, limit, token)
         .then(res => {
@@ -304,6 +303,7 @@ class UsersContainer extends React.Component<
             <DeleteModal
               closeModal={this.handleCloseModal}
               deleteItem={this.handleDeleteUser}
+              text="user will be deleted"
             />
           ) : null}
         </Modal>

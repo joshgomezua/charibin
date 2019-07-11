@@ -1,15 +1,16 @@
 import React from 'react'
 
-import Header from '../../Components/Header'
+import TripHeader from '../../Components/TripHeader'
 import ExpandableTable from '../../Components/ExpandableTable'
 import Modal from '../../Components/Modal'
 import TripModal from '../../Components/TripModal'
 import DeleteModal from '../../Components/DeleteModal'
 import TimeSelectionModal from '../../Components/TimeSelectionModal'
+import ScheduleModal from 'src/Admin/Components/ScheduleModal';
 
 import withToast from '../../../Common/HOC/withToast'
 import { RouteComponentProps } from 'react-router-dom'
-import { MODAL_TYPE } from '../../Utils/adminTypes'
+import { MODAL_TYPE, ITrip } from '../../Utils/adminTypes'
 import { getToken } from '../../../Common/Utils/helpers'
 import {
   ADMIN_ROUTING,
@@ -28,12 +29,13 @@ import {
   deleteScheduledTrip,
   getSingleScheduledTrip,
   addSchedule,
-  updateSchedule
+  updateSchedule,
+  getOpposites
 } from '../../Utils/api'
 import { IState, IProps, INewData, IEditTimeSchedule, INewSchedule } from './types'
 import { columns } from './columns'
 import { rangeColumns } from './rangeColumns';
-import ScheduleModal from 'src/Admin/Components/ScheduleModal';
+import { SortingRule, ControlledStateOverrideProps } from 'react-table';
 
 class TripsContainer extends React.Component<
   RouteComponentProps<{}> & IProps,
@@ -43,6 +45,10 @@ class TripsContainer extends React.Component<
 
   readonly state: IState = {
     trips: [], 
+    oppositeTrips: [],
+    filtersFrom: [],
+    filtersTo: [],
+    results: [],
     total: 0,
     currentPage: 0,
     isLoading: true,
@@ -130,11 +136,11 @@ class TripsContainer extends React.Component<
     }
   }
 
-  handleFetchItems = (page: number, limit: number) => {
+  handleFetchItems = (page: number, limit: number, sort?: SortingRule) => {
     const token = getToken()
 
     if (token) {
-      getTrips(page, limit, token)
+      getTrips(page, limit, token, sort)
         .then(res =>
           this.setState({
             isLoading: false,
@@ -145,12 +151,41 @@ class TripsContainer extends React.Component<
         .catch(err => {
           this.props.showError(err, ERRORS.TRIP_FETCH)
         })
+
+      getTrips(0, 1000000, token, sort).then(res => {
+        this.setState({results: res.data.results})
+      }).catch(err => {
+        this.props.showError(err, ERRORS.TRIP_FETCH)
+      }) 
     }
   }
 
-  handleFetchTableData = (boardState: any) => {
-    this.setState({ currentPage: boardState.page })
-    this.handleFetchItems(boardState.page, 10)
+  handleFetchTableData = ({ page, sorted }: ControlledStateOverrideProps) => {
+    this.setState({ currentPage: page! })
+    if (sorted) {
+      this.handleFetchItems(page!, 10, sorted[0])
+    } else {
+      this.handleFetchItems(page!, 10)
+    }
+  }
+
+  handleBidirectionalChange = (data: IEditTimeSchedule) => {
+    const token = getToken();
+
+    if( token ){
+      getOpposites(this.state.editData._id, token)
+        .then(res => {
+          this.setState({
+            oppositeTrips: res.data
+          })
+          for(let index: number = 0; index < this.state.oppositeTrips.length; index++){
+            updateTimeSelection(this.state.oppositeTrips[index]._id, data, token)
+          }
+        })
+        .catch(err => {
+          this.props.showError(err, ERRORS.TRIP_FETCH)
+        });
+    } 
   }
 
   handleDeleteTrip = () => {
@@ -171,7 +206,7 @@ class TripsContainer extends React.Component<
         .catch(err => {
           this.handleCloseModal()
           this.props.showError(err, ERRORS.TRIP_DELETE)
-        })
+        });
     }
   }
 
@@ -219,9 +254,26 @@ class TripsContainer extends React.Component<
     const {
       modal: { id }
     } = this.state
+    
+    const editedTrip: INewData = {
+      ...data,
+      timeSelection: {
+        defaultPrice: data.timeSelection.defaultPrice,
+        _0to6AM: this.state.editData.timeSelection.defaultPrice,
+        _6to8AM: this.state.editData.timeSelection.defaultPrice,
+        _8to10AM: this.state.editData.timeSelection.defaultPrice,
+        _10to12PM: this.state.editData.timeSelection.defaultPrice,
+        _12to2PM: this.state.editData.timeSelection.defaultPrice,
+        _2to4PM: this.state.editData.timeSelection.defaultPrice,
+        _4to6PM: this.state.editData.timeSelection.defaultPrice,
+        _6to8PM: this.state.editData.timeSelection.defaultPrice,
+        _8to10PM: this.state.editData.timeSelection.defaultPrice,
+        _10to12AM: this.state.editData.timeSelection.defaultPrice,
+      }
+    }
 
     this.setState({ isModalLoading: true })
-    return updateTrip(id, data, token)
+    return updateTrip(id, editedTrip, token)
       .then(res => {
         this.modal.current!.close()
         this.handleFetchItems(currentPage, 10)
@@ -244,6 +296,10 @@ class TripsContainer extends React.Component<
     const {
       modal: { id }
     } = this.state
+
+    if(data.bidirectionalChange) {
+      this.handleBidirectionalChange(data)
+    }
     
     this.setState({ isModalLoading: true })
     return updateTimeSelection(id, data, token)
@@ -317,6 +373,9 @@ class TripsContainer extends React.Component<
   handleAddSchedule = (data: INewSchedule) => {
     const token = getToken()
     const { currentPage } = this.state
+
+    this.handleDuplicateSchedule(data, this.state.editData)
+
     const newSchedule: INewSchedule = {
       ...data,
       timeSelection: {
@@ -332,7 +391,7 @@ class TripsContainer extends React.Component<
         _8to10PM: data.timeSelection.defaultPrice,
         _10to12AM: data.timeSelection.defaultPrice,
       },
-      trip: this.state.editData._id
+      trip: this.state.editData._id,
     }
     this.setState({ isModalLoading: true })
     return addSchedule(newSchedule, token)
@@ -341,6 +400,7 @@ class TripsContainer extends React.Component<
         this.handleFetchItems(currentPage, 10)
         this.props.showSuccess(SUCCESS.DEFAULT)
         this.handleRestartModalType()
+        
         return Promise.resolve()
       })
       .catch(err => {
@@ -358,8 +418,25 @@ class TripsContainer extends React.Component<
       modal: { id }
     } = this.state
 
+    const editedSchedule: INewSchedule = {
+      ...data,
+      timeSelection: {
+        defaultPrice: data.timeSelection.defaultPrice,
+        _0to6AM: this.state.editSchedule.timeSelection.defaultPrice,
+        _6to8AM: this.state.editSchedule.timeSelection.defaultPrice,
+        _8to10AM: this.state.editSchedule.timeSelection.defaultPrice,
+        _10to12PM: this.state.editSchedule.timeSelection.defaultPrice,
+        _12to2PM: this.state.editSchedule.timeSelection.defaultPrice,
+        _2to4PM: this.state.editSchedule.timeSelection.defaultPrice,
+        _4to6PM: this.state.editSchedule.timeSelection.defaultPrice,
+        _6to8PM: this.state.editSchedule.timeSelection.defaultPrice,
+        _8to10PM: this.state.editSchedule.timeSelection.defaultPrice,
+        _10to12AM: this.state.editSchedule.timeSelection.defaultPrice,
+      }
+    }
+
     this.setState({ isModalLoading: true })
-    return updateSchedule(id, data, token)
+    return updateSchedule(id, editedSchedule, token)
       .then(res => {
         this.modal.current!.close()
         this.handleFetchItems(currentPage, 10)
@@ -416,23 +493,83 @@ class TripsContainer extends React.Component<
     })
   }
 
+  handleDuplicateSchedule = (data: INewSchedule, parentTrip: any) => {
+    if(parentTrip.scheduledTrips != undefined){
+      let startDate: Date = new Date(data.date.start)
+      let endDate: Date = new Date(data.date.end)
+
+      for(let index: number = 0; index < parentTrip.scheduledTrips.length; index++) {
+        if(this.compareDate(startDate, endDate, parentTrip.scheduledTrips[index]) && parentTrip.scheduledTrips[index].active == true ) {
+          const deactivatedSchedule: INewSchedule = {
+            ...parentTrip.scheduledTrips[index],
+            active: false
+          }
+          updateSchedule(parentTrip.scheduledTrips[index]._id, deactivatedSchedule, getToken())
+        }
+      }
+    }
+  }
+
+  compareDate = (startDate: Date, endDate: Date, trip: any) => {
+    const existingStartDate: Date = new Date(trip.date.start)
+    const existingEndDate: Date = new Date(trip.date.end)
+    if(startDate.getFullYear() == existingStartDate.getFullYear() && endDate.getFullYear() == existingEndDate.getFullYear()){
+      if(startDate.getMonth() == existingStartDate.getMonth() && endDate.getMonth() == existingEndDate.getMonth()){
+        if(startDate.getDate() == existingStartDate.getDate() && endDate.getDate() == existingEndDate.getDate()){
+          return true
+        }
+        return false
+      }
+      return false
+    }
+    return false
+  }
+
   render() {
+    let {trips, total} = this.state
     const {
-      trips,
-      total,
+      filtersFrom,
+      filtersTo,
+      results,
       isLoading,
       isModalLoading,
       editData,
       editSchedule,
       modal: { type: modalType, heading: modalHeading }
     } = this.state
+
+    if (filtersFrom.length || filtersTo.length) {
+      let filteredTrips: ITrip[] = [];
+      for(let tripIndex: number = 0; tripIndex < results.length; tripIndex++){
+        if(filtersFrom.length) {
+          for(let index: number = 0; index < filtersFrom.length; index++){
+            if(results[tripIndex].departure.toLowerCase() == filtersFrom[index].toLowerCase()) {
+              filteredTrips.push(results[tripIndex]);
+            }
+          }
+        }
+        if(filtersTo.length) {
+          for(let index: number = 0; index < filtersTo.length; index++){
+            if(results[tripIndex].destination.toLowerCase() == filtersTo[index].toLowerCase() && filteredTrips.includes(results[tripIndex]) == false) {
+             filteredTrips.push(results[tripIndex]);
+            }
+          }
+        }
+      }
+      trips = filteredTrips
+      total = trips.length
+    }
+    
     return (
       <div className="spon-container">
-        <Header
+        <TripHeader
           title="Routes & Prices"
           handleOpenModal={this.handleOpenModal}
+          filterFrom={filtersFrom}
+          filterTo={filtersTo}
+          changeFilterFrom={(e) => this.setState({filtersFrom: e})}
+          changeFilterTo={(e) => this.setState({filtersTo: e})}
         />
-
         <ExpandableTable
           data={trips}
           handleFetchData={this.handleFetchTableData}
@@ -479,6 +616,7 @@ class TripsContainer extends React.Component<
             <DeleteModal
               closeModal={this.handleCloseModal}
               deleteItem={this.handleDeleteTrip}
+              text="trip will be deleted"
             />
           ) : null}
 
@@ -486,6 +624,7 @@ class TripsContainer extends React.Component<
             <DeleteModal
               closeModal={this.handleCloseModal}
               deleteItem={this.handleDeleteSchedule}
+              text="schedule will be deleted"
             />
           ) : null}
 
@@ -509,6 +648,7 @@ class TripsContainer extends React.Component<
           {modalType === MODAL_TYPE.EDIT_TIME_SELECTION ? (
             <TimeSelectionModal
               isLoading={isModalLoading}
+              isASchedule={false}
               editSchedule={editData}
               closeModal={this.handleCloseModal}
               handleEditTimeSelection={this.handleEditTimeSelection}
@@ -518,6 +658,7 @@ class TripsContainer extends React.Component<
           {modalType === MODAL_TYPE.EDIT_TIME_SELECTION_SCHEDULE ? (
             <TimeSelectionModal
               isLoading={isModalLoading}
+              isASchedule={true}
               editSchedule={editSchedule}
               closeModal={this.handleCloseModal}
               handleEditTimeSelection={this.handleEditScheduleTimeSelection}

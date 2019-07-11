@@ -9,6 +9,7 @@ const EmailService = require('./EmailService');
 const redis = require('redis');
 const client1 = redis.createClient({ host: global.config.connection.redis.host, db: 1 });
 const subscriber1 = redis.createClient({ host: global.config.connection.redis.host, db: 1 });
+const custom = require('../../config/custom')
 
 client1.send_command('config', ['set','notify-keyspace-events','Ex'], onExpiredTicket);
 
@@ -131,31 +132,28 @@ async function createManyTickets (data) {
     if(data.repeat.dateEnd < seedDate.start) break;
   }
 
-  return updateMessages.length ? { updated: true, dates: updateMessages } : {};
+  //return updateMessages.length ? { updated: true, dates: updateMessages } : {};
 }
 
 async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
-  if(new Date(selectedTrip.dateStart).setHours(0,0,0,0) < Date.now() + global.config.custom.time.day)
+  if(new Date(selectedTrip.dateStart) < custom.TodayWithTimezone + global.config.custom.time.day)
     throw { status: 400, message: 'TICKET.DATE.START.INVALID%', args: [new Date(Date.now() + global.config.custom.time.day).toDateString()] };
-  if(new Date(selectedTrip.dateEnd).setHours(0,0,0,0) < Date.now() + global.config.custom.time.day)
+  if(new Date(selectedTrip.dateEnd) < custom.TodayWithTimezone + global.config.custom.time.day)
     throw { status: 400, message: 'TICKET.DATE.END.INVALID%', args: [new Date(Date.now() + global.config.custom.time.day).toDateString()] };
-
   const trip = await Trip.findOne({ _id: selectedTrip.id, deleted: false, active: true });
   if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
-
   const [arrivalTicket] = await Ticket.find({
-    trip: trip._id,
+    //trip: trip._id,
     active: true,
     deleted: false,
     quantity: { $gte: quantity },
     departure: trip.departure,
-    destination: destination.departure,
+    destination: trip.destination,
     'date.start': { $gte: new Date(selectedTrip.dateStart).setHours(0,0,0,0), $lte: new Date(selectedTrip.dateStart).setHours(23,59,59,999) }
   }).limit(1);
   if(!arrivalTicket) throw { status: 404, message: 'TICKET.ARRIVAL.NOT.EXIST%', args: [new Date(selectedTrip.dateStart).toDateString()] };
-
   const [departureTicket] = await Ticket.find({
-    trip: trip._id,
+    //trip: trip._id,
     active: true,
     deleted: false,
     quantity: { $gte: quantity },
@@ -164,9 +162,7 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
     'date.start': { $gte: new Date(selectedTrip.dateEnd).setHours(0,0,0,0), $lte: new Date(selectedTrip.dateEnd).setHours(23,59,59,999) }
   }).limit(1);
   if(!departureTicket) throw { status: 404, message: 'TICKET.DEPARTURE.NOT.EXIST%', args: [new Date(selectedTrip.dateEnd).toDateString()] };
-
   let reservedArrivalTicket;
-
   if (quantity <= (arrivalTicket.quantity - (arrivalTicket.soldTickets + arrivalTicket.reservedQuantity))) {
     reservedArrivalTicket = await Ticket.findOneAndUpdate({ _id: arrivalTicket._id, active: true, deleted: false, quantity: { $gte: quantity } }, {
       $inc: {reservedQuantity: quantity},
@@ -176,9 +172,7 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
   } else {
     throw {status: 404, message: 'TICKET.BOOK.NOT.ENOUGH', args:[new Date(selectedTrip.dateEnd).toDateString()] }
   }
-  
   let reservedDepartureTicket;
-
   if (quantity <= (departureTicket.quantity - (departureTicket.soldTickets + departureTicket.reservedQuantity))) {
     reservedDepartureTicket = await Ticket.findOneAndUpdate({ _id: departureTicket._id, active: true, deleted: false, quantity: { $gte: quantity } }, {
       $inc: {reservedQuantity: quantity},
@@ -188,7 +182,6 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
   } else {
     throw {status: 404, message: 'TICKET.BOOK.NOT.ENOUGH', args:[new Date(selectedTrip.dateEnd).toDateString()] }
   }
-
   const updatedTicketOwner = await TicketOwner.findOneAndUpdate({
     owner
   },{
@@ -252,16 +245,15 @@ async function bookWithTime ({ quantity, selectedTrip, owner }) {
   if(!arrivalTicket) throw { status: 404, message: 'TICKET.ARRIVAL.NOT.EXIST' };
 
   // Check if ticket are in future
-  if(+new Date(arrivalTicket.date.start) < Date.now() + global.config.custom.time.day)
+  if(+new Date(arrivalTicket.date.start) < custom.TodayWithTimezone + global.config.custom.time.day)
     throw { status: 400, message: 'TICKET.DATE.START.INVALID%', args: [new Date(Date.now() + global.config.custom.time.day).toDateString()] };
 
   const departureTicket = await Ticket.findOne({ _id: selectedTrip.departureTicket, active: true, deleted: false, quantity: { $gte: quantity } });
   if(!departureTicket) throw { status: 404, message: 'TICKET.DEPARTURE.NOT.EXIST' };
 
   // Check if ticket are in future
-  if(+new Date(departureTicket.date.start) < Date.now() + global.config.custom.time.day)
+  if(+new Date(departureTicket.date.start) < custom.TodayWithTimezone + global.config.custom.time.day)
     throw { status: 400, message: 'TICKET.DATE.END.INVALID%', args: [new Date(Date.now() + global.config.custom.time.day).toDateString()] };
-
   let reservedArrivalTicket;
   if (quantity <= arrivalTicket.quantity - (arrivalTicket.soldTickets + arrivalTicket.reservedQuantity))
   {
@@ -328,21 +320,43 @@ module.exports = {
     const trip = await Trip.findOne({ _id: data.trip, deleted: false });
     if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
 
-    if(data.repeat) { // create many
-      return createManyTickets(data);
-    } else { // create one
-      let ticket = await Ticket.findOne({ trip: data.trip, departure: data.departure, destination: data.destination, date: { start: new Date(data.date.start), end: new Date(data.date.end) } });
-      if(ticket) {
-        ticket = await Ticket.updateOne({ _id: ticket._id }, { $inc: { quantity: data.quantity } }, { new: true });
-
-        return { ...ticket, updated: true };
-      } else {
-        ticket = await Ticket.create(data);
-        await Trip.findByIdAndUpdate(data.trip, { $addToSet: { tickets: ticket._id } }, { new: true });
-
-        return { ...ticket.toObject(), updated: false };
+    if (data.departureHours.length) {
+      for (let hours of data.departureHours) {
+        data.date = hours
+        if(data.repeat) { // create many
+          createManyTickets(data);
+        } else { // create one
+          let ticket = await Ticket.findOne({ trip: data.trip, departure: data.departure, destination: data.destination, date: { start: new Date(data.date.start), end: new Date(data.date.end) } });
+          if(ticket) {
+            ticket = await Ticket.updateOne({ _id: ticket._id }, { $inc: { quantity: data.quantity } }, { new: true });
+    
+            //return { ...ticket, updated: true };
+          } else {
+            ticket = await Ticket.create(data);
+            await Trip.findByIdAndUpdate(data.trip, { $addToSet: { tickets: ticket._id } }, { new: true });
+    
+            //return { ...ticket.toObject(), updated: false };
+          }
       }
-
+    }
+  }
+    else {
+      if(data.repeat) { // create many
+        return createManyTickets(data);
+      } else { // create one
+        let ticket = await Ticket.findOne({ trip: data.trip, departure: data.departure, destination: data.destination, date: { start: new Date(data.date.start), end: new Date(data.date.end) } });
+        if(ticket) {
+          ticket = await Ticket.updateOne({ _id: ticket._id }, { $inc: { quantity: data.quantity } }, { new: true });
+  
+          return { ...ticket, updated: true };
+        } else {
+          ticket = await Ticket.create(data);
+          await Trip.findByIdAndUpdate(data.trip, { $addToSet: { tickets: ticket._id } }, { new: true });
+  
+          return { ...ticket.toObject(), updated: false };
+        }
+  
+      }
     }
   },
 
@@ -520,7 +534,17 @@ module.exports = {
     return ticket;
   },
 
-  async findDashboard ({ page, limit, quantity, priceStart, priceEnd , dateStart, dateEnd }) {
+   hasEnoughTickets (trip) {
+    const departureTickets =  trip.tickets.filter((ticket) => {
+      return (trip.departure === ticket.departure && trip.destination === ticket.destination)
+    })
+    const destinationTickets =  trip.tickets.filter((ticket) => {
+      return (trip.departure === ticket.destination && trip.destination === ticket.departure)
+    })
+    return (departureTickets.length && destinationTickets.length) 
+  },
+
+  async findDashboard ({ page, limit, quantity, priceStart, priceEnd , dateStart, dateEnd, timezone }) {
     page = +page;
     quantity = +quantity;
     limit = +limit;
@@ -528,7 +552,8 @@ module.exports = {
     priceEnd = +priceEnd;
     dateStart = +dateStart;
     dateEnd = +dateEnd;
-
+    timezone = +timezone;
+    
     const tripMatch = { active: true };
     const ticketMatch = {
       $and: [
@@ -545,18 +570,18 @@ module.exports = {
     if(priceEnd > 0)
       tripMatch.price = { $gte: priceStart, $lte: priceEnd };
 
+    custom.TodayWithTimezone = Date.now() - timezone;
+
     if(dateStart > 0 && dateEnd > 0) {
       ticketMatch.$and.push({ $gte: [ '$$tickets.date.start', new Date(dateStart) ] });
       ticketMatch.$and.push({ $lte: [ '$$tickets.date.start', new Date(dateEnd) ] });
+      ticketMatch.$and.push({ $gte: [ '$$tickets.date.start', new Date(custom.TodayWithTimezone + global.config.custom.time.day) ]});
     } else {
-      ticketMatch.$and.push({ $cond: [
-        //{ $eq: ['$$tickets.direction', 'departure'] }, à y penser
-        { $gte: [ '$$tickets.date.start', new Date(Date.now() + 2 * global.config.custom.time.day) ] },
-        { $gte: [ '$$tickets.date.start', new Date(Date.now() + global.config.custom.time.day) ] }
-      ] });
+      ticketMatch.$and.push(
+        { $gte: [ '$$tickets.date.start', new Date(custom.TodayWithTimezone + global.config.custom.time.day) ] });
     }
 
-    return Trip.aggregate([
+    let data = await Trip.aggregate([
       {
         $match: tripMatch
       },
@@ -572,6 +597,8 @@ module.exports = {
           discount: 1,
           duration: 1,
           deselectionPrice: 1,
+          departure: 1,
+          destination: 1,
           tickets: {
             $filter: {
               input: '$tickets',
@@ -581,9 +608,10 @@ module.exports = {
           }
         }
       }
-    ]).then(data => {
-      return data;
-    });
+    ]);
+    
+    const res = data.filter((trip) => this.hasEnoughTickets(trip))
+    return res;
   },
 
   async findCRM (dateStart, dateEnd) {
@@ -597,7 +625,7 @@ module.exports = {
                 'date.start': { $gte: new Date(dateStart), $lte: new Date(dateEnd) },
               }
             },
-            { $sort: { _id: -1 } },
+            { $sort: { 'date.start': 1} },
             Aggregate.populateOne('trips', 'trip', '_id'),
             {
               $unwind: '$trip'
