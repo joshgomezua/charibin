@@ -121,7 +121,6 @@ class DeselectContainer extends Component<
         owner: token,
         trips: deselectedTripsId
       }
-
       unbookTrips(apiData)
         .then(() => {
           this.props.history.push('/destinations/payment')
