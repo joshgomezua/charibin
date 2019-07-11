@@ -9,29 +9,18 @@ import './styles.scss'
 class TripHeader extends React.Component<IProps, IState> {
 
   readonly state: IState = {
-    selectedColor: COLOR.BLUE
+    selectedColor: COLOR.VIOLET
   }
-
-  componentDidMount() {}
 
   handleFiltersChange = (territories: ITerritory[], changeFilter: (filters: string[]) => void) => {
     const filters: string[] = []
 
     territories.map(territory => {
-      if (territory.country === "country") {
-        this.setState({selectedColor: COLOR.GREEN})
-        data.map(dataTerritory => {
-          if (dataTerritory.country !== "country" && dataTerritory.country === territory.label) {
-            filters.push(dataTerritory.label)
-          }
-        })
-      } else {
-        this.setState({selectedColor: COLOR.BLUE})
+        this.setState({selectedColor: COLOR.VIOLET})
         filters.push(territory.label)
-      }
     })
 
-//    changeFilter(filters)
+   changeFilter(filters)
   }
   
   handleFiltersFromChange = (territories: ITerritory[]) => {
@@ -58,6 +47,7 @@ class TripHeader extends React.Component<IProps, IState> {
 
     return (
       <div className="spon-admin-trip-header">
+        
         <div className="spon-admin-trip-header__inner">
           <h1 className="spon-admin-trip-header__heading">{title}</h1>
         </div> 

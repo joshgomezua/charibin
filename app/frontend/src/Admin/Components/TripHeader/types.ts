@@ -17,8 +17,7 @@ export interface IState {
 }
 
 export enum COLOR {
-  BLUE = 'blue',
-  GREEN = 'green'
+  VIOLET = '#5556dc',
 }
 
 export interface ITerritory {

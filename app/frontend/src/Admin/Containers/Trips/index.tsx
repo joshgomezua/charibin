@@ -6,10 +6,11 @@ import Modal from '../../Components/Modal'
 import TripModal from '../../Components/TripModal'
 import DeleteModal from '../../Components/DeleteModal'
 import TimeSelectionModal from '../../Components/TimeSelectionModal'
+import ScheduleModal from 'src/Admin/Components/ScheduleModal';
 
 import withToast from '../../../Common/HOC/withToast'
 import { RouteComponentProps } from 'react-router-dom'
-import { MODAL_TYPE } from '../../Utils/adminTypes'
+import { MODAL_TYPE, ITrip } from '../../Utils/adminTypes'
 import { getToken } from '../../../Common/Utils/helpers'
 import {
   ADMIN_ROUTING,
@@ -34,7 +35,6 @@ import {
 import { IState, IProps, INewData, IEditTimeSchedule, INewSchedule } from './types'
 import { columns } from './columns'
 import { rangeColumns } from './rangeColumns';
-import ScheduleModal from 'src/Admin/Components/ScheduleModal';
 import { SortingRule, ControlledStateOverrideProps } from 'react-table';
 
 class TripsContainer extends React.Component<
@@ -46,6 +46,9 @@ class TripsContainer extends React.Component<
   readonly state: IState = {
     trips: [], 
     oppositeTrips: [],
+    filtersFrom: [],
+    filtersTo: [],
+    results: [],
     total: 0,
     currentPage: 0,
     isLoading: true,
@@ -149,6 +152,12 @@ class TripsContainer extends React.Component<
         .catch(err => {
           this.props.showError(err, ERRORS.TRIP_FETCH)
         })
+
+      getTrips(0, 1000000, token, sort).then(res => {
+        this.setState({results: res.data.results})
+      }).catch(err => {
+        this.props.showError(err, ERRORS.TRIP_FETCH)
+      }) 
     }
   }
 
@@ -519,9 +528,11 @@ class TripsContainer extends React.Component<
   }
 
   render() {
+    let {trips, total} = this.state
     const {
-      trips,
-      total,
+      filtersFrom,
+      filtersTo,
+      results,
       isLoading,
       isModalLoading,
       editData,
@@ -529,22 +540,37 @@ class TripsContainer extends React.Component<
       modal: { type: modalType, heading: modalHeading }
     } = this.state
 
-    const {
-      filterFrom,
-      filterTo,
-      changeFilterFrom,
-      changeFilterTo,
-    } = this.props
-
+    if (filtersFrom.length > 0 || filtersTo.length > 0 ) {
+      let filteredTrips: ITrip[] = [];
+      for(let tripIndex: number = 0; tripIndex < results.length; tripIndex++){
+        if(filtersFrom.length > 0) {
+          for(let index: number = 0; index < filtersFrom.length; index++){
+            if(results[tripIndex].departure.toLowerCase() == filtersFrom[index].toLowerCase()) {
+              filteredTrips.push(results[tripIndex]);
+            }
+          }
+        }
+        if(filtersTo.length > 0) {
+          for(let index: number = 0; index < filtersTo.length; index++){
+            if(results[tripIndex].destination.toLowerCase() == filtersTo[index].toLowerCase() && filteredTrips.includes(results[tripIndex]) == false) {
+             filteredTrips.push(results[tripIndex]);
+            }
+          }
+        }
+      }
+      trips = filteredTrips
+      total = trips.length
+    }
+    
     return (
       <div className="spon-container">
         <TripHeader
           title="Routes & Prices"
           handleOpenModal={this.handleOpenModal}
-          filterFrom={filterFrom}
-          filterTo={filterTo}
-          changeFilterFrom={changeFilterFrom}
-          changeFilterTo={changeFilterTo}
+          filterFrom={filtersFrom}
+          filterTo={filtersTo}
+          changeFilterFrom={(e) => this.setState({filtersFrom: e})}
+          changeFilterTo={(e) => this.setState({filtersTo: e})}
         />
         <ExpandableTable
           data={trips}

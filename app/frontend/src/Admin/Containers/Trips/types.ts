@@ -1,9 +1,12 @@
 import { ITrip, MODAL_TYPE } from '../../Utils/adminTypes'
 import { IResponseError, IScheduledTrip } from '../../../Common/Utils/globalTypes'
 
-export interface IState {
+export interface  IState {
   trips: ITrip[]
   oppositeTrips: ITrip[]
+  filtersFrom: string[]
+  filtersTo: string[]
+  results: ITrip[]
   total: number
   isModalLoading: boolean
   isLoading: boolean
