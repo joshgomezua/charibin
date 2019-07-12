@@ -116,7 +116,7 @@ class DropDownSelect extends React.Component<IProps, IState> {
                   <input type="text" 
                     className="spon-dropdown__input"
                     placeholder={placeholder} 
-                    value={inputValue}
+                    value={this.props.selectedValue || inputValue}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       this.setState({inputValue: e.target.value})
                       this.handleSearch(e)

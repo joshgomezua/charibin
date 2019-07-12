@@ -77,6 +77,7 @@ class UsersContainer extends React.Component<
       getSingleUser(id, token)
         .then(res => {
           this.setState({ editData: res.data })
+          console.log(res)
         })
         .catch(err => {
           this.modal.current!.close()
@@ -303,6 +304,7 @@ class UsersContainer extends React.Component<
             <DeleteModal
               closeModal={this.handleCloseModal}
               deleteItem={this.handleDeleteUser}
+              text="user will be deleted"
             />
           ) : null}
         </Modal>

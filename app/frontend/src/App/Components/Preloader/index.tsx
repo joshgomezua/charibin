@@ -29,7 +29,7 @@ const Preloader: React.SFC<IProps> = ({ selected }) => (
     />
     <div className="preloader-thumbnails">
       {selected.map((item: ISelectedData) => (
-        <img key={item.tripId} src={item.photo} alt={item.name} />
+        <img key={item.tripId} src={item.photo} alt={item.destination} />
       ))}
     </div>
     <LinkButton />
