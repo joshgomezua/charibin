@@ -74,14 +74,12 @@ const dataTemplate = {
     date: {
       __tmpStart: 0,
       start: function () {
-        const today = new Date(moment.now()).setHours(0, 0, 0, 0)
-        const tmpDate = new Date(today + (1000 * 60 * 60 * 24 * 3));
+        const tmpDate = new Date(moment.now() + (1000 * 60 * 60 * 24 * 3));
         this.__tmpStart = tmpDate;
         return tmpDate;
       },
       end: function () {
-        const endDate = this.__tmpStart.getTime() + (6 * 60 * 60 * 1000); // add 6 hours
-        return new Date(endDate);
+        return this.__tmpStart + (5 * 60 * 60 * 1000); // add 5 hours
       }
     }
   },

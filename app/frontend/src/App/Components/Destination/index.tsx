@@ -176,6 +176,7 @@ export default class Destination extends Component<IProps, IState> {
         deselectionPrice: data.deselectionPrice,
         discount: data.discount,
         duration: data.duration,
+        name: data.name,
         photo: data.photo,
         price: data.price,
         departure: data.departure,
@@ -313,7 +314,7 @@ export default class Destination extends Component<IProps, IState> {
 
   render() {
     const { selected, deselect, data } = this.props
-    const { discount, duration, photo, price } = data
+    const { discount, duration, photo, name, price } = data
     const ticketsTypes = this.getTicketsType(
       data.type === 'trip' ? data.tickets : []
     )

@@ -15,6 +15,7 @@ import Faq from '../../../App/Containers/Faq'
 import Support from '../../../App/Containers/Support'
 import Login from '../../../Admin/Containers/Login'
 import Destinations from '../../../App/Containers/Destinations'
+//import Cities from '../../../Admin/Containers/City'
 import NavBar from '../../Components/NavBar'
 import Button from '../../../Common/Components/Button'
 import Modal from '../../../Admin/Components/Modal'
@@ -27,6 +28,7 @@ import { ADMIN_ROUTING } from '../../../Admin/Utils/constants'
 import { IState, IProps } from './types'
 import 'animate.css'
 import './styles.scss'
+// import Trips from 'src/Admin/Containers/Trips';
 
 class MainContainer extends Component<
   RouteComponentProps<{}> & IProps,
@@ -68,6 +70,8 @@ class MainContainer extends Component<
           <Route path="/destinations" component={Destinations} />
           <Route
             exact
+            // path={`${ADMIN_ROUTING.MAIN}${ADMIN_ROUTING.TRIPS}`}
+            // component={Trips}
             path={`${ADMIN_ROUTING.MAIN}${ADMIN_ROUTING.LOGIN}`}
             component={Login}
           />
@@ -86,8 +90,7 @@ class MainContainer extends Component<
           />
         ) : null}
 
-        <Modal ref={this.modal} title="Logout">
-          <div>Are you sure you want to logout?</div>
+        <Modal ref={this.modal} title="Are you sure you want logout?">
           <div className="spon-main__popup">
             <Button
               onClick={() => this.modal.current!.close()}

@@ -50,50 +50,31 @@ module.exports = {
     return opposites;
   },
 
-  async findCRM (page, limit, sortOrder, sortField) {
-    if(sortField){
-      const query = {
-        page: ~~Number(page),
-        limit: ~~Number(limit),
-        sortOrder: 'ascending' === sortOrder ? 1 : -1,
-        sortField: sortField || '_id',
-      };
 
-      return Trip.aggregate([
-        {
-          $facet: {
-            results: [
-              { $match: { deleted: false } },
-              { $sort: { [query.sortField]: query.sortOrder} },
-              ...Aggregate.skipAndLimit(query.page, query.limit)
-            ],
-            status: Aggregate.getStatusWithSimpleMatch(
-              { deleted: false },
-              query.page,
-              query.limit
-            )
-          }
+  async findCRM (page, limit, sortOrder, sortField) {
+    const query = {
+      page: ~~Number(page),
+      limit: ~~Number(limit),
+      sortOrder: 'ascending' === sortOrder ? 1 : -1,
+      sortField: sortField || '_id',
+    };
+
+    return Trip.aggregate([
+      {
+        $facet: {
+          results: [
+            { $match: { deleted: false } },
+            { $sort: { [query.sortField]: query.sortOrder } },
+            ...Aggregate.skipAndLimit(query.page, query.limit)
+          ],
+          status: Aggregate.getStatusWithSimpleMatch(
+            { deleted: false },
+            query.page,
+            query.limit
+          )
         }
-      ]).then(Aggregate.parseResults);
-    } 
-    else {
-      return Trip.aggregate([
-        {
-          $facet: {
-            results: [
-              { $match: { deleted: false } },
-              { $sort: { departure: 1, destination: 1, carrier: 1, type: 1} },
-              ...Aggregate.skipAndLimit(page, limit)
-            ],
-            status: Aggregate.getStatusWithSimpleMatch(
-              { deleted: false },
-              page,
-              limit
-            )
-          }
-        }
-      ]).then(Aggregate.parseResults);
-    }
+      }
+    ]).then(Aggregate.parseResults);
   },
 
   async destroy (id) {

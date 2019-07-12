@@ -33,9 +33,9 @@ const Bilingstatus: React.SFC<IProps> = ({
           selected={['randomly:']}
         />
         <div className="billing_status-tours">
-          {tours.map(({ destination, price }, i) => (
+          {tours.map(({ name, price }, i) => (
             <p className="billing_status-tour" key={i}>
-              <span>{destination}</span>
+              <span>{name}</span>
               <span>
                 {`£ ${price} for ${quantity} ${
                   quantity > 1 ? ' passengers' : ' passenger'

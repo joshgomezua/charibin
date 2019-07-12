@@ -4,6 +4,7 @@ export interface ITrip {
   _id: string
   deselectionPrice: number
   discount: number
+  name: string
   photo: string
   price: number
   duration: number
@@ -27,6 +28,7 @@ export interface ISelectedData {
   deselectionPrice: number
   discount: number
   duration: number
+  name: string
   photo: string
   price: number
   type: 'selectedTrid'
