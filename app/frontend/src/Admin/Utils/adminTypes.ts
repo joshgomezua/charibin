@@ -107,7 +107,6 @@ export interface IOrder {
   price: number
   sent: boolean
   createdAt: string
-  User: string
 }
 
 export enum DIRECTION_TYPE {

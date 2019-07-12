@@ -40,5 +40,4 @@ export interface IBuyData {
     city: string
     zipCode: string
   }
-  user: string
 }

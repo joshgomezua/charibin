@@ -387,7 +387,7 @@ module.exports = {
     return TicketOwner.findOne({ owner });;
   },
 
-  async buy ({ owner, creditCardToken, buyerInfo,user }) {
+  async buy ({ owner, creditCardToken, buyerInfo }) {
     const ownerInfo = await TicketOwner.findOne({ owner });
     if(!ownerInfo) throw { status: 404, message: 'BUY.OWNER.NOT.EXIST' };
 
@@ -439,7 +439,6 @@ module.exports = {
       departureTimePrice: selectedTrip.departureTimePrice,
       deselectionPrice: deselectionPrice,
       totalPrice: finalCost,
-      user: user
     });
 
     await Ticket.findOneAndUpdate({ _id: selectedTrip.arrivalTicket._id, active: true, deleted: false, quantity: { $gte: ownerInfo.quantity } }, {

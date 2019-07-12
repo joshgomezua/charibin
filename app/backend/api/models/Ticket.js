@@ -21,7 +21,7 @@ const ticketSchema = new Schema({
     owner: String, // Hash
     quantity: Number
   }],
-  createdAt: { type: Date, default: Date.now },
+  createdAt: { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model('Ticket', ticketSchema);
