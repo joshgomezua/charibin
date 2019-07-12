@@ -111,5 +111,12 @@ export const columns = (
   },
   {
     Header:'User',
+    accessor: 'user',
+    Cell: (props: RowRenderProps) => {
+      if (props.row.sent) {
+        return(<React.Fragment>{props.value}</React.Fragment>)
+      }
+      return
+    }
   }
 ]

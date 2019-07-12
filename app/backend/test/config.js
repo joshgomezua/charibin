@@ -137,6 +137,7 @@ const dataTemplate = {
     departureTimePrice: faker.random.number({ min: 1, max: 5 }),
     deselectionPrice: () => faker.random.number({ min: 1, max: 100 }),
     totalPrice: () => faker.random.number({ min: 100, max: 1000 }),
+    user: faker.name.firstName
   },
 };
 

@@ -25,12 +25,13 @@ class OrdersContainer extends React.Component<IProps, IState> {
     const token = getToken()
 
     getOrders(page, limit, token, sort)
-      .then(({ data }) =>
+      .then(({ data }) => {
         this.setState({
           isLoading: false,
           orders: data.results,
           total: data.status.total
         })
+      }
       )
       .catch(err => this.props.showError(err, ERRORS.ORDERS_FETCH))
   }

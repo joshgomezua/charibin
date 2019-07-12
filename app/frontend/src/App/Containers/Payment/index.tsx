@@ -25,7 +25,7 @@ import { IBuyData } from '../../Utils/apiTypes'
 import { ISuccessValues } from '../../Components/Billing/types'
 import { compose } from '../../../Common/HOC/compose'
 import { RouteComponentProps } from 'react-router-dom'
-import { getFromLS, getOwnerToken } from '../../../Common/Utils/helpers'
+import { getFromLS, getOwnerToken, getUserData } from '../../../Common/Utils/helpers'
 import ee from '../../Utils/emitter'
 import { IResponseError } from '../../../Common/Utils/globalTypes'
 import { IFinalSelected } from '../../Utils/appTypes'
@@ -103,9 +103,9 @@ class PaymentContainer extends Component<
         address: payment.address!,
         city: payment.city!,
         zipCode: payment.zipCode
-      }
+      },
+      user: getUserData().user.email
     }
-    
     this.setState({ isLoading: true })
     buyTickets(dataToSubmit)
       .then(({ data }: { data: IFinalSelected }) => {

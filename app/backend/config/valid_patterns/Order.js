@@ -266,6 +266,16 @@ module.exports = {
         update: [],
         find: [ROLE.ADMINISTRATOR]
       }
+    },
+
+    user: {
+      type: 'string',
+      required: false,
+      permission: {
+        create: [],
+        update: [],
+        find: [ROLE.ADMINISTRATOR]
+      }
     }
   }
 };

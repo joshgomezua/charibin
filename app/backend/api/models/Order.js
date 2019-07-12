@@ -36,6 +36,7 @@ const orderSchema = new Schema({
   totalPrice: Number,
   sent: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
+  user: String
 });
 
 module.exports = mongoose.model('Order', orderSchema);
