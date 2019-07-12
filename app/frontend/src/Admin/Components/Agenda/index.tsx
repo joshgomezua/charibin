@@ -181,6 +181,7 @@ const Agenda: React.SFC<IProps> = ({
                 <Pagination 
                   qtyOfItems={pagination.qtyOfItems}
                   pageLimit={pagination.pageLimit}
+                  qtyTotal={pagination.qtyTotal}
                   onChange={()=>console.log()}
                 />
               </div>

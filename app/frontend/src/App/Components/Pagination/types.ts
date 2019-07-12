@@ -1,6 +1,7 @@
 export interface IProps {
     qtyOfItems: number
     pageLimit: number
+    qtyTotal: number, 
     onChange: (page: number) => void
 }
 

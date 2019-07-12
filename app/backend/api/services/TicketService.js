@@ -655,6 +655,10 @@ module.exports = {
     });
   },
 
+  async getQuantity () {
+    return await Ticket.find( {deleted: false} ).estimatedDocumentCount();
+  },
+
   async destroy (id) {
     const ticket = await Ticket.findById(id);
     if(!ticket) throw { status: 404, message: 'TICKET.NOT.EXIST' };

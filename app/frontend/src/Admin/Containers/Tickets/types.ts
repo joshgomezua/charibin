@@ -60,4 +60,5 @@ export interface ITripData {
 export interface IPagination {
   qtyOfItems: number,
   pageLimit: number,
+  qtyTotal: number
 }

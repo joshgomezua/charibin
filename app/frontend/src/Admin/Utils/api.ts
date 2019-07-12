@@ -150,6 +150,15 @@ export const getTickets = (startDate: string, endDate: string, from: string, to:
     }
   })
 
+export const getTicketsQty = (token: string) => 
+  axios.get(`${API_URL}/ticketQuantity`, {
+    headers : { 
+      'Content-type': 'application/json',
+      token 
+    }
+  })
+  
+
 export const getDestinationTicketsQty = (departure: string, destination: string, token: string) => {
   return axios.get(`${API_URL}/ticket/destination/quantity/${departure}/${destination}`, {
     headers: {

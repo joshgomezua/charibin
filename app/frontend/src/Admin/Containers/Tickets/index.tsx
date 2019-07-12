@@ -14,6 +14,7 @@ import { Selectors, Actions } from '../../../Common/Redux/Services/adminTickets'
 import {
   createTicket,
   getTickets,
+  getTicketsQty,
   getTripNames,
   getSingleTicket,
   deleteTicket,
@@ -50,7 +51,7 @@ class TicketsContainer extends React.Component<
       end: undefined
     },
     modalOptions: [],
-    pagination: { qtyOfItems: 0, pageLimit: 0 }
+    pagination: { qtyOfItems: 0, pageLimit: 0, qtyTotal: 0 }
   }
 
   private modal = React.createRef<Modal>()
@@ -139,6 +140,7 @@ class TicketsContainer extends React.Component<
 
   handleFetchTicketsByDate = (initialDate: Date, finalDate?: Date) => {
     const token = getToken()
+    console.log('token', token)
     const offset = moment(initialDate).utcOffset()
 
     const startDate = finalDate ? moment(initialDate).add(offset, 'minutes').format('x') : 
@@ -168,6 +170,22 @@ class TicketsContainer extends React.Component<
         this.setState({ isLoading: false, isError: true })
         this.props.showError(err, ERRORS.TICKET_FETCH)
       })
+      
+        getTicketsQty(token)
+        .then(res => {
+          this.setState(prevState => ({
+            pagination: {
+              ...prevState.pagination,
+              qtyTotal: res.data
+            }
+          }))
+        })
+        .catch(err => {
+          this.setState({ isLoading: false, isError: true })
+          this.props.showError(err, ERRORS.TICKET_FETCH_QUANTITY)
+        })
+       
+      
   }
 
   handleOpenModal = (type: MODAL_TYPE, heading: string, id: string = '') => {

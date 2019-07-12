@@ -16,77 +16,51 @@ class Pagination extends React.Component<IProps, IState> {
     }
 
     componentDidMount() {
-        const { currentPage } = this.state
-        const { qtyOfItems, pageLimit } =  this.props
-    
-        
-        if (currentPage === 1) {
-            this.setState({ disabledLeft: true })
-        } 
-        else if (currentPage > 1) {
-            this.setState({ disabledLeft: false })
-        }
-
-        if (qtyOfItems <= pageLimit) {
-            this.setState({ disabledRight: true })
-        }
-        else {
-            this.setState({ disabledRight: false })
-        }
+        this.verifyConditions()
     }
 
     componentDidUpdate(prevProps: IProps) {
-        const { currentPage, disabledLeft, disabledRight } = this.state
-        const { qtyOfItems, pageLimit } =  this.props
+        if (prevProps !== this.props) {
+            this.verifyConditions()
+        }
+    }
+    
+    verifyConditions = () => {
+        const { currentPage, disabledLeft, disabledRight} = this.state
+        const { qtyOfItems, pageLimit, qtyTotal } =  this.props
 
         console.log(`
             qtyOfItems: ${qtyOfItems} \n
-            pageLimit: ${pageLimit} \n'
+            pageLimit: ${pageLimit} \n
+            qtyTotal: ${qtyTotal} \n
             currentPage: ${currentPage} \n
             disabledLeft: ${disabledLeft} \n
             disabledRight: ${disabledRight}
         `)
-        if (prevProps !== this.props) {
-            if (currentPage === 1) {
-                console.log('cond 1');
-                this.setState({ disabledLeft: true })
-            } 
-            else if (currentPage > 1) {
-                console.log('cond 2');
-                this.setState({ disabledLeft: false })
-            }
-    
-            if (qtyOfItems <= pageLimit) {
-                console.log('cond 3');
-                this.setState({ disabledRight: true })
-            }
-            else {
-                console.log('cond 4');
-                this.setState({ disabledRight: false })
-            }
-        }
-    }
-        
 
-    handleOnClick = (page: number) => {
-        const { currentPage } = this.state
-        const { qtyOfItems, pageLimit, onChange } =  this.props
-    
         if (currentPage === 1) {
-            this.setState({ disabledLeft: true })
+            this.setState({ disabledLeft: true, disabledRight: true})
+
+            if (qtyTotal > pageLimit) {
+                this.setState({ disabledRight: false })
+            } 
         } 
         else if (currentPage > 1) {
-            this.setState({ disabledLeft: false })
+            this.setState({ disabledLeft: false, disabledRight: false })
         }
 
         if (qtyOfItems <= pageLimit) {
             this.setState({ disabledRight: true })
         }
-        else {
-            this.setState({ disabledRight: false })
-        }
 
-        onChange(page)
+        if (qtyTotal <= pageLimit) {
+            this.setState({ disabledRight: true })
+        }
+    }
+
+    handleOnClick = (page: number) => {
+        this.verifyConditions()
+        this.props.onChange(page)
     }
 
 
