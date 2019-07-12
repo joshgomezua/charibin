@@ -9,6 +9,7 @@ const EmailService = require('./EmailService');
 const redis = require('redis');
 const client1 = redis.createClient({ host: global.config.connection.redis.host, db: 1 });
 const subscriber1 = redis.createClient({ host: global.config.connection.redis.host, db: 1 });
+const custom = require('../../config/custom')
 
 client1.send_command('config', ['set','notify-keyspace-events','Ex'], onExpiredTicket);
 
@@ -135,9 +136,9 @@ async function createManyTickets (data) {
 }
 
 async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
-  if(new Date(selectedTrip.dateStart).setHours(0,0,0,0) < Date.now() + global.config.custom.time.day)
+  if(new Date(selectedTrip.dateStart) < custom.TodayWithTimezone + global.config.custom.time.day)
     throw { status: 400, message: 'TICKET.DATE.START.INVALID%', args: [new Date(Date.now() + global.config.custom.time.day).toDateString()] };
-  if(new Date(selectedTrip.dateEnd).setHours(0,0,0,0) < Date.now() + global.config.custom.time.day)
+  if(new Date(selectedTrip.dateEnd) < custom.TodayWithTimezone + global.config.custom.time.day)
     throw { status: 400, message: 'TICKET.DATE.END.INVALID%', args: [new Date(Date.now() + global.config.custom.time.day).toDateString()] };
   const trip = await Trip.findOne({ _id: selectedTrip.id, deleted: false, active: true });
   if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
@@ -244,14 +245,14 @@ async function bookWithTime ({ quantity, selectedTrip, owner }) {
   if(!arrivalTicket) throw { status: 404, message: 'TICKET.ARRIVAL.NOT.EXIST' };
 
   // Check if ticket are in future
-  if(+new Date(arrivalTicket.date.start) < Date.now() + global.config.custom.time.day)
+  if(+new Date(arrivalTicket.date.start) < custom.TodayWithTimezone + global.config.custom.time.day)
     throw { status: 400, message: 'TICKET.DATE.START.INVALID%', args: [new Date(Date.now() + global.config.custom.time.day).toDateString()] };
 
   const departureTicket = await Ticket.findOne({ _id: selectedTrip.departureTicket, active: true, deleted: false, quantity: { $gte: quantity } });
   if(!departureTicket) throw { status: 404, message: 'TICKET.DEPARTURE.NOT.EXIST' };
 
   // Check if ticket are in future
-  if(+new Date(departureTicket.date.start) < Date.now() + global.config.custom.time.day)
+  if(+new Date(departureTicket.date.start) < custom.TodayWithTimezone + global.config.custom.time.day)
     throw { status: 400, message: 'TICKET.DATE.END.INVALID%', args: [new Date(Date.now() + global.config.custom.time.day).toDateString()] };
   let reservedArrivalTicket;
   if (quantity <= arrivalTicket.quantity - (arrivalTicket.soldTickets + arrivalTicket.reservedQuantity))
@@ -544,7 +545,7 @@ module.exports = {
     return (departureTickets.length && destinationTickets.length) 
   },
 
-  async findDashboard ({ page, limit, quantity, priceStart, priceEnd , dateStart, dateEnd }) {
+  async findDashboard ({ page, limit, quantity, priceStart, priceEnd , dateStart, dateEnd, timezone }) {
     page = +page;
     quantity = +quantity;
     limit = +limit;
@@ -552,6 +553,8 @@ module.exports = {
     priceEnd = +priceEnd;
     dateStart = +dateStart;
     dateEnd = +dateEnd;
+    timezone = +timezone;
+    
     const tripMatch = { active: true };
     const ticketMatch = {
       $and: [
@@ -568,14 +571,15 @@ module.exports = {
     if(priceEnd > 0)
       tripMatch.price = { $gte: priceStart, $lte: priceEnd };
 
+    custom.TodayWithTimezone = Date.now() - timezone;
+
     if(dateStart > 0 && dateEnd > 0) {
       ticketMatch.$and.push({ $gte: [ '$$tickets.date.start', new Date(dateStart) ] });
       ticketMatch.$and.push({ $lte: [ '$$tickets.date.start', new Date(dateEnd) ] });
+      ticketMatch.$and.push({ $gte: [ '$$tickets.date.start', new Date(custom.TodayWithTimezone + global.config.custom.time.day) ]});
     } else {
       ticketMatch.$and.push(
-        { $gte: [ '$$tickets.date.start', new Date(Date.now() + 1 * global.config.custom.time.day) ] }, //used to be 2
-        { $gte: [ '$$tickets.date.start', new Date(Date.now() + global.config.custom.time.day) ] }
-       );
+        { $gte: [ '$$tickets.date.start', new Date(custom.TodayWithTimezone + global.config.custom.time.day) ] });
     }
 
     let data = await Trip.aggregate([
