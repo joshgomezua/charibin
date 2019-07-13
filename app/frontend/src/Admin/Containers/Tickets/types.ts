@@ -22,6 +22,7 @@ export interface IState {
   }
   modalOptions: any[]
   pagination: IPagination
+  requestInfo: IRequestInfo
 }
 
 export interface IProps {
@@ -52,13 +53,20 @@ export interface IEditedData {
 }
 
 export interface ITripData {
-  _id: string,
-  departure: string,
+  _id: string
+  departure: string
   destination: string
 }
 
 export interface IPagination {
-  qtyOfItems: number,
-  pageLimit: number,
+  qtyOfItems: number
   qtyTotal: number
+  pageLimit: number
+  currentPage: number
+  index: number
+}
+
+export interface IRequestInfo {
+  start: Date,
+  end: Date
 }

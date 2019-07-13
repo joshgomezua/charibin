@@ -51,7 +51,17 @@ class TicketsContainer extends React.Component<
       end: undefined
     },
     modalOptions: [],
-    pagination: { qtyOfItems: 0, pageLimit: 0, qtyTotal: 0 }
+    pagination: { 
+      qtyOfItems: 0, 
+      qtyTotal: 0,
+      pageLimit: 100, 
+      currentPage: 1,
+      index: 0
+     },
+     requestInfo : {
+       start: new Date(),
+       end: new Date()
+     }
   }
 
   private modal = React.createRef<Modal>()
@@ -138,9 +148,21 @@ class TicketsContainer extends React.Component<
     this.handleFetchTicketsByDate(startDate, endDate)
   }
 
-  handleFetchTicketsByDate = (initialDate: Date, finalDate?: Date) => {
+  handlePaginationClick =  (page: number) => {
+    this.handleFetchTicketsByDate(this.state.requestInfo.start, undefined, page)
+  }
+
+  handleFetchTicketsByDate = (initialDate: Date, finalDate?: Date, page?: number) => {
+    console.log('start',initialDate, '\nend', finalDate)
+    this.setState(prevState => ({
+      requestInfo: {
+        ...prevState.requestInfo,
+        start: initialDate,
+        end: finalDate ? finalDate : new Date()
+      }
+    }))
+
     const token = getToken()
-    console.log('token', token)
     const offset = moment(initialDate).utcOffset()
 
     const startDate = finalDate ? moment(initialDate).add(offset, 'minutes').format('x') : 
@@ -151,9 +173,13 @@ class TicketsContainer extends React.Component<
       moment(initialDate).utc()
       .endOf('month')
       .format('x')
-
+    
     this.setState({ isLoading: true, isError: false })
-    getTickets(startDate, endDate, 'null', 'null', 'null', 0, 100, token)
+
+    const pageToSend = page ? page - 1 : this.state.pagination.currentPage - 1
+
+    console.log('page', pageToSend)
+    getTickets(startDate, endDate, 'null', 'null', 'null', pageToSend, 100, token)
       .then(res => {
         this.setState({ isLoading: false, tickets: res.data })
 
@@ -161,7 +187,8 @@ class TicketsContainer extends React.Component<
           pagination: {
             ...prevState.pagination,
             qtyOfItems: res.data.length,
-            pageLimit: 100
+            currentPage: pageToSend,
+            index: (prevState.pagination.currentPage * prevState.pagination.pageLimit) + res.data.length
           }
         }))
 
@@ -183,9 +210,7 @@ class TicketsContainer extends React.Component<
         .catch(err => {
           this.setState({ isLoading: false, isError: true })
           this.props.showError(err, ERRORS.TICKET_FETCH_QUANTITY)
-        })
-       
-      
+        })      
   }
 
   handleOpenModal = (type: MODAL_TYPE, heading: string, id: string = '') => {
@@ -410,6 +435,7 @@ class TicketsContainer extends React.Component<
             retry={() => this.handleFetchTicketsByDate(selectedDate)}
             filters={filters}
             pagination={pagination}
+            handlePaginationClick={this.handlePaginationClick}
           />
         </div>
 

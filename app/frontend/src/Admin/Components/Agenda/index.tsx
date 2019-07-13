@@ -22,7 +22,8 @@ const Agenda: React.SFC<IProps> = ({
   filterTo,
   changeActiveState,
   openEditModal,
-  pagination
+  pagination,
+  handlePaginationClick
 }) => {
   const getFilteredTickets = () => {
     const areFromToFiltersUsed = (
@@ -48,6 +49,10 @@ const Agenda: React.SFC<IProps> = ({
       )
     }
     return tickets
+  }
+
+  const handlePaginationOnClick = (page: number) => {
+    handlePaginationClick(page)
   }
 
   const prepareRows = () => {
@@ -176,13 +181,12 @@ const Agenda: React.SFC<IProps> = ({
       </tbody>
       <tfoot>
       <tr className="spon-agenda__pagination">
+        {console.log('pagination')}
             <td>
               <div >
                 <Pagination 
-                  qtyOfItems={pagination.qtyOfItems}
-                  pageLimit={pagination.pageLimit}
-                  qtyTotal={pagination.qtyTotal}
-                  onChange={()=>console.log()}
+                  pagination={pagination}
+                  onChange={handlePaginationOnClick}
                 />
               </div>
             </td>
