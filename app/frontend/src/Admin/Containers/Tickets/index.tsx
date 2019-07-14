@@ -176,7 +176,7 @@ class TicketsContainer extends React.Component<
     
     this.setState({ isLoading: true, isError: false })
 
-    const pageToSend = page ? page - 1 : this.state.pagination.currentPage - 1
+    const pageToSend = this.state.pagination.currentPage - 1
 
     console.log('page', pageToSend)
     getTickets(startDate, endDate, 'null', 'null', 'null', pageToSend, 100, token)
