@@ -10,7 +10,7 @@ export interface IProps {
   filterFrom: string[]
   filterTo: string[]
   pagination: IPagination
-  handlePaginationClick: (page: number) => void
+  handlePaginationClick: () => void
   retry: () => void
   openEditModal: (id: string) => void
   openModal: (type: MODAL_TYPE, heading: string, id: string) => void

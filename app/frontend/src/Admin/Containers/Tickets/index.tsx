@@ -148,11 +148,11 @@ class TicketsContainer extends React.Component<
     this.handleFetchTicketsByDate(startDate, endDate)
   }
 
-  handlePaginationClick =  (page: number) => {
-    this.handleFetchTicketsByDate(this.state.requestInfo.start, undefined, page)
+  handlePaginationClick =  () => {
+    this.handleFetchTicketsByDate(this.state.requestInfo.start, undefined)
   }
 
-  handleFetchTicketsByDate = (initialDate: Date, finalDate?: Date, page?: number) => {
+  handleFetchTicketsByDate = (initialDate: Date, finalDate?: Date) => {
     console.log('start',initialDate, '\nend', finalDate)
     this.setState(prevState => ({
       requestInfo: {

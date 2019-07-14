@@ -38,7 +38,7 @@ class Pagination extends React.Component<IProps, IState> {
             this.props.pagination.currentPage -= 1
         }
         this.verify()
-        onChange(this.props.pagination.currentPage)
+        onChange()
     }
 
     handleOnClickRight = () => {
@@ -53,7 +53,7 @@ class Pagination extends React.Component<IProps, IState> {
         }
 
         this.verify()
-        onChange(this.props.pagination.currentPage)
+        onChange()
     }
 
     verify =  () => {
