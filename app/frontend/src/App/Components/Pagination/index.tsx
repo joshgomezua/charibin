@@ -15,27 +15,26 @@ class Pagination extends React.Component<IProps, IState> {
     }
 
     componentDidMount() {
-        console.log('componentDidMount')
         this.verify() 
     }
 
     componentDidUpdate(prevProps: IProps) {
         if (prevProps !== this.props) {
-            console.log('pass')     
               this.verify()
         }
     }
 
     handleOnClickLeft = () => {
-        const { onChange } = this.props
+        const { onChange, pagination } = this.props
         const { state } = this.state
 
         if (state != STATE.MIDDLE_PAGE && state != STATE.LAST_PAGE) {
-            this.props.pagination.currentPage = 1
+            pagination.currentPage = 1
         } 
-        else if (this.props.pagination.currentPage > 1) {
-            this.props.pagination.currentPage -= 1
+        else if (pagination.currentPage > 1) {
+            pagination.currentPage -= 1
         }
+
         this.verify()
         onChange()
     }
@@ -47,11 +46,11 @@ class Pagination extends React.Component<IProps, IState> {
 
         
         if (state != STATE.FIRST_PAGE_FULL_WITH_MORE && state != STATE.MIDDLE_PAGE) {
-            this.props.pagination.currentPage = this.props.pagination.currentPage
+            pagination.currentPage = pagination.currentPage
         } 
-        else if (this.props.pagination.currentPage < maxPage) {
+        else if (pagination.currentPage < maxPage) {
 
-            this.props.pagination.currentPage += 1
+            pagination.currentPage += 1
         }
 
         this.verify()
@@ -59,7 +58,6 @@ class Pagination extends React.Component<IProps, IState> {
     }
 
     verify =  () => {
-        console.log('verify')
         const { pagination } = this.props
 
         this.firstPageFullState(pagination)
@@ -71,14 +69,12 @@ class Pagination extends React.Component<IProps, IState> {
     }
 
     firstPageFullState = (pagination: IPagination) => {
-        console.log('in')
         if (
             pagination.qtyOfItems === pagination.pageLimit &&
             pagination.qtyTotal <= pagination.pageLimit &&
             pagination.index === pagination.qtyTotal &&
             pagination.currentPage === 1
         ) {
-            console.log('test')
             this.setState({ 
                 disabledLeft : true, 
                 disabledRight : true,
@@ -88,14 +84,12 @@ class Pagination extends React.Component<IProps, IState> {
     }
 
     firstPageNotFullState = (pagination: IPagination) => {
-        console.log('in1')
         if (
             pagination.qtyOfItems > 1 &&
             pagination.qtyTotal <= pagination.pageLimit &&
             pagination.index < pagination.qtyTotal &&
             pagination.currentPage === 1
         ) {
-            console.log('test1')
             this.setState({ 
                 disabledLeft : true, 
                 disabledRight : true,
@@ -105,13 +99,11 @@ class Pagination extends React.Component<IProps, IState> {
     }
 
     emptyState = (pagination: IPagination) => {
-        console.log('in2')
         if (
             !pagination.qtyOfItems &&
             (!pagination.index || (pagination.index < pagination.qtyTotal)) &&
             pagination.currentPage === 1
         ) {
-            console.log('test2')
             this.setState({ 
                 disabledLeft : true, 
                 disabledRight : true,
@@ -121,14 +113,12 @@ class Pagination extends React.Component<IProps, IState> {
     }
 
     firstPageFullWithMoreState = (pagination: IPagination) => {
-        console.log('in3')
         if (
             pagination.qtyOfItems === pagination.pageLimit &&
             pagination.qtyTotal > pagination.pageLimit &&
             pagination.index < pagination.qtyTotal &&
             pagination.currentPage === 1
         ) {
-            console.log('test3')
             this.setState({ 
                 disabledLeft : true, 
                 disabledRight : false,
@@ -139,14 +129,12 @@ class Pagination extends React.Component<IProps, IState> {
     }
 
     middlePageState = (pagination: IPagination) => {
-        console.log('in4')
         if (
             pagination.qtyOfItems === pagination.pageLimit &&
             pagination.qtyTotal > pagination.pageLimit &&
             pagination.index < pagination.qtyTotal &&
             pagination.currentPage > 1
         ) {
-            console.log('test4')
             this.setState({ 
                 disabledLeft : false,
                 disabledRight : false,
@@ -156,14 +144,12 @@ class Pagination extends React.Component<IProps, IState> {
     }
 
     lastPageState = (pagination: IPagination) => {
-        console.log('in5')
         if (
             pagination.qtyOfItems <= pagination.pageLimit &&
             pagination.qtyTotal > pagination.pageLimit &&
             pagination.index === pagination.qtyTotal &&
             pagination.currentPage > 1
         ) {
-            console.log('test5')
             this.setState({ 
                 disabledLeft : false, 
                 disabledRight : true,
@@ -176,7 +162,6 @@ class Pagination extends React.Component<IProps, IState> {
     render() {
         const { disabledRight, disabledLeft } = this.state
         const { pagination } = this.props
-        console.log('render: \state', this.state, '\nprops', this.props)
         return (
             <div className="pagination">
                     <Button

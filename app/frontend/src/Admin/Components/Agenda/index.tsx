@@ -181,7 +181,6 @@ const Agenda: React.SFC<IProps> = ({
       </tbody>
       <tfoot>
       <tr className="spon-agenda__pagination">
-        {console.log('pagination')}
             <td>
               <div >
                 <Pagination 
