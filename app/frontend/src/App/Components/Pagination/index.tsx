@@ -1,7 +1,5 @@
 import React from 'react'
-//import classnames from 'classnames'
 import { IProps, IState, STATE } from './types'
-//import arrowDown from '../../../Common/Utils/Media/arrowDown.svg'
 import './styles.scss'
 
 
@@ -34,7 +32,8 @@ class Pagination extends React.Component<IProps, IState> {
 
         if (state != STATE.MIDDLE_PAGE && state != STATE.LAST_PAGE) {
             this.props.pagination.currentPage = 1
-        } else {
+        } 
+        else if (this.props.pagination.currentPage > 1) {
             this.props.pagination.currentPage -= 1
         }
         this.verify()
@@ -42,13 +41,16 @@ class Pagination extends React.Component<IProps, IState> {
     }
 
     handleOnClickRight = () => {
-        const { onChange } = this.props
+        const { onChange, pagination } = this.props
         const { state } = this.state
+        const maxPage = Math.ceil(pagination.qtyTotal / pagination.pageLimit)
 
         
         if (state != STATE.FIRST_PAGE_FULL_WITH_MORE && state != STATE.MIDDLE_PAGE) {
             this.props.pagination.currentPage = this.props.pagination.currentPage
-        } else {
+        } 
+        else if (this.props.pagination.currentPage < maxPage) {
+
             this.props.pagination.currentPage += 1
         }
 
@@ -184,7 +186,7 @@ class Pagination extends React.Component<IProps, IState> {
                         onClick={this.handleOnClickLeft}
                     />
                 <div className="pagination-text">
-                    <p>page {pagination.currentPage} of {pagination.currentPage}</p>
+                    <p>page {pagination.currentPage} of {Math.ceil(pagination.qtyTotal / pagination.pageLimit)}</p>
                 </div>
                     <Button
                         className="rightBtn"
