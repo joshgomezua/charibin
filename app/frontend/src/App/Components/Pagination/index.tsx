@@ -18,54 +18,53 @@ class Pagination extends React.Component<IProps, IState> {
 
     componentDidMount() {
         console.log('componentDidMount')
-        /*this.setState(prevState => ({
-            pagination :{
-                ...this.props.paginationProps,
-                index: ((this.props.paginationProps.currentPage - 1) *
-                 this.props.paginationProps.pageLimit) +
-                 this.props.paginationProps.qtyOfItems
-             }
-          }))
-        this.verify() */
+        this.verify() 
     }
 
-    shouldComponentUpdate(prevProps: IProps, prevState: IState) {
+    /* shouldComponentUpdate(prevProps: IProps, prevState: IState) {
         console.log('componentDidUpdate')
         if (prevProps !== this.props && prevState !== this.state) {
             console.log('pass')     
               this.verify()
         }
         return true
+    } */
+
+    componentDidUpdate(prevProps: IProps) {
+        if (prevProps !== this.props) {
+            console.log('pass')     
+              this.verify()
+        }
     }
 
     handleOnClickLeft = () => {
-        //const { onChange } = this.props
+        const { onChange } = this.props
         const { state } = this.state
 
         
-        this.verify()
+        
         if (state != STATE.MIDDLE_PAGE && state != STATE.LAST_PAGE) {
             this.props.pagination.currentPage = 1
         } else {
             this.props.pagination.currentPage -= 1
         }
-        
-        //onChange(this.props.pagination.currentPage)
+        this.verify()
+        onChange(this.props.pagination.currentPage)
     }
 
     handleOnClickRight = () => {
-        //const { onChange } = this.props
+        const { onChange } = this.props
         const { state } = this.state
 
-        this.verify()
+        
         if (state != STATE.FIRST_PAGE_FULL_WITH_MORE && state != STATE.MIDDLE_PAGE) {
             this.props.pagination.currentPage = this.props.pagination.currentPage
         } else {
             this.props.pagination.currentPage += 1
         }
 
-        
-        //onChange(this.props.pagination.currentPage)
+        this.verify()
+        onChange(this.props.pagination.currentPage)
     }
 
     verify =  () => {
