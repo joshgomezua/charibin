@@ -187,7 +187,6 @@ class TicketsContainer extends React.Component<
           pagination: {
             ...prevState.pagination,
             qtyOfItems: res.data.length,
-            currentPage: pageToSend + 1,
             index: (pageToSend * prevState.pagination.pageLimit) + res.data.length
           }
         }))
