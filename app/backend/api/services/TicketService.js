@@ -620,9 +620,7 @@ module.exports = {
     page = +page;
     limit = +limit;
 
-    console.table([dateStart, dateEnd, page, limit])
-
-    this.createConsoleLogs(dateStart, dateEnd, from);
+    console.table([new Date(dateStart).toDateString(), new Date(dateEnd).toDateString(), page, limit])
 
     let pipeline = [
       {
@@ -683,23 +681,5 @@ module.exports = {
     }
 
     return;
-  },
-
-  createConsoleLogs (...args) {
-
-    const varToString = varObj => Object.keys(varObj)[0]
-    const varNames = args.map(arg => varToString({arg}))
-
-    for (let value of args) {
-      console.log(value)
-    }
-
-    for (let value of varNames){
-      console.log(value)
-    }
-
-    console.table(args);
-
-  },
-  
+  },  
 };
