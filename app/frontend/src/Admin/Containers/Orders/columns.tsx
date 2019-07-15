@@ -103,7 +103,7 @@ export const columns = (
     Cell: (props: RowRenderProps) => (
       props.row.user.role === "Read Only || Client" ?
       <Switch
-        onChange={() => { /* */}}
+        onChange={() => {}}
         checked={false}
       /> :
 

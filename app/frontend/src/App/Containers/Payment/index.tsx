@@ -106,7 +106,6 @@ class PaymentContainer extends Component<
       },
       user: getUserData().user
     }
-      console.log(getUserData().user)
     this.setState({ isLoading: true })
     buyTickets(dataToSubmit)
       .then(({ data }: { data: IFinalSelected }) => {

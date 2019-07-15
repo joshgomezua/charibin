@@ -311,7 +311,6 @@ module.exports = {
             find: [ROLE.ADMINISTRATOR],
             destroy: [ROLE.ADMINISTRATOR],
           },
-          //pattern: /^(Administrator)$/
         },
 
         active: {
@@ -332,9 +331,7 @@ module.exports = {
             update: [ROLE.ADMINISTRATOR],
             find: [ROLE.ADMINISTRATOR]
           }
-        
-    
-          //pattern: /^(Administrator)$/
+            
         },
 
         password: {
