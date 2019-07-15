@@ -16,7 +16,7 @@ module.exports = {
       $facet: {
         results: [
           { $match: {} },
-          { $sort: { [query.sortField]: query.sortOrder } },
+          { $sort: { _id: -1 } },
           ...Aggregate.skipAndLimit(query.page, query.limit),
         ],
         status: Aggregate.getStatusWithSimpleMatch({}, query.page, query.limit),
