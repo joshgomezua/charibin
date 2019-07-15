@@ -178,11 +178,14 @@ class TicketsContainer extends React.Component<
   handleCalendarClear = async() =>  {
     console.log('clear')
     await this.setState(prevState => ({
-      ...prevState,
       requestInfo: {
-        ...prevState.requestInfo,
-        initialDate: this.props.selectedDate,
-        finalDate: '0'
+        initialDate: new Date(),
+       finalDate: '0',
+       from: 'null',
+       to: 'null',
+       carrier: 'null',
+       page: 0,
+       limit: 100
       }
     }))
     this.handleFetchTicketsByDate(this.state.requestInfo)
