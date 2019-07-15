@@ -67,6 +67,9 @@ export interface IPagination {
 }
 
 export interface IRequestInfo {
-  start: Date,
-  end: Date
+  initialDate: Date
+  finalDate: Date | '0'
+  from: string,
+  to: string,
+  carrier: string
 }

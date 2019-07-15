@@ -3,7 +3,6 @@ import React from 'react'
 import { IProps, IState, ITerritory, COLOR } from './types'
 import './styles.scss'
 import CalendarDoubleFilter from 'src/App/Components/CalendarDoubleFilter';
-import moment from 'moment'
 import {default as Select} from 'react-dropdown-select'
 import data from './data'
 
@@ -56,7 +55,7 @@ class Sidebar extends React.Component<IProps, IState> {
   } 
 
   resetCalendar = () => {
-    this.setState({calendarVisible: true}, () => this.props.handleFetchTicketsByDate(moment().toDate()))
+    this.setState({calendarVisible: true}, () => this.props.handleFetchTicketsByDate)
   }
 
   render() {

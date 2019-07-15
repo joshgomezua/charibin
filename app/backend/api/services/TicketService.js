@@ -621,6 +621,7 @@ module.exports = {
     limit = +limit;
 
     console.table([new Date(dateStart).toDateString(), new Date(dateEnd).toDateString(), page, limit])
+    console.log('dateEnd', dateEnd)
 
     let pipeline = [
       {
@@ -629,7 +630,7 @@ module.exports = {
             {
               $match: {
                 deleted: false,
-                'date.start': { $gte: new Date(dateStart), $lte: new Date(dateEnd) },
+                'date.start': { $gte: new Date(dateStart) },
               }
             },
             { $sort: { 'date.start': 1} },
@@ -642,7 +643,11 @@ module.exports = {
         }
       }
     ];
-
+    if (dateEnd !== 0) {
+      console.log('test')
+      
+      pipeline.unshift({ $match: {'date.start': { $gte: new Date(dateStart), $lte: new Date(dateEnd) }}})
+    }
     if (from !== 'null') {
       pipeline.unshift({ $match: { departure: from } })
     }
