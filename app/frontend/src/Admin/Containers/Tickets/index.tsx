@@ -63,7 +63,9 @@ class TicketsContainer extends React.Component<
        finalDate: '0',
        from: 'null',
        to: 'null',
-       carrier: 'null'
+       carrier: 'null',
+       page: 0,
+       limit: 100
      }
   }
 
@@ -208,7 +210,16 @@ class TicketsContainer extends React.Component<
 
     const pageToSend = this.state.pagination.currentPage - 1
 
-    getTickets(startDate, endDate, 'null', 'null', 'null', pageToSend, 100, token)
+    this.setState(prevState => ({
+      ...prevState,
+      requestInfo: {
+        ...prevState.requestInfo,
+        currentPage: pageToSend,
+      }
+    }))
+
+    // the request
+    getTickets(startDate, endDate, requestInfo.from, requestInfo.to, 'null', pageToSend, 100, token)
       .then(res => {
         this.setState({ isLoading: false, tickets: res.data })
 
@@ -414,6 +425,48 @@ class TicketsContainer extends React.Component<
     this.setState({destinations : destinationsMapped})  
   }
 
+  handleChangeFilterFrom = async(filterFrom: string[]) => {
+    let filters = ''
+    if (filterFrom.length) {
+      
+      for (let filter of filterFrom) {
+        filters += filter + ','
+      }
+      
+    console.log('from', this.state.requestInfo)
+    } else {
+      filters = 'null'
+    }
+    await this.setState(prevState => ({
+      requestInfo: {
+        ...prevState.requestInfo,
+        from: filters
+      }
+    }))
+    this.handleFetchTicketsByDate(this.state.requestInfo)
+    this.props.changeFilterFrom(filterFrom)
+  }
+
+  handleChangeFilterTo = async(filterTo: string[]) => {
+    let filters = ''
+    if (filterTo.length) {
+      for (let filter of filterTo) {
+        filters += filter + ','
+      }
+      console.log('to', this.state.requestInfo)
+    } else {
+      filters = 'null'
+    }
+    await this.setState(prevState => ({
+      requestInfo: {
+        ...prevState.requestInfo,
+        to: filters
+      }
+    }))
+    this.handleFetchTicketsByDate(this.state.requestInfo)
+    this.props.changeFilterTo(filterTo)
+  }
+
   render() {
     const {
       tickets,
@@ -424,15 +477,13 @@ class TicketsContainer extends React.Component<
       departures,
       destinations,
       calendarFilter,
-      pagination
+      pagination,
     } = this.state
     const {
       filters,
       filterFrom,
       filterTo,
       selectedDate,
-      changeFilterFrom,
-      changeFilterTo,
       changeSelectedDate
     } = this.props
 
@@ -443,8 +494,8 @@ class TicketsContainer extends React.Component<
             filterFrom={filterFrom}
             filterTo={filterTo}
             selectedDate={selectedDate}
-            changeFilterFrom={changeFilterFrom}
-            changeFilterTo={changeFilterTo}
+            changeFilterFrom={this.handleChangeFilterFrom}
+            changeFilterTo={this.handleChangeFilterTo}
             changeSelectedDate={changeSelectedDate}
             calendarFilter={calendarFilter}
             onChange={this.handleFetchTicketsByTwoDates}

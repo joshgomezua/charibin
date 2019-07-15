@@ -620,8 +620,13 @@ module.exports = {
     page = +page;
     limit = +limit;
 
-    console.table([new Date(dateStart).toDateString(), new Date(dateEnd).toDateString(), page, limit])
-    console.log('dateEnd', dateEnd)
+    const fromArray = from.split(',');
+    const toArray = to.split(',');
+    const carrierArray = carrier.split(',');
+
+    console.log('from', fromArray)
+    console.log('to', toArray)
+    console.log('carrier', carrierArray)
 
     let pipeline = [
       {
@@ -649,13 +654,13 @@ module.exports = {
       pipeline.unshift({ $match: {'date.start': { $gte: new Date(dateStart), $lte: new Date(dateEnd) }}})
     }
     if (from !== 'null') {
-      pipeline.unshift({ $match: { departure: from } })
+      pipeline.unshift({ $match: { departure:{ $in: fromArray } }})
     }
     if (to !== 'null') {
-      pipeline.unshift({ $match: { destination: to } })
+      pipeline.unshift({ $match: { destination: { $in: toArray } } })
     }
     if (carrier !== 'null') {
-      pipeline.unshift({ $match: { carrier: carrier } })
+      pipeline.unshift({ $match: { carrier: { $in: carrierArray } } })
     }
     return Ticket.aggregate(pipeline).then(data => {
       return data[0].results;

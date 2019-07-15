@@ -7,7 +7,7 @@ import Button from '../../../Common/Components/Button'
 
 import { MODAL_TYPE } from '../../Utils/adminTypes'
 import { ITicket } from '../../../Common/Utils/globalTypes'
-import { IProps, DIRECTION } from './types'
+import { IProps } from './types'
 import './styles.scss'
 import Pagination from 'src/App/Components/Pagination';
 
@@ -18,45 +18,19 @@ const Agenda: React.SFC<IProps> = ({
   error,
   retry,
   filters,
-  filterFrom,
-  filterTo,
   changeActiveState,
   openEditModal,
   pagination,
   handlePaginationClick
 }) => {
-  const getFilteredTickets = () => {
-    const areFromToFiltersUsed = (
-      filterFrom.length && filterFrom ||
-       filterTo.length && filterTo
-    )
-       
-    if (areFromToFiltersUsed){
-      return getFilteredFromToTickets(
-        getFilteredFromToTickets(tickets, filterFrom, DIRECTION.DEPARTURE),
-        filterTo,
-        DIRECTION.DESTINATION
-        )
-    }
-    return tickets;
-  }
-  
-  const getFilteredFromToTickets = (tickets: ITicket[], filters: string[], direction: string) => {
-    if (filters.length) {
-      return tickets.filter(
-        (ticket: ITicket) =>
-          filters.includes(ticket[direction])
-      )
-    }
-    return tickets
-  }
+
 
   const handlePaginationOnClick = () => {
     handlePaginationClick()
   }
 
   const prepareRows = () => {
-    const filtered = getFilteredTickets()
+    const filtered = tickets
     const segregated = filtered.reduce((acc, ticket: ITicket) => {
       const day = moment.utc(ticket.date.start).format('D')
       if (day in acc) {

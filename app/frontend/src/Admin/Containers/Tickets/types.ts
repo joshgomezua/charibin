@@ -71,5 +71,7 @@ export interface IRequestInfo {
   finalDate: Date | '0'
   from: string,
   to: string,
-  carrier: string
+  carrier: string,
+  page: number,
+  limit: number
 }
