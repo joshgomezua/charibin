@@ -71,6 +71,7 @@ class TicketsContainer extends React.Component<
 
   componentDidUpdate(prevProps: IProps) {
     if (prevProps.selectedDate !== this.props.selectedDate) {
+      console.log('componentDidUpdate', this.state.requestInfo)
       this.handleFetchTicketsByDate(this.state.requestInfo)
     }
   }
@@ -85,6 +86,7 @@ class TicketsContainer extends React.Component<
         initialDate: selectedDate
       }
     }))
+    console.log('componentDidMount', this.state.requestInfo)
     this.handleFetchTicketsByDate(this.state.requestInfo)
     this.handleFetchDestination()
 
@@ -153,14 +155,17 @@ class TicketsContainer extends React.Component<
       })
   }
 
-  handleFetchTicketsByTwoDates = ([startDate, endDate] : [Date, Date]) => {
-    this.setState(prevState => ({
+  handleFetchTicketsByTwoDates = async ([startDate, endDate] : [Date, Date]) => {
+    await this.setState(prevState => ({
+      ...prevState,
       requestInfo: {
         ...prevState.requestInfo,
         initialDate: startDate,
-        finalDate: endDate
+        finalDate: endDate,
       }
     }))
+    console.log('handleFetchTicketsByTwoDates', this.state.requestInfo)
+    console.log('start: ', startDate, '\n endDate: ', endDate, )
     this.handleFetchTicketsByDate(this.state.requestInfo)
   }
 
@@ -168,34 +173,32 @@ class TicketsContainer extends React.Component<
     this.handleFetchTicketsByDate(this.state.requestInfo)
   }
 
-  handleCalendarClear = () =>  {
+  handleCalendarClear = async() =>  {
     console.log('clear')
-    this.setState(prevState => ({
+    await this.setState(prevState => ({
+      ...prevState,
       requestInfo: {
         ...prevState.requestInfo,
-        initialDate: this.props.selectedDate
+        initialDate: this.props.selectedDate,
+        finalDate: '0'
       }
     }))
     this.handleFetchTicketsByDate(this.state.requestInfo)
   }
 
   handleFetchTicketsByDate = (requestInfo: IRequestInfo) => {
-    //console.log('start',initialDate, '\nend', finalDate)
-    /* this.setState(prevState => ({
-      requestInfo: {
-        ...prevState.requestInfo,
-        start: initialDate,
-        end: finalDate ? finalDate : new Date()
-      }
-    })) */
-
+    
+    console.log('handleFetchTicketsByDate', this.state.requestInfo)
     const token = getToken()
     const offset = moment(requestInfo.initialDate).utcOffset()
 
+    const initialDate = moment(requestInfo.initialDate).add(offset, 'minutes').format('x')
+    const firstDayMonth = moment(requestInfo.initialDate).utc()
+    .startOf('month')
+    .format('x')
+
     const startDate = requestInfo.finalDate !== '0' ? moment(requestInfo.initialDate).add(offset, 'minutes').format('x') : 
-      moment(requestInfo.initialDate).utc()
-      .startOf('month')
-      .format('x')
+      (initialDate > firstDayMonth ? initialDate: firstDayMonth)
     const endDate = requestInfo.finalDate !== '0' ? moment(requestInfo.finalDate).add(offset, 'minutes').format('x') : 
       moment(requestInfo.initialDate).utc()
       .endOf('month')
