@@ -63,26 +63,18 @@ export const columns = (
     minWidth: 140
   },
   {
-    Header: 'Arrival Time',
+    Header: 'Time of Departure',
     accessor: 'date.arrival',
     width: 160,
     Cell: (props: RowRenderProps) =>
-      `${moment.utc(props.value.start).format('DD.MM.YY HH:mm')} - ${moment
-        .utc(props.value.end)
-        .format('DD.MM.YY HH:mm')} ${
-        props.original.isTimeSelected ? '($)' : ''
-      }`
+      `${moment.utc(props.value.start).format('DD.MM.YY HH:mm')}`
   },
   {
-    Header: 'Departure Time',
+    Header: 'Time of return',
     accessor: 'date.departure',
     width: 145,
     Cell: (props: RowRenderProps) =>
-      `${moment.utc(props.value.start).format('DD.MM.YY HH:mm')} - ${moment
-        .utc(props.value.end)
-        .format('DD.MM.YY HH:mm')} ${
-        props.original.isTimeSelected ? '($)' : ''
-      }`
+      `${moment.utc(props.value.end).format('DD.MM.YY HH:mm')}`
   },
   {
     Header: 'Price',
