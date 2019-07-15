@@ -86,10 +86,15 @@ export interface ITrip {
 
 export interface IOrder {
   _id: string
-  name: string
-  phone: string
-  birthDate: string
-  zipCode: string
+  buyer: {
+    name: string
+    phone: string
+    zipCode: string
+    birthDate: string
+    email: string
+    address: string
+    city: string
+  }
   selected: string
   deselected: string
   finalSelection: string

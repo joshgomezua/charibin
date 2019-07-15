@@ -28,6 +28,7 @@ const Header: React.SFC<IProps> = ({
           onChange={handleSearch}
           value={query}
           placeholder="search here"
+          className="spon-admin-header__search"
         />
       ): null}
 

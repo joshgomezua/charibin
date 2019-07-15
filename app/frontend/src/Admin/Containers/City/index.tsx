@@ -259,6 +259,7 @@ class CityContainer extends React.Component<
           heading = 'Create city'
           modal = {MODAL_TYPE.ADD_CITY}
           handleOpenModal={this.handleOpenModal}
+          title ='Cities'
           query={search}
           handleSearch={(e) => this.setState({search: e.target.value})}
         />

@@ -26,7 +26,7 @@ module.exports = {
 
     buyer: {
       type: 'object',
-      required: false,
+      required: true,
       permission: {
         create: [],
         update: [],
