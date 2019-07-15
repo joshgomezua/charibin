@@ -169,6 +169,7 @@ class TicketsContainer extends React.Component<
   }
 
   handleCalendarClear = () =>  {
+    console.log('clear')
     this.setState(prevState => ({
       requestInfo: {
         ...prevState.requestInfo,

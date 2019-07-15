@@ -55,7 +55,8 @@ class Sidebar extends React.Component<IProps, IState> {
   } 
 
   resetCalendar = () => {
-    this.setState({calendarVisible: true}, () => this.props.handleFetchTicketsByDate)
+    console.log('reactClear')
+    this.setState({calendarVisible: true}, () => this.props.handleFetchTicketsByDate())
   }
 
   render() {

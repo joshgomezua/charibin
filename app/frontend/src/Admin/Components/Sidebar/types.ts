@@ -10,7 +10,7 @@ export interface IProps {
   changeFilterTo: (filterTo: string[]) => void
   changeSelectedDate: (date: Date) => void
   onChange?: (v: [Date, Date]) => void
-  handleFetchTicketsByDate: (startDate: Date, endDate?: Date) => void
+  handleFetchTicketsByDate: () => void
 }
 
 export interface IState {
