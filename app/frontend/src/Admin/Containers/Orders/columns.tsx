@@ -101,15 +101,24 @@ export const columns = (
     sortable: false,
     width: 70,
     Cell: (props: RowRenderProps) => (
+      props.row.user.role === "Read Only || Client" ?
+      <Switch
+        onChange={() => { /* */}}
+        checked={false}
+      /> :
+
       <Switch
         onChange={() => {
           onSwitchChange(props.row._id, !props.value)
         }}
         checked={props.value}
       />
-    )
+    ) 
   },
   {
     Header:'User',
+    accessor: 'user',
+    Cell: (props: RowRenderProps) => (
+        props.row.sent ? props.value.name : "" )
   }
 ]

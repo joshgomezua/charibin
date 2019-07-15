@@ -266,6 +266,89 @@ module.exports = {
         update: [],
         find: [ROLE.ADMINISTRATOR]
       }
+    },
+
+    user: {
+      type: 'object',
+      required: false,
+      permission: {
+        create: [],
+        update: [],
+        find: [ROLE.ADMINISTRATOR]
+      },
+
+      attributes: {
+        name: {
+          type: 'string',
+          required: false,
+          permission: {
+            create: [],
+            update: [],
+            find: [ROLE.ADMINISTRATOR]
+          }
+        },
+
+        email: {
+          type: 'email',
+          required: false,
+          permission: {
+            create: [ROLE.ADMINISTRATOR],
+            update: [ROLE.ADMINISTRATOR],
+            find: [ROLE.ADMINISTRATOR],
+            destroy: [ROLE.ADMINISTRATOR],
+          },
+          minLength: 5,
+          maxLength: 40,
+          pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,10}))$/
+        },
+
+        role: {
+          type: 'string',
+          required: false,
+          permission: {
+            create: [ROLE.ADMINISTRATOR],
+            update: [ROLE.ADMINISTRATOR],
+            find: [ROLE.ADMINISTRATOR],
+            destroy: [ROLE.ADMINISTRATOR],
+          },
+          //pattern: /^(Administrator)$/
+        },
+
+        active: {
+          type: 'boolean',
+          required: false,
+          permission: {
+            create: [ROLE.ADMINISTRATOR],
+            update: [ROLE.ADMINISTRATOR],
+            find: [ROLE.ADMINISTRATOR]
+          }
+        },
+
+        isDeleted: {
+          type: 'boolean',
+          required: false,
+          permission: {
+            create: [ROLE.ADMINISTRATOR],
+            update: [ROLE.ADMINISTRATOR],
+            find: [ROLE.ADMINISTRATOR]
+          }
+        
+    
+          //pattern: /^(Administrator)$/
+        },
+
+        password: {
+          type: 'password',
+          required: false,
+          permission: {
+            create: [],
+            update: [],
+            find: [],
+            destroy: [],
+          },
+          pattern: /^(?=.*[A-Z])[\w~@#$%^&*+=`|{}:;!.?\"()\[\]-](?=.*[0-9])(?=.*[a-z]).{7,}$/
+        },
+      }
     }
   }
 };
