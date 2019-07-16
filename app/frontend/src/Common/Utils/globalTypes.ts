@@ -45,6 +45,7 @@ export interface ITicket {
   reservedQuantity: number,
   destination: string,
   departure: string,
+  carrier?: string
   type: string
   date: {
     start: string

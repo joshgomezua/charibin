@@ -45,8 +45,12 @@ class Sidebar extends React.Component<IProps, IState> {
     this.handleFiltersChange(territories, this.props.changeFilterTo)
   }
 
-  handleFiltersCarrierChange = (carrier: string[]) => {
-    this.props.changeFilterCarrier(carrier)
+  handleFiltersCarrierChange = (carriers: any[]) => {
+    const carriersToSend =  []
+    for (let carrier of carriers) {
+      carriersToSend.push(carrier.label)
+    }
+    this.props.changeFilterCarrier(carriersToSend)
   }
 
   handleChangeDate = (date: Date) => {

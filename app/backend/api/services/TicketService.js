@@ -10,6 +10,7 @@ const redis = require('redis');
 const client1 = redis.createClient({ host: global.config.connection.redis.host, db: 1 });
 const subscriber1 = redis.createClient({ host: global.config.connection.redis.host, db: 1 });
 const custom = require('../../config/custom')
+const ObjectId = require('mongoose').Types.ObjectId;
 
 client1.send_command('config', ['set','notify-keyspace-events','Ex'], onExpiredTicket);
 
@@ -319,6 +320,7 @@ module.exports = {
   async create (data) {
     const trip = await Trip.findOne({ _id: data.trip, deleted: false });
     if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
+    data['carrier'] = trip.carrier;
 
     if (data.departureHours.length) {
       for (let hours of data.departureHours) {
@@ -678,7 +680,6 @@ module.exports = {
       pipeline2.unshift({ $match: { destination: { $in: toArray } } })
     }
     if (carrier !== 'null') {
-      console.log('carrier')
       pipeline.unshift({ $match: { carrier: { $in: carrierArray } } })
       pipeline2.unshift({ $match: { carrier: { $in: carrierArray } } })
     }

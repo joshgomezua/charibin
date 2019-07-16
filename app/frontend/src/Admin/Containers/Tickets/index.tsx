@@ -202,10 +202,9 @@ class TicketsContainer extends React.Component<
     const pageToSend = page? page - 1 : 0
 
     // the request
-    getTickets(startDate, endDate, requestInfo.from, requestInfo.to, 'null', pageToSend, 100, token)
+    getTickets(startDate, endDate, requestInfo.from, requestInfo.to, requestInfo.carrier, pageToSend, requestInfo.limit, token)
       .then(async res => {
         this.setState({ isLoading: false, tickets: res.data[1] })
-
         await this.setState(prevState => ({
           pagination: {
             ...prevState.pagination,

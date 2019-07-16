@@ -70,6 +70,7 @@ const dataTemplate = {
     reservedQuantity: 0,
     departure: '',
     destination: '',
+    carrier: 'Flexibus',
     type: () => randomOneWord('type'),
     date: {
       __tmpStart: 0,

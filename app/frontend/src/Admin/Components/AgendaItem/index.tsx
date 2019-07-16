@@ -47,7 +47,7 @@ const AgendaItem: React.SFC<IProps> = ({
         {ticket.destination}
       </td>
       <td className="spon-agenda__cell spon-agenda__cell--body">
-        {ticket.trip.carrier}
+        {ticket.carrier}
       </td>
       <td className="spon-agenda__cell spon-agenda__cell--body">
         {ticket.type}
