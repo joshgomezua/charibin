@@ -20,8 +20,6 @@ class Pagination extends React.Component<IProps, IState> {
 
     componentDidUpdate(prevProps: IProps) {
         if (prevProps !== this.props) {
-            console.log('prevProps', prevProps)
-            console.log('Props', this.props)
               this.verify()
         }
     }
@@ -71,14 +69,12 @@ class Pagination extends React.Component<IProps, IState> {
     }
 
     firstPageFullState = (pagination: IPagination) => {
-        console.log('1')
         if (
             pagination.qtyOfItems === pagination.pageLimit &&
             pagination.qtyTotal <= pagination.pageLimit &&
             pagination.index === pagination.qtyTotal &&
             pagination.currentPage === 1
         ) {
-            console.log('1.1')
             this.setState({ 
                 disabledLeft : true, 
                 disabledRight : true,
@@ -88,14 +84,12 @@ class Pagination extends React.Component<IProps, IState> {
     }
 
     firstPageNotFullState = (pagination: IPagination) => {
-        console.log('2')
         if (
-            pagination.qtyOfItems > 1 &&
+            pagination.qtyOfItems > 0 &&
             pagination.qtyTotal <= pagination.pageLimit &&
-            pagination.index < pagination.qtyTotal &&
+            pagination.index <= pagination.qtyTotal &&
             pagination.currentPage === 1
         ) {
-            console.log('2.1')
             this.setState({ 
                 disabledLeft : true, 
                 disabledRight : true,
@@ -105,13 +99,11 @@ class Pagination extends React.Component<IProps, IState> {
     }
 
     emptyState = (pagination: IPagination) => {
-        console.log('3')
         if (
             !pagination.qtyOfItems &&
             (!pagination.index || (pagination.index < pagination.qtyTotal)) &&
             pagination.currentPage === 1
         ) {
-            console.log('3.1')
             this.setState({ 
                 disabledLeft : true, 
                 disabledRight : true,
@@ -121,14 +113,12 @@ class Pagination extends React.Component<IProps, IState> {
     }
 
     firstPageFullWithMoreState = (pagination: IPagination) => {
-        console.log('4')
         if (
             pagination.qtyOfItems === pagination.pageLimit &&
             pagination.qtyTotal > pagination.pageLimit &&
             pagination.index < pagination.qtyTotal &&
             pagination.currentPage === 1
         ) {
-            console.log('4.1')
             this.setState({ 
                 disabledLeft : true, 
                 disabledRight : false,
@@ -139,14 +129,12 @@ class Pagination extends React.Component<IProps, IState> {
     }
 
     middlePageState = (pagination: IPagination) => {
-        console.log('5')
         if (
             pagination.qtyOfItems === pagination.pageLimit &&
             pagination.qtyTotal > pagination.pageLimit &&
             pagination.index < pagination.qtyTotal &&
             pagination.currentPage > 1
         ) {
-            console.log('5.1')
             this.setState({ 
                 disabledLeft : false,
                 disabledRight : false,
@@ -156,14 +144,12 @@ class Pagination extends React.Component<IProps, IState> {
     }
 
     lastPageState = (pagination: IPagination) => {
-        console.log('6')
         if (
             pagination.qtyOfItems <= pagination.pageLimit &&
             pagination.qtyTotal > pagination.pageLimit &&
             pagination.index === pagination.qtyTotal &&
             pagination.currentPage > 1
         ) {
-            console.log('6.1')
             this.setState({ 
                 disabledLeft : false, 
                 disabledRight : true,
@@ -178,7 +164,6 @@ class Pagination extends React.Component<IProps, IState> {
         const { pagination } = this.props
         return (
             <div className="pagination">
-                {console.log('pagination', pagination, '\n state:', this.state)}
                     <Button
                         className="leftBtn"
                         text="Previous"

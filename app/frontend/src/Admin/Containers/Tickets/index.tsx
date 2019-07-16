@@ -72,7 +72,6 @@ class TicketsContainer extends React.Component<
 
   componentDidUpdate(prevProps: IProps) {
     if (prevProps.selectedDate !== this.props.selectedDate) {
-      console.log('componentDidUpdate', this.state.requestInfo)
       this.handleFetchTicketsByDate(this.state.requestInfo)
     }
   }
@@ -87,7 +86,6 @@ class TicketsContainer extends React.Component<
         initialDate: selectedDate
       }
     }))
-    console.log('componentDidMount', this.state.requestInfo)
     this.handleFetchTicketsByDate(this.state.requestInfo)
     this.handleFetchDestination()
 
@@ -165,8 +163,7 @@ class TicketsContainer extends React.Component<
         finalDate: endDate,
       }
     }))
-    console.log('handleFetchTicketsByTwoDates', this.state.requestInfo)
-    console.log('start: ', startDate, '\n endDate: ', endDate, )
+
     this.handleFetchTicketsByDate(this.state.requestInfo)
   }
 
@@ -175,16 +172,11 @@ class TicketsContainer extends React.Component<
   }
 
   handleCalendarClear = async() =>  {
-    console.log('clear')
     await this.setState(prevState => ({
       requestInfo: {
+        ...prevState.requestInfo,
         initialDate: new Date(),
        finalDate: '0',
-       from: 'null',
-       to: 'null',
-       carrier: 'null',
-       page: 0,
-       limit: 100
       }
     }))
     this.handleFetchTicketsByDate(this.state.requestInfo)
@@ -192,7 +184,6 @@ class TicketsContainer extends React.Component<
 
   handleFetchTicketsByDate = (requestInfo: IRequestInfo, page?: number) => {
     
-    console.log('handleFetchTicketsByDate', this.state.requestInfo)
     const token = getToken()
     const offset = moment(requestInfo.initialDate).utcOffset()
 
@@ -223,7 +214,6 @@ class TicketsContainer extends React.Component<
     // the request
     getTickets(startDate, endDate, requestInfo.from, requestInfo.to, 'null', pageToSend, 100, token)
       .then(async res => {
-        console.log('res', res)
         this.setState({ isLoading: false, tickets: res.data[1] })
 
         await this.setState(prevState => ({
@@ -241,7 +231,6 @@ class TicketsContainer extends React.Component<
         this.setState({ isLoading: false, isError: true })
         this.props.showError(err, ERRORS.TICKET_FETCH)
       })
-      console.log('state.pagination', this.state.pagination)
   }
 
   handleOpenModal = (type: MODAL_TYPE, heading: string, id: string = '') => {
@@ -425,7 +414,6 @@ class TicketsContainer extends React.Component<
         filters += filter + ','
       }
       
-    console.log('from', this.state.requestInfo)
     } else {
       filters = 'null'
     }
@@ -445,7 +433,6 @@ class TicketsContainer extends React.Component<
       for (let filter of filterTo) {
         filters += filter + ','
       }
-      console.log('to', this.state.requestInfo)
     } else {
       filters = 'null'
     }

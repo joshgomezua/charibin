@@ -624,10 +624,6 @@ module.exports = {
     const toArray = to.split(',');
     const carrierArray = carrier.split(',');
 
-    console.log('from', fromArray)
-    console.log('to', toArray)
-    console.log('carrier', carrierArray)
-
     let pipeline = [
       {
         $facet: {
@@ -687,10 +683,8 @@ module.exports = {
     }
 
     const ticketsTotal = await Ticket.aggregate(pipeline2)
-    console.log('ticketsTotal', ticketsTotal[0].results.length)
 
     return Ticket.aggregate(pipeline).then(data => {
-      console.log('data', data[0].results.length)
       data[0].total = []
       data[0].total.push(ticketsTotal[0].results.length)
       data[0].total.push(data[0].results)

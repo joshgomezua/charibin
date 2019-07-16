@@ -10,18 +10,12 @@ module.exports = {
     if (!fs.existsSync(dirPathStr)) throw new Error(`Specified directory name does not exists: ${directory}`);
 
     const fileNames = fs.readdirSync(dirPathStr);
-    console.log(dirPath)
-    console.log(dirPathStr)
-    console.log(fileNames)
-
 
     for (let file of fileNames) {
       const pathAbsolute = `${dirPathStr}/${file}`;
       const pathRelative = [...dirPath, file].join('/');
 
       const isDir = fs.statSync(pathAbsolute).isDirectory();
-      console.log(pathAbsolute)
-      console.log(isDir)
       if(isDir) this.loadModules(pathRelative, app);
       else require(`../../${pathRelative}`)(app);
     }
