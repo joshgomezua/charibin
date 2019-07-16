@@ -23,6 +23,7 @@ class OrdersContainer extends React.Component<IProps, IState> {
     results: [],
   }
 
+
   handleFetchItems = (page: number, limit: number, sort?: SortingRule) => {
     const token = getToken()
 
@@ -61,6 +62,7 @@ class OrdersContainer extends React.Component<IProps, IState> {
 
   handleToggleSwitch = (id: string, value: boolean) => {
     const token = getToken()
+
     editOrderState(id, value, token)
       .then(({ data }) => {
         const updatedOrders = this.state.orders.map((order: IOrder) => {
@@ -85,6 +87,8 @@ class OrdersContainer extends React.Component<IProps, IState> {
 			orders = results.filter(order => {
         return order.buyer.name.toLowerCase().includes(search.toLowerCase()) 
                   || order.buyer.email.toLowerCase().includes(search.toLowerCase())
+                  || order._id.toLowerCase().includes(search.toLowerCase())
+                  || order.buyer.phone.toLowerCase().includes(search.toLowerCase())
       })
       total = orders.length
     }
