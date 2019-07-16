@@ -270,7 +270,7 @@ module.exports = {
 
     user: {
       type: 'object',
-      required: false,
+      required: true,
       permission: {
         create: [],
         update: [],
