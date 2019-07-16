@@ -555,6 +555,18 @@ class TripsContainer extends React.Component<
       modal: { type: modalType, heading: modalHeading }
     } = this.state
 
+    const usedDeparture: string[] = [];
+    const usedDestination: string[] = [];
+
+    for(let index: number = 0; index < results.length; index++ ){
+      if(usedDeparture.includes(results[index].departure.name) == false){
+        usedDeparture.push(results[index].departure.name)
+      }
+      if(usedDestination.includes(results[index].destination.name) == false){
+        usedDestination.push(results[index].destination.name)
+      }
+    }
+
     if (filtersFrom.length || filtersTo.length) {
       let filteredTrips: ITrip[] = [];
       for(let tripIndex: number = 0; tripIndex < results.length; tripIndex++){
@@ -584,6 +596,8 @@ class TripsContainer extends React.Component<
           handleOpenModal={this.handleOpenModal}
           filterFrom={filtersFrom}
           filterTo={filtersTo}
+          availableDepartures={usedDeparture}
+          availableDestinations={usedDestination}
           changeFilterFrom={(e) => this.setState({filtersFrom: e})}
           changeFilterTo={(e) => this.setState({filtersTo: e})}
         />
