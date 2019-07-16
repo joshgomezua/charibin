@@ -153,7 +153,7 @@ const TripModal: React.SFC<IProps> = ({
                   className="spon-trip-modal__dropdown"
                   selectedValue={values.departure.name}
                   options={availableCities.sort((a,b) => {
-                    return a.name > b.name ? 1: -1
+                    return a.name > b.name ? 1: -1 // ça serait pas la meme chose que return a.name > b.name ?
                   })}
                   onChange={handleChange}
                 />
@@ -173,7 +173,7 @@ const TripModal: React.SFC<IProps> = ({
                   className="spon-trip-modal__dropdown"
                   selectedValue={values.destination.name}
                   options={availableCities.sort((a,b) => {
-                    return a.name > b.name ? 1:-1
+                    return a.name > b.name ? 1:-1 // ça serait pas la meme chose que return a.name > b.name ?
                   })}
                   onChange={handleChange}
                 />

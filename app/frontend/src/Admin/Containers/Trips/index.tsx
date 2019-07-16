@@ -580,7 +580,6 @@ class TripsContainer extends React.Component<
     return (
       <div className="spon-container">
         <TripHeader
-          //fournir la liste des villes utilisées par les
           title="Routes & Prices"
           handleOpenModal={this.handleOpenModal}
           filterFrom={filtersFrom}
