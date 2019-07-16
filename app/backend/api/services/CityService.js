@@ -20,24 +20,42 @@ module.exports = {
       page: ~~Number(page),
       limit: ~~Number(limit),
       sortOrder: 'ascending' === sortOrder ? 1 : -1,
-      sortField: sortField || 'country',
+      sortField: sortField,
     };
 
-    return City.aggregate([
-      {
-        $facet: {
-          results: [
-            { $sort: { country:1,name:1 } },
-            ...Aggregate.skipAndLimit(query.page, query.limit)
-          ],
-          status: Aggregate.getStatusWithSimpleMatch(
-            {},
-            query.page,
-            query.limit
-          )
+    if (sortField === undefined){
+      return City.aggregate([
+        {
+          $facet: {
+            results: [
+              { $sort: { country:1,name:1 } },
+              ...Aggregate.skipAndLimit(query.page, query.limit)
+            ],
+            status: Aggregate.getStatusWithSimpleMatch(
+              {},
+              query.page,
+              query.limit
+            )
+          }
         }
-      }
-    ]).then(Aggregate.parseResults);
+      ]).then(Aggregate.parseResults);
+    } else {
+      return City.aggregate([
+        {
+          $facet: {
+            results: [
+              { $sort: { [query.sortField]: query.sortOrder} },
+              ...Aggregate.skipAndLimit(query.page, query.limit)
+            ],
+            status: Aggregate.getStatusWithSimpleMatch(
+              {},
+              query.page,
+              query.limit
+            )
+          }
+        }
+      ]).then(Aggregate.parseResults);
+    }
   },
   
   async findOne (id) {
