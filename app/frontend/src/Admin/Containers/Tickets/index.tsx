@@ -97,10 +97,11 @@ class TicketsContainer extends React.Component<
 
     getTripNames(token)
       .then(({ data }) => {
+        console.log('data', data)
         const cityNames = data.map((item: any) => ({
           _id: item._id,
-          departure: item.departure,
-          destination: item.destination
+          departure: item.departure.name,
+          destination: item.destination.name
         }))
 
         const oppositeDirectionCityNames =  cityNames.map((item: any) => ({
@@ -126,6 +127,7 @@ class TicketsContainer extends React.Component<
         },[]);
 
         this.props.changeFilters(cityNames)
+        console.log('uniqueCities: ', uniqueCitiesNames)
         this.setState({ departures: uniqueCitiesNames })
       })
       .catch(err => {
@@ -153,6 +155,7 @@ class TicketsContainer extends React.Component<
     this.setState({ isLoading: true, isError: false })
     getTickets(startDate, endDate, token)
       .then(res => {
+        console.log('res', res)
         this.setState({ isLoading: false, tickets: res.data })
       })
       .catch(err => {

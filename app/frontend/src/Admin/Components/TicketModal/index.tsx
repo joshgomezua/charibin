@@ -204,8 +204,10 @@ class TicketModal extends React.Component<IProps, IState> {
             setFieldValue
           }: FormikProps<IFormValues>) => (
             <Form noValidate>
+              {console.log('1')}
               <div className="spon-ticket-modal__row">
                 <div className="spon-ticket-modal__input-cnt spon-ticket-modal__input-cnt--big">
+                {console.log('2')}
                   <DropDownTicket
                     saveAsObject
                     id="trip"
@@ -223,8 +225,10 @@ class TicketModal extends React.Component<IProps, IState> {
                     component="div"
                     className="spon-ticket-modal__error"
                   />
+                  {console.log('3')}
                 </div>
                 <div className="spon-ticket-modal__input-cnt spon-ticket-modal__input-cnt--big">
+                {console.log('4')}
                   <DropDownTicket
                     saveAsObject
                     id="trip"
@@ -241,8 +245,10 @@ class TicketModal extends React.Component<IProps, IState> {
                     component="div"
                     className="spon-ticket-modal__error"
                   />
+                  {console.log('5')}
                 </div>
                 <div className="spon-ticket-modal__input-cnt">
+                {console.log('6')}
                   <Dropdown
                     id="type"
                     label="Select type"
@@ -267,8 +273,10 @@ class TicketModal extends React.Component<IProps, IState> {
                     component="div"
                     className="spon-ticket-modal__error"
                   />
+                  {console.log('7')}
                 </div>
                 <div className="spon-ticket-modal__input-cnt spon-ticket-modal__input-cnt--small">
+                {console.log('8')}
                   <Field
                     type="number"
                     name="quantity"
@@ -282,11 +290,13 @@ class TicketModal extends React.Component<IProps, IState> {
                     component="div"
                     className="spon-ticket-modal__error"
                   />
+                  {console.log('9')}
                 </div>
               </div>
 
               <div className="spon-ticket-modal__row">
                 <div className="spon-ticket-modal__input-cnt">
+                {console.log('10')}
                   <DatePicker
                     id="date"
                     label="Start date"
@@ -308,12 +318,14 @@ class TicketModal extends React.Component<IProps, IState> {
                     component="div"
                     className="spon-ticket-modal__error"
                   />
+                  {console.log('11')}
                 </div>
                 
               <div className="spon-ticket-modal__input-cnt--really-big">
                 <p className="spon-ticket-modal__label spon-ticket-modal__label--nmt">
                   Hours of Day
                 </p>
+                {console.log('12')}
                 <MultiSwitch
                   isMulti
                   className="spon-ticket-modal__days-of-week"
@@ -342,10 +354,12 @@ class TicketModal extends React.Component<IProps, IState> {
                     component="div"
                     className="spon-ticket-modal__error"
                 />
+                {console.log('13')}
                 </div>
 
                 <div className="spon-ticket-modal__toggles">
                   <div className="spon-ticket-modal__toggle-item">
+                  {console.log('14')}
                     <p>Active:</p>
                     <Switch
                       checked={values.active}
@@ -360,6 +374,7 @@ class TicketModal extends React.Component<IProps, IState> {
                     />
                   </div>
                 </div>
+                {console.log('15')}
               </div>
 
               {!editDate ? (
@@ -443,12 +458,15 @@ class TicketModal extends React.Component<IProps, IState> {
 
               <div className="spon-ticket-modal__row">
                 <div className="spon-ticket-modal__buttons">
+                {console.log('16')}
                   <Button
                     text="CANCEL"
                     variant="adminSecondary"
                     onClick={closeModal}
                     className="spon-ticket-modal__button"
                   />
+                  {console.log('17')}
+                  {console.log('18')}
                   <Button
                     text={editDate ? 'EDIT' : 'ADD'}
                     type="submit"
@@ -457,6 +475,7 @@ class TicketModal extends React.Component<IProps, IState> {
                     variant="adminPrimary"
                     className="spon-ticket-modal__button"
                   />
+                  {console.log('19')}
                 </div>
               </div>
             </Form>

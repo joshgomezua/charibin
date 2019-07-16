@@ -616,6 +616,7 @@ module.exports = {
   },
 
   async findCRM (dateStart, dateEnd) {
+    console.log('findCRM')
     return Ticket.aggregate([
       {
         $facet: {
