@@ -82,7 +82,7 @@ module.exports = {
           $facet: {
             results: [
               { $match: { deleted: false } },
-              { $sort: { departure: 1, destination: 1, carrier: 1, type: 1} },
+              { $sort: { "departure.name": 1, "destination.name": 1, carrier: 1, type: 1} },
               ...Aggregate.skipAndLimit(page, limit)
             ],
             status: Aggregate.getStatusWithSimpleMatch(

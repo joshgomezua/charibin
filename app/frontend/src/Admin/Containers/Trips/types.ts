@@ -1,4 +1,4 @@
-import { ITrip, MODAL_TYPE } from '../../Utils/adminTypes'
+import { ITrip, MODAL_TYPE, ICity } from '../../Utils/adminTypes'
 import { IResponseError, IScheduledTrip } from '../../../Common/Utils/globalTypes'
 
 export interface  IState {
@@ -7,6 +7,7 @@ export interface  IState {
   filtersFrom: string[]
   filtersTo: string[]
   results: ITrip[]
+  availableCities: ICity[]
   total: number
   isModalLoading: boolean
   isLoading: boolean
@@ -51,8 +52,8 @@ export interface INewData {
   discount: number
   duration: number
   fake: boolean
-  departure: string
-  destination: string
+  departure: ICity
+  destination: ICity
   carrier: string
   photo: string
   price: number
@@ -108,8 +109,8 @@ export interface IEditTimeSchedule {
   discount?: number
   duration?: number
   fake?: boolean
-  departure?: string
-  destination?: string
+  departure?: ICity
+  destination?: ICity
   carrier?: string
   photo?: string
   price?: number

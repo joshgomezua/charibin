@@ -4,8 +4,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const tripSchema = new Schema({
-  departure: { type: String },
-  destination: { type: String },
+  departure: { type: Schema.Types, ref: 'City' },
+  destination: { type: Schema.Types, ref: 'City' },
   fake: { type: Boolean, default: false },
   active: { type: Boolean, default: true },
   price: Number,

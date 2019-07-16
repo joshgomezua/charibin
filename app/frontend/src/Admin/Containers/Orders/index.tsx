@@ -39,6 +39,7 @@ class OrdersContainer extends React.Component<IProps, IState> {
     
     getOrders(page, 1000, token, sort)
     .then(({ data }) =>{
+      console.log(data.results)
       this.setState({
         isLoading: false,
         results: data.results,

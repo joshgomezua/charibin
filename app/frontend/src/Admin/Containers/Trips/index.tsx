@@ -10,7 +10,7 @@ import ScheduleModal from 'src/Admin/Components/ScheduleModal';
 
 import withToast from '../../../Common/HOC/withToast'
 import { RouteComponentProps } from 'react-router-dom'
-import { MODAL_TYPE, ITrip } from '../../Utils/adminTypes'
+import { MODAL_TYPE, ITrip, ICity } from '../../Utils/adminTypes'
 import { getToken } from '../../../Common/Utils/helpers'
 import {
   ADMIN_ROUTING,
@@ -18,6 +18,7 @@ import {
   SUCCESS,
   DEFAULT_TRIP_DATA,
   DEFAULT_TRIP_SCHEDULE,
+  DEFAULT_CITY_DATA,
 } from '../../Utils/constants'
 import {
   getTrips,
@@ -30,7 +31,8 @@ import {
   getSingleScheduledTrip,
   addSchedule,
   updateSchedule,
-  getOpposites
+  getOpposites,
+  getCities,
 } from '../../Utils/api'
 import { IState, IProps, INewData, IEditTimeSchedule, INewSchedule } from './types'
 import { columns } from './columns'
@@ -49,6 +51,7 @@ class TripsContainer extends React.Component<
     filtersFrom: [],
     filtersTo: [],
     results: [],
+    availableCities: [],
     total: 0,
     currentPage: 0,
     isLoading: true,
@@ -157,6 +160,12 @@ class TripsContainer extends React.Component<
       }).catch(err => {
         this.props.showError(err, ERRORS.TRIP_FETCH)
       }) 
+
+      getCities(0, 10000, token).then(res => {
+        this.setState({availableCities: res.data.results})
+      }).catch(err => {
+        this.props.showError(err, ERRORS.CITY_FETCH)
+      })
     }
   }
 
@@ -213,8 +222,14 @@ class TripsContainer extends React.Component<
   handleAddTrip = (data: INewData) => {
     const token = getToken()
     const { currentPage } = this.state
+
+    const destinationCity: ICity = this.state.availableCities.find(city => {return city._id == data.destination._id}) || DEFAULT_CITY_DATA
+    const departureCity: ICity = this.state.availableCities.find(city => {return city._id == data.departure._id}) || DEFAULT_CITY_DATA
+
     const newTrip: INewData = {
       ...data,
+      destination: destinationCity,
+      departure: departureCity,
       timeSelection: {
         defaultPrice: data.timeSelection.defaultPrice,
         _0to6AM: data.timeSelection.defaultPrice,
@@ -230,6 +245,7 @@ class TripsContainer extends React.Component<
       },
       isFromAPI: false,
     }
+
     this.setState({ isModalLoading: true })
     return addTrip(newTrip, token)
       .then(res => {
@@ -531,6 +547,7 @@ class TripsContainer extends React.Component<
       filtersFrom,
       filtersTo,
       results,
+      availableCities,
       isLoading,
       isModalLoading,
       editData,
@@ -543,14 +560,14 @@ class TripsContainer extends React.Component<
       for(let tripIndex: number = 0; tripIndex < results.length; tripIndex++){
         if(filtersFrom.length) {
           for(let index: number = 0; index < filtersFrom.length; index++){
-            if(results[tripIndex].departure.toLowerCase() == filtersFrom[index].toLowerCase()) {
+            if(results[tripIndex].departure.name.toLowerCase() == filtersFrom[index].toLowerCase()) {
               filteredTrips.push(results[tripIndex]);
             }
           }
         }
         if(filtersTo.length) {
           for(let index: number = 0; index < filtersTo.length; index++){
-            if(results[tripIndex].destination.toLowerCase() == filtersTo[index].toLowerCase() && filteredTrips.includes(results[tripIndex]) == false) {
+            if(results[tripIndex].destination.name.toLowerCase() == filtersTo[index].toLowerCase() && filteredTrips.includes(results[tripIndex]) == false) {
              filteredTrips.push(results[tripIndex]);
             }
           }
@@ -600,6 +617,7 @@ class TripsContainer extends React.Component<
               isLoading={isModalLoading}
               closeModal={this.handleCloseModal}
               handleSubmit={this.handleAddTrip}
+              availableCities={availableCities}
             />
           ) : null}
 
@@ -609,6 +627,7 @@ class TripsContainer extends React.Component<
               editDate={editData}
               closeModal={this.handleCloseModal}
               handleEditTrip={this.handleEditTrip}
+              availableCities={availableCities}
             />
           ) : null}
 

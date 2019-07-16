@@ -15,11 +15,13 @@ import Switch from '../Switch'
 import Button from '../../../Common/Components/Button'
 import { IProps, IFormValues, IEditValues } from './types'
 import './styles.scss'
+import { ICity } from 'src/Admin/Utils/adminTypes';
 
 const TripModal: React.SFC<IProps> = ({
   isLoading,
   editDate,
   closeModal,
+  availableCities,
   handleEditTrip,
   handleSubmit
 }) => {
@@ -51,8 +53,14 @@ const TripModal: React.SFC<IProps> = ({
           editableData
             ? editableData
             : {
-                departure: '',
-                destination: '',
+                departure: {
+                  _id: '',
+                  name: ''
+                },
+                destination: {
+                  _id: '',
+                  name: ''
+                },
                 price: 0,
                 discount: 0,
                 duration: 0,
@@ -67,12 +75,8 @@ const TripModal: React.SFC<IProps> = ({
               }
         }
         validationSchema={Yup.object().shape({
-          destination: Yup.string()
-            .min(3)
-            .required(),
-          departure: Yup.string()
-            .min(3)
-            .required(),
+          destination: Yup.object().required(),
+          departure: Yup.object().required(),
           price: Yup.number()
             .required()
             .min(1),
@@ -115,7 +119,20 @@ const TripModal: React.SFC<IProps> = ({
           if (editDate && handleEditTrip) {
             handleEditTrip(dataToUpdate).then(() => resetForm())
           } else if (handleSubmit) {
-            handleSubmit(values).then(() => resetForm())
+            const departureCity: ICity = {
+              _id: values.departure._id,
+              name: ''
+            }
+            const destinationCity: ICity = {
+              _id:values.destination._id,
+              name: ''
+            }
+            const dataToSubmit: any = {
+              ...values,
+              departure: departureCity,
+              destination: destinationCity
+            }
+            handleSubmit(dataToSubmit).then(() => resetForm())
           }
         }}
         render={({
@@ -128,13 +145,17 @@ const TripModal: React.SFC<IProps> = ({
           <Form noValidate>
             <div className="spon-trip-modal__row">
               <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--big">
-                <Field
-                  type="text"
-                  placeholder="Type name"
-                  name="departure"
+                <Dropdown
+                saveAsObject
+                  id="departure"
                   label="Departure"
-                  className="spon-trip-modal__input"
-                  component={Input}
+                  placeholder="Select a city"
+                  className="spon-trip-modal__dropdown"
+                  selectedValue={values.departure.name}
+                  options={availableCities.sort((a,b) => {
+                    return a.name > b.name ? 1 : -1
+                  })}
+                  onChange={handleChange}
                 />
 
                 <ErrorMessage
@@ -143,15 +164,18 @@ const TripModal: React.SFC<IProps> = ({
                   className="spon-trip-modal__error"
                 />
               </div>
-
               <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--big">
-                <Field
-                  type="text"
-                  placeholder="Type name"
-                  name="destination"
+                <Dropdown
+                  saveAsObject
+                  id="destination"
                   label="Destination"
-                  className="spon-trip-modal__input"
-                  component={Input}
+                  placeholder="Select a city"
+                  className="spon-trip-modal__dropdown"
+                  selectedValue={values.destination.name}
+                  options={availableCities.sort((a,b) => {
+                    return a.name > b.name ? 1 : -1
+                  })}
+                  onChange={handleChange}
                 />
 
                 <ErrorMessage
@@ -160,23 +184,6 @@ const TripModal: React.SFC<IProps> = ({
                   className="spon-trip-modal__error"
                 />
               </div>
-
-              {/* <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt">
-                <Field
-                  type="text"
-                  placeholder="Type name"
-                  name="carrier"
-                  label="Carrier"
-                  className="spon-trip-modal__input"
-                  component={Input}
-                />
-
-                <ErrorMessage
-                  name="carrier"
-                  component="div"
-                  className="spon-trip-modal__error"
-                />
-              </div> */}
             </div>
 
             <div className="spon-trip-modal__row">
@@ -250,17 +257,21 @@ const TripModal: React.SFC<IProps> = ({
             </div>
 
             <div className="spon-trip-modal__row  spon-trip-modal__row--bordered">
-            <div className="spon-trip-modal__input-cnt">
+              <div className="spon-trip-modal__input-cnt">
                 <Dropdown
                   id="type"
                   label="Select the Type"
                   placeholder="Select type"
                   className="spon-trip-modal__dropdown"
-                  selectedValue="Train"
+                  selectedValue={values.type}
                   options={[
                     {
                       _id: '1',
                       name: 'Train'
+                    },
+                    {
+                      _id: '2',
+                      name: 'Bus'
                     }
                   ]}
                   onChange={handleChange}

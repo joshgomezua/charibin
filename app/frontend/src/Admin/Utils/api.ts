@@ -67,10 +67,11 @@ export const updateUser = (id: string, data: Types.IEditUser, token: string) =>
     headers: { 'Content-type': 'application/json', token }
   })
 
-export const addTrip = (data: Types.INewTrip, token: string) =>
-  axios.post(`${API_URL}/trip`, data, {
+export const addTrip = (data: Types.INewTrip, token: string) => {
+  return axios.post(`${API_URL}/trip`, data, {
       headers: { 'Content-type': 'application/json', token }
-})
+  })
+}
 
 export const getTrips = (
   page: number, 
@@ -216,6 +217,7 @@ export const editOrderState = (id: string, value: boolean, token: string) =>
       }
     }
   )
+
   export const addCity = (data: Types.ICity, token: string) => 
   axios.post(`${API_URL}/city`, data, {
     headers: { 'Content-type': 'application/json', token }
