@@ -6,6 +6,7 @@ const moment = require('moment');
 const dataTemplate = {
   administrator: {
     email: 'admin@user.com',
+    name: 'sponteous',
     role: 'Administrator',
     password: '22AA@@aaasasd'
   },
@@ -30,8 +31,6 @@ const dataTemplate = {
 
 
   trip: {
-    departure: faker.address.city,
-    destination: faker.address.city,
     carrier: 'Flexibus',
     photo: getImage,
     type: 'Train',
@@ -74,12 +73,14 @@ const dataTemplate = {
     date: {
       __tmpStart: 0,
       start: function () {
-        const tmpDate = new Date(moment.now() + (1000 * 60 * 60 * 24 * 3));
+        const today = new Date(moment.now()).setHours(0, 0, 0, 0)
+        const tmpDate = new Date(today + (1000 * 60 * 60 * 24 * 3));
         this.__tmpStart = tmpDate;
         return tmpDate;
       },
       end: function () {
-        return this.__tmpStart + (5 * 60 * 60 * 1000); // add 5 hours
+        const endDate = this.__tmpStart.getTime() + (6 * 60 * 60 * 1000); // add 6 hours
+        return new Date(endDate);
       }
     }
   },
@@ -135,6 +136,13 @@ const dataTemplate = {
     departureTimePrice: faker.random.number({ min: 1, max: 5 }),
     deselectionPrice: () => faker.random.number({ min: 1, max: 100 }),
     totalPrice: () => faker.random.number({ min: 100, max: 1000 }),
+    user:{
+      email: faker.internet.exampleEmail,
+      name: faker.name.firstName,
+      role: 'Administrator',
+      password: faker.name.firstName
+    },
+
   },
 };
 

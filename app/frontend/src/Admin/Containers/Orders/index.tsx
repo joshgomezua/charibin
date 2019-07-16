@@ -18,21 +18,36 @@ class OrdersContainer extends React.Component<IProps, IState> {
     orders: [],
     isLoading: false,
     total: 0,
-    currentPage: 0
+    currentPage: 0,
+    search:'',
+    results: [],
   }
 
   handleFetchItems = (page: number, limit: number, sort?: SortingRule) => {
     const token = getToken()
 
     getOrders(page, limit, token, sort)
-      .then(({ data }) =>
+      .then(({ data }) =>{
         this.setState({
           isLoading: false,
           orders: data.results,
           total: data.status.total
         })
-      )
-      .catch(err => this.props.showError(err, ERRORS.ORDERS_FETCH))
+      }
+    )
+    .catch(err => this.props.showError(err, ERRORS.ORDERS_FETCH))
+    
+    getOrders(page, 1000, token, sort)
+    .then(({ data }) =>{
+      console.log(data.results)
+      this.setState({
+        isLoading: false,
+        results: data.results,
+        total: data.status.total
+      })
+    }
+  )
+  .catch(err => this.props.showError(err, ERRORS.ORDERS_FETCH))
   }
 
   handleFetchTableData = ({ page, sorted }: ControlledStateOverrideProps) => {
@@ -63,11 +78,22 @@ class OrdersContainer extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { isLoading, orders, total } = this.state
+    const { isLoading, search, results } = this.state
+    let {orders, total} = this.state
 
+    if (search) {
+			orders = results.filter(order => {
+        return order.buyer.name.toLowerCase().includes(search.toLowerCase()) 
+                  || order.buyer.email.toLowerCase().includes(search.toLowerCase())
+      })
+      total = orders.length
+    }
     return (
       <>
-        <Header title="Transactions" />
+        <Header title="Transactions" 
+         query={search}
+         handleSearch={(e) => this.setState({search: e.target.value})}
+        />
         <Table
           data={orders}
           handleFetchData={this.handleFetchTableData}

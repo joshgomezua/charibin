@@ -13,11 +13,11 @@ export const columns = (
 ) => [
   {
     Header: 'From',
-    accessor: 'departure',
+    accessor: 'departure.name',
   },
   {
     Header: 'To',
-    accessor: 'destination'
+    accessor: 'destination.name'
   },
   {
     Header: 'Fake',
@@ -124,8 +124,8 @@ export const columns = (
             onClick={() =>
               redirectToCreateTicket({
                 _id: props.row._original._id,
-                departure: props.row.departure,
-                destination: props.row.destination,
+                departure: props.row.departure.name,
+                destination: props.row.destination.name,
               })
             }>
             Schedule

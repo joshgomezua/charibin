@@ -1,5 +1,8 @@
+import { ICity } from "src/Admin/Utils/adminTypes";
+
 export interface IProps {
   editDate?: IFormValues & { _id: string }
+  availableCities: ICity[]
   isLoading: boolean
   closeModal: () => void
   handleSubmit?: (data: any) => Promise<void>
@@ -7,8 +10,8 @@ export interface IProps {
 }
 
 export interface IFormValues {
-  departure: string
-  destination: string
+  departure: ICity
+  destination: ICity
   carrier: string
   price: number
   discount: number

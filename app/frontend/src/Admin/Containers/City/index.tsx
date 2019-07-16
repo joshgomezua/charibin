@@ -263,6 +263,7 @@ class CityContainer extends React.Component<
           heading = 'Create city'
           modal = {MODAL_TYPE.ADD_CITY}
           handleOpenModal={this.handleOpenModal}
+          title ='Cities'
           query={search}
           handleSearch={(e) => this.setState({search: e.target.value})}
         />
@@ -304,6 +305,7 @@ class CityContainer extends React.Component<
             <DeleteModal
               closeModal={this.handleCloseModal}
               deleteItem={this.handleDeleteCity}
+              text="This city will be deleted"
             />
           ) : null}
         </Modal>

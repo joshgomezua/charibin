@@ -19,7 +19,7 @@ import Button from '../../../Common/Components/Button'
 import MultiSwitch from '../../Components/MultiSwitch'
 import arrowDown from '../../../Common/Utils/Media/arrowDown.svg'
 
-import { daysOfWeek } from './_data'
+import { daysOfWeek, departureHours } from './_data'
 import { IProps, IState, IFormValues } from './types'
 import './styles.scss'
 import DropDownTicket from '../DropdownTicket';
@@ -63,12 +63,12 @@ class TicketModal extends React.Component<IProps, IState> {
             editDate
               ? {
                   ...editDate,
-                  date: new Date(editDate!.date.start),
-                  hours: `${moment
+                  date: new Date(new Date(editDate!.date.start).getTime()+(new Date(editDate!.date.start).getTimezoneOffset() * 60000)),
+                  departureHours: [`${moment
                     .utc(editDate!.date.start)
-                    .format('h')}-${moment
+                    .format('H')}-${moment
                     .utc(editDate!.date.end)
-                    .format('h')}`,
+                    .format('H')}`,]
                 }
               : {
                   trip: {
@@ -85,7 +85,7 @@ class TicketModal extends React.Component<IProps, IState> {
                   date: undefined,
                   endDate: undefined,
                   days: [0, 1, 2, 3, 4, 5, 6],
-                  hours: '',
+                  departureHours: [],
                   active: true,
                 }
           }
@@ -107,7 +107,7 @@ class TicketModal extends React.Component<IProps, IState> {
               .min(0)
               .max(1000),
             date: Yup.string().required(),
-            hours: Yup.string().required(),
+            departureHours: Yup.array().required('At least one option is required'),
             isRecurring: Yup.boolean(),
             endDate: Yup.string().when('isRecurring', {
               is: true,
@@ -122,10 +122,43 @@ class TicketModal extends React.Component<IProps, IState> {
             values: IFormValues,
             { resetForm }: FormikActions<IFormValues>
           ) => {
-            const splitedHours = values.hours!.split('-')
-            const startHours = splitedHours[0]
-            const endHour = splitedHours[1]
             const offset = moment().utcOffset()
+            const tempDepartureHours: any[] = []
+
+            for (let hours of values.departureHours ? values.departureHours : []) {
+
+              const splitedHours = hours!.split('-')
+              const startHours = splitedHours[0]
+              const endHour = splitedHours[1]
+              const startDate = +moment
+              .utc(values.date)
+              .add(offset, 'minutes')
+              .set({
+                hour: +startHours,
+                minute: 0,
+                second: 0,
+                millisecond: 0
+              })
+              .format('x')
+
+             const endDate = +moment
+             .utc(values.date)
+             .add(offset, 'minutes')
+             .set({
+               hour: +endHour,
+               minute: 0,
+               second: 0,
+               millisecond: 0
+             })
+             .format('x')
+
+             const date = {
+               start: startDate,
+               end: endDate
+             }
+
+             tempDepartureHours.push(date)
+            }
 
             const dataToSubmit = {
               trip: values.trip._id,
@@ -135,28 +168,9 @@ class TicketModal extends React.Component<IProps, IState> {
               soldTickets: values.soldTickets,
               reservedQuantity: values.reservedQuantity,
               type: values.type,
-              hours: values.hours,
               date: {
-                start: +moment
-                  .utc(values.date)
-                  .add(offset, 'minutes')
-                  .set({
-                    hour: +startHours,
-                    minute: 0,
-                    second: 0,
-                    millisecond: 0
-                  })
-                  .format('x'),
-                end: +moment
-                  .utc(values.date)
-                  .add(offset, 'minutes')
-                  .set({
-                    hour: +endHour,
-                    minute: 0,
-                    second: 0,
-                    millisecond: 0
-                  })
-                  .format('x')
+                start: +'',
+                end: +''
               },
               active: values.active,
               repeat: {
@@ -165,7 +179,8 @@ class TicketModal extends React.Component<IProps, IState> {
                   .add(offset, 'minutes')
                   .format('x'),
                 days: values.days as number[]
-              }
+              },
+              departureHours: tempDepartureHours
             }
             if (editDate || !values.isRecurring) {
               delete dataToSubmit.repeat
@@ -276,6 +291,7 @@ class TicketModal extends React.Component<IProps, IState> {
                     id="date"
                     label="Start date"
                     placeholder="Select date"
+                    isInTicketModal={true}
                     selectedDate={editDate ? (values.date as Date) : undefined}
                     onChange={(date: Date) => {
                       handleChange({
@@ -293,48 +309,41 @@ class TicketModal extends React.Component<IProps, IState> {
                     className="spon-ticket-modal__error"
                   />
                 </div>
-                <div className="spon-ticket-modal__input-cnt">
-                  <Dropdown
-                    id="hours"
-                    label="Hours"
-                    placeholder="Select hours"
-                    className="spon-ticket-modal__dropdown"
-                    selectedValue={values.hours ? values.hours : ''}
-                    options={[
-                      {
-                        _id: '0-6',
-                        name: '0-6'
-                      },
-                      {
-                        _id: '6-9',
-                        name: '6-9'
-                      },
-                      {
-                        _id: '9-12',
-                        name: '9-12'
-                      },
-                      {
-                        _id: '12-18',
-                        name: '12-18'
-                      },
-                      {
-                        _id: '18-21',
-                        name: '18-21'
-                      },
-                      {
-                        _id: '21-24',
-                        name: '21-24'
-                      }
-                    ]}
-                    onChange={handleChange}
-                  />
-
-                  <ErrorMessage
-                    name="hours"
+                
+              <div className="spon-ticket-modal__input-cnt--really-big">
+                <p className="spon-ticket-modal__label spon-ticket-modal__label--nmt">
+                  Hours of Day
+                </p>
+                <MultiSwitch
+                  isMulti
+                  className="spon-ticket-modal__days-of-week"
+                  onChange={(name: string, id: string) => {
+                    if (values.departureHours!.includes(name)) {
+                      const hoursFiltered = values.departureHours!.filter(
+                        (departuresHours: string) => departuresHours !== name
+                      )
+                      handleChange({
+                        target: { value: hoursFiltered, name: 'departureHours' }
+                      })
+                    } else {
+                      handleChange({
+                        target: {
+                          value: [...values.departureHours!, name],
+                          name: 'departureHours'
+                        }
+                      })
+                    }
+                  }}
+                  selectedValues={values.departureHours!}
+                  items={departureHours}
+                />
+                <ErrorMessage
+                    name="departureHours"
                     component="div"
                     className="spon-ticket-modal__error"
-                  />
+                />
                 </div>
+
                 <div className="spon-ticket-modal__toggles">
                   <div className="spon-ticket-modal__toggle-item">
                     <p>Active:</p>
@@ -420,7 +429,6 @@ class TicketModal extends React.Component<IProps, IState> {
                             selectedValues={values.days!}
                             items={daysOfWeek}
                           />
-
                           <ErrorMessage
                             name="days"
                             component="div"

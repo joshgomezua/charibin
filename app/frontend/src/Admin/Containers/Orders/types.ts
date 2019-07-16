@@ -6,6 +6,8 @@ export interface IState {
   isLoading: boolean
   total: number
   currentPage: number
+  search: string
+  results: IOrder[]
 }
 
 export interface IProps {

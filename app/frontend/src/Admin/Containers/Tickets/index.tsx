@@ -48,7 +48,8 @@ class TicketsContainer extends React.Component<
     calendarFilter: {
       start: undefined,
       end: undefined
-    }
+    },
+    modalOptions: []
 
   }
 
@@ -103,7 +104,22 @@ class TicketsContainer extends React.Component<
           destination: item.destination
         }))
 
-        const uniqueCitiesNames = cityNames.reduce((unique: any, other: any) => {
+        const oppositeDirectionCityNames =  cityNames.map((item: any) => ({
+          _id: item._id,
+          departure: item.destination,
+          destination: item.departure
+        }))
+
+        this.setState( {  
+          modalOptions: 
+            [
+              ...this.state.modalOptions,
+              ...cityNames,
+              ...oppositeDirectionCityNames
+            ]
+        })
+
+        const uniqueCitiesNames = this.state.modalOptions.reduce((unique: any, other: any) => {
           if(!unique.some((obj: { departure: any; }) => obj.departure === other.departure)) {
             unique.push(other);
           }
@@ -169,6 +185,7 @@ class TicketsContainer extends React.Component<
         dateEnd: number
         days: number[]
       }
+      departureHours?: any[]
     }
   ) => {
     const token = getToken()
@@ -206,8 +223,8 @@ class TicketsContainer extends React.Component<
       .then(({ data }) => {
         const newData = {
           _id: data.trip._id,
-          departure: data.trip.departure,
-          destination: data.trip.destination
+          departure: data.departure,
+          destination: data.destination
         } 
         data.trip = newData; 
         this.setState(
@@ -309,21 +326,14 @@ class TicketsContainer extends React.Component<
   }
 
   handleSelectTicketDeparture = (departure: string) => {
-    const token = getToken()
-
-    getTripNames(token)
-      .then(({data}) => {
-        const destinationsFiltered = data.filter((item: any) => item.departure === departure)
-        const destinationsMapped = destinationsFiltered.map((item: any) => ({
-          _id: item._id,
-          departure: item.departure,
-          destination: item.destination
-        }))
-        this.setState({destinations : destinationsMapped})
-      })
-    .catch(err => {
-        this.props.showError(err)
-    })    
+    const { modalOptions } = this.state
+    const destinationsFiltered = modalOptions.filter((item: any) => item.departure === departure)
+    const destinationsMapped = destinationsFiltered.map((item: any) => ({
+      _id: item._id,
+      departure: item.departure,
+      destination: item.destination
+    }))
+    this.setState({destinations : destinationsMapped})  
   }
 
   render() {
@@ -407,6 +417,7 @@ class TicketsContainer extends React.Component<
             <DeleteModal
               closeModal={this.handleCloseModal}
               deleteItem={this.handleDeleteTicket}
+              text="the ticket will be deleted"
             />
           ) : null}
         </Modal>

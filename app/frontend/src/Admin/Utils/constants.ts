@@ -71,6 +71,14 @@ export const DEFAULT_TICKET_DATA = {
   active: false
 }
 
+export const DEFAULT_CITY_DATA = {
+  _id: '',
+  name: 'London',
+  country: 'United Kingdom',
+  tags: ["beach"],
+  photo: ''
+}
+
 export const DEFAULT_TRIP_SCHEDULE = {
   _id: '',
   active: false,
@@ -119,20 +127,12 @@ export const DEFAULT_TRIP_DATA = {
   discount: 0,
   duration: 0,
   fake: false,
-  departure: '',
-  destination: '',
+  departure: DEFAULT_CITY_DATA,
+  destination: DEFAULT_CITY_DATA,
   carrier: '',
   photo: '',
   price: 0,
   type: ''
-}
-
-export const DEFAULT_CITY_DATA = {
-    _id: '',
-    name: 'London',
-    country: 'United Kingdom',
-    tags: ["beach"],
-    photo: ''
 }
 
 
@@ -361,7 +361,7 @@ export const COUNTRIES = [
 
 export const DEFAULT_SEARCH_RESULT = {
   _id: '',
-  name: 'Country not found'
+  name: 'No data found'
 }
 
 
