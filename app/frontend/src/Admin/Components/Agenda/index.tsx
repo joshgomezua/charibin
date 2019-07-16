@@ -145,7 +145,7 @@ const Agenda: React.SFC<IProps> = ({
             <tr>
               <td colSpan={5}>
                 <div className="spon-agenda__error">
-                  <p>No courses are available this month.</p>
+                  <p>No tickets are available this month.</p>
                 </div>
               </td>
             </tr>

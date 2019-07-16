@@ -203,14 +203,6 @@ class TicketsContainer extends React.Component<
 
     const pageToSend = page? page - 1 : 0
 
-    this.setState(prevState => ({
-      ...prevState,
-      requestInfo: {
-        ...prevState.requestInfo,
-        currentPage: pageToSend,
-      }
-    }))
-
     // the request
     getTickets(startDate, endDate, requestInfo.from, requestInfo.to, 'null', pageToSend, 100, token)
       .then(async res => {
@@ -225,7 +217,6 @@ class TicketsContainer extends React.Component<
             currentPage: page ? page : 1
           }
         }))
-
       })
       .catch(err => {
         this.setState({ isLoading: false, isError: true })

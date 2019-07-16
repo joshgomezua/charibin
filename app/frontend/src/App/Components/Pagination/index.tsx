@@ -171,7 +171,9 @@ class Pagination extends React.Component<IProps, IState> {
                         onClick={this.handleOnClickLeft}
                     />
                 <div className="pagination-text">
-                    <p>page {pagination.currentPage} of {Math.ceil(pagination.qtyTotal / pagination.pageLimit)}</p>
+                    <p>page {pagination.currentPage} of {
+                            Math.ceil(pagination.qtyTotal / pagination.pageLimit) || 1
+                        }</p>
                 </div>
                     <Button
                         className="rightBtn"
