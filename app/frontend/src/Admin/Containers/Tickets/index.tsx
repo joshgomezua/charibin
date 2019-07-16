@@ -241,6 +241,7 @@ class TicketsContainer extends React.Component<
         this.setState({ isLoading: false, isError: true })
         this.props.showError(err, ERRORS.TICKET_FETCH)
       })
+      console.log('state.pagination', this.state.pagination)
   }
 
   handleOpenModal = (type: MODAL_TYPE, heading: string, id: string = '') => {
