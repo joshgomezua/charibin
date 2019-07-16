@@ -7,6 +7,7 @@ export interface  IState {
   filtersFrom: string[]
   filtersTo: string[]
   results: ITrip[]
+  availableCities: ICity[]
   total: number
   isModalLoading: boolean
   isLoading: boolean

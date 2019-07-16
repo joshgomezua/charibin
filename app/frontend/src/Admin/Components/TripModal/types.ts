@@ -2,6 +2,7 @@ import { ICity } from "src/Admin/Utils/adminTypes";
 
 export interface IProps {
   editDate?: IFormValues & { _id: string }
+  availableCities: ICity[]
   isLoading: boolean
   closeModal: () => void
   handleSubmit?: (data: any) => Promise<void>

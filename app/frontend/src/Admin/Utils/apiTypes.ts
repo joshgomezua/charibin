@@ -55,6 +55,7 @@ export interface INewTrip {
   fake: boolean
   active: boolean
   type: string
+  isFromAPI: boolean
 }
 
 export interface INewScheduledTrip {

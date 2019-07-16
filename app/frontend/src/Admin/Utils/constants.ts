@@ -71,6 +71,14 @@ export const DEFAULT_TICKET_DATA = {
   active: false
 }
 
+export const DEFAULT_CITY_DATA = {
+  _id: '',
+  name: 'London',
+  country: 'United Kingdom',
+  tags: ["beach"],
+  photo: ''
+}
+
 export const DEFAULT_TRIP_SCHEDULE = {
   _id: '',
   active: false,

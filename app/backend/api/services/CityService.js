@@ -1,7 +1,8 @@
 'use strict'
 
-const { City } = require('../models');
+const { City, Trip } = require('../models');
 const Aggregate = require('./Aggregate');
+var ObjectId = require('mongoose').Types.ObjectId;
 
 module.exports = {
   async create (data) {
@@ -75,6 +76,27 @@ module.exports = {
       city = await City.findOne({ name: data.name});
       if(city) throw { status: 409, message: 'CITY.NAME.EXIST' };
     }
+    await Trip.updateMany({'departure._id': id  },
+      { $set: {
+          'departure.name': data.name,
+          'departure.photo': data.photo,
+          'departure.isEnabled': data.isEnabled,
+          'departure.tags': data.tags,
+          'departure.country': data.country,
+          'departure.isManual': data.isManual
+        },
+      }, { new: true });
+
+    await Trip.updateMany({'destination._id': id },
+      { $set: {
+        'destination.name': data.name,
+        'destination.photo': data.photo,
+        'destination.isEnabled': data.isEnabled,
+        'destination.tags': data.tags,
+        'destination.country': data.country,
+        'destination.isManual': data.isManual
+      },
+    }, { new: true });
 
     return City.findByIdAndUpdate(id, data, { new: true });
   },
@@ -83,6 +105,8 @@ module.exports = {
     const city = await City.findById(id);
     if(!city) throw { status: 404, message: 'CITY.NOT.EXIST' };
 
+    await Trip.deleteMany({'destination._id': id})
+    await Trip.deleteMany({'departure._id': id})
     await City.findByIdAndDelete(id)
 
     return;
