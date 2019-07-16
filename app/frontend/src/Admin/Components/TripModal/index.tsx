@@ -172,9 +172,12 @@ const TripModal: React.SFC<IProps> = ({
                   placeholder="Select a city"
                   className="spon-trip-modal__dropdown"
                   selectedValue={values.destination.name}
-                  options={availableCities.sort((a,b) => {
+                  options={availableCities.filter((city)=>{
+                    return city.isEnabled === true ? city : null
+                  }).sort((a,b) => {
                     return a.name > b.name ? 1 : -1
-                  })}
+                  })
+                  }
                   onChange={handleChange}
                 />
 
