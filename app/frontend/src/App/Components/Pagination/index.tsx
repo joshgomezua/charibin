@@ -36,7 +36,7 @@ class Pagination extends React.Component<IProps, IState> {
         }
 
         this.verify()
-        onChange()
+        onChange(pagination.currentPage)
     }
 
     handleOnClickRight = () => {
@@ -54,7 +54,7 @@ class Pagination extends React.Component<IProps, IState> {
         }
 
         this.verify()
-        onChange()
+        onChange(pagination.currentPage)
     }
 
     verify =  () => {
@@ -164,6 +164,7 @@ class Pagination extends React.Component<IProps, IState> {
         const { pagination } = this.props
         return (
             <div className="pagination">
+                {console.log('pagination', pagination, this.state)}
                     <Button
                         className="leftBtn"
                         text="Previous"

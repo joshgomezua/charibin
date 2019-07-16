@@ -25,8 +25,8 @@ const Agenda: React.SFC<IProps> = ({
 }) => {
 
 
-  const handlePaginationOnClick = () => {
-    handlePaginationClick()
+  const handlePaginationOnClick = (page: number) => {
+    handlePaginationClick(page)
   }
 
   const prepareRows = () => {

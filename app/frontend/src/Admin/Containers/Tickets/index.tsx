@@ -14,7 +14,6 @@ import { Selectors, Actions } from '../../../Common/Redux/Services/adminTickets'
 import {
   createTicket,
   getTickets,
-  getTicketsQty,
   getTripNames,
   getSingleTicket,
   deleteTicket,
@@ -171,8 +170,8 @@ class TicketsContainer extends React.Component<
     this.handleFetchTicketsByDate(this.state.requestInfo)
   }
 
-  handlePaginationClick =  () => {
-    this.handleFetchTicketsByDate(this.state.requestInfo)
+  handlePaginationClick =  (page: number) => {
+    this.handleFetchTicketsByDate(this.state.requestInfo, page)
   }
 
   handleCalendarClear = async() =>  {
@@ -191,7 +190,7 @@ class TicketsContainer extends React.Component<
     this.handleFetchTicketsByDate(this.state.requestInfo)
   }
 
-  handleFetchTicketsByDate = (requestInfo: IRequestInfo) => {
+  handleFetchTicketsByDate = (requestInfo: IRequestInfo, page?: number) => {
     
     console.log('handleFetchTicketsByDate', this.state.requestInfo)
     const token = getToken()
@@ -211,7 +210,7 @@ class TicketsContainer extends React.Component<
     
     this.setState({ isLoading: true, isError: false })
 
-    const pageToSend = this.state.pagination.currentPage - 1
+    const pageToSend = page? page - 1 : 0
 
     this.setState(prevState => ({
       ...prevState,
@@ -223,14 +222,17 @@ class TicketsContainer extends React.Component<
 
     // the request
     getTickets(startDate, endDate, requestInfo.from, requestInfo.to, 'null', pageToSend, 100, token)
-      .then(res => {
-        this.setState({ isLoading: false, tickets: res.data })
+      .then(async res => {
+        console.log('res', res)
+        this.setState({ isLoading: false, tickets: res.data[1] })
 
-        this.setState(prevState => ({
+        await this.setState(prevState => ({
           pagination: {
             ...prevState.pagination,
-            qtyOfItems: res.data.length,
-            index: (pageToSend * prevState.pagination.pageLimit) + res.data.length
+            qtyOfItems: res.data[1].length,
+            index: (pageToSend * prevState.pagination.pageLimit) + res.data[1].length,
+            qtyTotal: res.data[0],
+            currentPage: page ? page : 1
           }
         }))
 
@@ -239,20 +241,6 @@ class TicketsContainer extends React.Component<
         this.setState({ isLoading: false, isError: true })
         this.props.showError(err, ERRORS.TICKET_FETCH)
       })
-      
-        getTicketsQty(token)
-        .then(res => {
-          this.setState(prevState => ({
-            pagination: {
-              ...prevState.pagination,
-              qtyTotal: res.data
-            }
-          }))
-        })
-        .catch(err => {
-          this.setState({ isLoading: false, isError: true })
-          this.props.showError(err, ERRORS.TICKET_FETCH_QUANTITY)
-        })      
   }
 
   handleOpenModal = (type: MODAL_TYPE, heading: string, id: string = '') => {

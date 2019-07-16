@@ -648,23 +648,55 @@ module.exports = {
         }
       }
     ];
-    if (dateEnd !== 0) {
-      console.log('test')
-      
+
+    let pipeline2 = [
+      {
+        $facet: {
+          results: [
+            {
+              $match: {
+                deleted: false,
+                'date.start': { $gte: new Date(dateStart) },
+              }
+            },
+            { $sort: { 'date.start': 1} },
+            Aggregate.populateOne('trips', 'trip', '_id'),
+            {
+              $unwind: '$trip'
+            },
+          ]
+        }
+      }
+    ];
+
+    if (dateEnd !== 0) {      
       pipeline.unshift({ $match: {'date.start': { $gte: new Date(dateStart), $lte: new Date(dateEnd) }}})
+      pipeline2.unshift({ $match: {'date.start': { $gte: new Date(dateStart), $lte: new Date(dateEnd) }}})
     }
     if (from !== 'null') {
       pipeline.unshift({ $match: { departure:{ $in: fromArray } }})
+      pipeline2.unshift({ $match: { departure:{ $in: fromArray } }})
     }
     if (to !== 'null') {
       pipeline.unshift({ $match: { destination: { $in: toArray } } })
+      pipeline2.unshift({ $match: { destination: { $in: toArray } } })
     }
     if (carrier !== 'null') {
       pipeline.unshift({ $match: { carrier: { $in: carrierArray } } })
+      pipeline2.unshift({ $match: { carrier: { $in: carrierArray } } })
     }
+
+    const ticketsTotal = await Ticket.aggregate(pipeline2)
+    console.log('ticketsTotal', ticketsTotal[0].results.length)
+
     return Ticket.aggregate(pipeline).then(data => {
-      return data[0].results;
+      console.log('data', data[0].results.length)
+      data[0].total = []
+      data[0].total.push(ticketsTotal[0].results.length)
+      data[0].total.push(data[0].results)
+      return data[0].total;
     });
+    
   },
 
   async getQuantity () {

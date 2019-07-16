@@ -2,7 +2,7 @@ import { IPagination } from "src/Admin/Containers/Tickets/types";
 
 export interface IProps {
     pagination: IPagination
-    onChange: () => void
+    onChange: (page: number) => void
 }
 
 export interface IState {
