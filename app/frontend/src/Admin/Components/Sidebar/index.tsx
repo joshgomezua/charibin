@@ -4,8 +4,7 @@ import { IProps, IState, ITerritory, COLOR } from './types'
 import './styles.scss'
 import CalendarDoubleFilter from 'src/App/Components/CalendarDoubleFilter';
 import {default as Select} from 'react-dropdown-select'
-import data from './data'
-
+import {data, carrier} from './data'
 
 class Sidebar extends React.Component<IProps, IState> {
 
@@ -46,6 +45,10 @@ class Sidebar extends React.Component<IProps, IState> {
     this.handleFiltersChange(territories, this.props.changeFilterTo)
   }
 
+  handleFiltersCarrierChange = (carrier: string[]) => {
+    this.props.changeFilterCarrier(carrier)
+  }
+
   handleChangeDate = (date: Date) => {
     this.props.changeSelectedDate(date)
   }
@@ -70,7 +73,8 @@ class Sidebar extends React.Component<IProps, IState> {
       changeSelectedDate,
       onChange,
       filterFrom,
-      filterTo
+      filterTo,
+      filterCarrier
     } = this.props
 
     return (
@@ -107,6 +111,18 @@ class Sidebar extends React.Component<IProps, IState> {
             options={data} 
             value={filterTo} 
             onChange={this.handleFiltersToChange}
+            color={selectedColor}
+            clearable
+          >  
+          </Select>
+        </div>
+        <div className="spon-sidebar__select__Carrier">
+        <Select 
+            multi
+            placeholder={'Carrier'} 
+            options={carrier} 
+            value={filterCarrier} 
+            onChange={this.handleFiltersCarrierChange}
             color={selectedColor}
             clearable
           >  

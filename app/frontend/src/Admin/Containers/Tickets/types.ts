@@ -29,6 +29,7 @@ export interface IProps {
   selectedDate: Date
   filters: string[]
   filterFrom: string[]
+  filterCarrier: string[]
   filterTo: string []
   changeFilters: (filters: string[]) => void
   changeFilterFrom: (filterFrom: string[]) => void

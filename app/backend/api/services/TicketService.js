@@ -678,6 +678,7 @@ module.exports = {
       pipeline2.unshift({ $match: { destination: { $in: toArray } } })
     }
     if (carrier !== 'null') {
+      console.log('carrier')
       pipeline.unshift({ $match: { carrier: { $in: carrierArray } } })
       pipeline2.unshift({ $match: { carrier: { $in: carrierArray } } })
     }

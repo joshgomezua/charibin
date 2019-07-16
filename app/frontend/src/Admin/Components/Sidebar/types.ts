@@ -1,6 +1,7 @@
 export interface IProps {
   filterFrom: string[]
   filterTo: string[]
+  filterCarrier: string[]
   selectedDate: Date
   calendarFilter:{
     start: Date | undefined
@@ -8,6 +9,7 @@ export interface IProps {
   }
   changeFilterFrom: (filterFrom: string[]) => void
   changeFilterTo: (filterTo: string[]) => void
+  changeFilterCarrier: (filterCarrier: string[]) => void
   changeSelectedDate: (date: Date) => void
   onChange?: (v: [Date, Date]) => void
   handleFetchTicketsByDate: () => void

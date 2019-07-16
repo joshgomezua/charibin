@@ -435,6 +435,24 @@ class TicketsContainer extends React.Component<
     this.props.changeFilterTo(filterTo)
   }
 
+  handleChangeFilterCarrier = async(filterCarrier: string[]) => {
+    let filters = ''
+    if (filterCarrier.length) {
+      for (let filter of filterCarrier) {
+        filters += filter + ','
+      }
+    } else {
+      filters = 'null'
+    }
+    await this.setState(prevState => ({
+      requestInfo: {
+        ...prevState.requestInfo,
+        carrier: filters
+      }
+    }))
+    this.handleFetchTicketsByDate(this.state.requestInfo)
+  }
+
   render() {
     const {
       tickets,
@@ -451,6 +469,7 @@ class TicketsContainer extends React.Component<
       filters,
       filterFrom,
       filterTo,
+      filterCarrier,
       selectedDate,
       changeSelectedDate
     } = this.props
@@ -459,11 +478,13 @@ class TicketsContainer extends React.Component<
       <div className="spon-tickets">
         <div className="spon-tickets__content">
           <Sidebar
+            filterCarrier={filterCarrier}
             filterFrom={filterFrom}
             filterTo={filterTo}
             selectedDate={selectedDate}
             changeFilterFrom={this.handleChangeFilterFrom}
             changeFilterTo={this.handleChangeFilterTo}
+            changeFilterCarrier={this.handleChangeFilterCarrier}
             changeSelectedDate={changeSelectedDate}
             calendarFilter={calendarFilter}
             onChange={this.handleFetchTicketsByTwoDates}
