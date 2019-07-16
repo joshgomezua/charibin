@@ -102,7 +102,7 @@ const UserModal: React.SFC<IProps> = ({
                   className="spon-trip-modal__error"
                 />
               
-
+              </div>
               <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--big">
                 <Field
                   type="email"
@@ -119,8 +119,10 @@ const UserModal: React.SFC<IProps> = ({
                   className="spon-trip-modal__error"
                 />
             
-
-              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--big spon-trip-modal__input-cnt--last">
+              </div>
+            </div>
+            <div className="spon-trip-modal__row"> 
+              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--big">
                 <Dropdown
                   id="role"
                   label="Select the role"
@@ -152,8 +154,7 @@ const UserModal: React.SFC<IProps> = ({
               </div>
             </div>
 
-            </div></div> 
-              
+            <div className="spon-seltime-modal__row--bordered"/>
              
             <div className="spon-trip-modal__row">
               <div className="spon-trip-modal__buttons">
