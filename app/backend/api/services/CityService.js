@@ -105,8 +105,8 @@ module.exports = {
     const city = await City.findById(id);
     if(!city) throw { status: 404, message: 'CITY.NOT.EXIST' };
 
-    await Trip.deleteMany({'destination._id': id})
-    await Trip.deleteMany({'departure._id': id})
+    await Trip.updateMany({ 'destination._id': id }, { $set: { 'active': false } })
+    await Trip.updateMany({ 'departure._id': id }, { $set: { 'active': false } })
     await City.findByIdAndDelete(id)
 
     return;
