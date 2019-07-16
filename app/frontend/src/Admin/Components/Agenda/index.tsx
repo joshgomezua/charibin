@@ -44,7 +44,6 @@ const Agenda: React.SFC<IProps> = ({
     if (filters.length === 0) {
       return null
     } else {
-      console.log('segregated', segregated)
       const row = Object.keys(segregated).map(key => {
         return segregated[key].map((ticket: ITicket, index: number) => (
           <AgendaItem
