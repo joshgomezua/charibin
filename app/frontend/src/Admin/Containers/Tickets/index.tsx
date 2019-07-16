@@ -195,9 +195,7 @@ class TicketsContainer extends React.Component<
     const startDate = requestInfo.finalDate !== '0' ? moment(requestInfo.initialDate).add(offset, 'minutes').format('x') : 
       (initialDate > firstDayMonth ? initialDate: firstDayMonth)
     const endDate = requestInfo.finalDate !== '0' ? moment(requestInfo.finalDate).add(offset, 'minutes').format('x') : 
-      moment(requestInfo.initialDate).utc()
-      .endOf('month')
-      .format('x')
+      '0'
     
     this.setState({ isLoading: true, isError: false })
 

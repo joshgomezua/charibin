@@ -25,6 +25,7 @@ const Agenda: React.SFC<IProps> = ({
 }) => {
 
 
+
   const handlePaginationOnClick = (page: number) => {
     handlePaginationClick(page)
   }
@@ -32,7 +33,7 @@ const Agenda: React.SFC<IProps> = ({
   const prepareRows = () => {
     const filtered = tickets
     const segregated = filtered.reduce((acc, ticket: ITicket) => {
-      const day = moment.utc(ticket.date.start).format('D')
+      const day = moment.utc(ticket.date.start).format('Y:M:D')
       if (day in acc) {
         acc[day].push(ticket)
       } else {
@@ -43,6 +44,7 @@ const Agenda: React.SFC<IProps> = ({
     if (filters.length === 0) {
       return null
     } else {
+      console.log('segregated', segregated)
       const row = Object.keys(segregated).map(key => {
         return segregated[key].map((ticket: ITicket, index: number) => (
           <AgendaItem
