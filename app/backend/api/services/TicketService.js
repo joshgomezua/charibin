@@ -610,15 +610,12 @@ module.exports = {
         }
       }
     ]);
-
-    console.log('data', data)
     
     const res = data.filter((trip) => this.hasEnoughTickets(trip))
     return res;
   },
 
   async findCRM (dateStart, dateEnd) {
-    console.log('findCRM')
     return Ticket.aggregate([
       {
         $facet: {
