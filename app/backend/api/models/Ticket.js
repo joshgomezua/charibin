@@ -23,6 +23,7 @@ const ticketSchema = new Schema({
     quantity: Number
   }],
   createdAt: { type: Date, default: Date.now }
+
 });
 
 module.exports = mongoose.model('Ticket', ticketSchema);
