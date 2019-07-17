@@ -83,6 +83,7 @@ class SelectContainer extends Component<
       qunatity,
     )
       .then(({ data }) => {
+        console.log('data', data)
         this.setState((state: IState) => ({
           isLoading: false,
           trips: [...state.trips, ...data],

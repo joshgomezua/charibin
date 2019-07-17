@@ -537,10 +537,10 @@ module.exports = {
 
    hasEnoughTickets (trip) {
     const departureTickets =  trip.tickets.filter((ticket) => {
-      return (trip.departure === ticket.departure && trip.destination === ticket.destination)
+      return (trip.departure.name === ticket.departure && trip.destination.name === ticket.destination)
     })
     const destinationTickets =  trip.tickets.filter((ticket) => {
-      return (trip.departure === ticket.destination && trip.destination === ticket.departure)
+      return (trip.departure.name === ticket.destination && trip.destination.name === ticket.departure)
     })
     return (departureTickets.length && destinationTickets.length) 
   },
@@ -610,6 +610,8 @@ module.exports = {
         }
       }
     ]);
+
+    console.log('data', data)
     
     const res = data.filter((trip) => this.hasEnoughTickets(trip))
     return res;
