@@ -131,7 +131,10 @@ module.exports = {
   },
 
   async updateOne (id, data) {
-    return City.findByIdAndUpdate(id, data, { new: true });
+   await Trip.updateMany({ 'destination._id': ObjectId(id) }, 
+   { $set: { 'destination.isEnabled': data.isEnabled }},{ new: true });
+   
+   return City.findByIdAndUpdate(id, data, { new: true });
   },
 
   async getListOfCitiesNames() {

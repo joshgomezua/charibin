@@ -144,12 +144,13 @@ class TripsContainer extends React.Component<
 
     if (token) {
       getTrips(page, limit, token, sort)
-        .then(res =>
+        .then(res =>{
           this.setState({
             isLoading: false,
             trips: res.data.results,
             total: res.data.status.total
           })
+        }
         )
         .catch(err => {
           this.props.showError(err, ERRORS.TRIP_FETCH)
@@ -560,14 +561,14 @@ class TripsContainer extends React.Component<
       for(let tripIndex: number = 0; tripIndex < results.length; tripIndex++){
         if(filtersFrom.length) {
           for(let index: number = 0; index < filtersFrom.length; index++){
-            if(results[tripIndex].departure.name.toLowerCase() == filtersFrom[index].toLowerCase()) {
+            if(results[tripIndex].departure.name.toLowerCase() === filtersFrom[index].toLowerCase()) {
               filteredTrips.push(results[tripIndex]);
             }
           }
         }
         if(filtersTo.length) {
           for(let index: number = 0; index < filtersTo.length; index++){
-            if(results[tripIndex].destination.name.toLowerCase() == filtersTo[index].toLowerCase() && filteredTrips.includes(results[tripIndex]) == false) {
+            if(results[tripIndex].destination.name.toLowerCase() === filtersTo[index].toLowerCase() && filteredTrips.includes(results[tripIndex]) == false) {
              filteredTrips.push(results[tripIndex]);
             }
           }
@@ -576,6 +577,12 @@ class TripsContainer extends React.Component<
       trips = filteredTrips
       total = trips.length
     }
+    trips = trips.filter((trip) => {
+        if (trip.destination.isEnabled) {
+          return trip
+        }
+        return 
+    })
     
     return (
       <div className="spon-container">
