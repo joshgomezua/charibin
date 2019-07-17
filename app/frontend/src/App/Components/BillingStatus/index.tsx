@@ -35,7 +35,7 @@ const Bilingstatus: React.SFC<IProps> = ({
         <div className="billing_status-tours">
           {tours.map(({ destination, price }, i) => (
             <p className="billing_status-tour" key={i}>
-              <span>{destination}</span>
+              <span>{destination.name}</span>
               <span>
                 {`£ ${price} for ${quantity} ${
                   quantity > 1 ? ' passengers' : ' passenger'

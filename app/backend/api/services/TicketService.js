@@ -148,8 +148,8 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
     active: true,
     deleted: false,
     quantity: { $gte: quantity },
-    departure: trip.departure,
-    destination: trip.destination,
+    departure: trip.departure.name,
+    destination: trip.destination.name,
     'date.start': { $gte: new Date(selectedTrip.dateStart).setHours(0,0,0,0), $lte: new Date(selectedTrip.dateStart).setHours(23,59,59,999) }
   }).limit(1);
   if(!arrivalTicket) throw { status: 404, message: 'TICKET.ARRIVAL.NOT.EXIST%', args: [new Date(selectedTrip.dateStart).toDateString()] };
@@ -158,8 +158,8 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
     active: true,
     deleted: false,
     quantity: { $gte: quantity },
-    departure: trip.destination,
-    destination: trip.departure,
+    departure: trip.destination.name,
+    destination: trip.departure.name,
     'date.start': { $gte: new Date(selectedTrip.dateEnd).setHours(0,0,0,0), $lte: new Date(selectedTrip.dateEnd).setHours(23,59,59,999) }
   }).limit(1);
   if(!departureTicket) throw { status: 404, message: 'TICKET.DEPARTURE.NOT.EXIST%', args: [new Date(selectedTrip.dateEnd).toDateString()] };
@@ -422,10 +422,10 @@ module.exports = {
         zipCode: buyerInfo.zipCode,
       },
       stripeChargeId: charge.id,
-      selected: ownerInfo.trips.filter(x => !x.deselected).map(x => x.trip.destination).join(', '),
-      deselected: ownerInfo.trips.filter(x => x.deselected).map(x => x.trip.destination).join(', '),
-      finalSelection: selectedTrip.trip.destination,
-      finalDestination: selectedTrip.trip.destination,
+      selected: ownerInfo.trips.filter(x => !x.deselected).map(x => x.trip.destination.name).join(', '),
+      deselected: ownerInfo.trips.filter(x => x.deselected).map(x => x.trip.destination.name).join(', '),
+      finalSelection: selectedTrip.trip.destination.name,
+      finalDestination: selectedTrip.trip.destination.name,
       date: {
         arrival: {
           start: selectedTrip.arrivalTicket.date.start,
@@ -458,7 +458,7 @@ module.exports = {
 
 
     return {
-      name: selectedTrip.trip.destination,
+      name: selectedTrip.trip.destination.name,
       photo: selectedTrip.trip.photo,
       email: buyerInfo.email,
       arrivalTicket: {
