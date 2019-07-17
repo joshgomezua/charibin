@@ -97,7 +97,6 @@ class TicketsContainer extends React.Component<
 
     getTripNames(token)
       .then(({ data }) => {
-        console.log("trips name, ", data)
         const cityNames = data.map((item: any) => ({
           _id: item._id,
           departure: item.departure,

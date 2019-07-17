@@ -1,5 +1,4 @@
 import { IFormValues } from '../Containers/Support/types'
-import { IUser } from 'src/Admin/Utils/adminTypes';
 
 interface ISelectedTrips {
   id: string
@@ -41,5 +40,4 @@ export interface IBuyData {
     city: string
     zipCode: string
   }
-  user: IUser
 }

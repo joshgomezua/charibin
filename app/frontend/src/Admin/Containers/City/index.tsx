@@ -16,7 +16,6 @@ import {
 } from '../../Utils/constants'
 import {
   getCities,
-  getCitiesNames,
   deleteCity,
   getSingleCity,
   addCity,
@@ -95,9 +94,6 @@ class CityContainer extends React.Component<
   handleFetchItems = (page: number, limit: number, sort?: SortingRule) => {
     const token = getToken()
     if (token) {
-      getCitiesNames(token).then(res => {
-        console.log(res.data)
-      })
       getCities(page, limit, token,sort)
         .then(res => {
           this.setState({
