@@ -10,6 +10,7 @@ const redis = require('redis');
 const client1 = redis.createClient({ host: global.config.connection.redis.host, db: 1 });
 const subscriber1 = redis.createClient({ host: global.config.connection.redis.host, db: 1 });
 const custom = require('../../config/custom')
+const ObjectId = require('mongoose').Types.ObjectId;
 
 client1.send_command('config', ['set','notify-keyspace-events','Ex'], onExpiredTicket);
 
@@ -319,6 +320,7 @@ module.exports = {
   async create (data) {
     const trip = await Trip.findOne({ _id: data.trip, deleted: false });
     if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
+    data['carrier'] = trip.carrier;
 
     if (data.departureHours.length) {
       for (let hours of data.departureHours) {
@@ -615,15 +617,45 @@ module.exports = {
     return res;
   },
 
-  async findCRM (dateStart, dateEnd) {
-    return Ticket.aggregate([
+  async findCRM ({dateStart, dateEnd, from, to, carrier, page, limit}) {
+    dateStart = +dateStart;
+    dateEnd = +dateEnd;
+    page = +page;
+    limit = +limit;
+
+    const fromArray = from.split(',');
+    const toArray = to.split(',');
+    const carrierArray = carrier.split(',');
+
+    let pipeline = [
       {
         $facet: {
           results: [
             {
               $match: {
                 deleted: false,
-                'date.start': { $gte: new Date(dateStart), $lte: new Date(dateEnd) },
+                'date.start': { $gte: new Date(dateStart) },
+              }
+            },
+            { $sort: { 'date.start': 1} },
+            Aggregate.populateOne('trips', 'trip', '_id'),
+            {
+              $unwind: '$trip'
+            },
+            ...Aggregate.skipAndLimit(page, limit)
+          ]
+        }
+      }
+    ];
+
+    let pipeline2 = [
+      {
+        $facet: {
+          results: [
+            {
+              $match: {
+                deleted: false,
+                'date.start': { $gte: new Date(dateStart) },
               }
             },
             { $sort: { 'date.start': 1} },
@@ -634,10 +666,38 @@ module.exports = {
           ]
         }
       }
-    ])
-      .then(data => {
-        return data[0].results;
-      });
+    ];
+
+    if (dateEnd !== 0) {      
+      pipeline.unshift({ $match: {'date.start': { $gte: new Date(dateStart), $lte: new Date(dateEnd) }}})
+      pipeline2.unshift({ $match: {'date.start': { $gte: new Date(dateStart), $lte: new Date(dateEnd) }}})
+    }
+    if (from !== 'null') {
+      pipeline.unshift({ $match: { departure:{ $in: fromArray } }})
+      pipeline2.unshift({ $match: { departure:{ $in: fromArray } }})
+    }
+    if (to !== 'null') {
+      pipeline.unshift({ $match: { destination: { $in: toArray } } })
+      pipeline2.unshift({ $match: { destination: { $in: toArray } } })
+    }
+    if (carrier !== 'null') {
+      pipeline.unshift({ $match: { carrier: { $in: carrierArray } } })
+      pipeline2.unshift({ $match: { carrier: { $in: carrierArray } } })
+    }
+
+    const ticketsTotal = await Ticket.aggregate(pipeline2)
+
+    return Ticket.aggregate(pipeline).then(data => {
+      data[0].total = []
+      data[0].total.push(ticketsTotal[0].results.length)
+      data[0].total.push(data[0].results)
+      return data[0].total;
+    });
+    
+  },
+
+  async getQuantity () {
+    return await Ticket.find( {deleted: false} ).estimatedDocumentCount();
   },
 
   async destroy (id) {
@@ -660,5 +720,5 @@ module.exports = {
     }
 
     return;
-  },
+  },  
 };
