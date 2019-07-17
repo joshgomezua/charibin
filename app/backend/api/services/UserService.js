@@ -49,13 +49,8 @@ module.exports = {
       {
         $facet: {
           results: [
-            {
-              $match: {
-                isDeleted: false
-              }
-            },
-            
-           
+            { $match: { isDeleted: false } },
+            { $sort: { name: 1, email: 1 } },
             ...Aggregate.skipAndLimit(page, limit)
           ],
           status: Aggregate.getStatusWithSimpleMatch(

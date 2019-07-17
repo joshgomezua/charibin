@@ -25,8 +25,8 @@ export interface IUser {
   role: string
   password: string
   isDeleted: boolean
-
 }
+
 export interface IScheduledTrip {
   _id: string
   active: boolean
@@ -76,8 +76,8 @@ export interface ITrip {
   discount: number
   duration: number
   fake: boolean
-  departure: string
-  destination: string
+  departure: ICity
+  destination: ICity
   carrier: string
   photo?: string
   price: number
@@ -86,10 +86,15 @@ export interface ITrip {
 
 export interface IOrder {
   _id: string
-  name: string
-  phone: string
-  birthDate: string
-  zipCode: string
+  buyer: {
+    name: string
+    phone: string
+    zipCode: string
+    birthDate: string
+    email: string
+    address: string
+    city: string
+  }
   selected: string
   deselected: string
   finalSelection: string
@@ -107,6 +112,7 @@ export interface IOrder {
   price: number
   sent: boolean
   createdAt: string
+  user: IUser
 }
 
 export enum DIRECTION_TYPE {

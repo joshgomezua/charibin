@@ -9,6 +9,16 @@
       white-space: normal;
       word-break: break-word;
     }
+    .ReactTable .rt-thead {
+      width: 1850px;
+    }
+
+    .ReactTable .rt-tbody {
+      width: 1850px;
+    }
+    .ReactTable .rt-td {
+      white-space: unset;
+    }
   }
 
   &__actions {

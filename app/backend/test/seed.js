@@ -39,7 +39,7 @@ const globals = {
   dataTemplate: testConfig.dataTemplate,
   data: helpers.createData(testConfig.dataTemplate),
 };
-
+const cities = [];
 loadServices();
 loadModels();
 
@@ -50,8 +50,21 @@ loadModels();
       ? 'does not exist' : 'dropped' }`));
 
   const trips = [];
+  
   await helpers.createUser(globals.data.administrator);
   console.log(`Create administrator: ${globals.data.administrator.email} ${globals.data.administrator.password}`);
+  
+  //Creating cities
+  for (let i = 0; i < 20; i++) {
+
+    console.log(`Creating Cities: ${i + 1}/${20}`);
+    const city = await helpers.createCity(helpers.dataClone(globals.dataTemplate.city));
+    cities.push(city)
+    await helpers.createCity(helpers.dataClone(globals.dataTemplate.city));
+
+    // console.log(`Creating Users: ${i + 1}/${20}`);
+    // await helpers.createUser(helpers.dataClone(globals.dataTemplate.user));
+  }
 
   // Create trips and tickets
   for (let i = 0; i < 5; i++) {
@@ -66,8 +79,8 @@ loadModels();
     for (let j = 0; j < 1; j++) {
     const ticketArrivalTemp = { ...helpers.dataClone(globals.dataTemplate.ticket), 
       trip: trips[i]._id,
-      departure: trips[i].departure,
-      destination: trips[i].destination
+      departure: trips[i].departure.name,
+      destination: trips[i].destination.name
     };
     const ticketArrival = await helpers.createTicket(ticketArrivalTemp);
 
@@ -78,8 +91,8 @@ loadModels();
           end: new Date(ticketArrival.date.end.getTime() + global.config.custom.time.day7).getTime()
         },
         trip: trips[i]._id,
-        departure: trips[i].destination,
-        destination: trips[i].departure
+        departure: trips[i].destination.name,
+        destination: trips[i].departure.name
       };
     const ticketDeparture = await helpers.createTicket(ticketDepartureTemp)
 
@@ -96,25 +109,13 @@ loadModels();
     await helpers.createOrder(helpers.dataClone(globals.dataTemplate.order));
   }
 
-  for (let i = 0; i < 20; i++) {
-
-    console.log(`Creating Cities: ${i + 1}/${20}`);
-    await helpers.createCity(helpers.dataClone(globals.dataTemplate.city));
-
-    // console.log(`Creating Users: ${i + 1}/${20}`);
-    // await helpers.createUser(helpers.dataClone(globals.dataTemplate.user));
-  }
-
   process.exit(0);
 })();
 
 function getRandomCities(){
-  const cities = ["Montreal", "Toronto", "Ottawa", "Quebec", "Ontario", "Vancouver",
-"Paris", "Marseille", "Lyon", "Toulouse", "Nice", "Nantes",
-"London", "Manchester", "Bristol"];
-
   return cities[Math.floor(Math.random() * cities.length)];
 }
+
 function getQuantity(ticket) {
   return ticket.quantity;
 }

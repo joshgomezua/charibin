@@ -6,6 +6,7 @@ const moment = require('moment');
 const dataTemplate = {
   administrator: {
     email: 'admin@user.com',
+    name: 'sponteous',
     role: 'Administrator',
     password: '22AA@@aaasasd'
   },
@@ -30,8 +31,6 @@ const dataTemplate = {
 
 
   trip: {
-    departure: faker.address.city,
-    destination: faker.address.city,
     carrier: 'Flexibus',
     photo: getImage,
     type: 'Train',
@@ -138,6 +137,13 @@ const dataTemplate = {
     departureTimePrice: faker.random.number({ min: 1, max: 5 }),
     deselectionPrice: () => faker.random.number({ min: 1, max: 100 }),
     totalPrice: () => faker.random.number({ min: 100, max: 1000 }),
+    user:{
+      email: faker.internet.exampleEmail,
+      name: faker.name.firstName,
+      role: 'Administrator',
+      password: faker.name.firstName
+    },
+
   },
 };
 

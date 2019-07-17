@@ -10,7 +10,7 @@ export const logIn = (data: Types.ILoginForm) =>
     headers: { 'Content-type': 'application/json' }
   })
 
-  export const resetUserPassword = (id: string, token: string) =>
+export const resetUserPassword = (id: string, token: string) =>
   axios.post(
     `${API_URL}/user/${id}`,
     
@@ -21,7 +21,6 @@ export const logIn = (data: Types.ILoginForm) =>
       }
     }
   )
-
 
 export const addUser = (data: Types.IUser, token: string) =>
     axios.post(`${API_URL}/user`, data, {
@@ -47,7 +46,6 @@ export const getUsers = (page: number, limit: number, token: string) =>
     }
   )
 
-
 export const getSingleUser = (id: string, token: string) =>
   axios.get(`${API_URL}/user/${id}`, { headers: { token } })
 
@@ -63,21 +61,17 @@ axios.put(
   }
 )
 
-
 export const updateUser = (id: string, data: Types.IEditUser, token: string) =>
   axios.put(`${API_URL}/user/${id}`, data, {
 
     headers: { 'Content-type': 'application/json', token }
   })
 
-
-
-
-export const addTrip = (data: Types.INewTrip, token: string) =>
-
-  axios.post(`${API_URL}/trip`, data, {
+export const addTrip = (data: Types.INewTrip, token: string) => {
+  return axios.post(`${API_URL}/trip`, data, {
       headers: { 'Content-type': 'application/json', token }
-})
+  })
+}
 
 export const getTrips = (
   page: number, 
@@ -241,6 +235,7 @@ export const editOrderState = (id: string, value: boolean, token: string) =>
       }
     }
   )
+
   export const addCity = (data: Types.ICity, token: string) => 
   axios.post(`${API_URL}/city`, data, {
     headers: { 'Content-type': 'application/json', token }

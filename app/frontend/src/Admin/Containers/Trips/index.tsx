@@ -1,15 +1,16 @@
 import React from 'react'
 
-import Header from '../../Components/Header'
+import TripHeader from '../../Components/TripHeader'
 import ExpandableTable from '../../Components/ExpandableTable'
 import Modal from '../../Components/Modal'
 import TripModal from '../../Components/TripModal'
 import DeleteModal from '../../Components/DeleteModal'
 import TimeSelectionModal from '../../Components/TimeSelectionModal'
+import ScheduleModal from 'src/Admin/Components/ScheduleModal';
 
 import withToast from '../../../Common/HOC/withToast'
 import { RouteComponentProps } from 'react-router-dom'
-import { MODAL_TYPE } from '../../Utils/adminTypes'
+import { MODAL_TYPE, ITrip, ICity } from '../../Utils/adminTypes'
 import { getToken } from '../../../Common/Utils/helpers'
 import {
   ADMIN_ROUTING,
@@ -17,6 +18,7 @@ import {
   SUCCESS,
   DEFAULT_TRIP_DATA,
   DEFAULT_TRIP_SCHEDULE,
+  DEFAULT_CITY_DATA,
 } from '../../Utils/constants'
 import {
   getTrips,
@@ -29,12 +31,12 @@ import {
   getSingleScheduledTrip,
   addSchedule,
   updateSchedule,
-  getOpposites
+  getOpposites,
+  getCities,
 } from '../../Utils/api'
 import { IState, IProps, INewData, IEditTimeSchedule, INewSchedule } from './types'
 import { columns } from './columns'
 import { rangeColumns } from './rangeColumns';
-import ScheduleModal from 'src/Admin/Components/ScheduleModal';
 import { SortingRule, ControlledStateOverrideProps } from 'react-table';
 
 class TripsContainer extends React.Component<
@@ -46,6 +48,10 @@ class TripsContainer extends React.Component<
   readonly state: IState = {
     trips: [], 
     oppositeTrips: [],
+    filtersFrom: [],
+    filtersTo: [],
+    results: [],
+    availableCities: [],
     total: 0,
     currentPage: 0,
     isLoading: true,
@@ -148,6 +154,18 @@ class TripsContainer extends React.Component<
         .catch(err => {
           this.props.showError(err, ERRORS.TRIP_FETCH)
         })
+
+      getTrips(0, 1000000, token, sort).then(res => {
+        this.setState({results: res.data.results})
+      }).catch(err => {
+        this.props.showError(err, ERRORS.TRIP_FETCH)
+      }) 
+
+      getCities(0, 10000, token).then(res => {
+        this.setState({availableCities: res.data.results})
+      }).catch(err => {
+        this.props.showError(err, ERRORS.CITY_FETCH)
+      })
     }
   }
 
@@ -204,8 +222,14 @@ class TripsContainer extends React.Component<
   handleAddTrip = (data: INewData) => {
     const token = getToken()
     const { currentPage } = this.state
+
+    const destinationCity: ICity = this.state.availableCities.find(city => {return city._id == data.destination._id}) || DEFAULT_CITY_DATA
+    const departureCity: ICity = this.state.availableCities.find(city => {return city._id == data.departure._id}) || DEFAULT_CITY_DATA
+
     const newTrip: INewData = {
       ...data,
+      destination: destinationCity,
+      departure: departureCity,
       timeSelection: {
         defaultPrice: data.timeSelection.defaultPrice,
         _0to6AM: data.timeSelection.defaultPrice,
@@ -221,6 +245,7 @@ class TripsContainer extends React.Component<
       },
       isFromAPI: false,
     }
+
     this.setState({ isModalLoading: true })
     return addTrip(newTrip, token)
       .then(res => {
@@ -517,22 +542,65 @@ class TripsContainer extends React.Component<
   }
 
   render() {
+    let {trips, total} = this.state
     const {
-      trips,
-      total,
+      filtersFrom,
+      filtersTo,
+      results,
+      availableCities,
       isLoading,
       isModalLoading,
       editData,
       editSchedule,
       modal: { type: modalType, heading: modalHeading }
     } = this.state
+
+    const usedDeparture: string[] = [];
+    const usedDestination: string[] = [];
+
+    for(let index: number = 0; index < results.length; index++ ){
+      if(usedDeparture.includes(results[index].departure.name) == false){
+        usedDeparture.push(results[index].departure.name)
+      }
+      if(usedDestination.includes(results[index].destination.name) == false){
+        usedDestination.push(results[index].destination.name)
+      }
+    }
+
+    if (filtersFrom.length || filtersTo.length) {
+      let filteredTrips: ITrip[] = [];
+      for(let tripIndex: number = 0; tripIndex < results.length; tripIndex++){
+        if(filtersFrom.length) {
+          for(let index: number = 0; index < filtersFrom.length; index++){
+            if(results[tripIndex].departure.name.toLowerCase() == filtersFrom[index].toLowerCase()) {
+              filteredTrips.push(results[tripIndex]);
+            }
+          }
+        }
+        if(filtersTo.length) {
+          for(let index: number = 0; index < filtersTo.length; index++){
+            if(results[tripIndex].destination.name.toLowerCase() == filtersTo[index].toLowerCase() && filteredTrips.includes(results[tripIndex]) == false) {
+             filteredTrips.push(results[tripIndex]);
+            }
+          }
+        }
+      }
+      trips = filteredTrips
+      total = trips.length
+    }
+    
     return (
       <div className="spon-container">
-        <Header
+        <TripHeader
           title="Routes & Prices"
           handleOpenModal={this.handleOpenModal}
+          filterFrom={filtersFrom}
+          filterTo={filtersTo}
+          availableDepartures={usedDeparture}
+          availableDestinations={usedDestination}
+          changeFilterFrom={(e) => this.setState({filtersFrom: e})}
+          changeFilterTo={(e) => this.setState({filtersTo: e})}
         />
-
         <ExpandableTable
           data={trips}
           handleFetchData={this.handleFetchTableData}
@@ -563,6 +631,7 @@ class TripsContainer extends React.Component<
               isLoading={isModalLoading}
               closeModal={this.handleCloseModal}
               handleSubmit={this.handleAddTrip}
+              availableCities={availableCities}
             />
           ) : null}
 
@@ -572,6 +641,7 @@ class TripsContainer extends React.Component<
               editDate={editData}
               closeModal={this.handleCloseModal}
               handleEditTrip={this.handleEditTrip}
+              availableCities={availableCities}
             />
           ) : null}
 
