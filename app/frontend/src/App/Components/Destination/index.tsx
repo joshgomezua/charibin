@@ -53,7 +53,7 @@ export default class Destination extends Component<IProps, IState> {
         ? data.tickets
         .filter(
           (item: ITicket) =>
-            (item.departure === data.departure && item.destination === data.destination) &&
+            (item.departure === data.departure.name && item.destination === data.destination.name) &&
             moment
               .utc(item.date.start)
               .set({ hour: 0, minutes: 0, seconds: 0, milliseconds: 0 })
@@ -70,7 +70,7 @@ export default class Destination extends Component<IProps, IState> {
         ? data.tickets
         .filter(
           (item: ITicket) =>
-            (item.departure === data.destination && item.destination === data.departure) &&
+            (item.departure === data.destination.name && item.destination === data.departure.name) &&
             moment
               .utc(item.date.start)
               .set({ hour: 0, minutes: 0, seconds: 0, milliseconds: 0 })
@@ -176,7 +176,7 @@ export default class Destination extends Component<IProps, IState> {
         deselectionPrice: data.deselectionPrice,
         discount: data.discount,
         duration: data.duration,
-        photo: data.photo,
+        photo: data.destination.photo  || '',
         price: data.price,
         departure: data.departure,
         destination: data.destination,
@@ -248,7 +248,7 @@ export default class Destination extends Component<IProps, IState> {
             .format('YYYY-MM-DD')
         )
 
-        if (isStartSameFirst && ticket.departure === departure && ticket.destination === destination) {
+        if (isStartSameFirst && ticket.departure === departure.name && ticket.destination === destination.name) {
           total.start.push({
             id: ticket._id,
             name: `${moment
@@ -257,7 +257,7 @@ export default class Destination extends Component<IProps, IState> {
               .utc(ticket.date.end)
               .format('HH:mm')}`
           })
-        } else if (isStartSameSecond && ticket.departure === destination && ticket.destination === departure) {
+        } else if (isStartSameSecond && ticket.departure === destination.name && ticket.destination === departure.name) {
           total.end.push({
             id: ticket._id,
             name: `${moment
@@ -313,7 +313,7 @@ export default class Destination extends Component<IProps, IState> {
 
   render() {
     const { selected, deselect, data } = this.props
-    const { discount, duration, photo, price } = data
+    const { discount, duration, destination, price } = data
     const ticketsTypes = this.getTicketsType(
       data.type === 'trip' ? data.tickets : []
     )
@@ -329,7 +329,7 @@ export default class Destination extends Component<IProps, IState> {
             calendar ? 'shortest' : ''
           }`}>
           <span>{`SAVE ${discount}%`}</span>
-          <img src={photo} alt="bg" />
+          <img src={destination.photo} alt="bg" />
         </div>
         <div className="destination-bottom">
           <div className="destination-bottom-row">
@@ -379,7 +379,7 @@ export default class Destination extends Component<IProps, IState> {
               approx. {formatedDuration}
             </p>
           </div>
-          <p>{`${this.props.data.departure} - ${this.props.data.destination}`}</p>
+          <p>{`${this.props.data.departure.name} - ${this.props.data.destination.name}`}</p>
           <p className="destination-bottom-title">{name}</p>
           <p className="destination-bottom-luggage">Luggage included</p>
           <p className="destination-bottom-price">{`£ ${price}/person`}</p>
