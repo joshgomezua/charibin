@@ -409,8 +409,6 @@ module.exports = {
 
     const charge = await PaymentService.charge(finalCost, creditCardToken, buyerInfo, selectedTrip);
 
-    console.log('buyer', buyerInfo)
-
     await clearReservation(selectedTrip, owner);
     const order = await Order.create({
       buyer: {
