@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { IProps, IState, ITerritory, COLOR, IOptions } from './types'
+import { IProps, IState, ITerritory, COLOR, IOptions, IOption } from './types'
 import './styles.scss'
 import CalendarDoubleFilter from 'src/App/Components/CalendarDoubleFilter';
 import {default as Select} from 'react-dropdown-select'
@@ -101,8 +101,9 @@ class Sidebar extends React.Component<IProps, IState> {
     </StyledItem>
   );
 
-  customOptionRenderer = (option: IOptions) => (
+  customOptionRenderer = (option: IOption) => (
     <StyledOption>
+      {console.log('option', option)}
       Search:{" "}
       <a href={`https://www.google.com/search?q=${option.item.label}`} target="_blank">
         {" "}
@@ -121,9 +122,18 @@ class Sidebar extends React.Component<IProps, IState> {
     option.state.loading ? (
       <div>Loading...</div>
     ) : (
-      <div style={style}>
-        
-      </div>
+      <StyledContent>
+         {option.state.values && option.state.values.map((item: any) => {
+           console.log('item', item)
+           const options: IOption = {
+             item: item,
+             props: option.props,
+             state: option.state,
+             methods: option.methods
+           }
+           return option.props.optionRenderer(options)
+         })}
+      </StyledContent>
     );
 
   render() {
@@ -165,6 +175,7 @@ class Sidebar extends React.Component<IProps, IState> {
             multi
             itemRenderer={this.customItemRenderer}
             optionRenderer={this.customOptionRenderer}
+            contentRenderer={this.customContentRenderer}
             placeholder={'From'}
             options={filtersFrom} 
             value={filterFrom} 
@@ -204,9 +215,16 @@ class Sidebar extends React.Component<IProps, IState> {
   }
 }
 
-const style = {
-  overflow: 'scrollY'
-}
+const StyledContent = styled.div`
+  padding: 10px;
+  color: #555;
+  border-radius: 3px;
+  margin: 3px;
+  cursor: pointer;
+  height: 50px; 
+  overflow-y: scroll;
+
+`;
 
 const StyledItem = styled.div`
   padding: 10px;

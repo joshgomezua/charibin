@@ -48,3 +48,10 @@ export interface IOptions {
   state: any 
   methods: any
 }
+
+export interface IOption {
+  item: any
+  props: any
+  state: any 
+  methods: any
+}
