@@ -3,13 +3,12 @@ import Button from '../../../Common/Components/Button'
 import { default as Select } from 'react-dropdown-select'
 import { MODAL_TYPE } from '../../Utils/adminTypes'
 import { IProps, IState, COLOR, ITerritory } from './types'
-import data from './data'
 import './styles.scss'
 
 class TripHeader extends React.Component<IProps, IState> {
 
   readonly state: IState = {
-    selectedColor: COLOR.VIOLET
+    selectedColor: COLOR.VIOLET,
   }
 
   handleFiltersChange = (territories: ITerritory[], changeFilter: (filters: string[]) => void) => {
@@ -33,7 +32,7 @@ class TripHeader extends React.Component<IProps, IState> {
 
   render() {
     const {
-      selectedColor
+      selectedColor,
     } = this.state
   
     const {
@@ -42,8 +41,28 @@ class TripHeader extends React.Component<IProps, IState> {
       modal,
       handleOpenModal,
       filterFrom,
-      filterTo
+      filterTo,
+      availableDepartures,
+      availableDestinations
     } = this.props
+
+    let departureList: ITerritory[] = [];
+    for(let index: number = 0; index < availableDepartures.length; index++){
+      const option: any = {
+        value: index,
+        label: availableDepartures[index]
+      }
+      departureList.push(option) 
+    }
+
+    let destinationList: ITerritory[] = [];
+    for(let index: number = 0; index < availableDestinations.length; index++){
+      const option: any = {
+        value: index,
+        label: availableDestinations[index]
+      }
+      destinationList.push(option) 
+    }
 
     return (
       <div className="spon-admin-trip-header">
@@ -57,7 +76,7 @@ class TripHeader extends React.Component<IProps, IState> {
             <Select  className="spon-admin-trip-header__select__From"
                   multi
                   placeholder={'From'}
-                  options={data} 
+                  options={departureList} 
                   value={filterFrom} 
                   onChange={this.handleFiltersFromChange}
                   color={selectedColor}
@@ -69,7 +88,7 @@ class TripHeader extends React.Component<IProps, IState> {
               <Select className="spon-admin-trip-header__select__To"
                   multi
                   placeholder={'To'} 
-                  options={data} 
+                  options={destinationList} 
                   value={filterTo} 
                   onChange={this.handleFiltersToChange}
                   color={selectedColor}

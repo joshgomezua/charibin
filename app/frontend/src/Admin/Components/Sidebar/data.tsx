@@ -1,7 +1,5 @@
 
-/** Vaudrait mieux donner l'extension .ts plutot .js */
-
-const data = [
+export const data = [
     {
         value : 0,
         label : "Canada",
@@ -94,4 +92,13 @@ const data = [
     },
 ];
 
-export default data;
+export const carrier = [
+    {
+        value : 0,
+        label : "Flexibus",
+    },
+    {
+        value : 1,
+        label : "NoFlexBus",
+    }
+]

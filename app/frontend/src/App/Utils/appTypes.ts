@@ -1,4 +1,5 @@
 import { ITicket } from '../../Common/Utils/globalTypes'
+import { ICity } from 'src/Admin/Utils/apiTypes';
 
 export interface ITrip {
   _id: string
@@ -11,8 +12,8 @@ export interface ITrip {
   type: 'trip'
   dateStart?: number
   dateEnd?: number
-  departure: string,
-  destination: string
+  departure: ICity
+  destination: ICity
   info?: {
     arrivalTicketsQty: number
     departureTicketsQty: number
@@ -32,8 +33,8 @@ export interface ISelectedData {
   type: 'selectedTrid'
   arrivalTicket?: string
   departureTicket?: string
-  departure: string,
-  destination: string
+  departure: ICity,
+  destination: ICity
 }
 
 export interface IFinalSelected {

@@ -10,6 +10,7 @@ const ticketSchema = new Schema({
   reservedQuantity: Number,
   departure: String,
   destination: String,
+  carrier: String,
   type: { type: String, enum: global.config.custom.ticket.type },
   date: {
     start: Date,
@@ -22,6 +23,7 @@ const ticketSchema = new Schema({
     quantity: Number
   }],
   createdAt: { type: Date, default: Date.now }
+
 });
 
 module.exports = mongoose.model('Ticket', ticketSchema);

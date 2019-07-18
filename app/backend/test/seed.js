@@ -48,11 +48,13 @@ loadModels();
   for (const collection of Object.keys(mongoose.connection.collections))
     await mongoose.connection.collections[collection].drop((err) => console.log(`${collection} ${err
       ? 'does not exist' : 'dropped' }`));
-
-  const trips = [];
+  
+  
   
   await helpers.createUser(globals.data.administrator);
   console.log(`Create administrator: ${globals.data.administrator.email} ${globals.data.administrator.password}`);
+  
+  const trips = [];
   
   //Creating cities
   for (let i = 0; i < 20; i++) {
@@ -108,7 +110,7 @@ loadModels();
     console.log(`Creating Orders: ${i + 1}/${20}`);
     await helpers.createOrder(helpers.dataClone(globals.dataTemplate.order));
   }
-
+  
   process.exit(0);
 })();
 

@@ -527,6 +527,44 @@ class TripsContainer extends React.Component<
     }
   }
 
+  filterTrips = (trips: ITrip[], results: ITrip[], filtersFrom: string[], filtersTo: string[]) => {
+    if (filtersFrom.length || filtersTo.length) {
+      if(filtersFrom.length) {  
+        let filteredFromTrips: ITrip[] = [];
+        for(let tripIndex: number = 0; tripIndex < results.length; tripIndex++){
+          for(let index: number = 0; index < filtersFrom.length; index++){
+            if(results[tripIndex].departure.name.toLowerCase() == filtersFrom[index].toLowerCase()) {
+              filteredFromTrips.push(results[tripIndex]);
+            }
+          }
+        }
+        if(filtersTo.length) {
+          let filteredTrips: ITrip[] = [];
+          for(let tripIndex: number = 0; tripIndex < filteredFromTrips.length; tripIndex++){
+            for(let index: number = 0; index < filtersTo.length; index++){
+              if(filteredFromTrips[tripIndex].destination.name.toLowerCase() == filtersTo[index].toLowerCase()) {
+                  filteredTrips.push(filteredFromTrips[tripIndex]);
+              }
+            }
+          }
+          return filteredTrips
+        } else { return filteredFromTrips }
+
+      } else if ( filtersTo.length ){ 
+          let filteredToTrips: ITrip[] = [];
+          for(let tripIndex: number = 0; tripIndex < results.length; tripIndex++){
+            for(let index: number = 0; index < filtersTo.length; index++){
+              if(results[tripIndex].destination.name.toLowerCase() == filtersTo[index].toLowerCase()) {
+                filteredToTrips.push(results[tripIndex]);
+              }
+            }
+          }
+          return filteredToTrips
+        }
+    }
+    return trips
+  }
+
   compareDate = (startDate: Date, endDate: Date, trip: any) => {
     const existingStartDate: Date = new Date(trip.date.start)
     const existingEndDate: Date = new Date(trip.date.end)
@@ -556,33 +594,20 @@ class TripsContainer extends React.Component<
       modal: { type: modalType, heading: modalHeading }
     } = this.state
 
-    if (filtersFrom.length || filtersTo.length) {
-      let filteredTrips: ITrip[] = [];
-      for(let tripIndex: number = 0; tripIndex < results.length; tripIndex++){
-        if(filtersFrom.length) {
-          for(let index: number = 0; index < filtersFrom.length; index++){
-            if(results[tripIndex].departure.name.toLowerCase() === filtersFrom[index].toLowerCase()) {
-              filteredTrips.push(results[tripIndex]);
-            }
-          }
-        }
-        if(filtersTo.length) {
-          for(let index: number = 0; index < filtersTo.length; index++){
-            if(results[tripIndex].destination.name.toLowerCase() === filtersTo[index].toLowerCase() && filteredTrips.includes(results[tripIndex]) == false) {
-             filteredTrips.push(results[tripIndex]);
-            }
-          }
-        }
+    const usedDeparture: string[] = [];
+    const usedDestination: string[] = [];
+
+    for(let index: number = 0; index < results.length; index++ ){
+      if(usedDeparture.includes(results[index].departure.name) == false){
+        usedDeparture.push(results[index].departure.name)
       }
-      trips = filteredTrips
-      total = trips.length
+      if(usedDestination.includes(results[index].destination.name) == false){
+        usedDestination.push(results[index].destination.name)
+      }
     }
-    trips = trips.filter((trip) => {
-        if (trip.destination.isEnabled) {
-          return trip
-        }
-        return 
-    })
+
+    trips = this.filterTrips(trips, results, filtersFrom, filtersTo)
+    total = trips.length
     
     return (
       <div className="spon-container">
@@ -591,6 +616,8 @@ class TripsContainer extends React.Component<
           handleOpenModal={this.handleOpenModal}
           filterFrom={filtersFrom}
           filterTo={filtersTo}
+          availableDepartures={usedDeparture}
+          availableDestinations={usedDestination}
           changeFilterFrom={(e) => this.setState({filtersFrom: e})}
           changeFilterTo={(e) => this.setState({filtersTo: e})}
         />

@@ -4,6 +4,8 @@ export interface IProps {
   title: string
   filterFrom: string[]
   filterTo: string[]
+  availableDepartures: string[]
+  availableDestinations: string[]
   heading?: string
   modal?: MODAL_TYPE
   query?: string
@@ -23,5 +25,4 @@ export enum COLOR {
 export interface ITerritory {
   value: number
   label: string
-  country: string
 }

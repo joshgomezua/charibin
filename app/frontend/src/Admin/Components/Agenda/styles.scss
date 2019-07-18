@@ -8,6 +8,10 @@
   border-collapse: collapse;
   position: relative;
 
+  &__pagination {
+    position: bottom;
+  }
+
   &__error {
     display: flex;
     flex-direction: column;
