@@ -116,7 +116,11 @@ class NavBar extends Component<IProps, IState> {
               <img src={userIcon} alt="" />
               <span>{email.toUpperCase()}</span>
             </div>
-
+            <NavLink
+              className={classWithBurger('navbar__link')}
+              to={`${ADMIN_ROUTING.MAIN}${ADMIN_ROUTING.ACCOUNT}`}>
+              ACCOUNT
+            </NavLink>
             <button
               onClick={openPopup}
               className="navbar__link navbar__link--logout">

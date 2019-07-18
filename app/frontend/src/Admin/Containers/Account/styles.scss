@@ -1,0 +1,105 @@
+@import '../../../Common/Utils/Styles/mixin.scss';
+@import '../../../Common/Utils/Styles/colors.scss';
+
+.spon-account {
+  position: relative;
+  padding-top: 3rem;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $bg;
+
+  &__card {
+    width: 40rem;
+    min-height: 30rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding-bottom: 2rem;
+    padding-top: 1.2rem;
+    padding-left: 6rem;
+    padding-right: 6rem;
+    box-shadow: 0 9px 31px 0 $shadow;
+    background-color: $header;
+    border-radius: 3px;
+    overflow: hidden;
+
+    @include respond(phone) {
+      box-shadow: none;
+    }
+  }
+
+  &__form {
+    width: 100%;
+  }
+
+  &__submit {
+    display: flex;
+    justify-content: center;
+    padding: 0 1rem;
+  }
+
+  &__heading {
+    color: $dark-blue;
+    font-size: rc(28);
+    font-weight: 600;
+  }
+
+  &__input-container {
+    margin-bottom: 1rem;
+
+    &--last {
+      margin-bottom: 2rem;
+    }
+  }
+
+  &__input-container-email {
+    margin-bottom: 2rem;
+
+    input {
+      display: -ms-flexbox;
+      display: flex;
+      width: 100%;
+      height: 3rem;
+      border: solid 1px #2e333b;
+      background-color: $white;
+      font-size: 0.875rem;
+      color: $gray-icon;
+      padding: 0 1rem;
+    }
+
+    &:disabled {
+      background-color: $disabled;
+      color: $disable-span;
+    }
+
+    label{
+      display: block;
+      margin-bottom: 0.625rem;
+      font-size: 1rem;
+      color: #2e333b;
+    }
+
+  }
+
+
+  &__error {
+    color: $error-red;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  &__logo {
+    width: 15rem;
+    margin-bottom: 2rem;
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+  }
+}
