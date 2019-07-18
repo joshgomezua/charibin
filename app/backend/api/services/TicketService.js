@@ -10,6 +10,7 @@ const redis = require('redis');
 const client1 = redis.createClient({ host: global.config.connection.redis.host, db: 1 });
 const subscriber1 = redis.createClient({ host: global.config.connection.redis.host, db: 1 });
 const custom = require('../../config/custom')
+const ObjectId = require('mongoose').Types.ObjectId;
 
 client1.send_command('config', ['set','notify-keyspace-events','Ex'], onExpiredTicket);
 
@@ -96,8 +97,6 @@ function setMonday (date) {
 
 async function createManyTickets (data) {
   if(data.repeat.dateEnd <= data.date.start) throw { status: 400, message: 'TICKET.REPEAT.BAD.DATEEND' };
-  if(!data.repeat.days.includes(new Date(data.date.start).getDay())) throw { status: 400, message: 'TICKET.REPEAT.BAD.DATESTART' };
-
   // set correctly hour
   data.repeat.dateEnd = new Date(data.repeat.dateEnd).setHours(new Date(data.date.start).getHours(), 0, 0, 0);
 
@@ -105,6 +104,7 @@ async function createManyTickets (data) {
     start: setMonday(data.date.start),
     end: setMonday(data.date.end)
   };
+
   let seedDate;
   const updateMessages = [];
 
@@ -147,8 +147,8 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
     active: true,
     deleted: false,
     quantity: { $gte: quantity },
-    departure: trip.departure,
-    destination: trip.destination,
+    departure: trip.departure.name,
+    destination: trip.destination.name,
     'date.start': { $gte: new Date(selectedTrip.dateStart).setHours(0,0,0,0), $lte: new Date(selectedTrip.dateStart).setHours(23,59,59,999) }
   }).limit(1);
   if(!arrivalTicket) throw { status: 404, message: 'TICKET.ARRIVAL.NOT.EXIST%', args: [new Date(selectedTrip.dateStart).toDateString()] };
@@ -157,8 +157,8 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
     active: true,
     deleted: false,
     quantity: { $gte: quantity },
-    departure: trip.destination,
-    destination: trip.departure,
+    departure: trip.destination.name,
+    destination: trip.departure.name,
     'date.start': { $gte: new Date(selectedTrip.dateEnd).setHours(0,0,0,0), $lte: new Date(selectedTrip.dateEnd).setHours(23,59,59,999) }
   }).limit(1);
   if(!departureTicket) throw { status: 404, message: 'TICKET.DEPARTURE.NOT.EXIST%', args: [new Date(selectedTrip.dateEnd).toDateString()] };
@@ -319,7 +319,7 @@ module.exports = {
   async create (data) {
     const trip = await Trip.findOne({ _id: data.trip, deleted: false });
     if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
-
+    data['carrier'] = trip.carrier;
     if (data.departureHours.length) {
       for (let hours of data.departureHours) {
         data.date = hours
@@ -388,7 +388,7 @@ module.exports = {
     return TicketOwner.findOne({ owner });;
   },
 
-  async buy ({ owner, creditCardToken, buyerInfo,user }) {
+  async buy ({ owner, creditCardToken, buyerInfo, }) {
     const ownerInfo = await TicketOwner.findOne({ owner });
     if(!ownerInfo) throw { status: 404, message: 'BUY.OWNER.NOT.EXIST' };
 
@@ -408,7 +408,6 @@ module.exports = {
     const charge = await PaymentService.charge(finalCost, creditCardToken, buyerInfo, selectedTrip);
 
     await clearReservation(selectedTrip, owner);
-
     const order = await Order.create({
       buyer: {
         name: buyerInfo.middleName ? `${buyerInfo.firstName} ${buyerInfo.middleName} ${buyerInfo.lastName}` : `${buyerInfo.firstName} ${buyerInfo.lastName}`,
@@ -420,10 +419,10 @@ module.exports = {
         zipCode: buyerInfo.zipCode,
       },
       stripeChargeId: charge.id,
-      selected: ownerInfo.trips.filter(x => !x.deselected).map(x => x.trip.destination).join(', '),
-      deselected: ownerInfo.trips.filter(x => x.deselected).map(x => x.trip.destination).join(', '),
-      finalSelection: selectedTrip.trip.destination,
-      finalDestination: selectedTrip.trip.destination,
+      selected: ownerInfo.trips.filter(x => !x.deselected).map(x => x.trip.destination.name).join(', '),
+      deselected: ownerInfo.trips.filter(x => x.deselected).map(x => x.trip.destination.name).join(', '),
+      finalSelection: selectedTrip.trip.destination.name,
+      finalDestination: selectedTrip.trip.destination.name,
       date: {
         arrival: {
           start: selectedTrip.arrivalTicket.date.start,
@@ -440,9 +439,7 @@ module.exports = {
       departureTimePrice: selectedTrip.departureTimePrice,
       deselectionPrice: deselectionPrice,
       totalPrice: finalCost,
-      user: user
     });
-
     await Ticket.findOneAndUpdate({ _id: selectedTrip.arrivalTicket._id, active: true, deleted: false, quantity: { $gte: ownerInfo.quantity } }, {
       $inc: { soldTickets : ownerInfo.quantity }
     });
@@ -456,7 +453,7 @@ module.exports = {
 
 
     return {
-      name: selectedTrip.trip.destination,
+      name: selectedTrip.trip.destination.name,
       photo: selectedTrip.trip.photo,
       email: buyerInfo.email,
       arrivalTicket: {
@@ -537,10 +534,10 @@ module.exports = {
 
    hasEnoughTickets (trip) {
     const departureTickets =  trip.tickets.filter((ticket) => {
-      return (trip.departure === ticket.departure && trip.destination === ticket.destination)
+      return (trip.departure.name === ticket.departure && trip.destination.name === ticket.destination)
     })
     const destinationTickets =  trip.tickets.filter((ticket) => {
-      return (trip.departure === ticket.destination && trip.destination === ticket.departure)
+      return (trip.departure.name === ticket.destination && trip.destination.name === ticket.departure)
     })
     return (departureTickets.length && destinationTickets.length) 
   },
@@ -615,15 +612,45 @@ module.exports = {
     return res;
   },
 
-  async findCRM (dateStart, dateEnd) {
-    return Ticket.aggregate([
+  async findCRM ({dateStart, dateEnd, from, to, carrier, page, limit}) {
+    dateStart = +dateStart;
+    dateEnd = +dateEnd;
+    page = +page;
+    limit = +limit;
+
+    const fromArray = from.split(',');
+    const toArray = to.split(',');
+    const carrierArray = carrier.split(',');
+
+    let pipeline = [
       {
         $facet: {
           results: [
             {
               $match: {
                 deleted: false,
-                'date.start': { $gte: new Date(dateStart), $lte: new Date(dateEnd) },
+                'date.start': { $gte: new Date(dateStart) },
+              }
+            },
+            { $sort: { 'date.start': 1} },
+            Aggregate.populateOne('trips', 'trip', '_id'),
+            {
+              $unwind: '$trip'
+            },
+            ...Aggregate.skipAndLimit(page, limit)
+          ]
+        }
+      }
+    ];
+
+    let pipeline2 = [
+      {
+        $facet: {
+          results: [
+            {
+              $match: {
+                deleted: false,
+                'date.start': { $gte: new Date(dateStart) },
               }
             },
             { $sort: { 'date.start': 1} },
@@ -634,10 +661,38 @@ module.exports = {
           ]
         }
       }
-    ])
-      .then(data => {
-        return data[0].results;
-      });
+    ];
+
+    if (dateEnd !== 0) {      
+      pipeline.unshift({ $match: {'date.start': { $gte: new Date(dateStart), $lte: new Date(dateEnd) }}})
+      pipeline2.unshift({ $match: {'date.start': { $gte: new Date(dateStart), $lte: new Date(dateEnd) }}})
+    }
+    if (from !== 'null') {
+      pipeline.unshift({ $match: { departure:{ $in: fromArray } }})
+      pipeline2.unshift({ $match: { departure:{ $in: fromArray } }})
+    }
+    if (to !== 'null') {
+      pipeline.unshift({ $match: { destination: { $in: toArray } } })
+      pipeline2.unshift({ $match: { destination: { $in: toArray } } })
+    }
+    if (carrier !== 'null') {
+      pipeline.unshift({ $match: { carrier: { $in: carrierArray } } })
+      pipeline2.unshift({ $match: { carrier: { $in: carrierArray } } })
+    }
+
+    const ticketsTotal = await Ticket.aggregate(pipeline2)
+
+    return Ticket.aggregate(pipeline).then(data => {
+      data[0].total = []
+      data[0].total.push(ticketsTotal[0].results.length)
+      data[0].total.push(data[0].results)
+      return data[0].total;
+    });
+    
+  },
+
+  async getQuantity () {
+    return await Ticket.find( {deleted: false} ).estimatedDocumentCount();
   },
 
   async destroy (id) {
@@ -660,5 +715,5 @@ module.exports = {
     }
 
     return;
-  },
+  },  
 };

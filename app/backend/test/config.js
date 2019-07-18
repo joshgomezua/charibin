@@ -69,6 +69,7 @@ const dataTemplate = {
     reservedQuantity: 0,
     departure: '',
     destination: '',
+    carrier: 'Flexibus',
     type: () => randomOneWord('type'),
     date: {
       __tmpStart: 0,
@@ -136,13 +137,6 @@ const dataTemplate = {
     departureTimePrice: faker.random.number({ min: 1, max: 5 }),
     deselectionPrice: () => faker.random.number({ min: 1, max: 100 }),
     totalPrice: () => faker.random.number({ min: 100, max: 1000 }),
-    user:{
-      email: faker.internet.exampleEmail,
-      name: faker.name.firstName,
-      role: 'Administrator',
-      password: faker.name.firstName
-    },
-
   },
 };
 

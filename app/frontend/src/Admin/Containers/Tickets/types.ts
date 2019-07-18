@@ -21,12 +21,15 @@ export interface IState {
     end: Date | undefined
   }
   modalOptions: any[]
+  pagination: IPagination
+  requestInfo: IRequestInfo
 }
 
 export interface IProps {
   selectedDate: Date
   filters: string[]
   filterFrom: string[]
+  filterCarrier: string[]
   filterTo: string []
   changeFilters: (filters: string[]) => void
   changeFilterFrom: (filterFrom: string[]) => void
@@ -51,7 +54,25 @@ export interface IEditedData {
 }
 
 export interface ITripData {
-  _id: string,
-  departure: string,
+  _id: string
+  departure: string
   destination: string
+}
+
+export interface IPagination {
+  qtyOfItems: number
+  qtyTotal: number
+  pageLimit: number
+  currentPage: number
+  index: number
+}
+
+export interface IRequestInfo {
+  initialDate: Date
+  finalDate: Date | '0'
+  from: string,
+  to: string,
+  carrier: string,
+  page: number,
+  limit: number
 }

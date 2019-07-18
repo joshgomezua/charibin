@@ -16,7 +16,6 @@ module.exports = {
       const pathRelative = [...dirPath, file].join('/');
 
       const isDir = fs.statSync(pathAbsolute).isDirectory();
-
       if(isDir) this.loadModules(pathRelative, app);
       else require(`../../${pathRelative}`)(app);
     }
@@ -38,6 +37,7 @@ module.exports = {
     }
 
     app.use((req, res, next) => {
+
       for (let respName in customResponses) {
         res[respName] = customResponses[respName].bind(res);
       }

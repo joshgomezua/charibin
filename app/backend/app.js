@@ -32,7 +32,7 @@ function connect () {
   user: 'username',
   pass: 'password',
   keepAlive: true,
-  }); */
+  });  */
 }
 
 // Every time when req comming clear console screen

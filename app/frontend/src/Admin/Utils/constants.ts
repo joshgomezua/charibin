@@ -18,6 +18,7 @@ export const ERRORS = {
   TRIP_EDIT: 'Error when edit trip',
   TICKET_ADD: 'Error when add ticket',
   TICKET_FETCH: `Can't fetch tickets list`,
+  TICKET_FETCH_QUANTITY: `Can't fetch tickets quantity`,
   TICKET_DELETE: 'Error when delete ticket',
   TICKET_EDIT: 'Error when edit ticket',
   CITY_FETCH: `Cant't fetch city list`,

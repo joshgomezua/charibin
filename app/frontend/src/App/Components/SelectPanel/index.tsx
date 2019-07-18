@@ -38,7 +38,7 @@ const SelectPanel: React.SFC<IProps> = ({
 
           return !isSome ? (
             <div key={index} className="selectpanel-images-img">
-              <img src={item.photo} alt="image" />
+              <img src={item.destination.photo} alt="image" />
             </div>
           ) : null
         })}

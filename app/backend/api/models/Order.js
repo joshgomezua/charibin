@@ -36,15 +36,6 @@ const orderSchema = new Schema({
   totalPrice: Number,
   sent: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
-  user: {
-    email: { type: String, unique: true },
-    name: String,
-    role: { type: String, enum: ['Administrator', 'Modify', 'Read Only', 'Client'] },
-    password: String,
-    createdAt: { type: Date, default: Date.now },
-    active: { type: Boolean, default: true },
-    isDeleted:{ type: Boolean, default: false },
-  }
 });
 
 module.exports = mongoose.model('Order', orderSchema);

@@ -4,7 +4,6 @@ import moment from 'moment'
 import arrow from '../../../Common/Utils/Media/arrow.svg'
 import './styles.scss'
 import { IProps, IState } from './types'
-import { debounce } from 'lodash';
 import Button from 'src/Common/Components/Button';
 
 export default class CalendarDoubleFilter extends React.Component<IProps, IState> {
@@ -49,14 +48,6 @@ export default class CalendarDoubleFilter extends React.Component<IProps, IState
   }
 
   render() {
-    const debouncedChange = debounce(
-        ({ activeStartDate, view }: { activeStartDate: Date; view: string }) => {
-          if (view === 'month' && !this.state.rangeIsDisplayed) {
-            this.props.handleChangeDate(activeStartDate)
-          }
-        },
-        300
-    )
 
     return (
       <div className="calendarDoubleFilter">
@@ -72,7 +63,6 @@ export default class CalendarDoubleFilter extends React.Component<IProps, IState
           minDetail="year"
           nextLabel={<img src={arrow} className="calendarDoubleFilter-arrow_next" />}
           prevLabel={<img src={arrow} className="calendarDoubleFilter-arrow_prev" />}
-          onActiveDateChange={debouncedChange}
           selectRange={true}
           value={this.props.value}
           onClickDay={this.handleClickSelectRange}

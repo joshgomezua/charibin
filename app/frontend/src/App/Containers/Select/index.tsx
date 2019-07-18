@@ -132,8 +132,8 @@ class SelectContainer extends Component<
       } else {
         return {
           id: selectedItem.tripId,
-          departure: selectedItem.departure,
-          destination: selectedItem.destination,
+          departure: selectedItem.departure.name,
+          destination: selectedItem.destination.name,
           dateStart: selectedItem.dateStart,
           dateEnd: selectedItem.dateEnd
         }

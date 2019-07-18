@@ -169,8 +169,8 @@ class TicketModal extends React.Component<IProps, IState> {
               reservedQuantity: values.reservedQuantity,
               type: values.type,
               date: {
-                start: +'',
-                end: +''
+                start: +tempDepartureHours[0].start,
+                end: +tempDepartureHours[0].end
               },
               active: values.active,
               repeat: {
@@ -203,9 +203,10 @@ class TicketModal extends React.Component<IProps, IState> {
             values,
             setFieldValue
           }: FormikProps<IFormValues>) => (
-            <Form noValidate>
+            <Form noValidate>           
               <div className="spon-ticket-modal__row">
                 <div className="spon-ticket-modal__input-cnt spon-ticket-modal__input-cnt--big">
+                
                   <DropDownTicket
                     saveAsObject
                     id="trip"
@@ -223,8 +224,9 @@ class TicketModal extends React.Component<IProps, IState> {
                     component="div"
                     className="spon-ticket-modal__error"
                   />
+                  
                 </div>
-                <div className="spon-ticket-modal__input-cnt spon-ticket-modal__input-cnt--big">
+                <div className="spon-ticket-modal__input-cnt spon-ticket-modal__input-cnt--big">           
                   <DropDownTicket
                     saveAsObject
                     id="trip"
@@ -268,7 +270,7 @@ class TicketModal extends React.Component<IProps, IState> {
                     className="spon-ticket-modal__error"
                   />
                 </div>
-                <div className="spon-ticket-modal__input-cnt spon-ticket-modal__input-cnt--small">
+                <div className="spon-ticket-modal__input-cnt spon-ticket-modal__input-cnt--small">                
                   <Field
                     type="number"
                     name="quantity"
@@ -282,9 +284,9 @@ class TicketModal extends React.Component<IProps, IState> {
                     component="div"
                     className="spon-ticket-modal__error"
                   />
+                  
                 </div>
               </div>
-
               <div className="spon-ticket-modal__row">
                 <div className="spon-ticket-modal__input-cnt">
                   <DatePicker

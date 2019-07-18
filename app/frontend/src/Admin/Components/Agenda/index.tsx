@@ -7,8 +7,9 @@ import Button from '../../../Common/Components/Button'
 
 import { MODAL_TYPE } from '../../Utils/adminTypes'
 import { ITicket } from '../../../Common/Utils/globalTypes'
-import { IProps, DIRECTION } from './types'
+import { IProps } from './types'
 import './styles.scss'
+import Pagination from 'src/App/Components/Pagination';
 
 const Agenda: React.SFC<IProps> = ({
   tickets,
@@ -17,42 +18,22 @@ const Agenda: React.SFC<IProps> = ({
   error,
   retry,
   filters,
-  filterFrom,
-  filterTo,
   changeActiveState,
-  openEditModal
+  openEditModal,
+  pagination,
+  handlePaginationClick
 }) => {
 
-  const getFilteredTickets = () => {
-    const areFromToFiltersUsed = (
-      filterFrom.length && filterFrom ||
-       filterTo.length && filterTo
-    )
-       
-    if (areFromToFiltersUsed){
-      return getFilteredFromToTickets(
-        getFilteredFromToTickets(tickets, filterFrom, DIRECTION.DEPARTURE),
-        filterTo,
-        DIRECTION.DESTINATION
-        )
-    }
-    return tickets;
-  }
-  
-  const getFilteredFromToTickets = (tickets: ITicket[], filters: string[], direction: string) => {
-    if (filters.length) {
-      return tickets.filter(
-        (ticket: ITicket) =>
-          filters.includes(ticket[direction])
-      )
-    }
-    return tickets
+
+
+  const handlePaginationOnClick = (page: number) => {
+    handlePaginationClick(page)
   }
 
   const prepareRows = () => {
-    const filtered = getFilteredTickets()
+    const filtered = tickets
     const segregated = filtered.reduce((acc, ticket: ITicket) => {
-      const day = moment.utc(ticket.date.start).format('D')
+      const day = moment.utc(ticket.date.start).format('Y:M:D')
       if (day in acc) {
         acc[day].push(ticket)
       } else {
@@ -63,7 +44,7 @@ const Agenda: React.SFC<IProps> = ({
     if (filters.length === 0) {
       return null
     } else {
-      return Object.keys(segregated).map(key => {
+      const row = Object.keys(segregated).map(key => {
         return segregated[key].map((ticket: ITicket, index: number) => (
           <AgendaItem
             key={index}
@@ -76,6 +57,8 @@ const Agenda: React.SFC<IProps> = ({
           />
         ))
       })
+
+      return row
     }
   }
 
@@ -163,13 +146,26 @@ const Agenda: React.SFC<IProps> = ({
             <tr>
               <td colSpan={5}>
                 <div className="spon-agenda__error">
-                  <p>No courses are available this month.</p>
+                  <p>No tickets are available this month.</p>
                 </div>
               </td>
             </tr>
           )}
-        {!loading && !error && tickets.length > 0 && prepareRows()}
+        {!loading && !error && tickets.length > 0 && prepareRows() 
+        }
       </tbody>
+      <tfoot>
+      <tr className="spon-agenda__pagination">
+            <td>
+              <div >
+                <Pagination 
+                  pagination={pagination}
+                  onChange={handlePaginationOnClick}
+                />
+              </div>
+            </td>
+          </tr>
+      </tfoot>
     </table>
   )
 }
