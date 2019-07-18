@@ -317,7 +317,6 @@ async function bookWithTime ({ quantity, selectedTrip, owner }) {
 
 module.exports = {
   async create (data) {
-    console.table(data)
     const trip = await Trip.findOne({ _id: data.trip, deleted: false });
     if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
     data['carrier'] = trip.carrier;
