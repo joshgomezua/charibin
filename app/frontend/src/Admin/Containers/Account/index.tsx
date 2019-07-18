@@ -25,7 +25,6 @@ class AccountContainer extends React.Component<
   }
 
   render() {
-    // const { loginUser } = this.props
     const userData: any = getUserData();
     console.log(userData)
 
