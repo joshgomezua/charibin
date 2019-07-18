@@ -131,7 +131,7 @@ module.exports = {
   },
 
   async updateOne (id, data) {
-   await Trip.updateMany({ 'destination._id': ObjectId(id) }, 
+   await Trip.updateMany({ 'destination._id':id }, 
    { $set: { 'destination.isEnabled': data.isEnabled }},{ new: true });
    
    return City.findByIdAndUpdate(id, data, { new: true });

@@ -622,7 +622,12 @@ class TripsContainer extends React.Component<
           changeFilterTo={(e) => this.setState({filtersTo: e})}
         />
         <ExpandableTable
-          data={trips}
+          data={trips.filter((trip)=> {
+            if (trip.destination.isEnabled) {
+              return trip
+            }
+            return
+          })}
           handleFetchData={this.handleFetchTableData}
           columns={columns(
             this.handleOpenDeleteTripModal,
