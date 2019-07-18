@@ -101,6 +101,31 @@ class Sidebar extends React.Component<IProps, IState> {
     </StyledItem>
   );
 
+  customOptionRenderer = (option: IOptions) => (
+    <StyledOption>
+      Search:{" "}
+      <a href={`https://www.google.com/search?q=${option.item.label}`} target="_blank">
+        {" "}
+        {option.item.label}
+      </a>{" "}
+      <span
+        onClick={() => option.methods.removeItem(null, option.item)}
+        title="please don't 🥺"
+      >
+        &times;
+      </span>
+    </StyledOption>
+  );
+
+  customContentRenderer = (option: IOptions) =>
+    option.state.loading ? (
+      <div>Loading...</div>
+    ) : (
+      <div style={style}>
+        
+      </div>
+    );
+
   render() {
 
     const {
@@ -138,9 +163,8 @@ class Sidebar extends React.Component<IProps, IState> {
         <Select
         className="spon-sidebar__select__From"
             multi
-            searchable
-            autoFocus
             itemRenderer={this.customItemRenderer}
+            optionRenderer={this.customOptionRenderer}
             placeholder={'From'}
             options={filtersFrom} 
             value={filterFrom} 
@@ -180,6 +204,10 @@ class Sidebar extends React.Component<IProps, IState> {
   }
 }
 
+const style = {
+  overflow: 'scrollY'
+}
+
 const StyledItem = styled.div`
   padding: 10px;
   color: #555;
@@ -189,6 +217,37 @@ const StyledItem = styled.div`
 
   :hover {
     background: #f2f2f2;
+  }
+`;
+
+const StyledOption = styled.span`
+  padding: 3px 10px;
+  color: #555;
+  border-radius: 3px;
+  margin: 3px;
+  cursor: pointer;
+  display: inline-flex;
+  flex-direction: row;
+  border: 1px solid #555;
+  transition: all 1s ease-in;
+
+  span {
+    display: none;
+    transition: all 1s ease-in;
+  }
+
+  a {
+    margin: 0 5px;
+  }
+
+  :hover {
+    background: #f2f2f2;
+
+    span {
+      display: inline;
+      margin: 0 0 0 5px;
+      color: red;
+    }
   }
 `;
 
