@@ -1,3 +1,4 @@
+
 export interface IProps {
   filterFrom: string[]
   filterTo: string[]
@@ -21,6 +22,7 @@ export interface IState {
   filtersFrom: ITerritory[]
   filtersTo: ITerritory[]
   filtersCarrier: ICarrier[]
+  option: IOptions
 }
 
 export interface ITerritory {
@@ -37,4 +39,12 @@ export interface ICarrier {
 export enum COLOR {
   BLUE = 'blue',
   GREEN = 'green'
+}
+
+export interface IOptions {
+  item: any
+  itemIndex: any
+  props: any
+  state: any 
+  methods: any
 }

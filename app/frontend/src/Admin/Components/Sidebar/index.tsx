@@ -1,11 +1,13 @@
 import React from 'react'
 
-import { IProps, IState, ITerritory, COLOR } from './types'
+import { IProps, IState, ITerritory, COLOR, IOptions } from './types'
 import './styles.scss'
 import CalendarDoubleFilter from 'src/App/Components/CalendarDoubleFilter';
 import {default as Select} from 'react-dropdown-select'
 import { getTicketFilters } from 'src/Admin/Utils/api';
 import { getToken } from 'src/Common/Utils/helpers';
+import styled from 'styled-components'
+
 
 class Sidebar extends React.Component<IProps, IState> {
 
@@ -14,7 +16,14 @@ class Sidebar extends React.Component<IProps, IState> {
     selectedColor: COLOR.BLUE,
     filtersFrom: [],
     filtersTo: [],
-    filtersCarrier: []
+    filtersCarrier: [],
+    option: {
+      item: {}, 
+      itemIndex: {}, 
+      props: {}, 
+      state: {}, 
+      methods: {}
+    }
   }
 
   componentDidMount() {
@@ -81,6 +90,16 @@ class Sidebar extends React.Component<IProps, IState> {
   resetCalendar = () => {
     this.setState({calendarVisible: true}, () => this.props.handleFetchTicketsByDate())
   }
+  
+  
+  customItemRenderer = (option: IOptions) => (
+    <StyledItem>
+      <div onClick={() => option.methods.addItem(option.item)}>
+        <input type="checkbox" checked={option.methods.isSelected(option.item)} />{" "}
+        {option.item.label}
+      </div>
+    </StyledItem>
+  );
 
   render() {
 
@@ -119,6 +138,9 @@ class Sidebar extends React.Component<IProps, IState> {
         <Select
         className="spon-sidebar__select__From"
             multi
+            searchable
+            autoFocus
+            itemRenderer={this.customItemRenderer}
             placeholder={'From'}
             options={filtersFrom} 
             value={filterFrom} 
@@ -157,5 +179,17 @@ class Sidebar extends React.Component<IProps, IState> {
     )
   }
 }
+
+const StyledItem = styled.div`
+  padding: 10px;
+  color: #555;
+  border-radius: 3px;
+  margin: 3px;
+  cursor: pointer;
+
+  :hover {
+    background: #f2f2f2;
+  }
+`;
 
 export default Sidebar

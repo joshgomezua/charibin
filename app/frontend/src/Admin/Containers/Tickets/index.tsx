@@ -118,7 +118,6 @@ class TicketsContainer extends React.Component<
 
     getTripNames(token)
       .then(({ data }) => {
-        console.log('data', data)
         const cityNames = data.map((item: any) => ({
           _id: item._id,
           departure: item.departure.name,
@@ -139,14 +138,12 @@ class TicketsContainer extends React.Component<
               ...oppositeDirectionCityNames
             ]
         })
-        console.log('this.state.modalOptions', this.state.modalOptions)
         const uniqueCitiesNames = this.state.modalOptions.reduce((unique: any, other: any) => {
           if(!unique.some((obj: { departure: any; }) => obj.departure === other.departure)) {
             unique.push(other);
           }
           return unique;
         },[]);
-
         this.props.changeFilters(cityNames)
         this.setState({ departures: uniqueCitiesNames })
       })
