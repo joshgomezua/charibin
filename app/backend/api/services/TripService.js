@@ -231,8 +231,8 @@ module.exports = {
       array.shift();
 
       array.sort((a, b) => {
-        if(a.firstname < b.firstname) { return -1; }
-        if(a.firstname > b.firstname) { return 1; }
+        if(a.label.toLowerCase() < b.label.toLowerCase()) { return -1; }
+        if(a.label.toLowerCase() > b.label.toLowerCase()) { return 1; }
         return 0;
       })
 
@@ -244,8 +244,8 @@ module.exports = {
       array.shift();
 
       array.sort((a, b) => {
-        if(a.firstname < b.firstname) { return -1; }
-        if(a.firstname > b.firstname) { return 1; }
+        if(a.label.toLowerCase() < b.label.toLowerCase()) { return -1; }
+        if(a.label.toLowerCase() > b.label.toLowerCase()) { return 1; }
         return 0;
       })
 
@@ -259,6 +259,12 @@ module.exports = {
       value: i,
       label: city.carrier
     }));
+
+    carriers.sort((a, b) => {
+      if(a.label.toLowerCase() < b.label.toLowerCase()) { return -1; }
+      if(a.label.toLowerCase() > b.label.toLowerCase()) { return 1; }
+      return 0;
+    })
 
     const departures = [];
     segregatedDepartures.forEach((array) => {
