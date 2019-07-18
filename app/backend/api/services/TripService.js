@@ -227,11 +227,29 @@ module.exports = {
     })
 
     segregatedDestinations.forEach((array) => {
-      array[1,-1].sort((a, b) => {
+      const country = array[0];
+      array.shift();
+
+      array.sort((a, b) => {
         if(a.firstname < b.firstname) { return -1; }
         if(a.firstname > b.firstname) { return 1; }
         return 0;
       })
+
+      array.unshift(country);
+    })
+
+    segregatedDepartures.forEach((array) => {
+      const country = array[0];
+      array.shift();
+
+      array.sort((a, b) => {
+        if(a.firstname < b.firstname) { return -1; }
+        if(a.firstname > b.firstname) { return 1; }
+        return 0;
+      })
+
+      array.unshift(country);
     })
 
     console.log('segregatedDestinations', segregatedDestinations)
@@ -241,6 +259,16 @@ module.exports = {
       value: i,
       label: city.carrier
     }));
+
+    const departures = [];
+    segregatedDepartures.forEach((array) => {
+      departures.push(...array)
+    })
+
+    const destinations = [];
+    segregatedDestinations.forEach((array) => {
+      destinations.push(...array)
+    })
 
     console.log('departures', departures)
     console.log('destinations', destinations)
