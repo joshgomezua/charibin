@@ -144,12 +144,13 @@ class TripsContainer extends React.Component<
 
     if (token) {
       getTrips(page, limit, token, sort)
-        .then(res =>
+        .then(res =>{
           this.setState({
             isLoading: false,
             trips: res.data.results,
             total: res.data.status.total
           })
+        }
         )
         .catch(err => {
           this.props.showError(err, ERRORS.TRIP_FETCH)
@@ -526,6 +527,44 @@ class TripsContainer extends React.Component<
     }
   }
 
+  filterTrips = (trips: ITrip[], results: ITrip[], filtersFrom: string[], filtersTo: string[]) => {
+    if (filtersFrom.length || filtersTo.length) {
+      if(filtersFrom.length) {  
+        let filteredFromTrips: ITrip[] = [];
+        for(let tripIndex: number = 0; tripIndex < results.length; tripIndex++){
+          for(let index: number = 0; index < filtersFrom.length; index++){
+            if(results[tripIndex].departure.name.toLowerCase() == filtersFrom[index].toLowerCase()) {
+              filteredFromTrips.push(results[tripIndex]);
+            }
+          }
+        }
+        if(filtersTo.length) {
+          let filteredTrips: ITrip[] = [];
+          for(let tripIndex: number = 0; tripIndex < filteredFromTrips.length; tripIndex++){
+            for(let index: number = 0; index < filtersTo.length; index++){
+              if(filteredFromTrips[tripIndex].destination.name.toLowerCase() == filtersTo[index].toLowerCase()) {
+                  filteredTrips.push(filteredFromTrips[tripIndex]);
+              }
+            }
+          }
+          return filteredTrips
+        } else { return filteredFromTrips }
+
+      } else if ( filtersTo.length ){ 
+          let filteredToTrips: ITrip[] = [];
+          for(let tripIndex: number = 0; tripIndex < results.length; tripIndex++){
+            for(let index: number = 0; index < filtersTo.length; index++){
+              if(results[tripIndex].destination.name.toLowerCase() == filtersTo[index].toLowerCase()) {
+                filteredToTrips.push(results[tripIndex]);
+              }
+            }
+          }
+          return filteredToTrips
+        }
+    }
+    return trips
+  }
+
   compareDate = (startDate: Date, endDate: Date, trip: any) => {
     const existingStartDate: Date = new Date(trip.date.start)
     const existingEndDate: Date = new Date(trip.date.end)
@@ -567,27 +606,8 @@ class TripsContainer extends React.Component<
       }
     }
 
-    if (filtersFrom.length || filtersTo.length) {
-      let filteredTrips: ITrip[] = [];
-      for(let tripIndex: number = 0; tripIndex < results.length; tripIndex++){
-        if(filtersFrom.length) {
-          for(let index: number = 0; index < filtersFrom.length; index++){
-            if(results[tripIndex].departure.name.toLowerCase() == filtersFrom[index].toLowerCase()) {
-              filteredTrips.push(results[tripIndex]);
-            }
-          }
-        }
-        if(filtersTo.length) {
-          for(let index: number = 0; index < filtersTo.length; index++){
-            if(results[tripIndex].destination.name.toLowerCase() == filtersTo[index].toLowerCase() && filteredTrips.includes(results[tripIndex]) == false) {
-             filteredTrips.push(results[tripIndex]);
-            }
-          }
-        }
-      }
-      trips = filteredTrips
-      total = trips.length
-    }
+    trips = this.filterTrips(trips, results, filtersFrom, filtersTo)
+    total = trips.length
     
     return (
       <div className="spon-container">
@@ -602,7 +622,12 @@ class TripsContainer extends React.Component<
           changeFilterTo={(e) => this.setState({filtersTo: e})}
         />
         <ExpandableTable
-          data={trips}
+          data={trips.filter((trip)=> {
+            if (trip.destination.isEnabled) {
+              return trip
+            }
+            return
+          })}
           handleFetchData={this.handleFetchTableData}
           columns={columns(
             this.handleOpenDeleteTripModal,

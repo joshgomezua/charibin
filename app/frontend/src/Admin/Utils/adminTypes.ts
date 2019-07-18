@@ -112,7 +112,6 @@ export interface IOrder {
   price: number
   sent: boolean
   createdAt: string
-  user: IUser
 }
 
 export enum DIRECTION_TYPE {
