@@ -4,26 +4,43 @@ import { IProps, IState, ITerritory, COLOR } from './types'
 import './styles.scss'
 import CalendarDoubleFilter from 'src/App/Components/CalendarDoubleFilter';
 import {default as Select} from 'react-dropdown-select'
-import {data, carrier} from './data'
+import { getTicketFilters } from 'src/Admin/Utils/api';
+import { getToken } from 'src/Common/Utils/helpers';
 
 class Sidebar extends React.Component<IProps, IState> {
 
   readonly state: IState = {
     calendarVisible: true,
-    selectedColor: COLOR.BLUE
+    selectedColor: COLOR.BLUE,
+    filtersFrom: [],
+    filtersTo: [],
+    filtersCarrier: []
   }
 
   componentDidMount() {
-
+    this.getTicketFilters()
   }
 
-  handleFiltersChange = (territories: ITerritory[], changeFilter: (filters: string[]) => void) => {
+  getTicketFilters = () => {
+    const token = getToken()
+    getTicketFilters(token)
+      .then(async({data}) => {
+        console.log('data2', data)
+        await this.setState({
+          filtersFrom: data.departures,
+          filtersTo: data.destinations,
+          filtersCarrier: data.carriers
+        })
+      })
+  }
+
+  handleFiltersChange = (territories: ITerritory[], filter: ITerritory[], changeFilter: (filters: string[]) => void) => {
     const filters: string[] = []
 
     territories.map(territory => {
       if (territory.country === "country") {
         this.setState({selectedColor: COLOR.GREEN})
-        data.map(dataTerritory => {
+        filter.map(dataTerritory => {
           if (dataTerritory.country !== "country" && dataTerritory.country === territory.label) {
             filters.push(dataTerritory.label)
           }
@@ -38,11 +55,11 @@ class Sidebar extends React.Component<IProps, IState> {
   }
   
   handleFiltersFromChange = (territories: ITerritory[]) => {
-    this.handleFiltersChange(territories, this.props.changeFilterFrom)
+    this.handleFiltersChange(territories, this.state.filtersFrom, this.props.changeFilterFrom)
   }
 
   handleFiltersToChange = (territories: ITerritory[]) => {
-    this.handleFiltersChange(territories, this.props.changeFilterTo)
+    this.handleFiltersChange(territories, this.state.filtersTo, this.props.changeFilterTo)
   }
 
   handleFiltersCarrierChange = (carriers: any[]) => {
@@ -69,7 +86,10 @@ class Sidebar extends React.Component<IProps, IState> {
 
     const {
       calendarVisible,
-      selectedColor
+      selectedColor,
+      filtersFrom,
+      filtersTo,
+      filtersCarrier
     } = this.state
 
     const {
@@ -100,7 +120,7 @@ class Sidebar extends React.Component<IProps, IState> {
         className="spon-sidebar__select__From"
             multi
             placeholder={'From'}
-            options={data} 
+            options={filtersFrom} 
             value={filterFrom} 
             onChange={this.handleFiltersFromChange}
             color={selectedColor}
@@ -112,7 +132,7 @@ class Sidebar extends React.Component<IProps, IState> {
         <Select 
             multi
             placeholder={'To'} 
-            options={data} 
+            options={filtersTo} 
             value={filterTo} 
             onChange={this.handleFiltersToChange}
             color={selectedColor}
@@ -124,7 +144,7 @@ class Sidebar extends React.Component<IProps, IState> {
         <Select 
             multi
             placeholder={'Carrier'} 
-            options={carrier} 
+            options={filtersCarrier} 
             value={filterCarrier} 
             onChange={this.handleFiltersCarrierChange}
             color={selectedColor}

@@ -202,6 +202,11 @@ export const getTripNames = (token: string) =>
     headers: { token }
   })
 
+  export const getTicketFilters = (token: string) =>
+  axios.get(`${API_URL}/ticketFilters`, {
+    headers: { token }
+  })
+
 export const getOrders = (
   page: number,
   limit: number,

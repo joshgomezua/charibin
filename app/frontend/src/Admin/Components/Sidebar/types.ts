@@ -18,12 +18,20 @@ export interface IProps {
 export interface IState {
   calendarVisible: boolean
   selectedColor: string
+  filtersFrom: ITerritory[]
+  filtersTo: ITerritory[]
+  filtersCarrier: ICarrier[]
 }
 
 export interface ITerritory {
   value: number
   label: string
   country: string
+}
+
+export interface ICarrier {
+  value: number
+  label: string
 }
 
 export enum COLOR {

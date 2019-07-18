@@ -118,4 +118,138 @@ module.exports = {
 
     return;
   },
+
+  async getListOfTicketFilters() {
+    const listOfFiltersNotParsed = await Trip.find({ deleted: false }).select('departure').select('destination').select('carrier');
+    let departureFilters = [];
+    let destinationFilters = [];
+    let carrierFilters = [];
+
+    listOfFiltersNotParsed.forEach((item) => {
+      departureFilters.push({
+        departure: item.departure.name,
+        country: item.departure.country
+      })
+
+      destinationFilters.push({
+        destination: item.destination.name,
+        country: item.destination.country
+      })
+
+      carrierFilters.push({
+        carrier: item.carrier,
+      })
+    });
+
+    console.log('departureFilters', departureFilters)
+    console.log('destinationFilters', destinationFilters)
+    console.log('carrierFilters', carrierFilters)
+
+    const uniqueDepartureFilters = departureFilters.reduce((uniqueCities, other) => {
+      if(!uniqueCities.some((item) => item.departure === other.departure)){
+        uniqueCities.push(other);
+      }
+      return uniqueCities;
+    }, []);
+
+    const uniqueDestinationFilters = destinationFilters.reduce((uniqueCities, other) => {
+      if(!uniqueCities.some((item) => item.country === other.country)){
+        uniqueCities.push(other);
+      }
+      return uniqueCities;
+    }, []);
+
+    const uniqueCarrierFilters = carrierFilters.reduce((unique, other) => {
+      if(!unique.some((obj) => obj.carrier === other.carrier)) {
+        unique.push(other);
+      }
+      return unique;
+    },[]);
+
+    console.log('uniqueDestinationFilters', uniqueDestinationFilters)
+    console.log('uniqueDepartureFilters', uniqueDepartureFilters)
+    console.log('uniqueCarrierFilters', uniqueCarrierFilters)
+
+    const departuresParsed = uniqueDepartureFilters.map((city, i) => ({
+      label: city.departure,
+      country: city.country
+    }));
+
+    const uniqueDepartureCountryFiltersParsed = uniqueDepartureFilters.reduce((uniqueCountries, other) => {
+      if(!uniqueCountries.some((item) => item.label === other.country)){
+        uniqueCountries.push({
+          label: other.country,
+          country: 'country'
+        });
+      }
+      return uniqueCountries;
+    }, []);
+
+    console.log('uniqueDepartureCountryFiltersParsed', uniqueDepartureCountryFiltersParsed)
+
+    const segregatedDepartures = []
+    uniqueDepartureCountryFiltersParsed.forEach((country) => {
+      segregatedDepartures.push([country])
+    })
+    segregatedDepartures.forEach((array) => {
+      departuresParsed.forEach((city) => {
+        if (city.country === array[0].label) {
+          array.push(city)
+        }
+      })
+    })
+
+    const destinationsParsed = uniqueDestinationFilters.map((city) => ({
+      label: city.destination,
+      country: city.country
+    }));
+
+    const uniqueDestinationCountryFiltersParsed = uniqueDestinationFilters.reduce((uniqueCountries, other) => {
+      if(!uniqueCountries.some((item) => item.label === other.country)){
+        uniqueCountries.push({
+          label: other.country,
+          country: 'country'
+        });
+      }
+      return uniqueCountries;
+    }, []);
+
+    const segregatedDestinations = []
+    uniqueDestinationCountryFiltersParsed.forEach((country) => {
+      segregatedDestinations.push([country])
+    })
+    segregatedDestinations.forEach((array) => {
+      destinationsParsed.forEach((city) => {
+        if (city.country === array[0].label) {
+          array.push(city)
+        }
+      })
+    })
+
+    segregatedDestinations.forEach((array) => {
+      array[1,-1].sort((a, b) => {
+        if(a.firstname < b.firstname) { return -1; }
+        if(a.firstname > b.firstname) { return 1; }
+        return 0;
+      })
+    })
+
+    console.log('segregatedDestinations', segregatedDestinations)
+    console.log('segregatedDepartures', segregatedDepartures)
+
+    const carriers = uniqueCarrierFilters.map((city, i) => ({
+      value: i,
+      label: city.carrier
+    }));
+
+    console.log('departures', departures)
+    console.log('destinations', destinations)
+    console.log('carriers', carriers)
+
+    return {
+      departures: departures,
+      destinations: destinations,
+      carriers: carriers
+    }
+  }
 };
