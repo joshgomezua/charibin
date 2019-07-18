@@ -141,10 +141,6 @@ module.exports = {
       })
     });
 
-    console.log('departureFilters', departureFilters)
-    console.log('destinationFilters', destinationFilters)
-    console.log('carrierFilters', carrierFilters)
-
     const uniqueDepartureFilters = departureFilters.reduce((uniqueCities, other) => {
       if(!uniqueCities.some((item) => item.departure === other.departure)){
         uniqueCities.push(other);
@@ -166,10 +162,6 @@ module.exports = {
       return unique;
     },[]);
 
-    console.log('uniqueDestinationFilters', uniqueDestinationFilters)
-    console.log('uniqueDepartureFilters', uniqueDepartureFilters)
-    console.log('uniqueCarrierFilters', uniqueCarrierFilters)
-
     const departuresParsed = uniqueDepartureFilters.map((city, i) => ({
       label: city.departure,
       country: city.country
@@ -184,8 +176,6 @@ module.exports = {
       }
       return uniqueCountries;
     }, []);
-
-    console.log('uniqueDepartureCountryFiltersParsed', uniqueDepartureCountryFiltersParsed)
 
     const segregatedDepartures = []
     uniqueDepartureCountryFiltersParsed.forEach((country) => {
@@ -252,9 +242,6 @@ module.exports = {
       array.unshift(country);
     })
 
-    console.log('segregatedDestinations', segregatedDestinations)
-    console.log('segregatedDepartures', segregatedDepartures)
-
     const carriers = uniqueCarrierFilters.map((city, i) => ({
       value: i,
       label: city.carrier
@@ -266,19 +253,31 @@ module.exports = {
       return 0;
     })
 
-    const departures = [];
+    const departuresSorted = [];
     segregatedDepartures.forEach((array) => {
-      departures.push(...array)
+      departuresSorted.push(...array)
     })
 
-    const destinations = [];
+    const destinationsSorted = [];
     segregatedDestinations.forEach((array) => {
-      destinations.push(...array)
+      destinationsSorted.push(...array)
     })
 
-    console.log('departures', departures)
-    console.log('destinations', destinations)
-    console.log('carriers', carriers)
+    const departures = departuresSorted.map((item, i) => {
+      return {
+        value: i,
+        label: item.label,
+        country: item.country
+      }
+    })
+
+    const destinations = destinationsSorted.map((item, i) => {
+      return {
+        value: i,
+        label: item.label,
+        country: item.country
+      }
+    })
 
     return {
       departures: departures,
