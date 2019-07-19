@@ -34,7 +34,6 @@ class Sidebar extends React.Component<IProps, IState> {
     const token = getToken()
     getTicketFilters(token)
       .then(async({data}) => {
-        console.log('data2', data)
         await this.setState({
           filtersFrom: data.departures,
           filtersTo: data.destinations,
@@ -48,14 +47,12 @@ class Sidebar extends React.Component<IProps, IState> {
 
     territories.map(territory => {
       if (territory.country === "country") {
-        this.setState({selectedColor: COLOR.GREEN})
         filter.map(dataTerritory => {
           if (dataTerritory.country !== "country" && dataTerritory.country === territory.label) {
             filters.push(dataTerritory.label)
           }
         })
       } else {
-        this.setState({selectedColor: COLOR.BLUE})
         filters.push(territory.label)
       }
     })
@@ -93,7 +90,7 @@ class Sidebar extends React.Component<IProps, IState> {
   
   
   customItemRenderer = (option: IOptions) => (
-    <StyledItem>
+    <StyledItem color={option.item.country && (option.item.country === 'country') ? '#4142a6' : '#dbdcf1'}>
       <div onClick={() => option.methods.addItem(option.item)}>
         <input type="checkbox" checked={option.methods.isSelected(option.item)} />{" "}
         {option.item.label}
@@ -102,13 +99,9 @@ class Sidebar extends React.Component<IProps, IState> {
   );
 
   customOptionRenderer = (option: IOption) => (
-    <StyledOption>
-      {console.log('option', option)}
-      Search:{" "}
-      <a href={`https://www.google.com/search?q=${option.item.label}`} target="_blank">
-        {" "}
-        {option.item.label}
-      </a>{" "}
+    
+    <StyledOption color={option.item.country && (option.item.country === 'country') ? '#4142a6' : '#dbdcf1'} >
+      {option.item.label}
       <span
         onClick={() => option.methods.removeItem(null, option.item)}
         title="please don't 🥺"
@@ -123,8 +116,7 @@ class Sidebar extends React.Component<IProps, IState> {
       <div>Loading...</div>
     ) : (
       <StyledContent>
-         {option.state.values && option.state.values.map((item: any) => {
-           console.log('item', item)
+         {option.state.values.length ? option.state.values.map((item: any) => {
            const options: IOption = {
              item: item,
              props: option.props,
@@ -132,7 +124,9 @@ class Sidebar extends React.Component<IProps, IState> {
              methods: option.methods
            }
            return option.props.optionRenderer(options)
-         })}
+         }) : (
+            <div className='placeholder'>{option.props.placeholder}</div>
+          )}
       </StyledContent>
     );
 
@@ -188,6 +182,9 @@ class Sidebar extends React.Component<IProps, IState> {
         <div className="spon-sidebar__select__To">
         <Select 
             multi
+            itemRenderer={this.customItemRenderer}
+            optionRenderer={this.customOptionRenderer}
+            contentRenderer={this.customContentRenderer}
             placeholder={'To'} 
             options={filtersTo} 
             value={filterTo} 
@@ -200,6 +197,9 @@ class Sidebar extends React.Component<IProps, IState> {
         <div className="spon-sidebar__select__Carrier">
         <Select 
             multi
+            itemRenderer={this.customItemRenderer}
+            optionRenderer={this.customOptionRenderer}
+            contentRenderer={this.customContentRenderer}
             placeholder={'Carrier'} 
             options={filtersCarrier} 
             value={filterCarrier} 
@@ -215,38 +215,40 @@ class Sidebar extends React.Component<IProps, IState> {
   }
 }
 
+
 const StyledContent = styled.div`
-  padding: 10px;
+  padding: 2px;
   color: #555;
   border-radius: 3px;
   margin: 3px;
   cursor: pointer;
   height: 50px; 
+  width: 100%; 
   overflow-y: scroll;
-
+  .placeholder {
+    position: relative;
+    top: 20%;
+  }
 `;
 
 const StyledItem = styled.div`
-  padding: 10px;
-  color: #555;
+  color: white;
   border-radius: 3px;
   margin: 3px;
   cursor: pointer;
-
-  :hover {
-    background: #f2f2f2;
-  }
+  background: ${(props: any) => props.color} ;
 `;
 
 const StyledOption = styled.span`
   padding: 3px 10px;
-  color: #555;
+  color: white;
   border-radius: 3px;
   margin: 3px;
   cursor: pointer;
   display: inline-flex;
   flex-direction: row;
-  border: 1px solid #555;
+  background-color: ${(props: any) => props.color};
+  border: 1px solid;
   transition: all 1s ease-in;
 
   span {
@@ -254,17 +256,11 @@ const StyledOption = styled.span`
     transition: all 1s ease-in;
   }
 
-  a {
-    margin: 0 5px;
-  }
-
   :hover {
-    background: #f2f2f2;
-
     span {
       display: inline;
       margin: 0 0 0 5px;
-      color: red;
+      color: white;
     }
   }
 `;

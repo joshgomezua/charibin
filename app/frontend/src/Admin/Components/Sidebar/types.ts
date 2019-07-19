@@ -55,3 +55,7 @@ export interface IOption {
   state: any 
   methods: any
 }
+
+export interface IColor {
+  color: string
+}
