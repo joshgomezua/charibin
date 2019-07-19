@@ -144,6 +144,12 @@ class TicketsContainer extends React.Component<
           }
           return unique;
         },[]);
+
+        uniqueCitiesNames.sort((a: any, b: any) => {
+          if(a.departure.toLowerCase() < b.departure.toLowerCase()) { return -1; }
+          if(a.departure.toLowerCase() > b.departure.toLowerCase()) { return 1; }
+          return 0;
+        })
         this.props.changeFilters(cityNames)
         this.setState({ departures: uniqueCitiesNames })
       })
@@ -389,6 +395,11 @@ class TicketsContainer extends React.Component<
       departure: item.departure,
       destination: item.destination
     }))
+    destinationsMapped.sort((a: any, b: any) => {
+      if(a.destination.toLowerCase() < b.destination.toLowerCase()) { return -1; }
+      if(a.destination.toLowerCase() > b.destination.toLowerCase()) { return 1; }
+      return 0;
+    })
     this.setState({destinations : destinationsMapped})  
   }
 
