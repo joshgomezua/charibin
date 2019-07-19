@@ -53,7 +53,7 @@ loadModels();
   
   await helpers.createUser(globals.data.administrator);
   console.log(`Create administrator: ${globals.data.administrator.email} ${globals.data.administrator.password}`);
-  /*
+  
   const trips = [];
   
   //Creating cities
@@ -110,7 +110,7 @@ loadModels();
     console.log(`Creating Orders: ${i + 1}/${20}`);
     await helpers.createOrder(helpers.dataClone(globals.dataTemplate.order));
   }
-  */
+  
   process.exit(0);
 })();
 
