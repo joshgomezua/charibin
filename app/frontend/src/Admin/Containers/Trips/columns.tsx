@@ -130,7 +130,7 @@ export const columns = (
             }>
             Schedule
           </button>
-          <button onClick={() => openEditModal(props.row._original._id)}>
+          <button disabled={!props.row._original.destination.isEnabled} onClick={() => openEditModal(props.row._original._id)}>
             Modify
           </button>
           <button onClick={() => openDeleteModal(props.row._original._id)} disabled={props.value}>

@@ -6,7 +6,8 @@ export enum ADMIN_ROUTING {
   TICKETS = '/tickets',
   ORDERS = '/orders',
   CITIES = '/cities',
-  USERS = '/users'
+  USERS = '/users',
+  ACCOUNT = '/account'
 
 }
 

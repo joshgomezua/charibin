@@ -97,8 +97,6 @@ function setMonday (date) {
 
 async function createManyTickets (data) {
   if(data.repeat.dateEnd <= data.date.start) throw { status: 400, message: 'TICKET.REPEAT.BAD.DATEEND' };
-  if(!data.repeat.days.includes(new Date(data.date.start).getDay())) throw { status: 400, message: 'TICKET.REPEAT.BAD.DATESTART' };
-
   // set correctly hour
   data.repeat.dateEnd = new Date(data.repeat.dateEnd).setHours(new Date(data.date.start).getHours(), 0, 0, 0);
 
@@ -106,6 +104,7 @@ async function createManyTickets (data) {
     start: setMonday(data.date.start),
     end: setMonday(data.date.end)
   };
+
   let seedDate;
   const updateMessages = [];
 
@@ -321,7 +320,6 @@ module.exports = {
     const trip = await Trip.findOne({ _id: data.trip, deleted: false });
     if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
     data['carrier'] = trip.carrier;
-
     if (data.departureHours.length) {
       for (let hours of data.departureHours) {
         data.date = hours

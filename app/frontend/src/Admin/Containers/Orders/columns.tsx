@@ -2,6 +2,7 @@ import React from 'react'
 import moment from 'moment'
 import Switch from '../../Components/Switch'
 import { RowRenderProps } from 'react-table'
+import { getUserData } from 'src/Common/Utils/helpers';
 
 export const columns = (
   onSwitchChange: ((id: string, value: boolean) => void),
@@ -93,7 +94,7 @@ export const columns = (
     sortable: false,
     width: 70,
     Cell: (props: RowRenderProps) => (
-      props.row.user.role === "Read Only || Client" ?
+      getUserData().user.role === "Read Only || Client" ?
       <Switch
         onChange={() => {}}
         checked={false}
@@ -111,6 +112,6 @@ export const columns = (
     Header:'User',
     accessor: 'user',
     Cell: (props: RowRenderProps) => (
-        props.row.sent ? props.value.name : "" )
+        props.row.sent ? getUserData().user.name : "" )
   }
 ]
