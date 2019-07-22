@@ -179,6 +179,20 @@ module.exports = {
     uniqueDestinationCountryFiltersParsed.forEach((country) => {
       segregatedDestinations.push([country])
     })
+
+    segregatedDepartures.sort((a, b) => {
+      if(a[0].label.toLowerCase() < b[0].label.toLowerCase()) { return -1; }
+      if(a[0].label.toLowerCase() > b[0].label.toLowerCase()) { return 1; }
+      return 0;
+    })
+
+    segregatedDestinations.sort((a, b) => {
+      if(a[0].label.toLowerCase() < b[0].label.toLowerCase()) { return -1; }
+      if(a[0].label.toLowerCase() > b[0].label.toLowerCase()) { return 1; }
+      return 0;
+    })
+
+
     segregatedDestinations.forEach((array) => {
       destinationsParsed.forEach((city) => {
         if (city.country === array[0].label) {
