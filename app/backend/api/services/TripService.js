@@ -1,6 +1,6 @@
 'use strict';
 
-const { Trip, Ticket } = require('../models');
+const { Trip, Ticket, City } = require('../models');
 const Aggregate = require('./Aggregate');
 const Utilities = require('./Utilities');
 
@@ -120,54 +120,30 @@ module.exports = {
   },
 
   async getListOfTicketFilters() {
-    const listOfFiltersNotParsed = await Trip.find({ deleted: false }).select('departure').select('destination').select('carrier');
-    let departureFilters = [];
-    let destinationFilters = [];
-    let carrierFilters = [];
+    let uniqueDeparturesFromTickets = await Ticket.distinct('departure');
+    let uniqueDestinationsFromTickets = await Ticket.distinct('destination');
+    let uniqueCarriersFromTickets = await Ticket.distinct('carrier');
 
-    listOfFiltersNotParsed.forEach((item) => {
-      departureFilters.push({
-        departure: item.departure.name,
-        country: item.departure.country
-      })
+    const citiesDepartures = await Promise.all(uniqueDeparturesFromTickets.map((item) => {
+      return City.find({isEnabled: true, name: item });
 
-      destinationFilters.push({
-        destination: item.destination.name,
-        country: item.destination.country
-      })
-
-      carrierFilters.push({
-        carrier: item.carrier,
-      })
-    });
-
-    const uniqueDepartureFilters = departureFilters.reduce((uniqueCities, other) => {
-      if(!uniqueCities.some((item) => item.departure === other.departure)){
-        uniqueCities.push(other);
-      }
-      return uniqueCities;
-    }, []);
-
-    const uniqueDestinationFilters = destinationFilters.reduce((uniqueCities, other) => {
-      if(!uniqueCities.some((item) => item.country === other.country)){
-        uniqueCities.push(other);
-      }
-      return uniqueCities;
-    }, []);
-
-    const uniqueCarrierFilters = carrierFilters.reduce((unique, other) => {
-      if(!unique.some((obj) => obj.carrier === other.carrier)) {
-        unique.push(other);
-      }
-      return unique;
-    },[]);
-
-    const departuresParsed = uniqueDepartureFilters.map((city, i) => ({
-      label: city.departure,
-      country: city.country
     }));
 
-    const uniqueDepartureCountryFiltersParsed = uniqueDepartureFilters.reduce((uniqueCountries, other) => {
+    const citiesDestinations = await Promise.all(uniqueDestinationsFromTickets.map((item) => {
+      return City.find({isEnabled: true, name: item });
+    }));
+
+    const departuresParsed = citiesDepartures.map(city => ({
+      label: city[0].name,
+      country: city[0].country
+    }))
+
+    const destinationsParsed = citiesDestinations.map(city => ({
+      label: city[0].name,
+      country: city[0].country
+    }))
+
+    const uniqueDepartureCountryFiltersParsed = departuresParsed.reduce((uniqueCountries, other) => {
       if(!uniqueCountries.some((item) => item.label === other.country)){
         uniqueCountries.push({
           label: other.country,
@@ -189,12 +165,7 @@ module.exports = {
       })
     })
 
-    const destinationsParsed = uniqueDestinationFilters.map((city) => ({
-      label: city.destination,
-      country: city.country
-    }));
-
-    const uniqueDestinationCountryFiltersParsed = uniqueDestinationFilters.reduce((uniqueCountries, other) => {
+    const uniqueDestinationCountryFiltersParsed = destinationsParsed.reduce((uniqueCountries, other) => {
       if(!uniqueCountries.some((item) => item.label === other.country)){
         uniqueCountries.push({
           label: other.country,
@@ -242,9 +213,9 @@ module.exports = {
       array.unshift(country);
     })
 
-    const carriers = uniqueCarrierFilters.map((city, i) => ({
+    const carriers = uniqueCarriersFromTickets.map((city, i) => ({
       value: i,
-      label: city.carrier
+      label: city
     }));
 
     carriers.sort((a, b) => {
