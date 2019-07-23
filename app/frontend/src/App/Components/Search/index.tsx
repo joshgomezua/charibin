@@ -3,18 +3,44 @@ import { IProps, IState } from './types'
 import people from '../../Utils/Media/people.svg'
 import arrow from '../../../Common/Utils/Media/arrow.svg'
 import arrowRight from '../../../Common/Utils/Media/arrowRight.svg'
+import * as API from '../../Utils/api'
 import './styles.scss'
+import { ITicket } from "src/Common/Utils/globalTypes";
 
 export default class Search extends Component<IProps, IState> {
   state = {
     inputValue: this.props.initialValue || '',
-    buttons: false
+    buttons: false,
+    tickets: []
   }
   changeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
-    if (this.props.initialValue === undefined) {
-      this.setState({ inputValue: e.target.value })
-    }
+    this.setState({ inputValue: e.target.value })
+    this.handleSearch(e.target.value)
+  }
+
+  handleFetchTickets =  (date:number, page:number, limit:number) => {
+    return  API.getTickets(date,page,limit).then(res => {
+      this.setState({tickets: res.data.results})
+    }).catch(()=> console.log("error"))
+  }
+
+
+  componentDidMount() {
+    this.handleFetchTickets(Date.now(),0,1000)
+  }
+
+  handleSearch = (inputValue: string) => {
+    const {tickets} = this.state
+    const search = tickets.filter((ticket: ITicket) => {
+      console.log(ticket.departure)
+        if (ticket.departure.toLowerCase().includes(inputValue.toLowerCase())) {
+                console.log("trouvé")
+                  return ticket
+          } 
+          return;
+    })
+    console.log("search",search)
   }
 
   toggleButtons = () => {

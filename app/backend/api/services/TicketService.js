@@ -389,13 +389,16 @@ module.exports = {
   },
 
   async buy ({ owner, creditCardToken, buyerInfo, }) {
+
     const ownerInfo = await TicketOwner.findOne({ owner });
     if(!ownerInfo) throw { status: 404, message: 'BUY.OWNER.NOT.EXIST' };
 
     ownerInfo.trips = await populateTrips(ownerInfo.trips);
 
+    console.log("ownerinfo",ownerInfo)
     let finalCost = 0;
     const [admin] = await User.find({ role: global.config.custom.roles.ADMINISTRATOR }).sort('_id').limit(1);
+    console.log("admin", admin)
     const selectedTrip = getMostExpensiveTrip(ownerInfo);
 
     // Add a trip price (time choose already added)
@@ -406,8 +409,9 @@ module.exports = {
     finalCost += deselectionPrice;
 
     const charge = await PaymentService.charge(finalCost, creditCardToken, buyerInfo, selectedTrip);
-
+    
     await clearReservation(selectedTrip, owner);
+  
     const order = await Order.create({
       buyer: {
         name: buyerInfo.middleName ? `${buyerInfo.firstName} ${buyerInfo.middleName} ${buyerInfo.lastName}` : `${buyerInfo.firstName} ${buyerInfo.lastName}`,
@@ -440,6 +444,7 @@ module.exports = {
       deselectionPrice: deselectionPrice,
       totalPrice: finalCost,
     });
+
     await Ticket.findOneAndUpdate({ _id: selectedTrip.arrivalTicket._id, active: true, deleted: false, quantity: { $gte: ownerInfo.quantity } }, {
       $inc: { soldTickets : ownerInfo.quantity }
     });
@@ -715,5 +720,28 @@ module.exports = {
     }
 
     return;
-  },  
+  }, 
+  
+  async getTickets(page,limit,date) {
+    return await Ticket.aggregate([
+      {
+        $facet: {
+          results: [
+            {
+              $match: {
+                deleted: false,
+                'date.start': { $gte: new Date(date) },
+              }
+            },
+            ...Aggregate.skipAndLimit(page,limit)
+          ],
+          status: Aggregate.getStatusWithSimpleMatch(
+            {},
+            page,
+            limit
+          )
+        }
+      }
+    ]).then(Aggregate.parseResults);
+  }
 };

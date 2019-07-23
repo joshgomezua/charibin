@@ -296,6 +296,7 @@ class SelectContainer extends Component<
   render() {
     const { isCalendarOpen, isLoading, trips, filters } = this.state
     const { isMax, quantity, selected } = this.props
+    
 
     return (
       <section className={`select-cnt ${isCalendarOpen ? 'calendar' : ''}`}>
