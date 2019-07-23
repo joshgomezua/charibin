@@ -100,6 +100,20 @@
       &:nth-child(2) {
         padding-left: rc(0);
       }
+      
+      &:hover {
+        cursor: pointer;
+      }
+    }
+    
+    &--head-border-top {
+      @extend .spon-agenda__cell--head;
+      border-top: solid 2px black;
+    }
+
+    &--head-border-bottom {
+      @extend .spon-agenda__cell--head;
+      border-bottom: solid 2px black;
     }
 
     &--body {

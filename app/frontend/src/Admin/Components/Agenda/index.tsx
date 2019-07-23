@@ -7,30 +7,29 @@ import Button from '../../../Common/Components/Button'
 
 import { MODAL_TYPE } from '../../Utils/adminTypes'
 import { ITicket } from '../../../Common/Utils/globalTypes'
-import { IProps } from './types'
+import { IProps, IState } from './types'
 import './styles.scss'
 import Pagination from 'src/App/Components/Pagination';
 
-const Agenda: React.SFC<IProps> = ({
-  tickets,
-  openModal,
-  loading,
-  error,
-  retry,
-  filters,
-  changeActiveState,
-  openEditModal,
-  pagination,
-  handlePaginationClick
-}) => {
+class Agenda extends React.Component<IProps, IState> {
 
-
-
-  const handlePaginationOnClick = (page: number) => {
-    handlePaginationClick(page)
+  readonly state: IState = {
+    isHeaderClicked: false
   }
 
-  const prepareRows = () => {
+  handlePaginationOnClick = (page: number) => {
+    this.props.handlePaginationClick(page)
+  }
+
+  
+  prepareRows = () => {
+    const {
+      tickets, 
+      filters, 
+      changeActiveState, 
+      openEditModal, 
+      openModal
+    } = this.props
     const filtered = tickets
     const segregated = filtered.reduce((acc, ticket: ITicket) => {
       const day = moment.utc(ticket.date.start).format('Y:M:D')
@@ -62,112 +61,126 @@ const Agenda: React.SFC<IProps> = ({
     }
   }
 
-  return (
-    <table className="spon-agenda">
-      <thead key="thead" className="spon-agenda__thead">
-        <tr className="spon-agenda__row  spon-agenda__row--head">
-          <th className="spon-agenda__cell spon-agenda__cell--head spon-agenda__cell--first-item">
-            Date
-          </th>
-          <th className="spon-agenda__cell spon-agenda__cell--head">
-            Time of departure
-          </th>
-          <th className="spon-agenda__cell spon-agenda__cell--head">
-            Time of Arrival
-          </th>
-          <th className="spon-agenda__cell spon-agenda__cell--head">From</th>
-          <th className="spon-agenda__cell spon-agenda__cell--head">To</th>
-          <th className="spon-agenda__cell spon-agenda__cell--head">Carrier</th>
-          <th className="spon-agenda__cell spon-agenda__cell--head">Type</th>
-          <th className="spon-agenda__cell spon-agenda__cell--head">
-            Qty of tickets
-          </th>
-          <th className="spon-agenda__cell spon-agenda__cell--head">
-            Available tickets
-          </th>
-          <th className="spon-agenda__cell spon-agenda__cell--head">
-            Sold tickets
-          </th>
-          
-          <th className="spon-agenda__cell spon-agenda__cell--head">Active</th>
-          <th className="spon-agenda__cell spon-agenda__cell--head">
-            <Button
-              className="spon-agenda__add-button"
-              variant="blue"
-              icon="plus"
-              text="ADD NEW"
-              onClick={() =>
-                openModal(MODAL_TYPE.ADD_TICKET, 'Create ticket', '')
-              }
-            />
-          </th>
-        </tr>
-      </thead>
-      <tbody className="spon-agenda__tbody">
-        {error && (
-          <tr>
-            <td colSpan={5}>
-              <div className="spon-agenda__error">
-                <p>There was a problem when we tried to find courses</p>
+  test = () => {console.log('test')}
 
-                <Button
-                  onClick={retry}
-                  text="Retry"
-                  variant="gray"
-                  className="has-margin-top-small"
-                />
-              </div>
-            </td>
+  render() {
+    const {
+      tickets,
+    openModal,
+    loading,
+    error,
+    retry,
+    filters,
+    pagination,
+    } = this.props
+    return (
+      <table className="spon-agenda">
+        <thead key="thead" className="spon-agenda__thead">
+          <tr className="spon-agenda__row  spon-agenda__row--head">
+            <th className="spon-agenda__cell spon-agenda__cell--head spon-agenda__cell--first-item">
+              Date
+            </th>
+            <th className="spon-agenda__cell spon-agenda__cell--head">
+              Time of departure
+            </th>
+            <th className="spon-agenda__cell spon-agenda__cell--head">
+              Time of Arrival
+            </th>
+            <tr onClick={this.test} className="spon-agenda__cell spon-agenda__cell--head-border-top">From</tr>
+            <th className="spon-agenda__cell spon-agenda__cell--head">To</th>
+            <th className="spon-agenda__cell spon-agenda__cell--head">Carrier</th>
+            <th className="spon-agenda__cell spon-agenda__cell--head">Type</th>
+            <th className="spon-agenda__cell spon-agenda__cell--head">
+              Qty of tickets
+            </th>
+            <th className="spon-agenda__cell spon-agenda__cell--head">
+              Available tickets
+            </th>
+            <th className="spon-agenda__cell spon-agenda__cell--head">
+              Sold tickets
+            </th>
+            
+            <th className="spon-agenda__cell spon-agenda__cell--head">Active</th>
+            <th className="spon-agenda__cell spon-agenda__cell--head">
+              <Button
+                className="spon-agenda__add-button"
+                variant="blue"
+                icon="plus"
+                text="ADD NEW"
+                onClick={() =>
+                  openModal(MODAL_TYPE.ADD_TICKET, 'Create ticket', '')
+                }
+              />
+            </th>
           </tr>
-        )}
-
-        {filters.length === 0 &&
-          tickets.length > 0 && (
+        </thead>
+        <tbody className="spon-agenda__tbody">
+          {error && (
             <tr>
               <td colSpan={5}>
                 <div className="spon-agenda__error">
-                  <p>You have to check at least one filter</p>
+                  <p>There was a problem when we tried to find courses</p>
+  
+                  <Button
+                    onClick={retry}
+                    text="Retry"
+                    variant="gray"
+                    className="has-margin-top-small"
+                  />
                 </div>
               </td>
             </tr>
           )}
-
-        {loading && (
-          <tr>
-            <td colSpan={5}>
-              <div className="spon-agenda__error">
-                <Loading isStatic />
-              </div>
-            </td>
-          </tr>
-        )}
-        {tickets.length === 0 &&
-          !loading && (
+  
+          {filters.length === 0 &&
+            tickets.length > 0 && (
+              <tr>
+                <td colSpan={5}>
+                  <div className="spon-agenda__error">
+                    <p>You have to check at least one filter</p>
+                  </div>
+                </td>
+              </tr>
+            )}
+  
+          {loading && (
             <tr>
               <td colSpan={5}>
                 <div className="spon-agenda__error">
-                  <p>No tickets are available this month.</p>
+                  <Loading isStatic />
                 </div>
               </td>
             </tr>
           )}
-        {!loading && !error && tickets.length > 0 && prepareRows() 
-        }
-      </tbody>
-      <tfoot>
-      <tr className="spon-agenda__pagination">
-            <td>
-              <div >
-                <Pagination 
-                  pagination={pagination}
-                  onChange={handlePaginationOnClick}
-                />
-              </div>
-            </td>
-          </tr>
-      </tfoot>
-    </table>
-  )
+          {tickets.length === 0 &&
+            !loading && (
+              <tr>
+                <td colSpan={5}>
+                  <div className="spon-agenda__error">
+                    <p>No tickets are available this month.</p>
+                  </div>
+                </td>
+              </tr>
+            )}
+          {!loading && !error && tickets.length > 0 && this.prepareRows() 
+          }
+        </tbody>
+        <tfoot>
+        <tr className="spon-agenda__pagination">
+              <td>
+                <div >
+                  <Pagination 
+                    pagination={pagination}
+                    onChange={this.handlePaginationOnClick}
+                  />
+                </div>
+              </td>
+            </tr>
+        </tfoot>
+      </table>
+    )
+  }
 }
+
 
 export default Agenda

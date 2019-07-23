@@ -17,6 +17,10 @@ export interface IProps {
   changeActiveState: (id: string, checked: boolean) => void
 }
 
+export interface IState {
+  isHeaderClicked: boolean
+}
+
 export enum DIRECTION {
   DEPARTURE = "departure",
   DESTINATION = "destination"
