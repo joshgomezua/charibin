@@ -14,7 +14,7 @@ import Pagination from 'src/App/Components/Pagination';
 class Agenda extends React.Component<IProps, IState> {
 
   readonly state: IState = {
-    isHeaderClicked: false
+    header: 'spon-agenda__cell spon-agenda__cell--head'
   }
 
   handlePaginationOnClick = (page: number) => {
@@ -40,6 +40,7 @@ class Agenda extends React.Component<IProps, IState> {
       }
       return acc
     }, {})
+    console.log('segregated', segregated)
     if (filters.length === 0) {
       return null
     } else {
@@ -61,11 +62,25 @@ class Agenda extends React.Component<IProps, IState> {
     }
   }
 
-  test = () => {console.log('test')}
+  test = () => {
+    const {header} = this.state
+
+    this.props.filterString()
+
+    if (header === 'spon-agenda__cell spon-agenda__cell--head') {
+      this.setState({header: 'spon-agenda__cell spon-agenda__cell--head-border-bot'})
+    }
+    else if (header === 'spon-agenda__cell spon-agenda__cell--head-border-bot') {
+      this.setState({header: 'spon-agenda__cell spon-agenda__cell--head-border-top'})
+    }
+    else if (header === 'spon-agenda__cell spon-agenda__cell--head-border-top') {
+      this.setState({header: 'spon-agenda__cell spon-agenda__cell--head-border-bot'})
+    }
+  }
 
   render() {
     const {
-      tickets,
+    tickets,
     openModal,
     loading,
     error,
@@ -86,7 +101,7 @@ class Agenda extends React.Component<IProps, IState> {
             <th className="spon-agenda__cell spon-agenda__cell--head">
               Time of Arrival
             </th>
-            <tr onClick={this.test} className="spon-agenda__cell spon-agenda__cell--head-border-top">From</tr>
+            <tr onClick={this.test} className={this.state.header}>From</tr>
             <th className="spon-agenda__cell spon-agenda__cell--head">To</th>
             <th className="spon-agenda__cell spon-agenda__cell--head">Carrier</th>
             <th className="spon-agenda__cell spon-agenda__cell--head">Type</th>

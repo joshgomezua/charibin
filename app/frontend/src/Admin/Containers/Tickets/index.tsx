@@ -26,6 +26,7 @@ import { ERRORS, SUCCESS, DEFAULT_TICKET_DATA } from '../../Utils/constants'
 import { IStore } from '../../../Common/Redux/types'
 import { IState, IProps, IEditedData, IRequestInfo } from './types'
 import './styles.scss'
+import _ from 'lodash';
 
 class TicketsContainer extends React.Component<
   RouteComponentProps<{ tripName: string }> & IProps,
@@ -461,6 +462,26 @@ class TicketsContainer extends React.Component<
     this.handleFetchTicketsByDate(this.state.requestInfo)
   }
 
+  filterString = () => {
+    const { tickets } = this.state
+    console.log('tickets', tickets)
+    let tempTickets =  [...tickets]
+    let sortedTickets = tempTickets.sort((a: any, b: any) => {
+      if(a.departure.toLowerCase() < b.departure.toLowerCase()) { return -1; }
+      if(a.departure.toLowerCase() > b.departure.toLowerCase()) { return 1; }
+      return 0;
+    })
+    if (_.isEqual(tempTickets, tickets)) {
+      sortedTickets = tempTickets.sort((a: any, b: any) => {
+        if(a.departure.toLowerCase() > b.departure.toLowerCase()) { return -1; }
+        if(a.departure.toLowerCase() < b.departure.toLowerCase()) { return 1; }
+        return 0;
+      })
+    }
+    console.log('sortedTickets', sortedTickets)
+    this.setState({tickets: sortedTickets})
+  }
+
   render() {
     const {
       tickets,
@@ -511,6 +532,7 @@ class TicketsContainer extends React.Component<
             filters={filters}
             pagination={pagination}
             handlePaginationClick={this.handlePaginationClick}
+            filterString={this.filterString}
           />
         </div>
 

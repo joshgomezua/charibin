@@ -15,10 +15,11 @@ export interface IProps {
   openEditModal: (id: string) => void
   openModal: (type: MODAL_TYPE, heading: string, id: string) => void
   changeActiveState: (id: string, checked: boolean) => void
+  filterString: () => void
 }
 
 export interface IState {
-  isHeaderClicked: boolean
+  header: string
 }
 
 export enum DIRECTION {
