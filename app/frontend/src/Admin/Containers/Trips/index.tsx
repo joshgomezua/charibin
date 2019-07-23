@@ -1,7 +1,7 @@
 import React from 'react'
 
 import TripHeader from '../../Components/TripHeader'
-import ExpandableTable from '../../Components/ExpandableTable'
+import ExpandableTable from '../../Components/SelectExpandableTable'
 import Modal from '../../Components/Modal'
 import TripModal from '../../Components/TripModal'
 import DeleteModal from '../../Components/DeleteModal'
@@ -50,9 +50,11 @@ class TripsContainer extends React.Component<
     oppositeTrips: [],
     filtersFrom: [],
     filtersTo: [],
+    selection: {},
     results: [],
     availableCities: [],
     total: 0,
+    selectAll: 0,
     currentPage: 0,
     isLoading: true,
     isModalLoading: false,
@@ -64,7 +66,7 @@ class TripsContainer extends React.Component<
       heading: ''
     }
   }
-
+  
   handleOpenModal = (type: MODAL_TYPE, heading: string, id: string = '') => {
     this.setState({ modal: { type, heading, id } }, () => {
       this.modal.current!.open()
@@ -580,12 +582,38 @@ class TripsContainer extends React.Component<
     return false
   }
 
+  toggleSelection = (id: string) => {
+    console.log(this.state.selection)
+    const newSelected = Object.assign({}, this.state.selection)
+    newSelected[id] = !this.state.selection[id]
+    this.setState({
+      selection: newSelected,
+      selectAll: 2
+    })
+  }
+
+  toggleSelectAll = () => {
+    let newSelected = {}
+
+    if(this.state.selectAll === 0){
+      this.state.results.forEach(x => {
+        newSelected[x._id] = true
+      })
+    }
+
+    this.setState({
+      selection: newSelected,
+      selectAll: this.state.selectAll === 0 ? 1 : 0
+    })
+  }
+
   render() {
-    let {trips, total} = this.state
+    let {trips, total, selection} = this.state
     const {
       filtersFrom,
       filtersTo,
       results,
+      selectAll,
       availableCities,
       isLoading,
       isModalLoading,
@@ -593,6 +621,8 @@ class TripsContainer extends React.Component<
       editSchedule,
       modal: { type: modalType, heading: modalHeading }
     } = this.state
+
+    this.toggleSelection = this.toggleSelection.bind(this)
 
     const usedDeparture: string[] = [];
     const usedDestination: string[] = [];
@@ -630,10 +660,14 @@ class TripsContainer extends React.Component<
           })}
           handleFetchData={this.handleFetchTableData}
           columns={columns(
+            selection,
+            selectAll,
             this.handleOpenDeleteTripModal,
             this.handleOpenEditModal,
             this.handleOpenTimeSelectionModal,
             this.handleRedirectToCreateTicket,
+            this.toggleSelectAll,
+            this.toggleSelection
           )}
           loading={isLoading}
           pages={Math.ceil(total / 10)}

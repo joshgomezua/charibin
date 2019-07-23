@@ -20,20 +20,18 @@ const Checkbox: React.SFC<IProps> = ({
     <div className={checkboxClassName}>
       <input
         id={id}
-        ref={ref}
-        type="checkbox"
         name="checkbox"
+        type="checkbox"
+        className="spon-checkbox"
         checked={isChecked}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          handleChange ? handleChange() : e.preventDefault()
-        }}
-      />
+        ref={ref}
+        onChange={() => handleChange}
+			/>
       <div className="spon-checkbox__icon" />
 
       {label ? <label htmlFor={id}>{label}</label> : null}
     </div>
   )
 }
-
 
 export default Checkbox
