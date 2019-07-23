@@ -223,7 +223,6 @@ module.exports = {
     const cities = await this.findCitiesByName(uniqueCitiesFromTickets);
     const citiesParsed = this.parseCities(cities);
     const uniqueCountriesParsed = this.getUniqueCountriesParsed(citiesParsed);
-    console.log('uniqueCountriesParsed', uniqueCountriesParsed)
     let segregatedTerritories = this.segregateCountriesAndCities(uniqueCountriesParsed, citiesParsed);
     segregatedTerritories = this.sortSegregation(segregatedTerritories);
     return this.parseSegregation(segregatedTerritories);
