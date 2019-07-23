@@ -145,32 +145,32 @@ module.exports = {
     }, []);
   },
 
-  segregateCountriesAndCities(territories, destinationsParsed) {
-    const segregatedDestinations = [];
+  segregateCountriesAndCities(countries, citiesParsed) {
+    const segregatedCities = [];
 
-    territories.forEach((country) => {
-      segregatedDestinations.push([country])
+    countries.forEach((country) => {
+      segregatedCities.push([country])
     })
 
-    segregatedDestinations.forEach((array) => {
-      destinationsParsed.forEach((city) => {
+    segregatedCities.forEach((array) => {
+      citiesParsed.forEach((city) => {
         if (city.country === array[0].label) {
           array.push(city)
         }
       })
     })
 
-    return segregatedDestinations;
+    return segregatedCities;
   },
 
-  sortSegregation(segregatedDepartures) {
-    segregatedDepartures.sort((a, b) => {
+  sortSegregation(segregatedCities) {
+    segregatedCities.sort((a, b) => {
       if(a[0].label.toLowerCase() < b[0].label.toLowerCase()) { return -1; }
       if(a[0].label.toLowerCase() > b[0].label.toLowerCase()) { return 1; }
       return 0;
     })
 
-    segregatedDepartures.forEach((array) => {
+    segregatedCities.forEach((array) => {
       const country = array[0];
       array.shift();
 
@@ -183,16 +183,16 @@ module.exports = {
       array.unshift(country);
     })
 
-    return segregatedDepartures;
+    return segregatedCities;
   },
 
-  parseSegregation(segregatedDepartures) {
-    const departuresSorted = [];
-    segregatedDepartures.forEach((array) => {
-      departuresSorted.push(...array)
+  parseSegregation(segregatedCities) {
+    const citiesSorted = [];
+    segregatedCities.forEach((array) => {
+      citiesSorted.push(...array)
     })
 
-    return departuresSorted.map((item, i) => {
+    return citiesSorted.map((item, i) => {
       return {
         value: i,
         label: item.label,
@@ -219,13 +219,14 @@ module.exports = {
   },
 
   async getListFieldFilters(field) {
-    let uniqueDeparturesFromTickets = await Ticket.distinct(field);
-    const citiesDepartures = await this.findCitiesByName(uniqueDeparturesFromTickets);
-    const departuresParsed = this.parseCities(citiesDepartures);
-    const uniqueDepartureCountryFiltersParsed = this.getUniqueCountriesParsed(departuresParsed);
-    let segregatedDepartures = this.segregateCountriesAndCities(uniqueDepartureCountryFiltersParsed, departuresParsed);
-    segregatedDepartures = this.sortSegregation(segregatedDepartures);
-    return this.parseSegregation(segregatedDepartures);
+    let uniqueCitiesFromTickets = await Ticket.distinct(field);
+    const cities = await this.findCitiesByName(uniqueCitiesFromTickets);
+    const citiesParsed = this.parseCities(cities);
+    const uniqueCountriesParsed = this.getUniqueCountriesParsed(citiesParsed);
+    console.log('uniqueCountriesParsed', uniqueCountriesParsed)
+    let segregatedTerritories = this.segregateCountriesAndCities(uniqueCountriesParsed, citiesParsed);
+    segregatedTerritories = this.sortSegregation(segregatedTerritories);
+    return this.parseSegregation(segregatedTerritories);
   },
 
   async getListOfTicketFilters() {
