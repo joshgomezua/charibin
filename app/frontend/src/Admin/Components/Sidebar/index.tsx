@@ -88,17 +88,21 @@ class Sidebar extends React.Component<IProps, IState> {
     this.setState({calendarVisible: true}, () => this.props.handleFetchTicketsByDate())
   }
   
+  isCountry = (option: any) => {
+    return option.item.country && option.item.country === 'country';
+  }
   
-  customItemRenderer = (option: IOptions) => (
-    <StyledItem color={option.item.country && (option.item.country === 'country') ? '#4142a6' : '#dbdcf1'}>
+  customItemRenderer = (option: IOptions) => 
+    (<StyledItem 
+      color={this.isCountry(option) ? 'red' : 'blue'}
+    >
       <div onClick={() => option.methods.addItem(option.item)}>
         <input type="checkbox" checked={option.methods.isSelected(option.item)} />
-        <span id='country'>{option.item.country === 'country' ? 'Country : ' : option.item.country + ' : '} </span> 
+        <span id='country'>{this.isCountry(option) ? 'Country : ' : option.item.country + ' : '} </span> 
         <span id='label'><b>{option.item.label}</b>
         </span>
       </div>
-    </StyledItem>
-  );
+    </StyledItem>);
 
 
   customOptionRenderer = (option: IOption) => (
@@ -250,7 +254,7 @@ const StyledItem = styled.div`
   }
 
   span#country {
-    color: #4d5656;
+    color: ${(props: any) => props.color};
   }
 
   div#tab {
