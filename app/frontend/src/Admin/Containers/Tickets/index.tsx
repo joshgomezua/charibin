@@ -34,6 +34,7 @@ class TicketsContainer extends React.Component<
 > {
   readonly state: IState = {
     tickets: [],
+    ticketsDefault: [],
     departures: [],
     destinations: [],
     isLoading: false,
@@ -209,7 +210,7 @@ class TicketsContainer extends React.Component<
     // the request
     getTickets(startDate, endDate, requestInfo.from, requestInfo.to, requestInfo.carrier, pageToSend, requestInfo.limit, token)
       .then(async res => {
-        this.setState({ isLoading: false, tickets: res.data[1] })
+        this.setState({ isLoading: false, tickets: res.data[1], ticketsDefault: res.data[1]})
         await this.setState(prevState => ({
           pagination: {
             ...prevState.pagination,
@@ -462,23 +463,61 @@ class TicketsContainer extends React.Component<
     this.handleFetchTicketsByDate(this.state.requestInfo)
   }
 
-  filterString = () => {
+  filterString = (filter: string) => {
     const { tickets } = this.state
-    console.log('tickets', tickets)
     let tempTickets =  [...tickets]
     let sortedTickets = tempTickets.sort((a: any, b: any) => {
-      if(a.departure.toLowerCase() < b.departure.toLowerCase()) { return -1; }
-      if(a.departure.toLowerCase() > b.departure.toLowerCase()) { return 1; }
+      if(a[filter].toLowerCase() < b[filter].toLowerCase()) { return -1; }
+      if(a[filter].toLowerCase() > b[filter].toLowerCase()) { return 1; }
       return 0;
     })
     if (_.isEqual(tempTickets, tickets)) {
       sortedTickets = tempTickets.sort((a: any, b: any) => {
-        if(a.departure.toLowerCase() > b.departure.toLowerCase()) { return -1; }
-        if(a.departure.toLowerCase() < b.departure.toLowerCase()) { return 1; }
+        if(a[filter].toLowerCase() > b[filter].toLowerCase()) { return -1; }
+        if(a[filter].toLowerCase() < b[filter].toLowerCase()) { return 1; }
         return 0;
       })
     }
-    console.log('sortedTickets', sortedTickets)
+    this.setState({tickets: sortedTickets})
+  }
+
+  filterDate = (filter: string, isDate: boolean) => {
+    const { tickets } = this.state
+    let tempTickets =  [...tickets]
+    let sortedTickets = tempTickets.sort((a: any, b: any) => {
+      const am = isDate ? moment.utc(a[filter].start).format('D MMM YYYY') : moment.utc(a[filter].start).format('HH:mm')
+      const bm = isDate ? moment.utc(b[filter].start).format('D MMM YYYY') : moment.utc(b[filter].start).format('HH:mm')
+      if(am.toLowerCase() < bm.toLowerCase()) { return -1; }
+      if(am > bm.toLowerCase()) { return 1; }
+      return 0;
+    })
+    if (_.isEqual(tempTickets, tickets)) {
+      sortedTickets = tempTickets.sort((a: any, b: any) => {
+        const am = isDate ? moment.utc(a[filter].start).format('D MMM YYYY') : moment.utc(a[filter].start).format('HH:mm')
+        const bm = isDate ? moment.utc(b[filter].start).format('D MMM YYYY') : moment.utc(b[filter].start).format('HH:mm')
+        if(am.toLowerCase() > bm.toLowerCase()) { return -1; }
+        if(am.toLowerCase() < bm.toLowerCase()) { return 1; }
+        return 0;
+      })
+    }
+    this.setState({tickets: sortedTickets})
+  }
+
+  filterNumber = (filter: string) => {
+    const { tickets } = this.state
+    let tempTickets =  [...tickets]
+    let sortedTickets = tempTickets.sort((a: any, b: any) => {
+      if(a[filter] < b[filter]) { return -1; }
+      if(a[filter] > b[filter]) { return 1; }
+      return 0;
+    })
+    if (_.isEqual(tempTickets, tickets)) {
+      sortedTickets = tempTickets.sort((a: any, b: any) => {
+        if(a[filter] > b[filter]) { return -1; }
+        if(a[filter] < b[filter]) { return 1; }
+        return 0;
+      })
+    }
     this.setState({tickets: sortedTickets})
   }
 
@@ -533,6 +572,8 @@ class TicketsContainer extends React.Component<
             pagination={pagination}
             handlePaginationClick={this.handlePaginationClick}
             filterString={this.filterString}
+            filterNumber={this.filterNumber}
+            filterDate={this.filterDate}
           />
         </div>
 

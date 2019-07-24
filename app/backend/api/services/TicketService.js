@@ -633,10 +633,6 @@ module.exports = {
               }
             },
             { $sort: { 'date.start': 1} },
-            Aggregate.populateOne('trips', 'trip', '_id'),
-            {
-              $unwind: '$trip'
-            },
             ...Aggregate.skipAndLimit(page, limit)
           ]
         }
@@ -654,10 +650,6 @@ module.exports = {
               }
             },
             { $sort: { 'date.start': 1} },
-            Aggregate.populateOne('trips', 'trip', '_id'),
-            {
-              $unwind: '$trip'
-            },
           ]
         }
       }

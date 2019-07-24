@@ -7,14 +7,16 @@ import Button from '../../../Common/Components/Button'
 
 import { MODAL_TYPE } from '../../Utils/adminTypes'
 import { ITicket } from '../../../Common/Utils/globalTypes'
-import { IProps, IState } from './types'
+import { IProps, IState, FILTER_TYPE, SORT_STATE } from './types'
 import './styles.scss'
 import Pagination from 'src/App/Components/Pagination';
 
 class Agenda extends React.Component<IProps, IState> {
 
   readonly state: IState = {
-    header: 'spon-agenda__cell spon-agenda__cell--head'
+    header: SORT_STATE.DEFAULT,
+    filterType: FILTER_TYPE.DATE,
+    changedSort: false
   }
 
   handlePaginationOnClick = (page: number) => {
@@ -62,20 +64,77 @@ class Agenda extends React.Component<IProps, IState> {
     }
   }
 
-  test = () => {
+  test = (filter: string) => {
+    this.props.filterString(filter)
+    this.updateSortType()
+  }
+
+  test2 = (filter: string) => {
+    this.props.filterNumber(filter)
+    this.updateSortType()
+
+  }
+
+  test3 = (filter: string, isDate: boolean) => {
+    this.props.filterDate(filter, isDate)
+    this.updateSortType()
+    
+  }
+
+  updateSortType = () => {
     const {header} = this.state
 
-    this.props.filterString()
+    if (header === SORT_STATE.DEFAULT) {
+      this.setState({header: SORT_STATE.BOT})
+    }
+    else if (header === SORT_STATE.BOT) {
+      this.setState({header: SORT_STATE.TOP})
+    }
+    else if (header === SORT_STATE.TOP) {
+      this.setState({header: SORT_STATE.BOT})
+    }
+  }
 
-    if (header === 'spon-agenda__cell spon-agenda__cell--head') {
-      this.setState({header: 'spon-agenda__cell spon-agenda__cell--head-border-bot'})
-    }
-    else if (header === 'spon-agenda__cell spon-agenda__cell--head-border-bot') {
-      this.setState({header: 'spon-agenda__cell spon-agenda__cell--head-border-top'})
-    }
-    else if (header === 'spon-agenda__cell spon-agenda__cell--head-border-top') {
-      this.setState({header: 'spon-agenda__cell spon-agenda__cell--head-border-bot'})
-    }
+  setFrom = () => {
+    this.state.filterType = FILTER_TYPE.FROM
+    this.state.header = SORT_STATE.DEFAULT
+    this.test('departure')
+  }
+
+  setTo = () => {
+    this.state.filterType = FILTER_TYPE.TO
+    this.state.header = SORT_STATE.DEFAULT
+    this.test('destination')
+  }
+
+  setCarrier = () => {
+    this.state.filterType = FILTER_TYPE.CARRIER
+    this.state.header = SORT_STATE.DEFAULT
+    this.test('carrier')
+  }
+
+  setType = () => {
+    this.state.filterType = FILTER_TYPE.TYPE
+    this.state.header = SORT_STATE.DEFAULT
+    this.test('type')
+  }
+
+  setTimeOfDeparture = () => {
+    this.state.filterType = FILTER_TYPE.TIME_OF_DEPARTURE
+    this.state.header = SORT_STATE.DEFAULT
+    this.test3('date', false)
+  }
+
+  setSoldTickets = () => {
+    this.state.filterType = FILTER_TYPE.SOLD_TICKETS
+    this.state.header = SORT_STATE.DEFAULT
+    this.test2('soldTickets')
+  }
+
+  setDate = () => {
+    this.state.filterType = FILTER_TYPE.DATE
+    this.state.header = SORT_STATE.DEFAULT
+    this.test3('date', true)
   }
 
   render() {
@@ -88,30 +147,35 @@ class Agenda extends React.Component<IProps, IState> {
     filters,
     pagination,
     } = this.props
+
+    const {
+      filterType,
+      header
+    } = this.state
     return (
       <table className="spon-agenda">
         <thead key="thead" className="spon-agenda__thead">
           <tr className="spon-agenda__row  spon-agenda__row--head">
-            <th className="spon-agenda__cell spon-agenda__cell--head spon-agenda__cell--first-item">
+            <th onClick={this.setDate} className={filterType === FILTER_TYPE.DATE ? header : SORT_STATE.DEFAULT}>
               Date
             </th>
-            <th className="spon-agenda__cell spon-agenda__cell--head">
+            <th onClick={this.setTimeOfDeparture} className={filterType === FILTER_TYPE.TIME_OF_DEPARTURE ? header : SORT_STATE.DEFAULT}>
               Time of departure
             </th>
             <th className="spon-agenda__cell spon-agenda__cell--head">
               Time of Arrival
             </th>
-            <tr onClick={this.test} className={this.state.header}>From</tr>
-            <th className="spon-agenda__cell spon-agenda__cell--head">To</th>
-            <th className="spon-agenda__cell spon-agenda__cell--head">Carrier</th>
-            <th className="spon-agenda__cell spon-agenda__cell--head">Type</th>
+            <th onClick={this.setFrom} className={filterType === FILTER_TYPE.FROM ? header : SORT_STATE.DEFAULT}>From</th>
+            <th onClick={this.setTo} className={filterType === FILTER_TYPE.TO ? header : SORT_STATE.DEFAULT}>To</th>
+            <th onClick={this.setCarrier} className={filterType === FILTER_TYPE.CARRIER ? header : SORT_STATE.DEFAULT}>Carrier</th>
+            <th onClick={this.setType} className={filterType === FILTER_TYPE.TYPE ? header : SORT_STATE.DEFAULT}>Type</th>
             <th className="spon-agenda__cell spon-agenda__cell--head">
               Qty of tickets
             </th>
             <th className="spon-agenda__cell spon-agenda__cell--head">
               Available tickets
             </th>
-            <th className="spon-agenda__cell spon-agenda__cell--head">
+            <th onClick={this.setSoldTickets} className={filterType === FILTER_TYPE.SOLD_TICKETS ? header : SORT_STATE.DEFAULT}>
               Sold tickets
             </th>
             

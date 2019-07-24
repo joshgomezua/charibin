@@ -15,14 +15,34 @@ export interface IProps {
   openEditModal: (id: string) => void
   openModal: (type: MODAL_TYPE, heading: string, id: string) => void
   changeActiveState: (id: string, checked: boolean) => void
-  filterString: () => void
+  filterString: (filter: string) => void
+  filterNumber: (filter: string) => void
+  filterDate: (filter: string, isDate: boolean) => void
 }
 
 export interface IState {
-  header: string
+  header: SORT_STATE
+  filterType: FILTER_TYPE
+  changedSort: boolean
 }
 
 export enum DIRECTION {
   DEPARTURE = "departure",
   DESTINATION = "destination"
+}
+
+export enum FILTER_TYPE {
+  DATE = "date",
+  TIME_OF_DEPARTURE = "time of departure",
+  FROM = "from",
+  TO = "to",
+  CARRIER = "carrier",
+  TYPE = "type",
+  SOLD_TICKETS = "sold tickets"
+}
+
+export enum SORT_STATE {
+  DEFAULT = 'spon-agenda__cell spon-agenda__cell--head',
+  BOT = 'spon-agenda__cell spon-agenda__cell--head-border-bot',
+  TOP = 'spon-agenda__cell spon-agenda__cell--head-border-top',
 }
