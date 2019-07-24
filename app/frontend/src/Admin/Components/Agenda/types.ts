@@ -32,6 +32,7 @@ export enum DIRECTION {
 }
 
 export enum FILTER_TYPE {
+  NONE = "none",
   DATE = "date",
   TIME_OF_DEPARTURE = "time of departure",
   FROM = "from",

@@ -15,7 +15,7 @@ class Agenda extends React.Component<IProps, IState> {
 
   readonly state: IState = {
     header: SORT_STATE.DEFAULT,
-    filterType: FILTER_TYPE.DATE,
+    filterType: FILTER_TYPE.NONE,
     changedSort: false
   }
 
@@ -83,6 +83,7 @@ class Agenda extends React.Component<IProps, IState> {
 
   updateSortType = () => {
     const {header} = this.state
+    console.log('update', this.state.header)
 
     if (header === SORT_STATE.DEFAULT) {
       this.setState({header: SORT_STATE.BOT})
@@ -95,45 +96,73 @@ class Agenda extends React.Component<IProps, IState> {
     }
   }
 
-  setFrom = () => {
-    this.state.filterType = FILTER_TYPE.FROM
-    this.state.header = SORT_STATE.DEFAULT
+  setFrom = async () => {
+    if (this.state.filterType !== FILTER_TYPE.FROM) {
+      await this.setState({
+        filterType: FILTER_TYPE.FROM,
+        header: SORT_STATE.DEFAULT
+      })
+    }    
     this.test('departure')
   }
 
-  setTo = () => {
-    this.state.filterType = FILTER_TYPE.TO
-    this.state.header = SORT_STATE.DEFAULT
+  setTo = async () => {
+    if (this.state.filterType !== FILTER_TYPE.TO) {
+      await this.setState({
+        filterType: FILTER_TYPE.TO,
+        header: SORT_STATE.DEFAULT
+      })
+    }    
     this.test('destination')
   }
 
-  setCarrier = () => {
-    this.state.filterType = FILTER_TYPE.CARRIER
-    this.state.header = SORT_STATE.DEFAULT
+  setCarrier = async () => {
+    if (this.state.filterType !== FILTER_TYPE.CARRIER) {
+      await this.setState({
+        filterType: FILTER_TYPE.CARRIER,
+        header: SORT_STATE.DEFAULT
+      })
+    }    
     this.test('carrier')
   }
 
-  setType = () => {
-    this.state.filterType = FILTER_TYPE.TYPE
-    this.state.header = SORT_STATE.DEFAULT
+  setType = async () => {
+    if (this.state.filterType !== FILTER_TYPE.TYPE) {
+      await this.setState({
+        filterType: FILTER_TYPE.TYPE,
+        header: SORT_STATE.DEFAULT
+      })
+    }    
     this.test('type')
   }
 
-  setTimeOfDeparture = () => {
-    this.state.filterType = FILTER_TYPE.TIME_OF_DEPARTURE
-    this.state.header = SORT_STATE.DEFAULT
+  setTimeOfDeparture = async () => {
+    if (this.state.filterType !== FILTER_TYPE.TIME_OF_DEPARTURE) {
+      await this.setState({
+        filterType: FILTER_TYPE.TIME_OF_DEPARTURE,
+        header: SORT_STATE.DEFAULT
+      })
+    }    
     this.test3('date', false)
   }
 
-  setSoldTickets = () => {
-    this.state.filterType = FILTER_TYPE.SOLD_TICKETS
-    this.state.header = SORT_STATE.DEFAULT
+  setSoldTickets = async () => {
+    if (this.state.filterType !== FILTER_TYPE.SOLD_TICKETS) {
+      await this.setState({
+        filterType: FILTER_TYPE.SOLD_TICKETS,
+        header: SORT_STATE.DEFAULT
+      })
+    }    
     this.test2('soldTickets')
   }
 
-  setDate = () => {
-    this.state.filterType = FILTER_TYPE.DATE
-    this.state.header = SORT_STATE.DEFAULT
+  setDate = async () => {
+    if (this.state.filterType !== FILTER_TYPE.DATE) {
+      await this.setState({
+        filterType: FILTER_TYPE.DATE,
+        header: SORT_STATE.DEFAULT
+      })
+    }    
     this.test3('date', true)
   }
 
