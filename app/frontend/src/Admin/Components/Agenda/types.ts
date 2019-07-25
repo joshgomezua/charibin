@@ -24,6 +24,8 @@ export interface IState {
   header: SORT_STATE
   filterType: FILTER_TYPE
   changedSort: boolean
+  filterAttribute: string
+  isReversed: boolean
 }
 
 export enum DIRECTION {
