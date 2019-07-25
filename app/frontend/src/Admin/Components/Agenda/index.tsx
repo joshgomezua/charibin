@@ -251,7 +251,7 @@ class Agenda extends React.Component<IProps, IState> {
             <tr>
               <td colSpan={5}>
                 <div className="spon-agenda__error">
-                  <p>There was a problem when we tried to find courses</p>
+                  <p>There was a problem when we tried to find tickets</p>
   
                   <Button
                     onClick={retry}
@@ -289,7 +289,7 @@ class Agenda extends React.Component<IProps, IState> {
               <tr>
                 <td colSpan={5}>
                   <div className="spon-agenda__error">
-                    <p>No tickets are available this month.</p>
+                    <p>No tickets available for this month.</p>
                   </div>
                 </td>
               </tr>
