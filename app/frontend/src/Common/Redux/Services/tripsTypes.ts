@@ -7,6 +7,7 @@ export enum TRIPS_ACTIONS {
   ADD_DESELECTED = 'ADD_DESELECTED',
   SET_QUANTITY = 'SET_QUANTITY',
   SET_FINAL_DESTINATION = 'SET_FINAL_DESTINATION',
+  SET_DEPARTURE = 'SET_DEPARTURE',
   CLEAR_DESELECTED = 'CLEAR_DESELECTED',
   CLEAR_SELECTED = 'CLEAR_SELECTED',
   SET_INITIAL_STATE = 'SET_INITIAL_STATE'
@@ -50,6 +51,11 @@ export interface ISetFinalDestiantion {
   selected: IFinalSelected
 }
 
+export interface IsetDeparture {
+  type: TRIPS_ACTIONS.SET_DEPARTURE
+  departure: string
+}
+
 export interface IInitialState {
   type: TRIPS_ACTIONS.SET_INITIAL_STATE
 }
@@ -64,3 +70,4 @@ export type ITipsActions =
   | ISetFinalDestiantion
   | IInitialState
   | IClearSelected
+  | IsetDeparture

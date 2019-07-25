@@ -6,7 +6,8 @@ import {
   IRemoveSelected,
   ISetQuantity,
   IClearDeselected,
-  IClearSelected
+  IClearSelected,
+  IsetDeparture
 } from './tripsTypes'
 import { ISelectedData, IFinalSelected } from '../../../App/Utils/appTypes'
 import { getFromLS } from '../../Utils/helpers'
@@ -16,6 +17,7 @@ import { IStore } from '../types'
 const owner = getFromLS('owner')
 
 const initialState = {
+  departure: (owner && owner.data.departure) || 'London',
   quantity: (owner && owner.data.quantity) || 1,
   selected: (owner && owner.data.selected) || [],
   deselected: (owner && owner.data.deselected) || [],
@@ -45,6 +47,8 @@ export const tripsReducer = (state = initialState, action: ITipsActions) => {
       return { ...state, quantity: action.quantity }
     case TRIPS_ACTIONS.SET_INITIAL_STATE:
       return initialState
+    case TRIPS_ACTIONS.SET_DEPARTURE:
+      return {...state, departure: action.departure}
     default:
       return state
   }
@@ -80,6 +84,11 @@ export const setQuantity = (quantity: number): ISetQuantity => ({
   quantity
 })
 
+export const setDeparture = (departure: string): IsetDeparture => ({
+  type: TRIPS_ACTIONS.SET_DEPARTURE,
+  departure
+})
+
 export const updateSelected = (selected: ISelectedData[]) => ({
   type: TRIPS_ACTIONS.UPDATE_SELECTED,
   selected
@@ -100,7 +109,15 @@ export const selectIsMaxSelected = (state: IStore) =>
   state.trips.selected.length >= 5
 export const selectIsMaxDeselected = (state: IStore) =>
   state.trips.deselected.length >= 2
-export const selectQuantity = (state: IStore) => state.trips.quantity
+export const selectQuantity = (state: IStore) => {
+  console.log(state)
+  console.log("select quantity", state.trips.quantity)
+   return state.trips.quantity
+} 
+export const selectDeparture = (state: IStore) => {
+  console.log("select departure", state.trips.departure)
+  return state.trips.departure
+}
 export const selectFinalSelection = (state: IStore) =>
   state.trips.finalDestination
 export const selectFinalSelected = (state: IStore) => {

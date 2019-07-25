@@ -13,10 +13,12 @@ export default class Search extends Component<IProps, IState> {
     buttons: false,
     tickets: []
   }
-  changeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  changeInput =  (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { setDeparture } = this.props
     e.preventDefault()
     this.setState({ inputValue: e.target.value })
-    this.handleSearch(e.target.value)
+    setDeparture!(e.target.value)
+    //this.handleSearch(e.target.value)
   }
 
   handleFetchTickets =  (date:number, page:number, limit:number) => {
@@ -30,12 +32,12 @@ export default class Search extends Component<IProps, IState> {
     this.handleFetchTickets(Date.now(),0,1000)
   }
 
-  handleSearch = (inputValue: string) => {
+  handleSearch = (input: string) => {
     const {tickets} = this.state
     const search = tickets.filter((ticket: ITicket) => {
-      console.log(ticket.departure)
-        if (ticket.departure.toLowerCase().includes(inputValue.toLowerCase())) {
-                console.log("trouvé")
+
+        if (ticket.departure.toLowerCase().includes(input.toLowerCase())) {
+               
                   return ticket
           } 
           return;
@@ -47,6 +49,7 @@ export default class Search extends Component<IProps, IState> {
     const { setQuantity } = this.props
 
     if (setQuantity) {
+      console.log(this.props.quantity)
       this.setState((state: IState) => ({ buttons: !state.buttons }))
     }
   }

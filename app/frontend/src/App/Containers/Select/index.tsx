@@ -15,8 +15,11 @@ import {
   selectIsMaxSelected,
   selectSelected,
   selectQuantity,
+  setQuantity,
   updateSelected,
-  clearSelected
+  clearSelected,
+  selectDeparture,
+  setDeparture
 } from '../../../Common/Redux/Services/trips'
 import withToast from '../../../Common/HOC/withToast'
 import { saveToLS, getOwnerToken } from '../../../Common/Utils/helpers'
@@ -52,6 +55,7 @@ class SelectContainer extends Component<
   componentDidMount() {
     window.scrollTo(0, 0)
     const { quantity } = this.props
+    console.log("component did mount")
     this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity).then(
       () => {
         this.setState({ isLoading: false })
@@ -121,7 +125,7 @@ class SelectContainer extends Component<
   }
 
   handleBookTrips = () => {
-    const { selected, quantity } = this.props
+    const { selected, quantity, departure } = this.props
     const token = getOwnerToken()
     const bookedTrips = selected.map((selectedItem: ISelectedData) => {
       if (selectedItem.arrivalTicket && selectedItem.departureTicket) {
@@ -141,6 +145,7 @@ class SelectContainer extends Component<
     })
 
     const data: IBookedData = {
+      departure,
       quantity,
       trips: bookedTrips
     }
@@ -167,6 +172,7 @@ class SelectContainer extends Component<
           createdAt: res.data.createdAt,
           token: res.data.owner,
           data: {
+            departure,
             quantity,
             selected: selectedTrips
           }
@@ -295,16 +301,20 @@ class SelectContainer extends Component<
 
   render() {
     const { isCalendarOpen, isLoading, trips, filters } = this.state
-    const { isMax, quantity, selected } = this.props
+    const { isMax, quantity, selected,departure } = this.props
     
 
     return (
       <section className={`select-cnt ${isCalendarOpen ? 'calendar' : ''}`}>
         <MainBlock className="select-cnt-block">
+          {console.log(quantity)}
           <Search
+            departure={departure}
+            setDeparture={this.props.setDeparture}
+            setQuantity={this.props.setQuantity}
             quantity={quantity}
-            onSubmit={() => {}}
-            initialValue="London"
+            onSubmit={()=>{ console.log(departure)}}
+            initialValue={departure}
           />
           <Steps />
         </MainBlock>
@@ -380,10 +390,12 @@ class SelectContainer extends Component<
 const mapStateToProps = (state: IStore) => ({
   isMax: selectIsMaxSelected(state),
   quantity: selectQuantity(state),
-  selected: selectSelected(state)
+  selected: selectSelected(state),
+  departure: selectDeparture(state)
 })
 
 export default connect(
   mapStateToProps,
-  { addSelected, removeSelected, updateSelected, clearSelected }
+  { addSelected, removeSelected, updateSelected, clearSelected, setQuantity,
+    setDeparture}
 )(withToast(SelectContainer))

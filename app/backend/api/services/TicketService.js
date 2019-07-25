@@ -240,7 +240,7 @@ async function unbook ({ owner, selectedTrip }) {
   return;
 }
 
-async function bookWithTime ({ quantity, selectedTrip, owner }) {
+async function bookWithTime ({quantity, selectedTrip, owner }) {
   const arrivalTicket = await Ticket.findOne({ _id: selectedTrip.arrivalTicket, active: true, deleted: false, quantity: { $gte: quantity } });
   if(!arrivalTicket) throw { status: 404, message: 'TICKET.ARRIVAL.NOT.EXIST' };
 
@@ -371,7 +371,7 @@ module.exports = {
       if(selectedTrip.arrivalTicket || selectedTrip.departureTicket) {
         await bookWithTime({ quantity, selectedTrip, owner });
       } else {
-        await bookWithOutTime({ quantity, selectedTrip, owner });
+        await bookWithOutTime({quantity, selectedTrip, owner });
       }
     }
 
