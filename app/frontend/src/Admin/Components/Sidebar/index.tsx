@@ -87,15 +87,22 @@ class Sidebar extends React.Component<IProps, IState> {
     this.setState({calendarVisible: true}, () => this.props.handleFetchTicketsByDate())
   }
   
+  isCountry = (option: any) => {
+    return option.item.country && option.item.country === 'country';
+  }
   
-  customItemRenderer = (option: IOptions) => (
-    <StyledItem color={option.item.country && (option.item.country === 'country') ? '#4142a6' : '#dbdcf1'}>
-      <div onClick={() => option.methods.addItem(option.item)}>
-        <input type="checkbox" checked={option.methods.isSelected(option.item)} />{" "}
-        {option.item.label}
+  customItemRenderer = (option: IOptions) => 
+    (<StyledItem 
+      color={this.isCountry(option) ? '#4142a6' : '#dbdcf1'}
+    >
+      <div onClick={() => {option.methods.addItem(option.item)}}>
+      <input type="checkbox" checked={option.methods.isSelected(option.item)} />
+        <span id='country'>{this.isCountry(option) ? 'Country ' : option.item.country} </span> 
+        <span id='label'>&emsp;<b>{option.item.label}</b>
+        </span>
       </div>
-    </StyledItem>
-  );
+    </StyledItem>);
+
 
   customOptionRenderer = (option: IOption) => (
     
@@ -122,6 +129,7 @@ class Sidebar extends React.Component<IProps, IState> {
              state: option.state,
              methods: option.methods
            }
+           option.props.searchable = true;
            return option.props.optionRenderer(options)
          }) : (
             <div className='placeholder'>{option.props.placeholder}</div>
@@ -166,9 +174,9 @@ class Sidebar extends React.Component<IProps, IState> {
         <Select
         className="spon-sidebar__select__From"
             multi
+            searchable
             itemRenderer={this.customItemRenderer}
             optionRenderer={this.customOptionRenderer}
-            contentRenderer={this.customContentRenderer}
             placeholder={'From'}
             options={filtersFrom} 
             value={filterFrom} 
@@ -181,9 +189,9 @@ class Sidebar extends React.Component<IProps, IState> {
         <div className="spon-sidebar__select__To">
         <Select 
             multi
+            searchable
             itemRenderer={this.customItemRenderer}
             optionRenderer={this.customOptionRenderer}
-            contentRenderer={this.customContentRenderer}
             placeholder={'To'} 
             options={filtersTo} 
             value={filterTo} 
@@ -196,9 +204,9 @@ class Sidebar extends React.Component<IProps, IState> {
         <div className="spon-sidebar__select__Carrier">
         <Select 
             multi
+            searchable
             itemRenderer={this.customItemRenderer}
             optionRenderer={this.customOptionRenderer}
-            contentRenderer={this.customContentRenderer}
             placeholder={'Carrier'} 
             options={filtersCarrier} 
             value={filterCarrier} 
@@ -231,11 +239,39 @@ const StyledContent = styled.div`
 `;
 
 const StyledItem = styled.div`
-  color: white;
-  border-radius: 3px;
-  margin: 3px;
+  border-radius: 5px 5px 5px 5px;
+  padding: 10px;
+  
+  :hover {
+    background: #eaeded;
+  }
+
+  span#country:active {
+    color: red;
+  }
+  
   cursor: pointer;
-  background: ${(props: any) => props.color} ;
+
+  span#label {
+    color: #2e4053;
+  }
+
+  span#country {
+    padding: 5px;
+    color: white;
+    background: ${(props: any) => props.color};
+    border-radius: 5px;
+    box-shadow 5px 10pxs: 
+  }
+
+  div#tab {
+    white-space: pre;
+  }
+
+  span#space {
+    margin: 0 5 0 5;
+  }
+  
 `;
 
 const StyledOption = styled.span`

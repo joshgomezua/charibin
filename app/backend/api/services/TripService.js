@@ -1,6 +1,6 @@
 'use strict';
 
-const { Trip, Ticket } = require('../models');
+const { Trip, Ticket, City } = require('../models');
 const Aggregate = require('./Aggregate');
 const Utilities = require('./Utilities');
 
@@ -119,55 +119,22 @@ module.exports = {
     return;
   },
 
-  async getListOfTicketFilters() {
-    const listOfFiltersNotParsed = await Trip.find({ deleted: false }).select('departure').select('destination').select('carrier');
-    let departureFilters = [];
-    let destinationFilters = [];
-    let carrierFilters = [];
+  async findCitiesByName(uniqueCities) {
+    return Promise.all(
+      uniqueCities.map(item => 
+        City.find({isEnabled: true, name: item })
+    ));
+  },
 
-    listOfFiltersNotParsed.forEach((item) => {
-      departureFilters.push({
-        departure: item.departure.name,
-        country: item.departure.country
-      })
-
-      destinationFilters.push({
-        destination: item.destination.name,
-        country: item.destination.country
-      })
-
-      carrierFilters.push({
-        carrier: item.carrier,
-      })
-    });
-
-    const uniqueDepartureFilters = departureFilters.reduce((uniqueCities, other) => {
-      if(!uniqueCities.some((item) => item.departure === other.departure)){
-        uniqueCities.push(other);
-      }
-      return uniqueCities;
-    }, []);
-
-    const uniqueDestinationFilters = destinationFilters.reduce((uniqueCities, other) => {
-      if(!uniqueCities.some((item) => item.country === other.country)){
-        uniqueCities.push(other);
-      }
-      return uniqueCities;
-    }, []);
-
-    const uniqueCarrierFilters = carrierFilters.reduce((unique, other) => {
-      if(!unique.some((obj) => obj.carrier === other.carrier)) {
-        unique.push(other);
-      }
-      return unique;
-    },[]);
-
-    const departuresParsed = uniqueDepartureFilters.map((city, i) => ({
-      label: city.departure,
-      country: city.country
+  parseCities(cities) {
+    return cities.map(city => ({
+      label: city[0].name,
+      country: city[0].country
     }));
+  },
 
-    const uniqueDepartureCountryFiltersParsed = uniqueDepartureFilters.reduce((uniqueCountries, other) => {
+  getUniqueCountriesParsed(parsedCities) {
+    return parsedCities.reduce((uniqueCountries, other) => {
       if(!uniqueCountries.some((item) => item.label === other.country)){
         uniqueCountries.push({
           label: other.country,
@@ -176,47 +143,34 @@ module.exports = {
       }
       return uniqueCountries;
     }, []);
+  },
 
-    const segregatedDepartures = []
-    uniqueDepartureCountryFiltersParsed.forEach((country) => {
-      segregatedDepartures.push([country])
+  segregateCountriesAndCities(countries, citiesParsed) {
+    const segregatedCities = [];
+
+    countries.forEach((country) => {
+      segregatedCities.push([country])
     })
-    segregatedDepartures.forEach((array) => {
-      departuresParsed.forEach((city) => {
+
+    segregatedCities.forEach((array) => {
+      citiesParsed.forEach((city) => {
         if (city.country === array[0].label) {
           array.push(city)
         }
       })
     })
 
-    const destinationsParsed = uniqueDestinationFilters.map((city) => ({
-      label: city.destination,
-      country: city.country
-    }));
+    return segregatedCities;
+  },
 
-    const uniqueDestinationCountryFiltersParsed = uniqueDestinationFilters.reduce((uniqueCountries, other) => {
-      if(!uniqueCountries.some((item) => item.label === other.country)){
-        uniqueCountries.push({
-          label: other.country,
-          country: 'country'
-        });
-      }
-      return uniqueCountries;
-    }, []);
-
-    const segregatedDestinations = []
-    uniqueDestinationCountryFiltersParsed.forEach((country) => {
-      segregatedDestinations.push([country])
-    })
-    segregatedDestinations.forEach((array) => {
-      destinationsParsed.forEach((city) => {
-        if (city.country === array[0].label) {
-          array.push(city)
-        }
-      })
+  sortSegregation(segregatedCities) {
+    segregatedCities.sort((a, b) => {
+      if(a[0].label.toLowerCase() < b[0].label.toLowerCase()) { return -1; }
+      if(a[0].label.toLowerCase() > b[0].label.toLowerCase()) { return 1; }
+      return 0;
     })
 
-    segregatedDestinations.forEach((array) => {
+    segregatedCities.forEach((array) => {
       const country = array[0];
       array.shift();
 
@@ -229,55 +183,58 @@ module.exports = {
       array.unshift(country);
     })
 
-    segregatedDepartures.forEach((array) => {
-      const country = array[0];
-      array.shift();
+    return segregatedCities;
+  },
 
-      array.sort((a, b) => {
-        if(a.label.toLowerCase() < b.label.toLowerCase()) { return -1; }
-        if(a.label.toLowerCase() > b.label.toLowerCase()) { return 1; }
-        return 0;
-      })
-
-      array.unshift(country);
+  parseSegregation(segregatedCities) {
+    const citiesSorted = [];
+    segregatedCities.forEach((array) => {
+      citiesSorted.push(...array)
     })
 
-    const carriers = uniqueCarrierFilters.map((city, i) => ({
+    return citiesSorted.map((item, i) => {
+      return {
+        value: i,
+        label: item.label,
+        country: item.country
+      }
+    })
+  },
+
+  async getListCarriersFilters(){
+    let uniqueCarriersFromTickets = await Ticket.distinct('carrier');
+
+    const carriers = uniqueCarriersFromTickets.map((city, i) => ({
       value: i,
-      label: city.carrier
+      label: city
     }));
 
     carriers.sort((a, b) => {
       if(a.label.toLowerCase() < b.label.toLowerCase()) { return -1; }
       if(a.label.toLowerCase() > b.label.toLowerCase()) { return 1; }
       return 0;
-    })
+    });
 
-    const departuresSorted = [];
-    segregatedDepartures.forEach((array) => {
-      departuresSorted.push(...array)
-    })
+    return carriers;
+  },
 
-    const destinationsSorted = [];
-    segregatedDestinations.forEach((array) => {
-      destinationsSorted.push(...array)
-    })
+  async getListFieldFilters(field) {
+    let uniqueCitiesFromTickets = await Ticket.distinct(field);
+    const cities = await this.findCitiesByName(uniqueCitiesFromTickets);
+    const citiesParsed = this.parseCities(cities);
+    const uniqueCountriesParsed = this.getUniqueCountriesParsed(citiesParsed);
+    let segregatedTerritories = this.segregateCountriesAndCities(uniqueCountriesParsed, citiesParsed);
+    segregatedTerritories = this.sortSegregation(segregatedTerritories);
+    return this.parseSegregation(segregatedTerritories);
+  },
 
-    const departures = departuresSorted.map((item, i) => {
-      return {
-        value: i,
-        label: item.label,
-        country: item.country
-      }
-    })
+  async getListOfTicketFilters() {
+    
+    const departures = await this.getListFieldFilters('departure')
 
-    const destinations = destinationsSorted.map((item, i) => {
-      return {
-        value: i,
-        label: item.label,
-        country: item.country
-      }
-    })
+    const destinations = await this.getListFieldFilters('destination')
+
+    const carriers = await this.getListCarriersFilters();
 
     return {
       departures: departures,
