@@ -94,12 +94,12 @@ class Sidebar extends React.Component<IProps, IState> {
   
   customItemRenderer = (option: IOptions) => 
     (<StyledItem 
-      color={this.isCountry(option) ? 'red' : 'blue'}
+      color={this.isCountry(option) ? '#4142a6' : '#dbdcf1'}
     >
-      <div onClick={() => option.methods.addItem(option.item)}>
-        <input type="checkbox" checked={option.methods.isSelected(option.item)} />
-        <span id='country'>{this.isCountry(option) ? 'Country : ' : option.item.country + ' : '} </span> 
-        <span id='label'><b>{option.item.label}</b>
+      <div onClick={() => {option.methods.addItem(option.item)}}>
+      <input type="checkbox" checked={option.methods.isSelected(option.item)} />
+        <span id='country'>{this.isCountry(option) ? 'Country ' : option.item.country} </span> 
+        <span id='label'>&emsp;<b>{option.item.label}</b>
         </span>
       </div>
     </StyledItem>);
@@ -240,11 +240,15 @@ const StyledContent = styled.div`
 `;
 
 const StyledItem = styled.div`
-  border-radius: 15px 15px 15px 15px;
+  border-radius: 5px 5px 5px 5px;
   padding: 10px;
   
   :hover {
     background: #eaeded;
+  }
+
+  span#country:active {
+    color: red;
   }
   
   cursor: pointer;
@@ -254,11 +258,19 @@ const StyledItem = styled.div`
   }
 
   span#country {
-    color: ${(props: any) => props.color};
+    padding: 5px;
+    color: white;
+    background: ${(props: any) => props.color};
+    border-radius: 5px;
+    box-shadow 5px 10pxs: 
   }
 
   div#tab {
     white-space: pre;
+  }
+
+  span#space {
+    margin: 0 5 0 5;
   }
   
 `;
