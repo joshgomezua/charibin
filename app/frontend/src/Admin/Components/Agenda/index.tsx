@@ -18,7 +18,7 @@ class Agenda extends React.Component<IProps, IState> {
     header: SORT_STATE.DEFAULT,
     filterType: FILTER_TYPE.NONE,
     changedSort: false,
-    filterAttribute: '',
+    filterAttribute: 'date',
     isReversed: false
   }
 
@@ -87,7 +87,7 @@ class Agenda extends React.Component<IProps, IState> {
       }
 
       if (
-        filterType === FILTER_TYPE.DATE 
+        filterType === FILTER_TYPE.DATE || filterType === FILTER_TYPE.NONE
       ) {
         ticketsTemp = this.filterDate(tickets, filterAttribute, true, isReversed)
         const filtered = ticketsTemp
