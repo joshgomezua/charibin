@@ -37,35 +37,9 @@ class Agenda extends React.Component<IProps, IState> {
     } = this.props
 
     const {filterType, filterAttribute, isReversed} = this.state
-    /*const filtered = tickets
-    const segregated = filtered.reduce((acc, ticket: ITicket) => {
-      const day = moment.utc(ticket.date.start).format('Y:M:D')
-      if (day in acc) {
-        acc[day].push(ticket)
-      } else {
-        acc[day] = [ticket]
-      }
-      return acc
-    }, {})
-    console.log('segregated', segregated) */
     if (filters.length === 0) {
       return null
     } else {
-      /*const row = Object.keys(segregated).map(key => {
-        return segregated[key].map((ticket: ITicket, index: number) => (
-          <AgendaItem
-            key={index}
-            ticket={ticket}
-            index={index}
-            rowSpan={segregated[key].length}
-            changeActiveState={changeActiveState}
-            openTicket={openEditModal}
-            openModal={openModal}
-          />
-        ))
-      })
-      
-      return row */
       let ticketsTemp: ITicket[] = [...tickets]
       if (
         filterType === FILTER_TYPE.FROM ||
