@@ -87,6 +87,10 @@ module.exports = {
   },
   
   async update (id, data) {
+    console.log(`
+      id: ${id}\n
+      data: ${data}
+      `)
     let city = await City.findOne({ _id: id });
     const oldName = city.name;
     if(!city) throw { status: 404, message: 'CITY.NOT.EXIST' };
@@ -95,9 +99,15 @@ module.exports = {
       city = await City.findOne({ name: data.name});
       if(city) throw { status: 409, message: 'CITY.NAME.EXIST' };
     }
-
+    console.log(`
+      ==========City==========: 
+      \n${city}
+      `)
     const updatedCity = await City.findByIdAndUpdate(id, data, { new: true });
-
+    console.log(`
+      ==========updatedCity==========: 
+      \n${updatedCity}
+      `)
     const trips = await Trip.find({'departure._id': ObjectId(id)});
     trips.length && trips.forEach(async(trip) => {
       await Trip.findByIdAndUpdate(ObjectId(trip._id), {$set: {
@@ -124,17 +134,21 @@ module.exports = {
     });
 
     const allTrips = [...trips, ...trips2];
-    allTrips.forEach(async(trip) => {
-       Promise.all(trip.tickets.forEach(async(ticketId) => {
-        const ticket =  await Ticket.findById(ticketId);
-        if (ticket && ticket.departure === oldName) {
-          await Ticket.update({_id: ObjectId(ticketId)}, {departure: data.name})
-        }
-        else if (ticket && ticket.destination === oldName) {
-          await Ticket.update({_id: ObjectId(ticketId)}, {destination: data.name})
-        }
-      }))
-    })
+
+      data.name && allTrips.length && allTrips.forEach(async(trip) => {
+         trip.tickets.forEach(async(ticketId) => {
+
+          const ticket =  await Ticket.findOne({_id: ObjectId(ticketId)});
+
+          if (ticket && ticket.departure === oldName) {
+            await Ticket.updateOne({_id: ObjectId(ticketId)}, {departure: data.name})
+          }
+          else if (ticket && ticket.destination === oldName) {
+            await Ticket.updateOne({_id: ObjectId(ticketId)}, {destination: data.name})
+          }
+        })
+      })
+    
 
     return updatedCity
   },
