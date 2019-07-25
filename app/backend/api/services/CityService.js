@@ -1,6 +1,6 @@
 'use strict'
 
-const { City, Trip } = require('../models');
+const { City, Trip, Ticket } = require('../models');
 const Aggregate = require('./Aggregate');
 var ObjectId = require('mongoose').Types.ObjectId;
 
@@ -88,6 +88,7 @@ module.exports = {
   
   async update (id, data) {
     let city = await City.findOne({ _id: id });
+    const oldName = city.name;
     if(!city) throw { status: 404, message: 'CITY.NOT.EXIST' };
 
     if(data.name) {
@@ -97,27 +98,43 @@ module.exports = {
 
     const updatedCity = await City.findByIdAndUpdate(id, data, { new: true });
 
-    await Trip.updateMany({'departure._id': ObjectId(id)  },
-      { $set: {
-          'departure.name': updatedCity.name,
-          'departure.photo': updatedCity.photo,
-          'departure.isEnabled': updatedCity.isEnabled,
-          'departure.tags': updatedCity.tags,
-          'departure.country': updatedCity.country,
-          'departure.isManual': updatedCity.isManual
-        },
-      }, { new: true });
+    const trips = await Trip.find({'departure._id': ObjectId(id)});
+    trips.length && trips.forEach(async(trip) => {
+      await Trip.findByIdAndUpdate(ObjectId(trip._id), {$set: {
+        'departure.name': updatedCity.name,
+        'departure.photo': updatedCity.photo,
+        'departure.isEnabled': updatedCity.isEnabled,
+        'departure.tags': updatedCity.tags,
+        'departure.country': updatedCity.country,
+        'departure.isManual': updatedCity.isManual
+      }}, { new: true });
+    });
 
-    await Trip.updateMany({'destination._id': ObjectId(id) },
-      { $set: {
+
+    const trips2 = await Trip.find({'destination._id': ObjectId(id)});
+    trips2.length && trips2.forEach(async(trip) => {
+      await Trip.findByIdAndUpdate(ObjectId(trip._id), {$set: {
         'destination.name': updatedCity.name,
         'destination.photo': updatedCity.photo,
         'destination.isEnabled': updatedCity.isEnabled,
         'destination.tags': updatedCity.tags,
         'destination.country': updatedCity.country,
         'destination.isManual': updatedCity.isManual
-      },
-    }, { new: true });
+      }}, { new: true });
+    });
+
+    const allTrips = [...trips, ...trips2];
+    allTrips.forEach(async(trip) => {
+       Promise.all(trip.tickets.forEach(async(ticketId) => {
+        const ticket =  await Ticket.findById(ticketId);
+        if (ticket && ticket.departure === oldName) {
+          await Ticket.update({_id: ObjectId(ticketId)}, {departure: data.name})
+        }
+        else if (ticket && ticket.destination === oldName) {
+          await Ticket.update({_id: ObjectId(ticketId)}, {destination: data.name})
+        }
+      }))
+    })
 
     return updatedCity
   },
