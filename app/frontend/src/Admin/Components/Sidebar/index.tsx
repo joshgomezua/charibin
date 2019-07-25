@@ -97,7 +97,7 @@ class Sidebar extends React.Component<IProps, IState> {
     >
       <div onClick={() => {option.methods.addItem(option.item)}}>
       <input type="checkbox" checked={option.methods.isSelected(option.item)} />
-        <span id='country'>{this.isCountry(option) ? 'Country ' : option.item.country} </span> 
+        <span id='country'>{(this.isCountry(option) ? 'Country ' : option.item.country) || 'Carrier'} </span> 
         <span id='label'>&emsp;<b>{option.item.label}</b>
         </span>
       </div>
