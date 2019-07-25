@@ -87,10 +87,6 @@ module.exports = {
   },
   
   async update (id, data) {
-    console.log(`
-      id: ${id}\n
-      data: ${data}
-      `)
     let city = await City.findOne({ _id: id });
     const oldName = city.name;
     if(!city) throw { status: 404, message: 'CITY.NOT.EXIST' };
@@ -99,17 +95,11 @@ module.exports = {
       city = await City.findOne({ name: data.name});
       if(city) throw { status: 409, message: 'CITY.NAME.EXIST' };
     }
-    console.log(`
-      ==========City==========: 
-      \n${city}
-      `)
+
     const updatedCity = await City.findByIdAndUpdate(id, data, { new: true });
-    console.log(`
-      ==========updatedCity==========: 
-      \n${updatedCity}
-      `)
-    const trips = await Trip.find({'departure._id': ObjectId(id)});
-    trips.length && trips.forEach(async(trip) => {
+
+    const departureTrips = await Trip.find({'departure._id': ObjectId(id)});
+    departureTrips.length && departureTrips.forEach(async(trip) => {
       await Trip.findByIdAndUpdate(ObjectId(trip._id), {$set: {
         'departure.name': updatedCity.name,
         'departure.photo': updatedCity.photo,
@@ -121,8 +111,8 @@ module.exports = {
     });
 
 
-    const trips2 = await Trip.find({'destination._id': ObjectId(id)});
-    trips2.length && trips2.forEach(async(trip) => {
+    const destinationTrips = await Trip.find({'destination._id': ObjectId(id)});
+    destinationTrips.length && destinationTrips.forEach(async(trip) => {
       await Trip.findByIdAndUpdate(ObjectId(trip._id), {$set: {
         'destination.name': updatedCity.name,
         'destination.photo': updatedCity.photo,
@@ -133,7 +123,7 @@ module.exports = {
       }}, { new: true });
     });
 
-    const allTrips = [...trips, ...trips2];
+    const allTrips = [...departureTrips, ...destinationTrips];
 
       data.name && allTrips.length && allTrips.forEach(async(trip) => {
          trip.tickets.forEach(async(ticketId) => {
