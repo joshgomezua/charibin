@@ -94,29 +94,32 @@ module.exports = {
       city = await City.findOne({ name: data.name});
       if(city) throw { status: 409, message: 'CITY.NAME.EXIST' };
     }
-    await Trip.updateMany({'departure._id': id  },
+
+    const updatedCity = await City.findByIdAndUpdate(id, data, { new: true });
+
+    await Trip.updateMany({'departure._id': ObjectId(id)  },
       { $set: {
-          'departure.name': data.name,
-          'departure.photo': data.photo,
-          'departure.isEnabled': data.isEnabled,
-          'departure.tags': data.tags,
-          'departure.country': data.country,
-          'departure.isManual': data.isManual
+          'departure.name': updatedCity.name,
+          'departure.photo': updatedCity.photo,
+          'departure.isEnabled': updatedCity.isEnabled,
+          'departure.tags': updatedCity.tags,
+          'departure.country': updatedCity.country,
+          'departure.isManual': updatedCity.isManual
         },
       }, { new: true });
 
-    await Trip.updateMany({'destination._id': id },
+    await Trip.updateMany({'destination._id': ObjectId(id) },
       { $set: {
-        'destination.name': data.name,
-        'destination.photo': data.photo,
-        'destination.isEnabled': data.isEnabled,
-        'destination.tags': data.tags,
-        'destination.country': data.country,
-        'destination.isManual': data.isManual
+        'destination.name': updatedCity.name,
+        'destination.photo': updatedCity.photo,
+        'destination.isEnabled': updatedCity.isEnabled,
+        'destination.tags': updatedCity.tags,
+        'destination.country': updatedCity.country,
+        'destination.isManual': updatedCity.isManual
       },
     }, { new: true });
 
-    return City.findByIdAndUpdate(id, data, { new: true });
+    return updatedCity
   },
 
   async destroy (id) {
