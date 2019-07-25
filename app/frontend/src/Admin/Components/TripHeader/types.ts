@@ -16,6 +16,8 @@ export interface IProps {
 
 export interface IState {
   selectedColor: string
+  filterToTemp: string[]
+  option: IOptions
 }
 
 export enum COLOR {
@@ -25,4 +27,19 @@ export enum COLOR {
 export interface ITerritory {
   value: number
   label: string
+}
+
+export interface IOptions {
+  item: any
+  itemIndex: any
+  props: any
+  state: any 
+  methods: any
+}
+
+export interface IOption {
+  item: any
+  props: any
+  state: any 
+  methods: any
 }

@@ -622,8 +622,6 @@ class TripsContainer extends React.Component<
       modal: { type: modalType, heading: modalHeading }
     } = this.state
 
-    this.toggleSelection = this.toggleSelection.bind(this)
-
     const usedDeparture: string[] = [];
     const usedDestination: string[] = [];
 
