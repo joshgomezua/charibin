@@ -15,9 +15,6 @@ export interface IProps {
   openEditModal: (id: string) => void
   openModal: (type: MODAL_TYPE, heading: string, id: string) => void
   changeActiveState: (id: string, checked: boolean) => void
-  filterString: (filter: string) => void
-  filterNumber: (filter: string) => void
-  filterDate: (filter: string, isDate: boolean) => void
 }
 
 export interface IState {
