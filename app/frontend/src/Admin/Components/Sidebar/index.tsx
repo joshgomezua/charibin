@@ -56,7 +56,6 @@ class Sidebar extends React.Component<IProps, IState> {
         filters.push(territory.label)
       }
     })
-    console.log('filters', filters)
     changeFilter(filters)
   }
   

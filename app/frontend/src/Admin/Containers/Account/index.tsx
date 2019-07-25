@@ -26,7 +26,6 @@ class AccountContainer extends React.Component<
 
   render() {
     const userData: any = getUserData();
-    console.log(userData)
 
     return (
       <div className="spon-account">
