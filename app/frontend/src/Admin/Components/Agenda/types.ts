@@ -19,18 +19,13 @@ export interface IProps {
 
 export interface IState {
   header: SORT_STATE
-  filterType: FILTER_TYPE
+  sortType: SORT_TYPE
   changedSort: boolean
-  filterAttribute: string
+  sortProperty: SORT_PROPERTY
   isReversed: boolean
 }
 
-export enum DIRECTION {
-  DEPARTURE = "departure",
-  DESTINATION = "destination"
-}
-
-export enum FILTER_TYPE {
+export enum SORT_TYPE {
   NONE = "none",
   DATE = "date",
   TIME_OF_DEPARTURE = "time of departure",
@@ -41,8 +36,19 @@ export enum FILTER_TYPE {
   SOLD_TICKETS = "sold tickets"
 }
 
+export enum SORT_PROPERTY {
+  DATE = "date",
+  TIME_OF_DEPARTURE = "date",
+  FROM = "departure",
+  TO = "destination",
+  CARRIER = "carrier",
+  TYPE = "type",
+  SOLD_TICKETS = "soldTickets"
+}
+
 export enum SORT_STATE {
   DEFAULT = 'spon-agenda__cell spon-agenda__cell--head',
   BOT = 'spon-agenda__cell spon-agenda__cell--head-border-bot',
   TOP = 'spon-agenda__cell spon-agenda__cell--head-border-top',
 }
+

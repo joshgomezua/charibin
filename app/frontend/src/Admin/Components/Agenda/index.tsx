@@ -6,7 +6,7 @@ import AgendaItem from '../AgendaItem'
 import Button from '../../../Common/Components/Button'
 
 import { MODAL_TYPE } from '../../Utils/adminTypes'
-import { IProps, IState, FILTER_TYPE, SORT_STATE } from './types'
+import { IProps, IState, SORT_TYPE, SORT_STATE, SORT_PROPERTY } from './types'
 import './styles.scss'
 import Pagination from 'src/App/Components/Pagination';
 import { ITicket } from 'src/Common/Utils/globalTypes';
@@ -16,9 +16,9 @@ class Agenda extends React.Component<IProps, IState> {
 
   readonly state: IState = {
     header: SORT_STATE.DEFAULT,
-    filterType: FILTER_TYPE.NONE,
+    sortType: SORT_TYPE.NONE,
     changedSort: false,
-    filterAttribute: 'date',
+    sortProperty: SORT_PROPERTY.DATE,
     isReversed: false
   }
 
@@ -36,34 +36,27 @@ class Agenda extends React.Component<IProps, IState> {
       openModal
     } = this.props
 
-    const {filterType, filterAttribute, isReversed} = this.state
+    const {sortType, sortProperty, isReversed} = this.state
     if (filters.length === 0) {
       return null
     } else {
       let ticketsTemp: ITicket[] = [...tickets]
       if (
-        filterType === FILTER_TYPE.FROM ||
-        filterType === FILTER_TYPE.TO ||
-        filterType === FILTER_TYPE.CARRIER ||
-        filterType === FILTER_TYPE.TYPE
+        sortType === SORT_TYPE.FROM ||
+        sortType === SORT_TYPE.TO ||
+        sortType === SORT_TYPE.CARRIER ||
+        sortType === SORT_TYPE.TYPE
       ) {
-        ticketsTemp = this.filterString(tickets, filterAttribute, isReversed)
+        ticketsTemp = this.filterString(tickets, sortProperty, isReversed)
       }
-
-      if (
-        filterType === FILTER_TYPE.SOLD_TICKETS
-      ) {
-        ticketsTemp = this.filterNumber(tickets, filterAttribute, isReversed)
+      else if (sortType === SORT_TYPE.SOLD_TICKETS) {
+        ticketsTemp = this.filterNumber(tickets, sortProperty, isReversed)
       }
-
-      if (filterType === FILTER_TYPE.TIME_OF_DEPARTURE ) {
-        ticketsTemp = this.filterDate(tickets, filterAttribute, false, isReversed)
+      else if (sortType === SORT_TYPE.TIME_OF_DEPARTURE ) {
+        ticketsTemp = this.filterDate(tickets, sortProperty, false, isReversed)
       }
-
-      if (
-        filterType === FILTER_TYPE.DATE || filterType === FILTER_TYPE.NONE
-      ) {
-        ticketsTemp = this.filterDate(tickets, filterAttribute, true, isReversed)
+      else if (sortType === SORT_TYPE.DATE || sortType === SORT_TYPE.NONE) {
+        ticketsTemp = this.filterDate(tickets, sortProperty, true, isReversed)
         const filtered = ticketsTemp
         const segregated = filtered.reduce((acc, ticket: ITicket) => {
           const day = moment.utc(ticket.date.start).format('Y:M:D')
@@ -87,7 +80,6 @@ class Agenda extends React.Component<IProps, IState> {
             />
           ))
         })
-        
         return row
       }
 
@@ -104,9 +96,6 @@ class Agenda extends React.Component<IProps, IState> {
           />
         )
       })
-
-      
-      
     }
   }
 
@@ -185,12 +174,12 @@ class Agenda extends React.Component<IProps, IState> {
     }
   }
 
-  setSort = async (filterType: FILTER_TYPE, filterAttribute: string) => {
-    if (this.state.filterType !== filterType) {
+  setSort = async (sortType: SORT_TYPE, sortProperty: SORT_PROPERTY) => {
+    if (this.state.sortType !== sortType) {
       await this.setState({
-        filterType: filterType,
+        sortType: sortType,
         header: SORT_STATE.DEFAULT,
-        filterAttribute: filterAttribute,
+        sortProperty: sortProperty,
         isReversed: false
       })
     } else {
@@ -213,33 +202,33 @@ class Agenda extends React.Component<IProps, IState> {
     } = this.props
 
     const {
-      filterType,
+      sortType,
       header
     } = this.state
     return (
       <table className="spon-agenda">
         <thead key="thead" className="spon-agenda__thead">
           <tr className="spon-agenda__row  spon-agenda__row--head">
-            <th onClick={()=>this.setSort(FILTER_TYPE.DATE, 'date')} className={filterType === FILTER_TYPE.DATE ? header : SORT_STATE.DEFAULT}>
+            <th onClick={()=>this.setSort(SORT_TYPE.DATE, SORT_PROPERTY.DATE)} className={sortType === SORT_TYPE.DATE ? header : SORT_STATE.DEFAULT}>
               Date
             </th>
-            <th onClick={()=>this.setSort(FILTER_TYPE.TIME_OF_DEPARTURE, 'date')} className={filterType === FILTER_TYPE.TIME_OF_DEPARTURE ? header : SORT_STATE.DEFAULT}>
+            <th onClick={()=>this.setSort(SORT_TYPE.TIME_OF_DEPARTURE, SORT_PROPERTY.TIME_OF_DEPARTURE)} className={sortType === SORT_TYPE.TIME_OF_DEPARTURE ? header : SORT_STATE.DEFAULT}>
               Time of departure
             </th>
             <th className="spon-agenda__cell spon-agenda__cell--head">
               Time of Arrival
             </th>
-            <th onClick={()=>this.setSort(FILTER_TYPE.FROM, 'departure')} className={filterType === FILTER_TYPE.FROM ? header : SORT_STATE.DEFAULT}>From</th>
-            <th onClick={()=>this.setSort(FILTER_TYPE.TO, 'destination')} className={filterType === FILTER_TYPE.TO ? header : SORT_STATE.DEFAULT}>To</th>
-            <th onClick={()=>this.setSort(FILTER_TYPE.CARRIER, 'carrier')} className={filterType === FILTER_TYPE.CARRIER ? header : SORT_STATE.DEFAULT}>Carrier</th>
-            <th onClick={()=>this.setSort(FILTER_TYPE.TYPE, 'type')} className={filterType === FILTER_TYPE.TYPE ? header : SORT_STATE.DEFAULT}>Type</th>
+            <th onClick={()=>this.setSort(SORT_TYPE.FROM, SORT_PROPERTY.FROM)} className={sortType === SORT_TYPE.FROM ? header : SORT_STATE.DEFAULT}>From</th>
+            <th onClick={()=>this.setSort(SORT_TYPE.TO, SORT_PROPERTY.TO)} className={sortType === SORT_TYPE.TO ? header : SORT_STATE.DEFAULT}>To</th>
+            <th onClick={()=>this.setSort(SORT_TYPE.CARRIER, SORT_PROPERTY.CARRIER)} className={sortType === SORT_TYPE.CARRIER ? header : SORT_STATE.DEFAULT}>Carrier</th>
+            <th onClick={()=>this.setSort(SORT_TYPE.TYPE, SORT_PROPERTY.TYPE)} className={sortType === SORT_TYPE.TYPE ? header : SORT_STATE.DEFAULT}>Type</th>
             <th className="spon-agenda__cell spon-agenda__cell--head">
               Qty of tickets
             </th>
             <th className="spon-agenda__cell spon-agenda__cell--head">
               Available tickets
             </th>
-            <th onClick={()=>this.setSort(FILTER_TYPE.SOLD_TICKETS, 'soldTickets')} className={filterType === FILTER_TYPE.SOLD_TICKETS ? header : SORT_STATE.DEFAULT}>
+            <th onClick={()=>this.setSort(SORT_TYPE.SOLD_TICKETS, SORT_PROPERTY.SOLD_TICKETS)} className={sortType === SORT_TYPE.SOLD_TICKETS ? header : SORT_STATE.DEFAULT}>
               Sold tickets
             </th>
             
