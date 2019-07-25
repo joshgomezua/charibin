@@ -245,10 +245,6 @@ const StyledItem = styled.div`
   :hover {
     background: #eaeded;
   }
-
-  span#country:active {
-    color: red;
-  }
   
   cursor: pointer;
 
