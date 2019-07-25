@@ -547,7 +547,7 @@ module.exports = {
     return (departureTickets.length && destinationTickets.length) 
   },
 
-  async findDashboard ({ page, limit, quantity, priceStart, priceEnd , dateStart, dateEnd, timezone }) {
+  async findDashboard ({ page, limit, quantity, departure, priceStart, priceEnd , dateStart, dateEnd, timezone }) {
     page = +page;
     quantity = +quantity;
     limit = +limit;
@@ -556,12 +556,14 @@ module.exports = {
     dateStart = +dateStart;
     dateEnd = +dateEnd;
     timezone = +timezone;
+
+    console.log(departure)
     
     const tripMatch = { active: true };
     const ticketMatch = {
       $and: [
         { $eq: [ '$$tickets.active', true ] },
-        { $eq: [ '$$tickets.deleted', false ] }
+        { $eq: [ '$$tickets.deleted', false ] },
       ]
     };
 
@@ -611,10 +613,13 @@ module.exports = {
           }
         }
       }
+
     ]);
     
+    console.log("data ", data)
     const res = data.filter((trip) => this.hasEnoughTickets(trip))
-    return res;
+    return res.filter((trip) => 
+    trip.departure.name == departure);
   },
 
   async findCRM ({dateStart, dateEnd, from, to, carrier, page, limit}) {

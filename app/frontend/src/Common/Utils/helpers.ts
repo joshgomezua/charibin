@@ -49,7 +49,6 @@ export const getOwnerToken = () => {
 }
 
 export const getFromLS = (name: string) => {
-  console.log("getfromls")
   const stored = localStorage.getItem(name)
 
   if (stored) {
@@ -61,7 +60,6 @@ export const getFromLS = (name: string) => {
 }
 
 export const saveToLS = (name: string, data: any) => {
-  console.log("save to ls ", data)
   localStorage.setItem(name, JSON.stringify(data))
 }
 

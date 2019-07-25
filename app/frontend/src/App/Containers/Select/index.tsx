@@ -54,9 +54,9 @@ class SelectContainer extends Component<
 
   componentDidMount() {
     window.scrollTo(0, 0)
-    const { quantity } = this.props
+    const { quantity,departure } = this.props
     console.log("component did mount")
-    this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity).then(
+    this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity,departure).then(
       () => {
         this.setState({ isLoading: false })
         this.attachScrollEvent()
@@ -75,7 +75,8 @@ class SelectContainer extends Component<
     priceEnd: number,
     dateStart: number,
     dateEnd: number,
-    qunatity: number
+    qunatity: number,
+    departure: string
   ) => {
     return API.getTrips(
       page,
@@ -85,6 +86,7 @@ class SelectContainer extends Component<
       dateStart,
       dateEnd,
       qunatity,
+      departure
     )
       .then(({ data }) => {
         this.setState((state: IState) => ({
@@ -109,7 +111,7 @@ class SelectContainer extends Component<
           page,
           filters: { min, max, start, end }
         } = this.state
-        const { quantity } = this.props
+        const { quantity,departure } = this.props
 
         this.handleFetchTrips(
           page,
@@ -118,7 +120,8 @@ class SelectContainer extends Component<
           max,
           start !== undefined ? +moment(start).format('x') : 0,
           end !== undefined ? +moment(end).format('x') : 0,
-          quantity
+          quantity,
+          departure
         )
       }
     )
@@ -206,7 +209,7 @@ class SelectContainer extends Component<
     const {
       filters: { min, max, start, end }
     } = this.state
-    const { quantity } = this.props
+    const { quantity, departure } = this.props
     const treshold = 500
     const totalHeight = document.documentElement.scrollHeight
     const windowHeight = window.innerHeight
@@ -226,7 +229,8 @@ class SelectContainer extends Component<
             max,
             start !== undefined ? +moment(start).format('x') : 0,
             end !== undefined ? +moment(end).format('x') : 0,
-            quantity
+            quantity,
+            departure
           ).then((dataLength: number) => {
             if (dataLength > 0) {
               this.attachScrollEvent()
@@ -307,13 +311,17 @@ class SelectContainer extends Component<
     return (
       <section className={`select-cnt ${isCalendarOpen ? 'calendar' : ''}`}>
         <MainBlock className="select-cnt-block">
-          {console.log(quantity)}
           <Search
             departure={departure}
             setDeparture={this.props.setDeparture}
             setQuantity={this.props.setQuantity}
             quantity={quantity}
-            onSubmit={()=>{ console.log(departure)}}
+            onSubmit={()=>{ this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity,departure).then(
+              () => {
+                this.setState({ isLoading: false })
+                this.attachScrollEvent()
+              }
+            )}}
             initialValue={departure}
           />
           <Steps />
