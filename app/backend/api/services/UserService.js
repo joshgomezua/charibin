@@ -13,6 +13,10 @@ module.exports = {
     const user = await User.findOne({ email });
     if (!user) throw { status: 404, message : 'USER.EMAIL.NOT_FOUND' };
 
+    if(user.isDeleted || !user.active) {
+
+      throw {status: 404, message : 'USER.NOT.AUTHORIZED'}
+    } 
     await User.comparePassword(password, user);
 
     return {

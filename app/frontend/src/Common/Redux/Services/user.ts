@@ -65,10 +65,11 @@ export const loginUser = (loginCredentials: {
       })
       .catch(err => {
         if (err.response) {
+    
           const errorStatus = err.response.status
           return Promise.reject(
             errorStatus === 404
-              ? 'Email not found'
+              ? err.response.data.message
               : errorStatus === 401
                 ? 'Password not match'
                 : 'Error on submit'
