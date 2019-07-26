@@ -6,9 +6,12 @@ export interface  IState {
   oppositeTrips: ITrip[]
   filtersFrom: string[]
   filtersTo: string[]
+  selection: any[]
+  selectedCheckbox: {}
   results: ITrip[]
   availableCities: ICity[]
   total: number
+  selectAll: number
   isModalLoading: boolean
   isLoading: boolean
   currentPage: number

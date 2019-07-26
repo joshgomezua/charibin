@@ -105,7 +105,6 @@ class Sidebar extends React.Component<IProps, IState> {
 
 
   customOptionRenderer = (option: IOption) => (
-    
     <StyledOption color={option.item.country && (option.item.country === 'country') ? '#4142a6' : '#dbdcf1'} >
       {option.item.label}
       <span

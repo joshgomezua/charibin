@@ -1,0 +1,68 @@
+@import '../../../Common/Utils/Styles/mixin.scss';
+@import '../../../Common/Utils/Styles/colors.scss';
+
+.spon-checkbox {
+  position: relative;
+  min-height: rc(24);
+
+  &--is-label {
+    .spon-checkbox__icon {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+  }
+
+  input {
+    display: none;
+
+    &:checked + div {
+      background: $violet-dark;
+
+      &:after {
+        display: block;
+      }
+    }
+  }
+
+  label {
+    padding-left: rc(35);
+    font-family: Helvetica;
+    font-weight: lighter;
+    font-size: rc(12);
+    line-height: rc(24);
+    letter-spacing: 0.4px;
+    text-align: left;
+    color: $gray-dark;
+    border-color: inherit;
+    cursor: pointer;
+
+    @include respond(tab-port) {
+      transform: translateY(0.2rem);
+    }
+  }
+
+  &__icon {
+    position: relative;
+    width: rc(24);
+    height: rc(24);
+    border-radius: 0.3rem;
+    background-color: transparent;
+    border: 2px solid $violet-dark;
+
+    &:after {
+      content: '';
+      display: none;
+      width: rc(9);
+      height: rc(4);
+      border: solid $white;
+      border-width: 0 0 rc(2) rc(2);
+      margin-top: -2px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-45deg);
+    }
+  }
+}

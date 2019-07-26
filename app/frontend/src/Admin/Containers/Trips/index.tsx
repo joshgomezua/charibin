@@ -1,7 +1,7 @@
 import React from 'react'
 
 import TripHeader from '../../Components/TripHeader'
-import ExpandableTable from '../../Components/ExpandableTable'
+import ExpandableTable from '../../Components/SelectExpandableTable'
 import Modal from '../../Components/Modal'
 import TripModal from '../../Components/TripModal'
 import DeleteModal from '../../Components/DeleteModal'
@@ -50,9 +50,12 @@ class TripsContainer extends React.Component<
     oppositeTrips: [],
     filtersFrom: [],
     filtersTo: [],
+    selection: [],
+    selectedCheckbox: {},
     results: [],
     availableCities: [],
     total: 0,
+    selectAll: 0,
     currentPage: 0,
     isLoading: true,
     isModalLoading: false,
@@ -64,7 +67,7 @@ class TripsContainer extends React.Component<
       heading: ''
     }
   }
-
+  
   handleOpenModal = (type: MODAL_TYPE, heading: string, id: string = '') => {
     this.setState({ modal: { type, heading, id } }, () => {
       this.modal.current!.open()
@@ -580,12 +583,70 @@ class TripsContainer extends React.Component<
     return false
   }
 
+  toggleSelection = (id: string) => {
+    let tripFound: boolean = false
+    let checkboxSelection = Object.assign({}, this.state.selectedCheckbox)
+    let newSelected: any[] = this.state.selection
+
+    for(let trip of newSelected){
+      if(trip.id === id){
+        trip.selected = !trip.selected
+        tripFound = true
+      }
+    }
+
+    if(!tripFound){
+      const trip = {
+        id: id,
+        selected: true
+      }
+      newSelected.push(trip)
+    }
+
+    checkboxSelection[id] = !checkboxSelection[id]
+
+    this.setState({
+      selectedCheckbox: checkboxSelection,
+      selection: newSelected,
+      selectAll: 2
+    })
+  }
+
+  toggleSelectAll = () => {
+    let checkboxSelection = {}
+    let newSelected: any[] = []
+
+    if(this.state.selectAll === 0){
+      this.state.results.forEach(x => {
+        if(!x.isFromAPI){
+          const trip = {
+            id: x._id,
+            selected: true
+          }
+          newSelected.push(trip)
+          checkboxSelection[x._id] = true
+        }   
+      })
+    }
+
+    this.setState({
+      selectedCheckbox: checkboxSelection,
+      selection: newSelected,
+      selectAll: this.state.selectAll === 0 ? 1 : 0
+    })
+  }
+
+  mapSelection = () => {
+    console.log(this.state.selection)
+  }
+    
   render() {
-    let {trips, total} = this.state
+    let {trips, total, selectedCheckbox} = this.state
     const {
       filtersFrom,
       filtersTo,
       results,
+      selectAll,
       availableCities,
       isLoading,
       isModalLoading,
@@ -613,6 +674,7 @@ class TripsContainer extends React.Component<
       <div className="spon-container">
         <TripHeader
           title="Routes & Prices"
+          handleBulkChange={this.mapSelection}
           handleOpenModal={this.handleOpenModal}
           filterFrom={filtersFrom}
           filterTo={filtersTo}
@@ -630,10 +692,14 @@ class TripsContainer extends React.Component<
           })}
           handleFetchData={this.handleFetchTableData}
           columns={columns(
+            selectedCheckbox,
+            selectAll,
             this.handleOpenDeleteTripModal,
             this.handleOpenEditModal,
             this.handleOpenTimeSelectionModal,
             this.handleRedirectToCreateTicket,
+            this.toggleSelectAll,
+            this.toggleSelection
           )}
           loading={isLoading}
           pages={Math.ceil(total / 10)}
@@ -646,7 +712,6 @@ class TripsContainer extends React.Component<
             this.handleRedirectToCreateTicket
           )}
         />
-
         <Modal
           ref={this.modal}
           title={modalHeading}

@@ -1,16 +1,98 @@
 import React from 'react'
 import * as moment from 'moment'
 import { IDuration } from '../../../Common/Utils/globalTypes'
-import Checkbox from '../../Components/Checkbox'
+import Checkbox from '../../Components/ClickableCheckbox'
 import { RowRenderProps } from 'react-table'
 import 'moment-duration-format'
 
 export const columns = (
+  selection: any,
+  selectAll: number,
   openDeleteModal: (id: string) => void,
   openEditModal: (id: string) => void,
   openTimeSelectionModal: (id: string) => void,
-  redirectToCreateTicket: (trip: { _id: string; departure: string; destination: string }) => void
+  redirectToCreateTicket: (trip: { _id: string; departure: string; destination: string }) => void,
+  toggleAll: () => void,
+  toggleSelection: (id: string) => void
 ) => [
+  {
+    id: 'checkbox',
+    accessor: 'isFromAPI',
+    Cell: (props: RowRenderProps) => {
+
+      return (
+        // <Checkbox
+        //   id="checkbox"
+        //   className="checkbox"
+        //   isChecked={selection[props.row._original._id] === true}
+        //   handleChange={() => toggleSelection(props.row._original._id)}
+        // />
+        // <>
+        //   <div className="spon-checkbox"> 
+        //     <input
+        //       id={`isSelected${props.index}`}
+        //       type="checkbox"
+        //       className="spon-checkbox"
+        //       checked={selection[props.row._original._id] === true}
+        //       onChange={() => toggleSelection(props.row._original._id)}
+        //     />
+        //     <div className="spon-checkbox__icon" />
+        //   </div>
+        // </>
+
+        <input
+          id={`isSelected${props.index}`}
+          type="checkbox"
+          name="checkbox"
+          disabled={props.value}
+          checked={selection[props.row._original._id] === true}
+          onChange={() => toggleSelection(props.row._original._id)}
+        />
+
+      );
+    },
+    Header: () => {
+      return (
+        // <Checkbox
+        //   id="checkbox"
+        //   className="spon-checkbox"
+        //   isChecked={selectAll === 1 ? true : false}
+        //   ref={(input: any) => {
+        //     if (input) {
+        //       input.indeterminate = selectAll === 2;
+        //     }
+        //   }}
+        //   handleChange={() => toggleAll()}
+        // />
+        // <>
+        //   <div className="spon-checkbox"> 
+        //     <input
+        //       type="checkbox"
+        //       className="spon-checkbox"
+        //       checked={selectAll === 1}
+        //       ref={input => {
+        //         if (input) {
+        //           input.indeterminate = selectAll === 2;
+        //         }
+        //       }}
+        //       onChange={() => toggleAll()}
+        //     />
+        //     <div className="spon-checkbox__icon" />
+        //   </div>
+        // </>
+        <input
+				  type="checkbox"
+					checked={selectAll === 1}
+					ref={input => {
+						if (input) { input.indeterminate = selectAll === 2; }
+					}}
+					onChange={() => toggleAll()}
+				/>
+      );
+    },
+    sortable: false,
+    width: 45
+  },
   {
     Header: 'From',
     accessor: 'departure.name',
@@ -87,9 +169,7 @@ export const columns = (
           </button>
         </div>
       </>
-    )}
-
-    
+    )} 
   },
   {
     Header: 'Duration',

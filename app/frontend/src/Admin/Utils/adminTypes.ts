@@ -81,6 +81,7 @@ export interface ITrip {
   carrier: string
   photo?: string
   price: number
+  isFromAPI: boolean
   type: string
 }
 
@@ -120,6 +121,9 @@ export enum DIRECTION_TYPE {
 }
 
 export enum MODAL_TYPE {
+  'BULK_SCHEDULE',
+  'BULK_TIME_SELECTION',
+  'BULK_CHANGE',
   'ADD_TRIP',
   'EDIT_TRIP',
   'DELETE_TRIP',
