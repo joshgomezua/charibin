@@ -557,7 +557,7 @@ module.exports = {
     dateEnd = +dateEnd;
     timezone = +timezone;
 
-    console.log(departure)
+    console.log(quantity)
     
     const tripMatch = { active: true };
     const ticketMatch = {
@@ -616,8 +616,9 @@ module.exports = {
 
     ]);
     
-    console.log("data ", data)
     const res = data.filter((trip) => this.hasEnoughTickets(trip))
+    console.log(res.filter((trip) => 
+    trip.departure.name == departure))
     return res.filter((trip) => 
     trip.departure.name == departure);
   },
