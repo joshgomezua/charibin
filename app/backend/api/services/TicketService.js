@@ -555,8 +555,6 @@ module.exports = {
     dateStart = +dateStart;
     dateEnd = +dateEnd;
     timezone = +timezone;
-
-    console.log(quantity, departure)
     
     const tripMatch = { active: true };
     const ticketMatch = {
@@ -566,10 +564,13 @@ module.exports = {
       ]
     };
 
-    if(quantity > 0)
+    if(quantity > 0) {
       ticketMatch.$and.push({ $gte: [ '$$tickets.quantity', quantity ] });
+    }  
     else
+    {
       ticketMatch.$and.push({ $gt: [ '$$tickets.quantity', 0 ] });
+    }
 
     if(priceEnd > 0)
       tripMatch.price = { $gte: priceStart, $lte: priceEnd };
@@ -584,7 +585,7 @@ module.exports = {
       ticketMatch.$and.push(
         { $gte: [ '$$tickets.date.start', new Date(custom.TodayWithTimezone + global.config.custom.time.day) ] });
     }
-
+    console.log("ticketMatch, ", ticketMatch)
     let data = await Trip.aggregate([
       {
         $match: tripMatch
@@ -616,11 +617,9 @@ module.exports = {
     ]);
     
     const res = await data.filter((trip) => this.hasEnoughTickets(trip))
-    console.log("res", res)
-    console.log(res.filter((trip) => 
-    trip.departure.name == departure))
     return res.filter((trip) => 
-    trip.departure.name == departure);
+    trip.departure.name == departure
+    );
   },
 
   async findCRM ({dateStart, dateEnd, from, to, carrier, page, limit}) {

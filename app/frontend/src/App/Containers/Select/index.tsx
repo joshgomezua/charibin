@@ -59,7 +59,7 @@ class SelectContainer extends Component<
     this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity,departure).then(
       () => {
         this.setState({ isLoading: false })
-        if(this.state.trips.length === 5){
+        if(this.state.trips.length >= 5){
           this.attachScrollEvent()
         } 
       }
@@ -218,7 +218,6 @@ class SelectContainer extends Component<
     const scrollTop = window.pageYOffset
 
     const offset = totalHeight - (scrollTop + windowHeight)
-    console.log("scroll avant le if")
     if (offset < treshold) {
       this.detachScrollEvent()
       this.setState(
@@ -322,7 +321,9 @@ class SelectContainer extends Component<
                this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity,departure).then(
               () => {
                 this.setState({ isLoading: false })
-                this.attachScrollEvent()
+                if(this.state.trips.length >= 5){
+                  this.attachScrollEvent()
+                }
               }
             )}}
             initialValue={departure}
