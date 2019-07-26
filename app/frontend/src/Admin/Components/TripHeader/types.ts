@@ -9,6 +9,7 @@ export interface IProps {
   heading?: string
   modal?: MODAL_TYPE
   query?: string
+  handleBulkChange: () => void
   handleOpenModal?: (type: MODAL_TYPE, heading: string) => void,
   changeFilterFrom: (filterFrom: string[]) => void
   changeFilterTo: (filterTo: string[]) => void
@@ -16,6 +17,7 @@ export interface IProps {
 
 export interface IState {
   selectedColor: string
+  option: IOptions
 }
 
 export enum COLOR {
@@ -25,4 +27,19 @@ export enum COLOR {
 export interface ITerritory {
   value: number
   label: string
+}
+
+export interface IOptions {
+  item: any
+  itemIndex: any
+  props: any
+  state: any 
+  methods: any
+}
+
+export interface IOption {
+  item: any
+  props: any
+  state: any 
+  methods: any
 }

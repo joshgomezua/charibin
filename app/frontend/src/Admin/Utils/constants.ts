@@ -134,7 +134,8 @@ export const DEFAULT_TRIP_DATA = {
   carrier: '',
   photo: '',
   price: 0,
-  type: ''
+  type: '',
+  isFromAPI: false
 }
 
 

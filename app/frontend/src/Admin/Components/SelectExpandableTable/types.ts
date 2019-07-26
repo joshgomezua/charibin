@@ -7,11 +7,9 @@ export interface IProps {
   columns: Column[]
   detailsColumns?: Column[]
   subComponentClassName?: string,
-  selection: any[]
   className?: string
   handleFetchData: TableProps['onFetchData']
   handleOpenModal: (id: string) => void
-  changeTripSelection: (selection: string[]) => void
 }
 
 export interface IState {

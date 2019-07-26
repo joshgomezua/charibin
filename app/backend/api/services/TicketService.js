@@ -536,14 +536,31 @@ module.exports = {
     return ticket;
   },
 
+  departureBeforeDestination (departureTickets, destinationTickets) {
+    let bool = false;
+    departureTickets.forEach((departure) => {
+      destinationTickets.forEach((destination) => {
+        if (departure.date.start.getTime() < destination.date.start.getTime())
+        bool = true;
+      })
+    })
+    return bool;
+  },
+
    hasEnoughTickets (trip) {
     const departureTickets =  trip.tickets.filter((ticket) => {
       return (trip.departure.name === ticket.departure && trip.destination.name === ticket.destination)
     })
+    
     const destinationTickets =  trip.tickets.filter((ticket) => {
       return (trip.departure.name === ticket.destination && trip.destination.name === ticket.departure)
     })
-    return (departureTickets.length && destinationTickets.length) 
+    
+    if (!(departureTickets.length && destinationTickets.length)) {
+      return false;
+    } else {
+     return this.departureBeforeDestination(departureTickets, destinationTickets)
+    }
   },
 
   async findDashboard ({ page, limit, quantity, departure, priceStart, priceEnd , dateStart, dateEnd, timezone }) {
@@ -643,10 +660,6 @@ module.exports = {
               }
             },
             { $sort: { 'date.start': 1} },
-            Aggregate.populateOne('trips', 'trip', '_id'),
-            {
-              $unwind: '$trip'
-            },
             ...Aggregate.skipAndLimit(page, limit)
           ]
         }
@@ -664,10 +677,6 @@ module.exports = {
               }
             },
             { $sort: { 'date.start': 1} },
-            Aggregate.populateOne('trips', 'trip', '_id'),
-            {
-              $unwind: '$trip'
-            },
           ]
         }
       }
