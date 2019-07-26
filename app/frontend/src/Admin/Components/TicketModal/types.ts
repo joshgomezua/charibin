@@ -1,5 +1,6 @@
 import { ITicket } from '../../../Common/Utils/globalTypes'
 import { IOptionTicket } from '../DropdownTicket/types';
+import { IOption } from 'src/Admin/Components/Dropdown/types';
 
 export interface IState {
   isRecurring: boolean
@@ -12,6 +13,7 @@ export interface IProps {
       _id: string
       departure: string
       destination: string
+      carrier: string
     }
     departure: string
     destination: string
@@ -25,11 +27,13 @@ export interface IProps {
     }
     active: boolean
   }
-  tripSelected?: { _id: string; departure: string, destination: string } | null
+  tripSelected?: { _id: string; departure: string, destination: string, carrier: string } | null
   departures: IOptionTicket[]
   destinations: IOptionTicket[]
+  carriers: IOption[]
   closeModal: () => void
   handleSelectDeparture: (departure: string) => void
+  handleSelectDestination: (destination: string) => void
   handleSubmit?: (
     ticket: Pick<ITicket, Exclude<keyof ITicket, 'trip' | '_id' | 'date'>> & {
       trip: string
@@ -59,6 +63,7 @@ export interface IFormValues {
     _id: string
     departure: string,
     destination: string
+    carrier: string
   }
   type: string
   quantity: number

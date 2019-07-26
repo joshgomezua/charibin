@@ -23,6 +23,7 @@ import { daysOfWeek, departureHours } from './_data'
 import { IProps, IState, IFormValues } from './types'
 import './styles.scss'
 import DropDownTicket from '../DropdownTicket';
+import DropDown from '../Dropdown';
 
 class TicketModal extends React.Component<IProps, IState> {
   readonly state: IState = {
@@ -39,6 +40,7 @@ class TicketModal extends React.Component<IProps, IState> {
       tripSelected,
       handleEditTicket,
       destinations,
+      carriers,
       handleSubmit,
       closeModal,
       isLoading,
@@ -75,6 +77,7 @@ class TicketModal extends React.Component<IProps, IState> {
                     _id: tripSelected ? tripSelected._id : '',
                     departure: tripSelected ? tripSelected.departure : '',
                     destination: tripSelected ? tripSelected.destination : '',
+                    carrier: tripSelected ? tripSelected.carrier : '',
                   },
                   type: 'Train',
                   quantity: 0,
@@ -82,6 +85,7 @@ class TicketModal extends React.Component<IProps, IState> {
                   reservedQuantity: 0,
                   departure: '',
                   destination: '',
+                  carrier: '',
                   date: undefined,
                   endDate: undefined,
                   days: [0, 1, 2, 3, 4, 5, 6],
@@ -94,7 +98,8 @@ class TicketModal extends React.Component<IProps, IState> {
             trip: Yup.object().shape({
               _id: Yup.string(),
               departure: Yup.string().required('Trip departure is required'),
-              destination: Yup.string().required('Trip destination is required')
+              destination: Yup.string().required('Trip destination is required'),
+              carrier: Yup.string().required('Trip carrier is required')
             }),
             type: Yup.string().required('Trip type is required'),
             quantity: Yup.number()
@@ -164,6 +169,7 @@ class TicketModal extends React.Component<IProps, IState> {
               trip: values.trip._id,
               departure: values.trip.departure,
               destination: values.trip.destination,
+              carrier: values.trip.carrier,
               quantity: values.quantity,
               soldTickets: values.soldTickets,
               reservedQuantity: values.reservedQuantity,
@@ -236,10 +242,29 @@ class TicketModal extends React.Component<IProps, IState> {
                     selectedValue={values.trip ? values.trip.destination : ''}
                     options={destinations}
                     onChange={handleChange}
+                    onSelectDestination={this.props.handleSelectDestination}
                   />
                   
                   <ErrorMessage
                     name="trip.destination"
+                    component="div"
+                    className="spon-ticket-modal__error"
+                  />
+                </div>
+                <div className="spon-ticket-modal__input-cnt spon-ticket-modal__input-cnt--big">           
+                  <DropDown
+                    saveAsObject
+                    id="trip"
+                    label="carrier"
+                    placeholder="Carrier"
+                    className="spon-ticket-modal__dropdown"
+                    selectedValue={values.trip ? values.trip.carrier : ''}
+                    options={carriers}
+                    onChange={handleChange}
+                  />
+                  
+                  <ErrorMessage
+                    name="trip.carrier"
                     component="div"
                     className="spon-ticket-modal__error"
                   />

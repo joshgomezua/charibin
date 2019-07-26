@@ -1,12 +1,14 @@
 import { DIRECTION_TYPE, MODAL_TYPE } from '../../Utils/adminTypes'
 import { IResponseError, ITicket } from '../../../Common/Utils/globalTypes'
 import { IOptionTicket } from 'src/Admin/Components/DropdownTicket/types';
+import { IOption } from 'src/Admin/Components/Dropdown/types';
 
 export interface IState {
   tickets: ITicket[]
   ticketsDefault: ITicket[]
   departures: IOptionTicket[]
   destinations: IOptionTicket[]
+  carriers: IOption[]
   isModalLoading: boolean
   isLoading: boolean
   isError: boolean

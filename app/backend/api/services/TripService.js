@@ -37,7 +37,7 @@ module.exports = {
   },
 
   async getListOfTripsNames () {
-    const names = await Trip.find({ deleted: false }).select('departure').select('destination');
+    const names = await Trip.find({ deleted: false }).select('departure').select('destination').select('carrier');
 
     return names;
   },

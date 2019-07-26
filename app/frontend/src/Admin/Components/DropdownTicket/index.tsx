@@ -22,7 +22,7 @@ class DropDown extends React.Component<IProps, IState> {
   }
 
   handleSelectOption = (el: IOptionTicket): void => {
-    const { onChange, saveAsObject, onSelectDeparture} = this.props
+    const { onChange, saveAsObject, onSelectDeparture, onSelectDestination} = this.props
     this.setState({ isListVisible: false })
     onChange({
       target: {
@@ -35,6 +35,7 @@ class DropDown extends React.Component<IProps, IState> {
       }
     })
     onSelectDeparture && onSelectDeparture(el.departure)
+    onSelectDestination && onSelectDestination(el.destination)
   }
 
   renderOptions = (optionsArr: IOptionTicket[]): JSX.Element[] => {

@@ -37,6 +37,7 @@ class TicketsContainer extends React.Component<
     ticketsDefault: [],
     departures: [],
     destinations: [],
+    carriers: [],
     isLoading: false,
     isModalLoading: false,
     isError: false,
@@ -123,7 +124,8 @@ class TicketsContainer extends React.Component<
         const cityNames = data.map((item: any) => ({
           _id: item._id,
           departure: item.departure.name,
-          destination: item.destination.name
+          destination: item.destination.name,
+          carrier: item.carrier
         }))
 
         this.setState( {  
@@ -282,7 +284,8 @@ class TicketsContainer extends React.Component<
         const newData = {
           _id: data.trip._id,
           departure: data.departure,
-          destination: data.destination
+          destination: data.destination,
+          carrier: data.carrier
         } 
         data.trip = newData; 
         this.setState(
@@ -398,6 +401,21 @@ class TicketsContainer extends React.Component<
     this.setState({destinations : destinationsMapped})  
   }
 
+  handleSelectDestination = (destination: string) => {
+    const { modalOptions } = this.state
+    const carriersFiltered = modalOptions.filter((item: any) => item.destination === destination)
+    const carriersMapped = carriersFiltered.map((item: any) => ({
+      _id: item._id,
+      name: item.carrier,
+    }))
+    carriersMapped.sort((a: any, b: any) => {
+      if(a.name.toLowerCase() < b.name.toLowerCase()) { return -1; }
+      if(a.name.toLowerCase() > b.name.toLowerCase()) { return 1; }
+      return 0;
+    })
+    this.setState({carriers : carriersMapped}) 
+  }
+
   handleChangeFilterFrom = async(filterFrom: string[]) => {
     let filters = ''
     if (filterFrom.length) {
@@ -467,6 +485,7 @@ class TicketsContainer extends React.Component<
       isError,
       departures,
       destinations,
+      carriers,
       calendarFilter,
       pagination,
     } = this.state
@@ -520,10 +539,12 @@ class TicketsContainer extends React.Component<
               tripSelected={modal.trip ? modal.trip : null}
               departures={departures}
               destinations={destinations}
+              carriers={carriers}
               isLoading={isModalLoading}
               closeModal={this.handleCloseModal}
               handleSubmit={this.handleAddTicket}
               handleSelectDeparture={this.handleSelectTicketDeparture}
+              handleSelectDestination={this.handleSelectDestination}
             />
           ) : null}
 
@@ -531,11 +552,13 @@ class TicketsContainer extends React.Component<
             <TicketModal
               departures={departures}
               destinations={destinations}
+              carriers={carriers}
               editDate={modal.data}
               isLoading={isModalLoading}
               closeModal={this.handleCloseModal}
               handleEditTicket={this.handleEditTicket}
               handleSelectDeparture={this.handleSelectTicketDeparture}
+              handleSelectDestination={this.handleSelectDestination}
             />
           ) : null}
 
