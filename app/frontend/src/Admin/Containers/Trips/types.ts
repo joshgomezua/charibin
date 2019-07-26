@@ -7,6 +7,7 @@ export interface  IState {
   filtersFrom: string[]
   filtersTo: string[]
   selection: any[]
+  selectedCheckbox: {}
   results: ITrip[]
   availableCities: ICity[]
   total: number

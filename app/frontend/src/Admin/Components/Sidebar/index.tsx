@@ -44,8 +44,7 @@ class Sidebar extends React.Component<IProps, IState> {
 
   handleFiltersChange = (territories: ITerritory[], filter: ITerritory[], changeFilter: (filters: string[]) => void) => {
     const filters: string[] = []
-    console.log(territories)
-    console.log(filter)
+
     territories.map(territory => {
       if (territory.country === "country") {
         filter.map(dataTerritory => {
@@ -91,7 +90,7 @@ class Sidebar extends React.Component<IProps, IState> {
   
   customItemRenderer = (option: IOptions) => (
     <StyledItem color={option.item.country && (option.item.country === 'country') ? '#4142a6' : '#dbdcf1'}>
-      <div onClick={() => {console.log("addItem()", option); option.methods.addItem(option.item)}}>
+      <div onClick={() => {option.methods.addItem(option.item)}}>
         <input type="checkbox" checked={option.methods.isSelected(option.item)} />{" "}
         {option.item.label}
       </div>
@@ -147,7 +146,7 @@ class Sidebar extends React.Component<IProps, IState> {
       filterTo,
       filterCarrier
     } = this.props
-    console.log(filtersFrom)
+
     return (
       <div className="spon-sidebar">
 

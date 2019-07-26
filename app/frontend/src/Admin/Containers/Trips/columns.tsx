@@ -16,8 +16,8 @@ export const columns = (
   toggleSelection: (id: string) => void
 ) => [
   {
-    id: "checkbox",
-    accessor: "",
+    id: 'checkbox',
+    accessor: 'isFromAPI',
     Cell: (props: RowRenderProps) => {
 
       return (
@@ -44,6 +44,7 @@ export const columns = (
           id={`isSelected${props.index}`}
           type="checkbox"
           name="checkbox"
+          disabled={props.value}
           checked={selection[props.row._original._id] === true}
           onChange={() => toggleSelection(props.row._original._id)}
         />

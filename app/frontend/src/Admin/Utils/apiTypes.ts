@@ -29,6 +29,7 @@ export interface ITrip {
   fake: boolean
   active: boolean
   type: string
+  isFromAPI: boolean
 }
 
 

@@ -47,7 +47,7 @@ class TripHeader extends React.Component<IProps, IState> {
 
   customItemRenderer = (option: IOptions) => (
     <StyledItem color={'#dbdcf1'}>
-      <div onClick={() => {console.log(option); option.methods.addItem(option.item)}}>
+      <div onClick={() => {option.methods.addItem(option.item)}}>
         <input type="checkbox" checked={option.methods.isSelected(option.item)} />{" "}
         {option.item.label}
       </div>
@@ -160,9 +160,9 @@ class TripHeader extends React.Component<IProps, IState> {
         </div>
 
         <Button
-          className="spon-admin-trip-header_button"
+          className="spon-admin-trip-header__bulk-button"
           variant="blue"
-          icon="plus"
+          icon="pencil"
           text="BULK"
           onClick={() => handleBulkChange()}
         />

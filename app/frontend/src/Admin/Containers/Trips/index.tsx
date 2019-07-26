@@ -51,6 +51,7 @@ class TripsContainer extends React.Component<
     filtersFrom: [],
     filtersTo: [],
     selection: [],
+    selectedCheckbox: {},
     results: [],
     availableCities: [],
     total: 0,
@@ -583,51 +584,64 @@ class TripsContainer extends React.Component<
   }
 
   toggleSelection = (id: string) => {
-    const trip = {
-      id: id,
-      selected: true
+    let tripFound: boolean = false
+    let checkboxSelection = Object.assign({}, this.state.selectedCheckbox)
+    let newSelected: any[] = this.state.selection
+
+    for(let trip of newSelected){
+      if(trip.id === id){
+        trip.selected = !trip.selected
+        tripFound = true
+      }
     }
 
-    const newSelected = Object.assign([], this.state.selection)
-
-    if(newSelected.includes(trip)){
-
+    if(!tripFound){
+      const trip = {
+        id: id,
+        selected: true
+      }
+      newSelected.push(trip)
     }
 
-    newSelected[id] = !this.state.selection[id]
+    checkboxSelection[id] = !checkboxSelection[id]
 
     this.setState({
+      selectedCheckbox: checkboxSelection,
       selection: newSelected,
       selectAll: 2
-    })q
+    })
   }
 
   toggleSelectAll = () => {
+    let checkboxSelection = {}
     let newSelected: any[] = []
 
     if(this.state.selectAll === 0){
       this.state.results.forEach(x => {
-        const trip = {
-          id: x._id,
-          selected: true
-        }
-        newSelected.push(trip)
+        if(!x.isFromAPI){
+          const trip = {
+            id: x._id,
+            selected: true
+          }
+          newSelected.push(trip)
+          checkboxSelection[x._id] = true
+        }   
       })
     }
 
     this.setState({
+      selectedCheckbox: checkboxSelection,
       selection: newSelected,
       selectAll: this.state.selectAll === 0 ? 1 : 0
     })
   }
 
   mapSelection = () => {
-
     console.log(this.state.selection)
   }
     
   render() {
-    let {trips, total, selection} = this.state
+    let {trips, total, selectedCheckbox} = this.state
     const {
       filtersFrom,
       filtersTo,
@@ -678,7 +692,7 @@ class TripsContainer extends React.Component<
           })}
           handleFetchData={this.handleFetchTableData}
           columns={columns(
-            selection,
+            selectedCheckbox,
             selectAll,
             this.handleOpenDeleteTripModal,
             this.handleOpenEditModal,

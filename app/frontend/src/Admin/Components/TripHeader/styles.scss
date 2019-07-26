@@ -10,6 +10,14 @@
   justify-content: space-between;
   background: $light-gray;
 
+
+  &__bulk {
+    height: 7rem;
+    margin-left: auto;
+    max-width: 10rem;
+    padding: 0 1rem 0 1.25rem;
+  }
+
   &__select {
     height: 7rem;
     width: 42rem;
@@ -50,6 +58,7 @@
     font-size: 1.5rem;
     color: $dark-blue;
     margin-right: 6rem;
+    width: max-content;
   }
 
   &__add-button {
@@ -58,6 +67,14 @@
     max-width: 10rem;
     padding: 0 1rem 0 1.25rem;
   }
+
+  &__bulk-button {
+    margin-top: 0;
+    margin-left: auto;
+    margin-right: 1rem;
+    max-width: 10rem;
+    padding: 0 1rem 0 1.25rem;
+  } 
 
   &__search {
     width: 20rem;
