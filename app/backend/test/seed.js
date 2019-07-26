@@ -40,6 +40,7 @@ const globals = {
   data: helpers.createData(testConfig.dataTemplate),
 };
 const cities = [];
+let usedCities = [];
 loadServices();
 loadModels();
 
@@ -72,7 +73,7 @@ loadModels();
   for (let i = 0; i < 5; i++) {
     const departureCity = getRandomCities();
     const destinationCity = getRandomCities();
-    const trip = await helpers.createTrip({...helpers.dataClone(globals.dataTemplate.trip), 
+    const tripArrival = await helpers.createTrip({...helpers.dataClone(globals.dataTemplate.trip), 
     departure: {
       _id: departureCity._id.toString(),
       name: departureCity.name,
@@ -92,17 +93,37 @@ loadModels();
       isEnabled: destinationCity.isEnabled
     },
     });
-    console.log(trip.departure._id) 
-    console.log(trip.destination._id)
-    trips.push(trip);
+    const tripDeparture = await helpers.createTrip({...helpers.dataClone(globals.dataTemplate.trip), 
+      destination: {
+        _id: departureCity._id.toString(),
+        name: departureCity.name,
+        country: departureCity.country,
+        photo: departureCity.photo,
+        tags: departureCity.tags,
+        isManual: departureCity.isManual,
+        isEnabled: departureCity.isEnabled
+      },
+      departure: {
+        _id: destinationCity._id.toString(),
+        name: destinationCity.name,
+        country: destinationCity.country,
+        photo: destinationCity.photo,
+        tags: destinationCity.tags,
+        isManual: destinationCity.isManual,
+        isEnabled: destinationCity.isEnabled
+      },
+      });
+
+    trips.push(tripArrival);
+    trips.push(tripDeparture);
     console.log(`Creating Trips: ${i + 1}/${5}`);
 
     // Create tickets
     for (let j = 0; j < 1; j++) {
     const ticketArrivalTemp = { ...helpers.dataClone(globals.dataTemplate.ticket), 
-      trip: trips[i]._id,
-      departure: trips[i].departure.name,
-      destination: trips[i].destination.name
+      trip: tripArrival._id,
+      departure: tripArrival.departure.name,
+      destination: tripArrival.destination.name
     };
     const ticketArrival = await helpers.createTicket(ticketArrivalTemp);
 
@@ -112,9 +133,9 @@ loadModels();
           start: new Date(ticketArrival.date.start.getTime() + global.config.custom.time.day7).getTime(),
           end: new Date(ticketArrival.date.end.getTime() + global.config.custom.time.day7).getTime()
         },
-        trip: trips[i]._id,
-        departure: trips[i].destination.name,
-        destination: trips[i].departure.name
+        trip: tripDeparture._id,
+        departure: tripDeparture.destination.name,
+        destination: tripDeparture.departure.name
       };
     const ticketDeparture = await helpers.createTicket(ticketDepartureTemp)
 
@@ -135,7 +156,12 @@ loadModels();
 })();
 
 function getRandomCities(){
-  return cities[Math.floor(Math.random() * cities.length)];
+  let city = {}
+  do {
+    city = cities[Math.floor(Math.random() * cities.length)];
+  }while(usedCities.includes(city))
+  usedCities.push(city);
+  return city;
 }
 
 function getQuantity(ticket) {
