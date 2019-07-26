@@ -1,6 +1,6 @@
 'use strict'
 
-const { City, Trip } = require('../models');
+const { City, Trip, Ticket } = require('../models');
 const Aggregate = require('./Aggregate');
 var ObjectId = require('mongoose').Types.ObjectId;
 
@@ -88,35 +88,59 @@ module.exports = {
   
   async update (id, data) {
     let city = await City.findOne({ _id: id });
+    const oldName = city.name;
     if(!city) throw { status: 404, message: 'CITY.NOT.EXIST' };
 
     if(data.name) {
       city = await City.findOne({ name: data.name});
       if(city) throw { status: 409, message: 'CITY.NAME.EXIST' };
     }
-    await Trip.updateMany({'departure._id': id  },
-      { $set: {
-          'departure.name': data.name,
-          'departure.photo': data.photo,
-          'departure.isEnabled': data.isEnabled,
-          'departure.tags': data.tags,
-          'departure.country': data.country,
-          'departure.isManual': data.isManual
-        },
-      }, { new: true });
 
-    await Trip.updateMany({'destination._id': id },
-      { $set: {
-        'destination.name': data.name,
-        'destination.photo': data.photo,
-        'destination.isEnabled': data.isEnabled,
-        'destination.tags': data.tags,
-        'destination.country': data.country,
-        'destination.isManual': data.isManual
-      },
-    }, { new: true });
+    const updatedCity = await City.findByIdAndUpdate(id, data, { new: true });
 
-    return City.findByIdAndUpdate(id, data, { new: true });
+    const departureTrips = await Trip.find({'departure._id': id});
+    departureTrips.length && departureTrips.forEach(async(trip) => {
+      await Trip.findByIdAndUpdate(trip._id, {$set: {
+        'departure.name': updatedCity.name,
+        'departure.photo': updatedCity.photo,
+        'departure.isEnabled': updatedCity.isEnabled,
+        'departure.tags': updatedCity.tags,
+        'departure.country': updatedCity.country,
+        'departure.isManual': updatedCity.isManual
+      }}, { new: true });
+    });
+
+
+    const destinationTrips = await Trip.find({'destination._id': id});
+    destinationTrips.length && destinationTrips.forEach(async(trip) => {
+      await Trip.findByIdAndUpdate(trip._id, {$set: {
+        'destination.name': updatedCity.name,
+        'destination.photo': updatedCity.photo,
+        'destination.isEnabled': updatedCity.isEnabled,
+        'destination.tags': updatedCity.tags,
+        'destination.country': updatedCity.country,
+        'destination.isManual': updatedCity.isManual
+      }}, { new: true });
+    });
+
+    const allTrips = [...departureTrips, ...destinationTrips];
+
+      data.name && allTrips.length && allTrips.forEach(async(trip) => {
+         trip.tickets.forEach(async(ticketId) => {
+
+          const ticket =  await Ticket.findOne({_id: ticketId});
+
+          if (ticket && ticket.departure === oldName) {
+            await Ticket.updateOne({_id: ticketId}, {departure: data.name})
+          }
+          else if (ticket && ticket.destination === oldName) {
+            await Ticket.updateOne({_id: ticketId}, {destination: data.name})
+          }
+        })
+      })
+    
+
+    return updatedCity
   },
 
   async destroy (id) {

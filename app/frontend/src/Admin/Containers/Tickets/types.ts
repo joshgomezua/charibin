@@ -4,6 +4,7 @@ import { IOptionTicket } from 'src/Admin/Components/DropdownTicket/types';
 
 export interface IState {
   tickets: ITicket[]
+  ticketsDefault: ITicket[]
   departures: IOptionTicket[]
   destinations: IOptionTicket[]
   isModalLoading: boolean

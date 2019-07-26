@@ -58,8 +58,8 @@ const dataTemplate = {
     country: () => faker.name.lastName(),
     photo: getImage,
     tags: () => [faker.name.firstName()],
-    isManual: false,
-    isEnabled: false
+    isManual: true,
+    isEnabled: true
 
   },
 

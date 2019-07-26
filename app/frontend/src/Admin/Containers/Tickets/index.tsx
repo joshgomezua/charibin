@@ -26,6 +26,7 @@ import { ERRORS, SUCCESS, DEFAULT_TICKET_DATA } from '../../Utils/constants'
 import { IStore } from '../../../Common/Redux/types'
 import { IState, IProps, IEditedData, IRequestInfo } from './types'
 import './styles.scss'
+import _ from 'lodash';
 
 class TicketsContainer extends React.Component<
   RouteComponentProps<{ tripName: string }> & IProps,
@@ -33,6 +34,7 @@ class TicketsContainer extends React.Component<
 > {
   readonly state: IState = {
     tickets: [],
+    ticketsDefault: [],
     departures: [],
     destinations: [],
     isLoading: false,
@@ -208,7 +210,7 @@ class TicketsContainer extends React.Component<
     // the request
     getTickets(startDate, endDate, requestInfo.from, requestInfo.to, requestInfo.carrier, pageToSend, requestInfo.limit, token)
       .then(async res => {
-        this.setState({ isLoading: false, tickets: res.data[1] })
+        this.setState({ isLoading: false, tickets: res.data[1], ticketsDefault: res.data[1]})
         await this.setState(prevState => ({
           pagination: {
             ...prevState.pagination,
@@ -460,6 +462,8 @@ class TicketsContainer extends React.Component<
     }))
     this.handleFetchTicketsByDate(this.state.requestInfo)
   }
+
+  
 
   render() {
     const {
