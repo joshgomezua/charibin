@@ -67,6 +67,7 @@ class Agenda extends React.Component<IProps, IState> {
           }
           return acc
         }, {})
+        console.log('segregated', segregated)
         const row = Object.keys(segregated).map(key => {
           return segregated[key].map((ticket: ITicket, index: number) => (
             <AgendaItem
@@ -123,16 +124,16 @@ class Agenda extends React.Component<IProps, IState> {
     let sortedTickets = []
     if (!isReversed) {
       sortedTickets = tempTickets.sort((a: any, b: any) => {
-        const am = isDate ? moment.utc(a[filter].start).format('D MMM YYYY') : moment.utc(a[filter].start).format('HH:mm')
-        const bm = isDate ? moment.utc(b[filter].start).format('D MMM YYYY') : moment.utc(b[filter].start).format('HH:mm')
+        const am = isDate ? (a[filter].start): moment.utc(a[filter].start).format('HH:mm')
+        const bm = isDate ? (b[filter].start) : moment.utc(b[filter].start).format('HH:mm')
         if(am.toLowerCase() < bm.toLowerCase()) { return -1; }
         if(am > bm.toLowerCase()) { return 1; }
         return 0;
       })
     } else {
       sortedTickets = tempTickets.sort((a: any, b: any) => {
-        const am = isDate ? moment.utc(a[filter].start).format('D MMM YYYY') : moment.utc(a[filter].start).format('HH:mm')
-        const bm = isDate ? moment.utc(b[filter].start).format('D MMM YYYY') : moment.utc(b[filter].start).format('HH:mm')
+        const am = isDate ? (a[filter].start) : moment.utc(a[filter].start).format('HH:mm')
+        const bm = isDate ? (b[filter].start) : moment.utc(b[filter].start).format('HH:mm')
         if(am.toLowerCase() > bm.toLowerCase()) { return -1; }
         if(am.toLowerCase() < bm.toLowerCase()) { return 1; }
         return 0;
