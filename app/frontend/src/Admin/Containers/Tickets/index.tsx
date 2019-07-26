@@ -126,18 +126,11 @@ class TicketsContainer extends React.Component<
           destination: item.destination.name
         }))
 
-        const oppositeDirectionCityNames =  cityNames.map((item: any) => ({
-          _id: item._id,
-          departure: item.destination,
-          destination: item.departure
-        }))
-
         this.setState( {  
           modalOptions: 
             [
               ...this.state.modalOptions,
               ...cityNames,
-              ...oppositeDirectionCityNames
             ]
         })
         const uniqueCitiesNames = this.state.modalOptions.reduce((unique: any, other: any) => {
