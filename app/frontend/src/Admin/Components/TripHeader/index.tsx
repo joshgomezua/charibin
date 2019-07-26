@@ -10,7 +10,6 @@ class TripHeader extends React.Component<IProps, IState> {
 
   readonly state: IState = {
     selectedColor: COLOR.VIOLET,
-    filterToTemp: [],
     option: {
       item: {}, 
       itemIndex: {}, 
@@ -34,9 +33,8 @@ class TripHeader extends React.Component<IProps, IState> {
       }
       return unique;
     },[]);
-  //   console.log(uniqueFilters)
-  //  changeFilter(uniqueFilters)
-    this.setState({filterToTemp: uniqueFilters})
+
+   changeFilter(uniqueFilters)
   }
   
   handleFiltersFromChange = (territories: ITerritory[]) => {
@@ -89,7 +87,6 @@ class TripHeader extends React.Component<IProps, IState> {
   render() {
     const {
       selectedColor,
-      filterToTemp
     } = this.state
   
     const {
@@ -97,7 +94,8 @@ class TripHeader extends React.Component<IProps, IState> {
       heading,
       modal,
       handleOpenModal,
-      // filterFrom,
+      handleBulkChange,
+      filterFrom,
       filterTo,
       availableDepartures,
       availableDestinations
@@ -112,12 +110,6 @@ class TripHeader extends React.Component<IProps, IState> {
       departureList.push(option) 
     }
 
-    // const departures: ITerritory[] = [
-    //   {value: 0, label: 'Test1'},
-    //   {value: 1, label: 'Test2'}
-
-    // ]
-
     let destinationList: ITerritory[] = [];
     for(let index: number = 0; index < availableDestinations.length; index++){
       const option: any = {
@@ -127,8 +119,6 @@ class TripHeader extends React.Component<IProps, IState> {
       destinationList.push(option) 
     }
 
-    console.log('DL',departureList)
-    console.log('filterToTemp', this.state.filterToTemp)
     return (
       <div className="spon-admin-trip-header">
         
@@ -140,34 +130,42 @@ class TripHeader extends React.Component<IProps, IState> {
           <div className="spon-admin-trip-header__select__From">
             <Select  className="spon-admin-trip-header__select__From"
               multi
-              // itemRenderer={this.customItemRenderer}
-              // optionRenderer={this.customOptionRenderer}
-              // contentRenderer={this.customContentRenderer}
+              itemRenderer={this.customItemRenderer}
+              optionRenderer={this.customOptionRenderer}
+              contentRenderer={this.customContentRenderer}
               placeholder={'From'}
               options={departureList} 
-              value={filterToTemp} 
-              onChange={(e: any) => console.log(e)}
+              value={filterFrom} 
+              onChange={this.handleFiltersFromChange}
               color={selectedColor}
               clearable
             >
             </Select>
           </div>
-            <div className="spon-admin-trip-header__select__To">
-              <Select className="spon-admin-trip-header__select__To"
-                multi
-                itemRenderer={this.customItemRenderer}
-                optionRenderer={this.customOptionRenderer}
-                contentRenderer={this.customContentRenderer}
-                placeholder={'To'} 
-                options={destinationList} 
-                value={filterTo} 
-                onChange={this.handleFiltersToChange}
-                color={selectedColor}
-                clearable
-                >  
-              </Select>
-            </div>
+          <div className="spon-admin-trip-header__select__To">
+            <Select className="spon-admin-trip-header__select__To"
+              multi
+              itemRenderer={this.customItemRenderer}
+              optionRenderer={this.customOptionRenderer}
+              contentRenderer={this.customContentRenderer}
+              placeholder={'To'} 
+              options={destinationList} 
+              value={filterTo} 
+              onChange={this.handleFiltersToChange}
+              color={selectedColor}
+              clearable
+              >  
+            </Select>
           </div>
+        </div>
+
+        <Button
+          className="spon-admin-trip-header_button"
+          variant="blue"
+          icon="plus"
+          text="BULK"
+          onClick={() => handleBulkChange()}
+        />
 
         {(handleOpenModal && heading && modal) ? (
           <Button
@@ -198,7 +196,7 @@ const StyledContent = styled.div`
   border-radius: 3px;
   margin: 3px;
   cursor: pointer;
-  height: 50px; 
+  height: 2.9rem; 
   width: 100%; 
   overflow-y: scroll;
   .placeholder {

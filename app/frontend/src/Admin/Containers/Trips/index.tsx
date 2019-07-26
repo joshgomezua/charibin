@@ -50,7 +50,7 @@ class TripsContainer extends React.Component<
     oppositeTrips: [],
     filtersFrom: [],
     filtersTo: [],
-    selection: {},
+    selection: [],
     results: [],
     availableCities: [],
     total: 0,
@@ -583,21 +583,35 @@ class TripsContainer extends React.Component<
   }
 
   toggleSelection = (id: string) => {
-    console.log(this.state.selection)
-    const newSelected = Object.assign({}, this.state.selection)
+    const trip = {
+      id: id,
+      selected: true
+    }
+
+    const newSelected = Object.assign([], this.state.selection)
+
+    if(newSelected.includes(trip)){
+
+    }
+
     newSelected[id] = !this.state.selection[id]
+
     this.setState({
       selection: newSelected,
       selectAll: 2
-    })
+    })q
   }
 
   toggleSelectAll = () => {
-    let newSelected = {}
+    let newSelected: any[] = []
 
     if(this.state.selectAll === 0){
       this.state.results.forEach(x => {
-        newSelected[x._id] = true
+        const trip = {
+          id: x._id,
+          selected: true
+        }
+        newSelected.push(trip)
       })
     }
 
@@ -607,6 +621,11 @@ class TripsContainer extends React.Component<
     })
   }
 
+  mapSelection = () => {
+
+    console.log(this.state.selection)
+  }
+    
   render() {
     let {trips, total, selection} = this.state
     const {
@@ -641,6 +660,7 @@ class TripsContainer extends React.Component<
       <div className="spon-container">
         <TripHeader
           title="Routes & Prices"
+          handleBulkChange={this.mapSelection}
           handleOpenModal={this.handleOpenModal}
           filterFrom={filtersFrom}
           filterTo={filtersTo}
@@ -678,7 +698,6 @@ class TripsContainer extends React.Component<
             this.handleRedirectToCreateTicket
           )}
         />
-
         <Modal
           ref={this.modal}
           title={modalHeading}

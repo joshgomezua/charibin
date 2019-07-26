@@ -6,7 +6,7 @@ export interface  IState {
   oppositeTrips: ITrip[]
   filtersFrom: string[]
   filtersTo: string[]
-  selection: {}
+  selection: any[]
   results: ITrip[]
   availableCities: ICity[]
   total: number

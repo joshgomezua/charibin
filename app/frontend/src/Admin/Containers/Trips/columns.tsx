@@ -19,7 +19,7 @@ export const columns = (
     id: "checkbox",
     accessor: "",
     Cell: (props: RowRenderProps) => {
-      console.log(selection)
+
       return (
         // <Checkbox
         //   id="checkbox"
@@ -40,13 +40,13 @@ export const columns = (
         //   </div>
         // </>
 
-            <input
-              id={`isSelected${props.index}`}
-              type="checkbox"
-              name="checkbox"
-              checked={selection[props.row._original._id] === true}
-              onChange={() => toggleSelection(props.row._original._id)}
-            />
+        <input
+          id={`isSelected${props.index}`}
+          type="checkbox"
+          name="checkbox"
+          checked={selection[props.row._original._id] === true}
+          onChange={() => toggleSelection(props.row._original._id)}
+        />
 
       );
     },
@@ -83,16 +83,14 @@ export const columns = (
 				  type="checkbox"
 					checked={selectAll === 1}
 					ref={input => {
-						if (input) {
-							input.indeterminate = selectAll === 2;
-						}
+						if (input) { input.indeterminate = selectAll === 2; }
 					}}
 					onChange={() => toggleAll()}
 				/>
       );
     },
     sortable: false,
-    width: 65
+    width: 45
   },
   {
     Header: 'From',
@@ -170,9 +168,7 @@ export const columns = (
           </button>
         </div>
       </>
-    )}
-
-    
+    )} 
   },
   {
     Header: 'Duration',
