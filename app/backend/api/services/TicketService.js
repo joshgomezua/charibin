@@ -395,10 +395,9 @@ module.exports = {
 
     ownerInfo.trips = await populateTrips(ownerInfo.trips);
 
-    console.log("ownerinfo",ownerInfo)
     let finalCost = 0;
     const [admin] = await User.find({ role: global.config.custom.roles.ADMINISTRATOR }).sort('_id').limit(1);
-    console.log("admin", admin)
+
     const selectedTrip = getMostExpensiveTrip(ownerInfo);
 
     // Add a trip price (time choose already added)
