@@ -70,10 +70,30 @@ loadModels();
 
   // Create trips and tickets
   for (let i = 0; i < 5; i++) {
+    const departureCity = getRandomCities();
+    const destinationCity = getRandomCities();
     const trip = await helpers.createTrip({...helpers.dataClone(globals.dataTemplate.trip), 
-    departure: getRandomCities(),
-    destination: getRandomCities(),
+    departure: {
+      _id: departureCity._id.toString(),
+      name: departureCity.name,
+      country: departureCity.country,
+      photo: departureCity.photo,
+      tags: departureCity.tags,
+      isManual: departureCity.isManual,
+      isEnabled: departureCity.isEnabled
+    },
+    destination: {
+      _id: destinationCity._id.toString(),
+      name: destinationCity.name,
+      country: destinationCity.country,
+      photo: destinationCity.photo,
+      tags: destinationCity.tags,
+      isManual: destinationCity.isManual,
+      isEnabled: destinationCity.isEnabled
+    },
     });
+    console.log(trip.departure._id) 
+    console.log(trip.destination._id)
     trips.push(trip);
     console.log(`Creating Trips: ${i + 1}/${5}`);
 
