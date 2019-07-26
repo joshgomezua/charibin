@@ -55,7 +55,7 @@ class SelectContainer extends Component<
   componentDidMount() {
     window.scrollTo(0, 0)
     const { quantity,departure } = this.props
-    console.log("component did mount")
+
     this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity,departure).then(
       () => {
         this.setState({ isLoading: false })
