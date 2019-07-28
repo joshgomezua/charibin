@@ -37,6 +37,7 @@ export interface ITicket {
     _id: string; 
     departure: string,
     destination: string,
+    type: string,
     carrier: string
     duration: number
   }

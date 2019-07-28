@@ -36,8 +36,13 @@ class TicketsContainer extends React.Component<
     tickets: [],
     ticketsDefault: [],
     departures: [],
+    departuresOptions: [],
     destinations: [],
+    destinationsOptions: [],
     carriers: [],
+    carriersOptions: [],
+    types: [],
+    typesOptions: [],
     isLoading: false,
     isModalLoading: false,
     isError: false,
@@ -125,7 +130,8 @@ class TicketsContainer extends React.Component<
           _id: item._id,
           departure: item.departure.name,
           destination: item.destination.name,
-          carrier: item.carrier
+          carrier: item.carrier,
+          type: item.type
         }))
 
         this.setState( {  
@@ -148,7 +154,7 @@ class TicketsContainer extends React.Component<
           return 0;
         })
         this.props.changeFilters(cityNames)
-        this.setState({ departures: uniqueCitiesNames })
+        this.setState({ departures: uniqueCitiesNames, departuresOptions: this.state.modalOptions })
       })
       .catch(err => {
         this.props.showError(err)
@@ -285,7 +291,8 @@ class TicketsContainer extends React.Component<
           _id: data.trip._id,
           departure: data.departure,
           destination: data.destination,
-          carrier: data.carrier
+          carrier: data.carrier,
+          type: data.type
         } 
         data.trip = newData; 
         this.setState(
@@ -386,34 +393,79 @@ class TicketsContainer extends React.Component<
   }
 
   handleSelectTicketDeparture = (departure: string) => {
-    const { modalOptions } = this.state
-    const destinationsFiltered = modalOptions.filter((item: any) => item.departure === departure)
-    const destinationsMapped = destinationsFiltered.map((item: any) => ({
+    const { departuresOptions } = this.state
+    console.log('departuresOptions', departuresOptions)
+    const destinationsFiltered = departuresOptions.filter((item: any) => item.departure === departure)
+    let destinationsMapped = destinationsFiltered.map((item: any) => ({
       _id: item._id,
       departure: item.departure,
-      destination: item.destination
+      destination: item.destination,
+      carrier: item.carrier,
+      type: item.type
     }))
-    destinationsMapped.sort((a: any, b: any) => {
+
+    const destinationsUnique = destinationsMapped.reduce((unique: any, other: any) => {
+      if(!unique.some((obj: any) => obj.destination === other.destination)) {
+        unique.push(other);
+      }
+      return unique;
+    },[]);
+
+    destinationsUnique.sort((a: any, b: any) => {
       if(a.destination.toLowerCase() < b.destination.toLowerCase()) { return -1; }
       if(a.destination.toLowerCase() > b.destination.toLowerCase()) { return 1; }
       return 0;
-    })
-    this.setState({destinations : destinationsMapped})  
+    }),
+    this.setState({destinations : destinationsUnique, destinationsOptions: destinationsFiltered})  
   }
 
   handleSelectDestination = (destination: string) => {
-    const { modalOptions } = this.state
-    const carriersFiltered = modalOptions.filter((item: any) => item.destination === destination)
+    const { destinationsOptions } = this.state
+    console.log('destinationsOptions', destinationsOptions)
+    const carriersFiltered = destinationsOptions.filter((item: any) => item.destination === destination)
     const carriersMapped = carriersFiltered.map((item: any) => ({
       _id: item._id,
-      name: item.carrier,
+      departure: item.departure,
+      destination: item.destination,
+      carrier: item.carrier,
+      type: item.type
     }))
-    carriersMapped.sort((a: any, b: any) => {
-      if(a.name.toLowerCase() < b.name.toLowerCase()) { return -1; }
-      if(a.name.toLowerCase() > b.name.toLowerCase()) { return 1; }
+
+    const carriersUnique = carriersMapped.reduce((unique: any, other: any) => {
+      console.log('unique', unique, '\nother', other)
+      if(!unique.some((obj: any) => obj.carrier === other.carrier)) {
+        unique.push(other);
+      }
+      return unique;
+    },[]);
+    console.log('carriersUnique', carriersUnique)
+
+    carriersUnique.sort((a: any, b: any) => {
+      if(a < b) { return -1; }
+      if(a > b) { return 1; }
       return 0;
     })
-    this.setState({carriers : carriersMapped}) 
+    this.setState({carriers : carriersUnique, carriersOptions: carriersFiltered}) 
+  }
+
+  handleSelectCarrier = (carrier: string) => {
+    const { carriersOptions } = this.state
+    console.log('carriersOptions', carriersOptions)
+    const typesFiltered = carriersOptions.filter((item: any) => item.carrier === carrier)
+    const typesMapped = typesFiltered.map((item: any) => ({
+      _id: item._id,
+      departure: item.departure,
+      destination: item.destination,
+      carrier: item.carrier,
+      type: item.type
+    }))
+
+    typesMapped.sort((a: any, b: any) => {
+      if(a < b) { return -1; }
+      if(a > b) { return 1; }
+      return 0;
+    })
+    this.setState({types : typesMapped}) 
   }
 
   handleChangeFilterFrom = async(filterFrom: string[]) => {
@@ -486,6 +538,7 @@ class TicketsContainer extends React.Component<
       departures,
       destinations,
       carriers,
+      types,
       calendarFilter,
       pagination,
     } = this.state
@@ -540,11 +593,13 @@ class TicketsContainer extends React.Component<
               departures={departures}
               destinations={destinations}
               carriers={carriers}
+              types={types}
               isLoading={isModalLoading}
               closeModal={this.handleCloseModal}
               handleSubmit={this.handleAddTicket}
               handleSelectDeparture={this.handleSelectTicketDeparture}
               handleSelectDestination={this.handleSelectDestination}
+              handleSelectCarrier={this.handleSelectCarrier}
             />
           ) : null}
 
@@ -553,12 +608,14 @@ class TicketsContainer extends React.Component<
               departures={departures}
               destinations={destinations}
               carriers={carriers}
+              types={types}
               editDate={modal.data}
               isLoading={isModalLoading}
               closeModal={this.handleCloseModal}
               handleEditTicket={this.handleEditTicket}
               handleSelectDeparture={this.handleSelectTicketDeparture}
               handleSelectDestination={this.handleSelectDestination}
+              handleSelectCarrier={this.handleSelectCarrier}
             />
           ) : null}
 
