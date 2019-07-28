@@ -120,7 +120,6 @@ class TicketsContainer extends React.Component<
     this.setState({ isModalLoading: false })
     this.modal.current!.close()
     this.setState({
-      departures: [],
       destinations: [],
       carriers: [],
     })
