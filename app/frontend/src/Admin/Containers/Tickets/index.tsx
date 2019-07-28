@@ -119,6 +119,12 @@ class TicketsContainer extends React.Component<
   handleCloseModal = () => {
     this.setState({ isModalLoading: false })
     this.modal.current!.close()
+    this.setState({
+      departures: [],
+      destinations: [],
+      carriers: [],
+    })
+    console.log('handleCloseModal')
   }
 
   handleFetchDestination = () => {
@@ -287,31 +293,38 @@ class TicketsContainer extends React.Component<
 
     getSingleTicket(id, token)
       .then(({ data }) => {
+        console.log('data', data)
         const newData = {
           _id: data.trip._id,
           departure: data.departure,
           destination: data.destination,
           carrier: data.carrier,
-          type: data.type
+          type: data.type,
+          duration: data.trip.duration
         } 
+        
         data.trip = newData; 
         this.setState(
           (state: IState) => ({
             ...state,
             modal: {
               ...state.modal,
-              data
+              data,
+              trip: newData
             }
           }),
           () => {
             this.handleOpenModal(MODAL_TYPE.EDIT_TICKET, 'Edit ticket', id)
           }
         )
+        this.refillModalOptions()
+        console.log('modal', this.state.modal)
       })
       .catch(err => {
         this.handleCloseModal()
         this.props.showError(err, ERRORS.TICKET_FETCH)
       })
+      
   }
 
   handleDeleteTicket = () => {
@@ -392,7 +405,7 @@ class TicketsContainer extends React.Component<
     })
   }
 
-  handleSelectTicketDeparture = (departure: string) => {
+  handleSelectDeparture = (departure: string) => {
     const { departuresOptions } = this.state
     console.log('departuresOptions', departuresOptions)
     const destinationsFiltered = departuresOptions.filter((item: any) => item.departure === departure)
@@ -421,7 +434,7 @@ class TicketsContainer extends React.Component<
 
   handleSelectDestination = (destination: string) => {
     const { destinationsOptions } = this.state
-    console.log('destinationsOptions', destinationsOptions)
+    console.log('destination', destination)
     const carriersFiltered = destinationsOptions.filter((item: any) => item.destination === destination)
     const carriersMapped = carriersFiltered.map((item: any) => ({
       _id: item._id,
@@ -450,7 +463,7 @@ class TicketsContainer extends React.Component<
 
   handleSelectCarrier = (carrier: string) => {
     const { carriersOptions } = this.state
-    console.log('carriersOptions', carriersOptions)
+    console.log('carrier', carrier)
     const typesFiltered = carriersOptions.filter((item: any) => item.carrier === carrier)
     const typesMapped = typesFiltered.map((item: any) => ({
       _id: item._id,
@@ -526,7 +539,15 @@ class TicketsContainer extends React.Component<
     this.handleFetchTicketsByDate(this.state.requestInfo)
   }
 
-  
+  refillModalOptions = () => {
+    const { trip } =  this.state.modal.data
+    console.log('trip', trip)
+
+    this.handleSelectDeparture(trip.departure)
+    this.handleSelectDestination(trip.destination)
+    this.handleSelectCarrier(trip.carrier)
+    console.log('options', this.state.departures, this.state.destinations, this.state.carriers)
+  }
 
   render() {
     const {
@@ -597,7 +618,7 @@ class TicketsContainer extends React.Component<
               isLoading={isModalLoading}
               closeModal={this.handleCloseModal}
               handleSubmit={this.handleAddTicket}
-              handleSelectDeparture={this.handleSelectTicketDeparture}
+              handleSelectDeparture={this.handleSelectDeparture}
               handleSelectDestination={this.handleSelectDestination}
               handleSelectCarrier={this.handleSelectCarrier}
             />
@@ -613,7 +634,7 @@ class TicketsContainer extends React.Component<
               isLoading={isModalLoading}
               closeModal={this.handleCloseModal}
               handleEditTicket={this.handleEditTicket}
-              handleSelectDeparture={this.handleSelectTicketDeparture}
+              handleSelectDeparture={this.handleSelectDeparture}
               handleSelectDestination={this.handleSelectDestination}
               handleSelectCarrier={this.handleSelectCarrier}
             />
