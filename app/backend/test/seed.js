@@ -134,8 +134,8 @@ loadModels();
           end: new Date(ticketArrival.date.end.getTime() + global.config.custom.time.day7).getTime()
         },
         trip: tripDeparture._id,
-        departure: tripDeparture.destination.name,
-        destination: tripDeparture.departure.name
+        departure: tripDeparture.departure.name,
+        destination: tripDeparture.destination.name
       };
     const ticketDeparture = await helpers.createTicket(ticketDepartureTemp)
 

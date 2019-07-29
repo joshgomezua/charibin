@@ -556,16 +556,15 @@ module.exports = {
 
   async hasEnoughTickets (trip) {
     const oppositeTrip = await this.hasOpposite(trip)
+    const oppositeTickets =  await Ticket.findById({_id: oppositeTrip.tickets})
     if (oppositeTrip != null) {
       const departureTickets =  trip.tickets.filter((ticket) => {
         return (trip.departure.name === ticket.departure && trip.destination.name === ticket.destination)
-    
       })
   
-      const destinationTickets = oppositeTrip.tickets.filter((ticket) => {
-        return (oppositeTrip.departure.name === ticket.departure && oppositeTrip.destination.name === ticket.destination)
-      })
-      
+      let destinationTickets = []
+      destinationTickets.push(oppositeTickets)
+    
       if (!(departureTickets.length && destinationTickets.length)) {
         return false;
       } else {
@@ -645,7 +644,13 @@ module.exports = {
 
     ]);
     
+    
     const res = await data.filter((trip) => this.hasEnoughTickets(trip))
+    for (let i = 0; i < res.length; i++) {
+      const oppositeTrip = await this.hasOpposite(res[i])
+      const oppositeTickets =  await Ticket.findById({_id: oppositeTrip.tickets})
+      res[i].tickets.push(oppositeTickets)
+    }
     return res
   },
 
