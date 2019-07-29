@@ -527,7 +527,6 @@ module.exports = {
 
   async findOne (id) {
     const ticket = await Ticket.findOne({ _id: id, deleted: false }).populate('trip');
-    console.log('ticket', ticket)
     if(!ticket) throw { status: 404, message: 'TICKET.NOT.EXIST' };
 
     return ticket;

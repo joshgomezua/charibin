@@ -122,8 +122,8 @@ class TicketsContainer extends React.Component<
     this.setState({
       destinations: [],
       carriers: [],
+      types: []
     })
-    console.log('handleCloseModal')
   }
 
   handleFetchDestination = () => {
@@ -240,6 +240,11 @@ class TicketsContainer extends React.Component<
         this.modal.current!.open()
       }
     )
+    this.setState({
+      destinations: [],
+      carriers: [],
+      types: []
+    })
   }
 
   handleAddTicket = (
@@ -292,13 +297,12 @@ class TicketsContainer extends React.Component<
 
     getSingleTicket(id, token)
       .then(({ data }) => {
-        console.log('data', data)
         const newData = {
           _id: data.trip._id,
-          departure: data.departure,
-          destination: data.destination,
-          carrier: data.carrier,
-          type: data.type,
+          departure: data.trip.departure.name,
+          destination: data.trip.destination.name,
+          carrier: data.trip.carrier,
+          type: data.trip.type,
           duration: data.trip.duration
         } 
         
@@ -317,7 +321,6 @@ class TicketsContainer extends React.Component<
           }
         )
         this.refillModalOptions()
-        console.log('modal', this.state.modal)
       })
       .catch(err => {
         this.handleCloseModal()
@@ -406,7 +409,6 @@ class TicketsContainer extends React.Component<
 
   handleSelectDeparture = (departure: string) => {
     const { departuresOptions } = this.state
-    console.log('departuresOptions', departuresOptions)
     const destinationsFiltered = departuresOptions.filter((item: any) => item.departure === departure)
     let destinationsMapped = destinationsFiltered.map((item: any) => ({
       _id: item._id,
@@ -433,7 +435,6 @@ class TicketsContainer extends React.Component<
 
   handleSelectDestination = (destination: string) => {
     const { destinationsOptions } = this.state
-    console.log('destination', destination)
     const carriersFiltered = destinationsOptions.filter((item: any) => item.destination === destination)
     const carriersMapped = carriersFiltered.map((item: any) => ({
       _id: item._id,
@@ -444,13 +445,11 @@ class TicketsContainer extends React.Component<
     }))
 
     const carriersUnique = carriersMapped.reduce((unique: any, other: any) => {
-      console.log('unique', unique, '\nother', other)
       if(!unique.some((obj: any) => obj.carrier === other.carrier)) {
         unique.push(other);
       }
       return unique;
     },[]);
-    console.log('carriersUnique', carriersUnique)
 
     carriersUnique.sort((a: any, b: any) => {
       if(a < b) { return -1; }
@@ -462,7 +461,6 @@ class TicketsContainer extends React.Component<
 
   handleSelectCarrier = (carrier: string) => {
     const { carriersOptions } = this.state
-    console.log('carrier', carrier)
     const typesFiltered = carriersOptions.filter((item: any) => item.carrier === carrier)
     const typesMapped = typesFiltered.map((item: any) => ({
       _id: item._id,
@@ -540,12 +538,10 @@ class TicketsContainer extends React.Component<
 
   refillModalOptions = () => {
     const { trip } =  this.state.modal.data
-    console.log('trip', trip)
 
     this.handleSelectDeparture(trip.departure)
     this.handleSelectDestination(trip.destination)
     this.handleSelectCarrier(trip.carrier)
-    console.log('options', this.state.departures, this.state.destinations, this.state.carriers)
   }
 
   render() {
