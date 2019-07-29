@@ -3,6 +3,7 @@
 const { Trip, Ticket, City } = require('../models');
 const Aggregate = require('./Aggregate');
 const Utilities = require('./Utilities');
+var ObjectId = require('mongoose').Types.ObjectId;
 
 module.exports = {
   async create (data) {
@@ -14,6 +15,8 @@ module.exports = {
       deleted: false,
       active: true
      });
+     data.departure._id = ObjectId(data.departure._id);
+     data.destination._id = ObjectId(data.destination._id);
     if(trip) throw { status: 409, message: 'TRIP.EXIST' };
 
     if(data.fake) {
@@ -25,7 +28,6 @@ module.exports = {
   },
 
   async update (id, data) {
-    //console.log('data', data)
     let trip = await Trip.findOne({ _id: id, deleted: false });
     if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
 
@@ -62,10 +64,6 @@ module.exports = {
       active: true
      });
      if(potentialDuplicatesTrip) throw { status: 409, message: 'TRIP.EXIST' };
-
-    console.log('last data', data)
-    //console.log('ticketData', ticketData)
-    console.log('ticketData2', ticketData)
     
 
     trip.tickets.forEach(async(ticketId) => {

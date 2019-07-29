@@ -11,6 +11,7 @@ const formidable = require('../api/middlewares/formidable');
 const dotenv = require('dotenv');
 dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
 global.config = require('../config');
+var ObjectId = require('mongoose').Types.ObjectId;
 
 const helpers = require('./helpers');
 
@@ -75,7 +76,7 @@ loadModels();
     const destinationCity = getRandomCities();
     const tripArrival = await helpers.createTrip({...helpers.dataClone(globals.dataTemplate.trip), 
     departure: {
-      _id: departureCity._id.toString(),
+      _id: departureCity._id,
       name: departureCity.name,
       country: departureCity.country,
       photo: departureCity.photo,
@@ -84,7 +85,7 @@ loadModels();
       isEnabled: departureCity.isEnabled
     },
     destination: {
-      _id: destinationCity._id.toString(),
+      _id: destinationCity._id,
       name: destinationCity.name,
       country: destinationCity.country,
       photo: destinationCity.photo,
@@ -95,7 +96,7 @@ loadModels();
     });
     const tripDeparture = await helpers.createTrip({...helpers.dataClone(globals.dataTemplate.trip), 
       destination: {
-        _id: departureCity._id.toString(),
+        _id: departureCity._id,
         name: departureCity.name,
         country: departureCity.country,
         photo: departureCity.photo,
@@ -104,7 +105,7 @@ loadModels();
         isEnabled: departureCity.isEnabled
       },
       departure: {
-        _id: destinationCity._id.toString(),
+        _id: destinationCity._id,
         name: destinationCity.name,
         country: destinationCity.country,
         photo: destinationCity.photo,
@@ -121,7 +122,7 @@ loadModels();
     // Create tickets
     for (let j = 0; j < 1; j++) {
     const ticketArrivalTemp = { ...helpers.dataClone(globals.dataTemplate.ticket), 
-      trip: tripArrival._id,
+      trip: ObjectId(tripArrival._id),
       departure: tripArrival.departure.name,
       destination: tripArrival.destination.name
     };
@@ -133,7 +134,7 @@ loadModels();
           start: new Date(ticketArrival.date.start.getTime() + global.config.custom.time.day7).getTime(),
           end: new Date(ticketArrival.date.end.getTime() + global.config.custom.time.day7).getTime()
         },
-        trip: tripDeparture._id,
+        trip: ObjectId(tripDeparture._id),
         departure: tripDeparture.departure.name,
         destination: tripDeparture.destination.name
       };

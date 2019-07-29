@@ -98,7 +98,7 @@ module.exports = {
 
     const updatedCity = await City.findByIdAndUpdate(id, data, { new: true });
 
-    const departureTrips = await Trip.find({'departure._id': id});
+    const departureTrips = await Trip.find({'departure._id': ObjectId(id)});
     departureTrips.length && departureTrips.forEach(async(trip) => {
       await Trip.findByIdAndUpdate(trip._id, {$set: {
         'departure.name': updatedCity.name,
@@ -111,7 +111,7 @@ module.exports = {
     });
 
 
-    const destinationTrips = await Trip.find({'destination._id': id});
+    const destinationTrips = await Trip.find({'destination._id': ObjectId(id)});
     destinationTrips.length && destinationTrips.forEach(async(trip) => {
       await Trip.findByIdAndUpdate(trip._id, {$set: {
         'destination.name': updatedCity.name,
@@ -128,13 +128,13 @@ module.exports = {
       data.name && allTrips.length && allTrips.forEach(async(trip) => {
          trip.tickets.forEach(async(ticketId) => {
 
-          const ticket =  await Ticket.findOne({_id: ticketId});
+          const ticket =  await Ticket.findOne({_id: ObjectId(ticketId)});
 
           if (ticket && ticket.departure === oldName) {
-            await Ticket.updateOne({_id: ticketId}, {departure: data.name})
+            await Ticket.updateOne({_id: ObjectId(ticketId)}, {departure: data.name})
           }
           else if (ticket && ticket.destination === oldName) {
-            await Ticket.updateOne({_id: ticketId}, {destination: data.name})
+            await Ticket.updateOne({_id: ObjectId(ticketId)}, {destination: data.name})
           }
         })
       })
