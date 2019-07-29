@@ -25,48 +25,54 @@ module.exports = {
   },
 
   async update (id, data) {
+    //console.log('data', data)
     let trip = await Trip.findOne({ _id: id, deleted: false });
     if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
 
-    let departure = trip.departure; 
-    let destination = trip.destination;
-    let carrier = trip.carrier;
-    let type = trip.type;
+    let ticketData = {};
 
     if (data.departure) {
       let city = await City.findOne({name: data.departure.name, isEnabled: true});
       if(!city) throw { status: 404, message: 'CITY.NOT.EXIST' };
-      departure = city;
-      data.departure =  departure;
+      data.departure =  city;
+      ticketData = {...ticketData, departure: data.departure.name}
     } 
 
     if (data.destination) {
       let city = await City.findOne({name: data.destination.name, isEnabled: true});
       if(!city) throw { status: 404, message: 'CITY.NOT.EXIST' };
-      destination = city;
-      data.departure = departure.destination;
+      data.destination = city;
+      ticketData = {...ticketData, destination: data.destination.name}
     } 
 
     if (data.carrier) {
-      carrier = data.carrier;
-      data.carrier = carrier;
+      ticketData = {...ticketData, carrier: data.carrier}
     } 
 
     if (data.type) {
-      type = data.type;
-      data.type = type;
+      ticketData = {...ticketData, type: data.type}
     }
   
     const potentialDuplicatesTrip = await Trip.findOne({ 
-      'departure.name': departure.name,
-      'destination.name': destination.name, 
-      type: type, 
-      carrier: carrier, 
+      'departure.name': data.departure.name,
+      'destination.name': data.destination.name, 
+      type: data.type, 
+      carrier: data.carrier, 
       deleted: false,
       active: true
      });
      if(potentialDuplicatesTrip) throw { status: 409, message: 'TRIP.EXIST' };
 
+    console.log('last data', data)
+    //console.log('ticketData', ticketData)
+    console.log('ticketData2', ticketData)
+    
+
+    trip.tickets.forEach(async(ticketId) => {
+      const ticket =  await Ticket.findByIdAndUpdate(ticketId, ticketData, {new: true});
+    })
+
+    
     return Trip.findByIdAndUpdate(id, data, { new: true });
   },
 
