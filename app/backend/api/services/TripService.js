@@ -6,7 +6,14 @@ const Utilities = require('./Utilities');
 
 module.exports = {
   async create (data) {
-    const trip = await Trip.findOne({ _id: data.id, deleted: false });
+    const trip = await Trip.findOne({ 
+      'departure.name': data.departure.name,
+      'destination.name': data.destination.name, 
+      type: data.type, 
+      carrier: data.carrier, 
+      deleted: false,
+      active: true
+     });
     if(trip) throw { status: 409, message: 'TRIP.EXIST' };
 
     if(data.fake) {
@@ -20,6 +27,8 @@ module.exports = {
   async update (id, data) {
     let trip = await Trip.findOne({ _id: id, deleted: false });
     if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
+
+    console.log('data', data)
 
     if(data.name) {
       trip = await Trip.findOne({ name: data.name, deleted: false });
