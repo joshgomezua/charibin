@@ -28,12 +28,44 @@ module.exports = {
     let trip = await Trip.findOne({ _id: id, deleted: false });
     if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
 
-    console.log('data', data)
+    let departure = trip.departure; 
+    let destination = trip.destination;
+    let carrier = trip.carrier;
+    let type = trip.type;
 
-    if(data.name) {
-      trip = await Trip.findOne({ name: data.name, deleted: false });
-      if(trip) throw { status: 409, message: 'TRIP.DESTINATION.EXIST' };
+    if (data.departure) {
+      let city = await City.findOne({name: data.departure.name, isEnabled: true});
+      if(!city) throw { status: 404, message: 'CITY.NOT.EXIST' };
+      departure = city;
+      data.departure =  departure;
+    } 
+
+    if (data.destination) {
+      let city = await City.findOne({name: data.destination.name, isEnabled: true});
+      if(!city) throw { status: 404, message: 'CITY.NOT.EXIST' };
+      destination = city;
+      data.departure = departure.destination;
+    } 
+
+    if (data.carrier) {
+      carrier = data.carrier;
+      data.carrier = carrier;
+    } 
+
+    if (data.type) {
+      type = data.type;
+      data.type = type;
     }
+  
+    const potentialDuplicatesTrip = await Trip.findOne({ 
+      'departure.name': departure.name,
+      'destination.name': destination.name, 
+      type: type, 
+      carrier: carrier, 
+      deleted: false,
+      active: true
+     });
+     if(potentialDuplicatesTrip) throw { status: 409, message: 'TRIP.EXIST' };
 
     return Trip.findByIdAndUpdate(id, data, { new: true });
   },
