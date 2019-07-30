@@ -644,6 +644,9 @@ module.exports = {
     page = +page;
     limit = +limit;
 
+    console.log('startDate', new Date(dateStart))
+    console.log('endDate', new Date(dateEnd))
+
     const fromArray = from.split(',');
     const toArray = to.split(',');
     const carrierArray = carrier.split(',');
