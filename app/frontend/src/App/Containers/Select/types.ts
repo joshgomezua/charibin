@@ -31,10 +31,12 @@ export interface IState {
 export interface IProps {
   isMax: boolean
   quantity: number
+  departure: string
   selected: ISelectedData[]
   showError: (err: IResponseError, defaultText?: string) => void
   showSuccess: (msg: string) => void
   setQuantity: (quantity: number) => void
+  setDeparture: (departure: string) => void
   addSelected: (selected: ISelectedData) => void
   removeSelected: (tripId: string) => void
   updateSelected: (selected: ISelectedData[]) => void

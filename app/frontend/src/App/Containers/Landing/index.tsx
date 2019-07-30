@@ -12,7 +12,9 @@ import ReadFaqStatic from '../../Statics/ReadFaq'
 
 import {
   setQuantity,
-  selectQuantity
+  selectQuantity,
+  selectDeparture,
+  setDeparture
 } from '../../../Common/Redux/Services/trips'
 import { IStore } from '../../../Common/Redux/types'
 import { RouteComponentProps } from 'react-router-dom'
@@ -46,8 +48,10 @@ class LandingContainer extends Component<RouteComponentProps<{}> & IProps> {
           <Search
             setQuantity={this.props.setQuantity}
             quantity={this.props.quantity}
+            setDeparture={this.props.setDeparture}
             onSubmit={this.onSubmit}
             initialValue="London"
+            departure={this.props.departure}
           />
           <ScrollStatic onClick={this.onScrollClick} />
         </MainBlock>
@@ -61,10 +65,11 @@ class LandingContainer extends Component<RouteComponentProps<{}> & IProps> {
 }
 
 const mapStateToProps = (state: IStore) => ({
-  quantity: selectQuantity(state)
+  quantity: selectQuantity(state),
+  departure: selectDeparture(state)
 })
 
 export default connect(
   mapStateToProps,
-  { setQuantity }
+  { setQuantity , setDeparture}
 )(LandingContainer)

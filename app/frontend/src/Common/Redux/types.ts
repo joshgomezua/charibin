@@ -15,6 +15,7 @@ interface IUser {
 }
 
 interface ITips {
+  departure: string
   quantity: number
   selected: ISelectedData[]
   deselected: ISelectedData[]

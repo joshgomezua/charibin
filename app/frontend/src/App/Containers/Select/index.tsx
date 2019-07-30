@@ -15,8 +15,11 @@ import {
   selectIsMaxSelected,
   selectSelected,
   selectQuantity,
+  setQuantity,
   updateSelected,
-  clearSelected
+  clearSelected,
+  selectDeparture,
+  setDeparture
 } from '../../../Common/Redux/Services/trips'
 import withToast from '../../../Common/HOC/withToast'
 import { saveToLS, getOwnerToken } from '../../../Common/Utils/helpers'
@@ -51,11 +54,14 @@ class SelectContainer extends Component<
 
   componentDidMount() {
     window.scrollTo(0, 0)
-    const { quantity } = this.props
-    this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity).then(
+    const { quantity,departure } = this.props
+    console.log("component did mount")
+    this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity,departure).then(
       () => {
         this.setState({ isLoading: false })
-        this.attachScrollEvent()
+        if(this.state.trips.length >= 5){
+          this.attachScrollEvent()
+        } 
       }
     )
   }
@@ -71,7 +77,8 @@ class SelectContainer extends Component<
     priceEnd: number,
     dateStart: number,
     dateEnd: number,
-    qunatity: number
+    qunatity: number,
+    departure: string
   ) => {
     return API.getTrips(
       page,
@@ -81,11 +88,12 @@ class SelectContainer extends Component<
       dateStart,
       dateEnd,
       qunatity,
+      departure
     )
       .then(({ data }) => {
         this.setState((state: IState) => ({
           isLoading: false,
-          trips: [...state.trips, ...data],
+          trips: [...data],
         }))
 
         return data.length
@@ -105,7 +113,7 @@ class SelectContainer extends Component<
           page,
           filters: { min, max, start, end }
         } = this.state
-        const { quantity } = this.props
+        const { quantity,departure } = this.props
 
         this.handleFetchTrips(
           page,
@@ -114,14 +122,15 @@ class SelectContainer extends Component<
           max,
           start !== undefined ? +moment(start).format('x') : 0,
           end !== undefined ? +moment(end).format('x') : 0,
-          quantity
+          quantity,
+          departure
         )
       }
     )
   }
 
   handleBookTrips = () => {
-    const { selected, quantity } = this.props
+    const { selected, quantity, departure } = this.props
     const token = getOwnerToken()
     const bookedTrips = selected.map((selectedItem: ISelectedData) => {
       if (selectedItem.arrivalTicket && selectedItem.departureTicket) {
@@ -141,6 +150,7 @@ class SelectContainer extends Component<
     })
 
     const data: IBookedData = {
+      departure,
       quantity,
       trips: bookedTrips
     }
@@ -167,6 +177,7 @@ class SelectContainer extends Component<
           createdAt: res.data.createdAt,
           token: res.data.owner,
           data: {
+            departure,
             quantity,
             selected: selectedTrips
           }
@@ -200,14 +211,13 @@ class SelectContainer extends Component<
     const {
       filters: { min, max, start, end }
     } = this.state
-    const { quantity } = this.props
+    const { quantity, departure } = this.props
     const treshold = 500
     const totalHeight = document.documentElement.scrollHeight
     const windowHeight = window.innerHeight
     const scrollTop = window.pageYOffset
 
     const offset = totalHeight - (scrollTop + windowHeight)
-
     if (offset < treshold) {
       this.detachScrollEvent()
       this.setState(
@@ -220,7 +230,8 @@ class SelectContainer extends Component<
             max,
             start !== undefined ? +moment(start).format('x') : 0,
             end !== undefined ? +moment(end).format('x') : 0,
-            quantity
+            quantity,
+            departure
           ).then((dataLength: number) => {
             if (dataLength > 0) {
               this.attachScrollEvent()
@@ -295,15 +306,27 @@ class SelectContainer extends Component<
 
   render() {
     const { isCalendarOpen, isLoading, trips, filters } = this.state
-    const { isMax, quantity, selected } = this.props
+    const { isMax, quantity, selected,departure } = this.props
+    
 
     return (
       <section className={`select-cnt ${isCalendarOpen ? 'calendar' : ''}`}>
         <MainBlock className="select-cnt-block">
           <Search
+            departure={departure}
+            setDeparture={this.props.setDeparture}
+            setQuantity={this.props.setQuantity}
             quantity={quantity}
-            onSubmit={() => {}}
-            initialValue="London"
+            onSubmit={()=>{ console.log("on submit")
+               this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity,departure).then(
+              () => {
+                this.setState({ isLoading: false })
+                if(this.state.trips.length >= 5){
+                  this.attachScrollEvent()
+                }
+              }
+            )}}
+            initialValue={departure}
           />
           <Steps />
         </MainBlock>
@@ -379,10 +402,12 @@ class SelectContainer extends Component<
 const mapStateToProps = (state: IStore) => ({
   isMax: selectIsMaxSelected(state),
   quantity: selectQuantity(state),
-  selected: selectSelected(state)
+  selected: selectSelected(state),
+  departure: selectDeparture(state)
 })
 
 export default connect(
   mapStateToProps,
-  { addSelected, removeSelected, updateSelected, clearSelected }
+  { addSelected, removeSelected, updateSelected, clearSelected, setQuantity,
+    setDeparture}
 )(withToast(SelectContainer))
