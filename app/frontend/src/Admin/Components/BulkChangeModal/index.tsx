@@ -13,37 +13,15 @@ import Input from '../Input'
 import Dropdown from '../Dropdown'
 import Switch from '../Switch'
 import Button from '../../../Common/Components/Button'
-import { IProps, IFormValues, IEditValues } from './types'
+import { IProps, IFormValues } from './types'
 import './styles.scss'
-import { ICity } from 'src/Admin/Utils/adminTypes';
 
-const TripModal: React.SFC<IProps> = ({
+const BulkChangeModal: React.SFC<IProps> = ({
   isLoading,
-  editDate,
   closeModal,
-  availableCities,
-  handleEditTrip,
   handleSubmit
 }) => {
   let editableData = null
-
-  if (editDate) {
-    editableData = {
-      destination: editDate.destination,
-      departure: editDate.departure,
-      price: editDate.price,
-      discount: editDate.discount,
-      duration: editDate.duration,
-      type: 'Train',
-      carrier: editDate.carrier,
-      deselectionPrice: editDate.deselectionPrice,
-      timeSelection: {
-        defaultPrice: editDate.timeSelection.defaultPrice,
-      },
-      fake: editDate.fake,
-      active: editDate.active,
-    }
-  }
 
   return (
     <div className="spon-trip-modal">
@@ -53,14 +31,6 @@ const TripModal: React.SFC<IProps> = ({
           editableData
             ? editableData
             : {
-                departure: {
-                  _id: '',
-                  name: ''
-                },
-                destination: {
-                  _id: '',
-                  name: ''
-                },
                 price: 0,
                 discount: 0,
                 duration: 0,
@@ -75,120 +45,32 @@ const TripModal: React.SFC<IProps> = ({
               }
         }
         validationSchema={Yup.object().shape({
-          destination: Yup.object().required(),
-          departure: Yup.object().required(),
-          price: Yup.number()
-            .required()
-            .min(1),
-          type: Yup.string().required(),
-          carrier: Yup.string().required(),
-          discount: Yup.number()
-            .required()
-            .min(1),
-          duration: Yup.number()
-            .min(1)
-            .max(100000)
-            .required(),
+          price: Yup.number(),
+          type: Yup.string(),
+          carrier: Yup.string(),
+          discount: Yup.number(),
+          duration: Yup.number(),
           timeSelection: Yup.object().shape({
             defaultPrice: Yup.number()
-              .required()
-              .min(1),
           }),
-          deselectionPrice: Yup.number()
-            .required()
-            .min(1),
-          fake: Yup.bool().required(),
-          active: Yup.bool().required()
+          deselectionPrice: Yup.number(),
+          fake: Yup.bool(),
+          active: Yup.bool()
         })}
         onSubmit={(
           values: IFormValues,
           { resetForm }: FormikActions<IFormValues>
         ) => {
-          const dataToUpdate: IEditValues = {}
-          if (editDate) {
-            for (const key in values) {
-              if (
-                values.hasOwnProperty(key) &&
-                values[key] !== editDate![key]
-              ) {
-                dataToUpdate[key] = values[key]
-              }
-            }
-          }
-
-          if (editDate && handleEditTrip) {
-            handleEditTrip(dataToUpdate).then(() => resetForm())
-          } else if (handleSubmit) {
-            const departureCity: ICity = {
-              _id: values.departure._id,
-              name: ''
-            }
-            const destinationCity: ICity = {
-              _id:values.destination._id,
-              name: ''
-            } 
-            const dataToSubmit: any = {
-              ...values,
-              departure: departureCity,
-              destination: destinationCity
-            }
-            handleSubmit(dataToSubmit).then(() => resetForm())
+          if(handleSubmit){
+            console.log(values)
+            handleSubmit(values).then(() => resetForm())
           }
         }}
         render={({
           handleChange,
           values,
-          errors,
-          touched,
-          setFieldError
         }: FormikProps<IFormValues>) => (
           <Form noValidate>
-            <div className="spon-trip-modal__row">
-              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--big">
-                <Dropdown
-                saveAsObject
-                  id="departure"
-                  label="Departure"
-                  placeholder="Select a city"
-                  className="spon-trip-modal__dropdown"
-                  selectedValue={values.departure.name}
-                  options={availableCities.sort((a,b) => {
-                    return a.name > b.name ? 1 : -1
-                  })}
-                  onChange={handleChange}
-                />
-
-                <ErrorMessage
-                  name="departure"
-                  component="div"
-                  className="spon-trip-modal__error"
-                />
-              </div>
-              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--big">
-                <Dropdown
-                  saveAsObject
-                  id="destination"
-                  label="Destination"
-                  placeholder="Select a city"
-                  className="spon-trip-modal__dropdown"
-                  selectedValue={values.destination.name}
-                  options={availableCities.filter((city)=>{
-                    return city.isEnabled === true ? city : null
-                  }).sort((a,b) => {
-                    return a.name > b.name ? 1 : -1
-                  })
-                  }
-                  onChange={handleChange}
-                />
-
-                <ErrorMessage
-                  name="destination"
-                  component="div"
-                  className="spon-trip-modal__error"
-                />
-              </div>
-            </div>
-
             <div className="spon-trip-modal__row">
               <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt">
                 <Field
@@ -269,6 +151,10 @@ const TripModal: React.SFC<IProps> = ({
                   selectedValue={values.type}
                   options={[
                     {
+                      _id: '0',
+                      name: 'No selection'
+                    },
+                    {
                       _id: '1',
                       name: 'Train'
                     },
@@ -348,12 +234,14 @@ const TripModal: React.SFC<IProps> = ({
                       })
                     }
                   />
+                  
                 </div>
               </div>
             </div>
 
             <div className="spon-trip-modal__row">
               <div className="spon-trip-modal__buttons">
+                
                 <Button
                   text="CANCEL"
                   variant="adminSecondary"
@@ -361,7 +249,7 @@ const TripModal: React.SFC<IProps> = ({
                   className="spon-trip-modal__button"
                 />
                 <Button
-                  text={editDate ? 'EDIT' : 'ADD'}
+                  text={'EDIT'}
                   disabled={isLoading}
                   isLoading={isLoading}
                   type="submit"
@@ -377,4 +265,4 @@ const TripModal: React.SFC<IProps> = ({
   )
 }
 
-export default TripModal
+export default BulkChangeModal

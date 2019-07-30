@@ -34,10 +34,11 @@ import {
   getOpposites,
   getCities,
 } from '../../Utils/api'
-import { IState, IProps, INewData, IEditTimeSchedule, INewSchedule } from './types'
+import { IState, IProps, INewData, IEditTimeSchedule, INewSchedule, IBulkChange } from './types'
 import { columns } from './columns'
 import { rangeColumns } from './rangeColumns';
 import { SortingRule, ControlledStateOverrideProps } from 'react-table';
+import BulkChangeModal from 'src/Admin/Components/BulkChangeModal';
 
 class TripsContainer extends React.Component<
   RouteComponentProps<{}> & IProps,
@@ -495,6 +496,12 @@ class TripsContainer extends React.Component<
     }
   }
 
+  handleBulkChange = (data: IBulkChange) => {
+
+    console.log(data)
+    return Promise.reject()
+  }
+
   handleRedirectToCreateTicket = (trip: { _id: string; departure: string; destination: string }) => {
     this.props.history.push({
       pathname: `${ADMIN_ROUTING.MAIN}${ADMIN_ROUTING.TICKETS}`,
@@ -785,6 +792,14 @@ class TripsContainer extends React.Component<
               editSchedule={editSchedule}
               closeModal={this.handleCloseModal}
               handleEditTimeSelection={this.handleEditScheduleTimeSelection}
+            />
+          ) : null}
+
+          {modalType === MODAL_TYPE.BULK_CHANGE ? (
+            <BulkChangeModal
+              isLoading={isModalLoading}
+              closeModal={this.handleCloseModal}
+              handleSubmit={this.handleBulkChange}
             />
           ) : null}
         </Modal>

@@ -119,3 +119,7 @@ export interface IEditTimeSchedule {
   price?: number
   type?: string
 }
+
+export interface IBulkChange {
+  
+}

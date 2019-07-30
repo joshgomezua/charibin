@@ -94,7 +94,6 @@ class TripHeader extends React.Component<IProps, IState> {
       heading,
       modal,
       handleOpenModal,
-      handleBulkChange,
       filterFrom,
       filterTo,
       availableDepartures,
@@ -158,15 +157,15 @@ class TripHeader extends React.Component<IProps, IState> {
             </Select>
           </div>
         </div>
-
-        <Button
-          className="spon-admin-trip-header__bulk-button"
-          variant="blue"
-          icon="pencil"
-          text="BULK"
-          onClick={() => handleBulkChange()}
-        />
-
+        {handleOpenModal ? (
+          <Button
+            className="spon-admin-trip-header__bulk-button"
+            variant="blue"
+            icon="pencil"
+            text="BULK CHANGES"
+            onClick={() => handleOpenModal(MODAL_TYPE.BULK_CHANGE, 'Bulk changes')}
+          />
+        ) : null }
         {(handleOpenModal && heading && modal) ? (
           <Button
             className="spon-admin-trip-header__add-button"
