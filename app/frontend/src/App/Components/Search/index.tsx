@@ -27,14 +27,14 @@ export default class Search extends Component<IProps, IState> {
     }
   }
 
-  selectDecrement = (e: React.MouseEvent<HTMLButtonElement>) => {
+  selectDecrement = (e: React.MouseEvent<HTMLInputElement>) => {
     e.preventDefault()
     if (this.props.quantity > 1) {
       this.props.setQuantity!(this.props.quantity - 1) 
     }
   }
 
-  selectIncrement = (e: React.MouseEvent<HTMLButtonElement>) => {
+  selectIncrement = (e: React.MouseEvent<HTMLInputElement>) => {
     e.preventDefault()
     if (this.props.quantity < 6) {
       this.props.setQuantity!(this.props.quantity + 1)
@@ -76,8 +76,17 @@ export default class Search extends Component<IProps, IState> {
         </button>
         {buttons && (
           <div>
-            <button onClick={this.selectDecrement}>-</button>
-            <button onClick={this.selectIncrement}>+</button>
+            <li>
+              <label>Adultes</label>
+              <input type="button" onClick={this.selectDecrement} value="-"/>
+              <input type="button" onClick={this.selectIncrement} value="+"/>
+            </li>
+            
+            <li>
+            <label>Enfants</label>
+            <input type="button" onClick={this.selectDecrement} value="-"/>
+            <input type="button" onClick={this.selectIncrement} value="+"/>
+            </li>
           </div>
         )}
       </div>

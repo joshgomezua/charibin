@@ -91,7 +91,6 @@ class SelectContainer extends Component<
       departure
     )
       .then(({ data }) => {
-        console.log(data)
         this.setState((state: IState) => ({
           isLoading: false,
           trips: [...data],
