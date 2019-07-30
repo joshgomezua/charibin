@@ -32,27 +32,35 @@ module.exports = {
     if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
 
     let ticketData = {};
-
+    
     if (data.departure) {
       let city = await City.findOne({name: data.departure.name, isEnabled: true});
       if(!city) throw { status: 404, message: 'CITY.NOT.EXIST' };
       data.departure =  city;
       ticketData = {...ticketData, departure: data.departure.name}
-    } 
+    } else {
+      data.departure = trip.departure;
+    }
 
     if (data.destination) {
       let city = await City.findOne({name: data.destination.name, isEnabled: true});
       if(!city) throw { status: 404, message: 'CITY.NOT.EXIST' };
       data.destination = city;
       ticketData = {...ticketData, destination: data.destination.name}
-    } 
+    } else {
+      data.destination = trip.destination;
+    }
 
     if (data.carrier) {
       ticketData = {...ticketData, carrier: data.carrier}
-    } 
+    } else {
+      data.carrier = trip.carrier;
+    }
 
     if (data.type) {
       ticketData = {...ticketData, type: data.type}
+    } else {
+      data.type = trip.type;
     }
   
     const potentialDuplicatesTrip = await Trip.findOne({ 
