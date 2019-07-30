@@ -155,8 +155,29 @@ module.exports = {
   },
 
   async updateOne (id, data) {
+    console.log('updateOne', data)
+
+    const destinationTrips = await Trip.find({'destination._id':ObjectId(id)});
+    console.log('destinationTrips', destinationTrips)
    await Trip.updateMany({ 'destination._id':id }, 
    { $set: { 'destination.isEnabled': data.isEnabled }},{ new: true });
+    destinationTrips.forEach((trip) => {
+      console.log('trip', trip)
+      trip.tickets.forEach(async(ticketId) => {
+        await Ticket.findByIdAndUpdate(ticketId, { $set: { 'active': data.isEnabled } })
+      })
+    })
+
+    const departureTrips = await Trip.find({'departure._id':ObjectId(id)});
+    console.log('departureTrips', departureTrips)
+     await Trip.updateMany({ 'departure._id':id }, 
+    { $set: { 'departure.isEnabled': data.isEnabled }},{ new: true });
+    departureTrips.forEach((trip) => {
+      console.log('trip', trip)
+      trip.tickets.forEach(async(ticketId) => {
+        await Ticket.findByIdAndUpdate(ticketId, { $set: { 'active': data.isEnabled } })
+      })
+    })
    
    return City.findByIdAndUpdate(id, data, { new: true });
   },

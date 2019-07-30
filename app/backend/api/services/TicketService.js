@@ -655,6 +655,7 @@ module.exports = {
             {
               $match: {
                 deleted: false,
+                active: true,
                 'date.start': { $gte: new Date(dateStart) },
               }
             },

@@ -173,16 +173,17 @@ module.exports = {
   },
 
   async findCitiesByName(uniqueCities) {
-    return Promise.all(
-      uniqueCities.map(item => 
-        City.find({isEnabled: true, name: item })
+    const cities = await Promise.all(
+      uniqueCities.map(async(item) => 
+        City.findOne({isEnabled: true, name: item })
     ));
+    return cities.filter((city) => city)
   },
 
   parseCities(cities) {
     return cities.map(city => ({
-      label: city[0].name,
-      country: city[0].country
+      label: city.name,
+      country: city.country
     }));
   },
 
