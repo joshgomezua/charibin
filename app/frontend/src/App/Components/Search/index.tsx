@@ -5,16 +5,18 @@ import arrow from '../../../Common/Utils/Media/arrow.svg'
 import arrowRight from '../../../Common/Utils/Media/arrowRight.svg'
 import './styles.scss'
 
+
 export default class Search extends Component<IProps, IState> {
   state = {
     inputValue: this.props.initialValue || '',
-    buttons: false
+    buttons: false,
+    tickets: []
   }
-  changeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+  changeInput =  (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { setDeparture } = this.props
     e.preventDefault()
-    if (this.props.initialValue === undefined) {
-      this.setState({ inputValue: e.target.value })
-    }
+    this.setState({ inputValue: e.target.value })
+    setDeparture!(e.target.value)
   }
 
   toggleButtons = () => {

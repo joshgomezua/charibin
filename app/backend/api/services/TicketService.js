@@ -240,7 +240,7 @@ async function unbook ({ owner, selectedTrip }) {
   return;
 }
 
-async function bookWithTime ({ quantity, selectedTrip, owner }) {
+async function bookWithTime ({quantity, selectedTrip, owner }) {
   const arrivalTicket = await Ticket.findOne({ _id: selectedTrip.arrivalTicket, active: true, deleted: false, quantity: { $gte: quantity } });
   if(!arrivalTicket) throw { status: 404, message: 'TICKET.ARRIVAL.NOT.EXIST' };
 
@@ -371,7 +371,7 @@ module.exports = {
       if(selectedTrip.arrivalTicket || selectedTrip.departureTicket) {
         await bookWithTime({ quantity, selectedTrip, owner });
       } else {
-        await bookWithOutTime({ quantity, selectedTrip, owner });
+        await bookWithOutTime({quantity, selectedTrip, owner });
       }
     }
 
@@ -389,6 +389,7 @@ module.exports = {
   },
 
   async buy ({ owner, creditCardToken, buyerInfo, }) {
+
     const ownerInfo = await TicketOwner.findOne({ owner });
     if(!ownerInfo) throw { status: 404, message: 'BUY.OWNER.NOT.EXIST' };
 
@@ -396,6 +397,7 @@ module.exports = {
 
     let finalCost = 0;
     const [admin] = await User.find({ role: global.config.custom.roles.ADMINISTRATOR }).sort('_id').limit(1);
+
     const selectedTrip = getMostExpensiveTrip(ownerInfo);
 
     // Add a trip price (time choose already added)
@@ -406,8 +408,9 @@ module.exports = {
     finalCost += deselectionPrice;
 
     const charge = await PaymentService.charge(finalCost, creditCardToken, buyerInfo, selectedTrip);
-
+    
     await clearReservation(selectedTrip, owner);
+  
     const order = await Order.create({
       buyer: {
         name: buyerInfo.middleName ? `${buyerInfo.firstName} ${buyerInfo.middleName} ${buyerInfo.lastName}` : `${buyerInfo.firstName} ${buyerInfo.lastName}`,
@@ -440,6 +443,7 @@ module.exports = {
       deselectionPrice: deselectionPrice,
       totalPrice: finalCost,
     });
+
     await Ticket.findOneAndUpdate({ _id: selectedTrip.arrivalTicket._id, active: true, deleted: false, quantity: { $gte: ownerInfo.quantity } }, {
       $inc: { soldTickets : ownerInfo.quantity }
     });
@@ -559,7 +563,7 @@ module.exports = {
     }
   },
 
-  async findDashboard ({ page, limit, quantity, priceStart, priceEnd , dateStart, dateEnd, timezone }) {
+  async findDashboard ({ page, limit, quantity, departure, priceStart, priceEnd , dateStart, dateEnd, timezone }) {
     page = +page;
     quantity = +quantity;
     limit = +limit;
@@ -573,14 +577,17 @@ module.exports = {
     const ticketMatch = {
       $and: [
         { $eq: [ '$$tickets.active', true ] },
-        { $eq: [ '$$tickets.deleted', false ] }
+        { $eq: [ '$$tickets.deleted', false ] },
       ]
     };
 
-    if(quantity > 0)
+    if(quantity > 0) {
       ticketMatch.$and.push({ $gte: [ '$$tickets.quantity', quantity ] });
+    }  
     else
+    {
       ticketMatch.$and.push({ $gt: [ '$$tickets.quantity', 0 ] });
+    }
 
     if(priceEnd > 0)
       tripMatch.price = { $gte: priceStart, $lte: priceEnd };
@@ -595,7 +602,7 @@ module.exports = {
       ticketMatch.$and.push(
         { $gte: [ '$$tickets.date.start', new Date(custom.TodayWithTimezone + global.config.custom.time.day) ] });
     }
-
+    console.log("ticketMatch, ", ticketMatch)
     let data = await Trip.aggregate([
       {
         $match: tripMatch
@@ -623,9 +630,13 @@ module.exports = {
           }
         }
       }
+
     ]);
-    const res = data.filter((trip) => this.hasEnoughTickets(trip))
-    return res;
+    
+    const res = await data.filter((trip) => this.hasEnoughTickets(trip))
+    return res.filter((trip) => 
+    trip.departure.name == departure
+    );
   },
 
   async findCRM ({dateStart, dateEnd, from, to, carrier, page, limit}) {
@@ -723,5 +734,28 @@ module.exports = {
     }
 
     return;
-  },  
+  }, 
+  
+  async getTickets(page,limit,date) {
+    return await Ticket.aggregate([
+      {
+        $facet: {
+          results: [
+            {
+              $match: {
+                deleted: false,
+                'date.start': { $gte: new Date(date) },
+              }
+            },
+            ...Aggregate.skipAndLimit(page,limit)
+          ],
+          status: Aggregate.getStatusWithSimpleMatch(
+            {},
+            page,
+            limit
+          )
+        }
+      }
+    ]).then(Aggregate.parseResults);
+  }
 };

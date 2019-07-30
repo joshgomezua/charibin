@@ -74,7 +74,8 @@
   "404": {
     "USER": {
       "NOT": {
-        "FOUND": "User not found"
+        "FOUND": "User not found",
+        "AUTHORIZED": "your account have been deleted"
       }
     },
     "TRIP": {
