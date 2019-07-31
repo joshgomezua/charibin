@@ -3,10 +3,20 @@
 const { Trip, Ticket, City } = require('../models');
 const Aggregate = require('./Aggregate');
 const Utilities = require('./Utilities');
+var ObjectId = require('mongoose').Types.ObjectId;
 
 module.exports = {
   async create (data) {
-    const trip = await Trip.findOne({ _id: data.id, deleted: false });
+    const trip = await Trip.findOne({ 
+      'departure.name': data.departure.name,
+      'destination.name': data.destination.name, 
+      type: data.type, 
+      carrier: data.carrier, 
+      deleted: false,
+      active: true
+     });
+     data.departure._id = ObjectId(data.departure._id);
+     data.destination._id = ObjectId(data.destination._id);
     if(trip) throw { status: 409, message: 'TRIP.EXIST' };
 
     if(data.fake) {
@@ -21,11 +31,59 @@ module.exports = {
     let trip = await Trip.findOne({ _id: id, deleted: false });
     if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
 
-    if(data.name) {
-      trip = await Trip.findOne({ name: data.name, deleted: false });
-      if(trip) throw { status: 409, message: 'TRIP.DESTINATION.EXIST' };
+    let ticketData = {};
+    
+    if (data.departure) {
+      let city = await City.findOne({name: data.departure.name, isEnabled: true});
+      if(!city) throw { status: 404, message: 'CITY.NOT.EXIST' };
+      data.departure =  city;
+      ticketData = {...ticketData, departure: data.departure.name}
+    } else {
+      data.departure = trip.departure;
     }
 
+    if (data.destination) {
+      let city = await City.findOne({name: data.destination.name, isEnabled: true});
+      if(!city) throw { status: 404, message: 'CITY.NOT.EXIST' };
+      data.destination = city;
+      ticketData = {...ticketData, destination: data.destination.name}
+    } else {
+      data.destination = trip.destination;
+    }
+
+    if (data.carrier) {
+      ticketData = {...ticketData, carrier: data.carrier}
+    } else {
+      data.carrier = trip.carrier;
+    }
+
+    if (data.type) {
+      ticketData = {...ticketData, type: data.type}
+    } else {
+      data.type = trip.type;
+    }
+  
+    const potentialDuplicatesTrip = await Trip.findOne({ 
+      'departure.name': data.departure.name,
+      'destination.name': data.destination.name, 
+      type: data.type, 
+      carrier: data.carrier, 
+      deleted: false,
+      active: true
+     });
+     
+     if (potentialDuplicatesTrip) {
+       if (potentialDuplicatesTrip._id.toString() !== id.toString()) {
+         throw { status: 409, message: 'TRIP.EXIST' };
+       }
+     }
+     
+
+    trip.tickets.forEach(async(ticketId) => {
+      const ticket =  await Ticket.findByIdAndUpdate(ticketId, ticketData, {new: true});
+    })
+
+    
     return Trip.findByIdAndUpdate(id, data, { new: true });
   },
 
@@ -37,7 +95,7 @@ module.exports = {
   },
 
   async getListOfTripsNames () {
-    const names = await Trip.find({ deleted: false }).select('departure').select('destination');
+    const names = await Trip.find({ deleted: false }).select('departure').select('destination').select('carrier').select('type');
 
     return names;
   },
@@ -120,16 +178,17 @@ module.exports = {
   },
 
   async findCitiesByName(uniqueCities) {
-    return Promise.all(
-      uniqueCities.map(item => 
-        City.find({isEnabled: true, name: item })
+    const cities = await Promise.all(
+      uniqueCities.map(async(item) => 
+        City.findOne({isEnabled: true, name: item })
     ));
+    return cities.filter((city) => city)
   },
 
   parseCities(cities) {
     return cities.map(city => ({
-      label: city[0].name,
-      country: city[0].country
+      label: city.name,
+      country: city.country
     }));
   },
 

@@ -12,7 +12,6 @@ import * as Yup from 'yup'
 import classnames from 'classnames'
 
 import Input from '../Input'
-import Dropdown from '../Dropdown'
 import DatePicker from '../DatePicker'
 import Switch from '../Switch'
 import Button from '../../../Common/Components/Button'
@@ -39,6 +38,8 @@ class TicketModal extends React.Component<IProps, IState> {
       tripSelected,
       handleEditTicket,
       destinations,
+      carriers,
+      types,
       handleSubmit,
       closeModal,
       isLoading,
@@ -75,6 +76,8 @@ class TicketModal extends React.Component<IProps, IState> {
                     _id: tripSelected ? tripSelected._id : '',
                     departure: tripSelected ? tripSelected.departure : '',
                     destination: tripSelected ? tripSelected.destination : '',
+                    carrier: tripSelected ? tripSelected.carrier : '',
+                    type: tripSelected ? tripSelected.type : '',
                   },
                   type: 'Train',
                   quantity: 0,
@@ -82,6 +85,7 @@ class TicketModal extends React.Component<IProps, IState> {
                   reservedQuantity: 0,
                   departure: '',
                   destination: '',
+                  carrier: '',
                   date: undefined,
                   endDate: undefined,
                   days: [0, 1, 2, 3, 4, 5, 6],
@@ -94,7 +98,9 @@ class TicketModal extends React.Component<IProps, IState> {
             trip: Yup.object().shape({
               _id: Yup.string(),
               departure: Yup.string().required('Trip departure is required'),
-              destination: Yup.string().required('Trip destination is required')
+              destination: Yup.string().required('Trip destination is required'),
+              carrier: Yup.string().required('Trip carrier is required'),
+              type: Yup.string().required('Trip type is required')
             }),
             type: Yup.string().required('Trip type is required'),
             quantity: Yup.number()
@@ -164,10 +170,11 @@ class TicketModal extends React.Component<IProps, IState> {
               trip: values.trip._id,
               departure: values.trip.departure,
               destination: values.trip.destination,
+              carrier: values.trip.carrier,
               quantity: values.quantity,
               soldTickets: values.soldTickets,
               reservedQuantity: values.reservedQuantity,
-              type: values.type,
+              type: values.trip.type,
               date: {
                 start: +tempDepartureHours[0].start,
                 end: +tempDepartureHours[0].end
@@ -212,6 +219,7 @@ class TicketModal extends React.Component<IProps, IState> {
                     id="trip"
                     label="From"
                     placeholder="From"
+                    input="departure"
                     className="spon-ticket-modal__dropdown"
                     selectedValue={values.trip ? values.trip.departure : ''}
                     options={departures}
@@ -232,10 +240,12 @@ class TicketModal extends React.Component<IProps, IState> {
                     id="trip"
                     label="To"
                     placeholder="To"
+                    input="destination"
                     className="spon-ticket-modal__dropdown"
                     selectedValue={values.trip ? values.trip.destination : ''}
                     options={destinations}
                     onChange={handleChange}
+                    onSelectDestination={this.props.handleSelectDestination}
                   />
                   
                   <ErrorMessage
@@ -244,28 +254,41 @@ class TicketModal extends React.Component<IProps, IState> {
                     className="spon-ticket-modal__error"
                   />
                 </div>
-                <div className="spon-ticket-modal__input-cnt">
-                  <Dropdown
-                    id="type"
-                    label="Select type"
-                    placeholder="Select type"
+                <div className="spon-ticket-modal__input-cnt spon-ticket-modal__input-cnt--big">           
+                  <DropDownTicket
+                    saveAsObject
+                    id="trip"
+                    label="carrier"
+                    placeholder="Carrier"
+                    input="carrier"
                     className="spon-ticket-modal__dropdown"
-                    selectedValue={values.type ? values.type : ''}
-                    options={[
-                      {
-                        _id: '0',
-                        name: 'Train'
-                      },
-                      {
-                        _id: '1',
-                        name: 'Bus'
-                      }
-                    ]}
+                    selectedValue={values.trip ? values.trip.carrier : ''}
+                    options={carriers}
+                    onChange={handleChange}
+                    onSelectCarrier={this.props.handleSelectCarrier}
+                  />
+                  
+                  <ErrorMessage
+                    name="trip.carrier"
+                    component="div"
+                    className="spon-ticket-modal__error"
+                  />
+                </div>
+                <div className="spon-ticket-modal__input-cnt spon-ticket-modal__input-cnt--big">           
+                  <DropDownTicket
+                    saveAsObject
+                    id="trip"
+                    label="type"
+                    placeholder="Type"
+                    input="type"
+                    className="spon-ticket-modal__dropdown"
+                    selectedValue={values.trip ? values.trip.type : ''}
+                    options={types}
                     onChange={handleChange}
                   />
-
+                  
                   <ErrorMessage
-                    name="type"
+                    name="trip.carrier"
                     component="div"
                     className="spon-ticket-modal__error"
                   />

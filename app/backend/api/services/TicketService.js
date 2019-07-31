@@ -613,7 +613,6 @@ module.exports = {
       ticketMatch.$and.push(
         { $gte: [ '$$tickets.date.start', new Date(custom.TodayWithTimezone + global.config.custom.time.day) ] });
     }
-
     let data = await Trip.aggregate([
       {
         $match: tripMatch
@@ -671,6 +670,7 @@ module.exports = {
             {
               $match: {
                 deleted: false,
+                active: true,
                 'date.start': { $gte: new Date(dateStart) },
               }
             },

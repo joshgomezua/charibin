@@ -36,7 +36,13 @@ class TicketsContainer extends React.Component<
     tickets: [],
     ticketsDefault: [],
     departures: [],
+    departuresOptions: [],
     destinations: [],
+    destinationsOptions: [],
+    carriers: [],
+    carriersOptions: [],
+    types: [],
+    typesOptions: [],
     isLoading: false,
     isModalLoading: false,
     isError: false,
@@ -113,6 +119,11 @@ class TicketsContainer extends React.Component<
   handleCloseModal = () => {
     this.setState({ isModalLoading: false })
     this.modal.current!.close()
+    this.setState({
+      destinations: [],
+      carriers: [],
+      types: []
+    })
   }
 
   handleFetchDestination = () => {
@@ -123,7 +134,9 @@ class TicketsContainer extends React.Component<
         const cityNames = data.map((item: any) => ({
           _id: item._id,
           departure: item.departure.name,
-          destination: item.destination.name
+          destination: item.destination.name,
+          carrier: item.carrier,
+          type: item.type
         }))
 
         this.setState( {  
@@ -146,7 +159,7 @@ class TicketsContainer extends React.Component<
           return 0;
         })
         this.props.changeFilters(cityNames)
-        this.setState({ departures: uniqueCitiesNames })
+        this.setState({ departures: uniqueCitiesNames, departuresOptions: this.state.modalOptions })
       })
       .catch(err => {
         this.props.showError(err)
@@ -187,13 +200,15 @@ class TicketsContainer extends React.Component<
     const offset = moment(requestInfo.initialDate).utcOffset()
 
     const initialDate = moment(requestInfo.initialDate).add(offset, 'minutes').format('x')
-    const firstDayMonth = moment(requestInfo.initialDate).utc()
-    .startOf('month')
-    .format('x')
+    const today = moment(new Date()).add(offset, 'minutes').format('x')
+    const finalDate = moment(requestInfo.finalDate).add(offset, 'minutes').format('x')
 
-    const startDate = requestInfo.finalDate !== '0' ? moment(requestInfo.initialDate).add(offset, 'minutes').format('x') : 
-      (initialDate > firstDayMonth ? initialDate: firstDayMonth)
-    const endDate = requestInfo.finalDate !== '0' ? moment(requestInfo.finalDate).add(offset, 'minutes').format('x') : 
+    const initialOrToday = initialDate > today ? initialDate : today
+    const finalOrToday = finalDate > today ? finalDate : today
+
+    const startDate = requestInfo.finalDate !== '0' ? initialOrToday : 
+      (initialDate > today ? initialDate: today)
+    const endDate = requestInfo.finalDate !== '0' ? finalOrToday : 
       '0'
     
     this.setState({ isLoading: true, isError: false })
@@ -227,6 +242,11 @@ class TicketsContainer extends React.Component<
         this.modal.current!.open()
       }
     )
+    this.setState({
+      destinations: [],
+      carriers: [],
+      types: []
+    })
   }
 
   handleAddTicket = (
@@ -281,27 +301,34 @@ class TicketsContainer extends React.Component<
       .then(({ data }) => {
         const newData = {
           _id: data.trip._id,
-          departure: data.departure,
-          destination: data.destination
+          departure: data.trip.departure.name,
+          destination: data.trip.destination.name,
+          carrier: data.trip.carrier,
+          type: data.trip.type,
+          duration: data.trip.duration
         } 
+        
         data.trip = newData; 
         this.setState(
           (state: IState) => ({
             ...state,
             modal: {
               ...state.modal,
-              data
+              data,
+              trip: newData
             }
           }),
           () => {
             this.handleOpenModal(MODAL_TYPE.EDIT_TICKET, 'Edit ticket', id)
           }
         )
+        this.refillModalOptions()
       })
       .catch(err => {
         this.handleCloseModal()
         this.props.showError(err, ERRORS.TICKET_FETCH)
       })
+      
   }
 
   handleDeleteTicket = () => {
@@ -382,20 +409,75 @@ class TicketsContainer extends React.Component<
     })
   }
 
-  handleSelectTicketDeparture = (departure: string) => {
-    const { modalOptions } = this.state
-    const destinationsFiltered = modalOptions.filter((item: any) => item.departure === departure)
-    const destinationsMapped = destinationsFiltered.map((item: any) => ({
+  handleSelectDeparture = (departure: string) => {
+    const { departuresOptions } = this.state
+    const destinationsFiltered = departuresOptions.filter((item: any) => item.departure === departure)
+    let destinationsMapped = destinationsFiltered.map((item: any) => ({
       _id: item._id,
       departure: item.departure,
-      destination: item.destination
+      destination: item.destination,
+      carrier: item.carrier,
+      type: item.type
     }))
-    destinationsMapped.sort((a: any, b: any) => {
+
+    const destinationsUnique = destinationsMapped.reduce((unique: any, other: any) => {
+      if(!unique.some((obj: any) => obj.destination === other.destination)) {
+        unique.push(other);
+      }
+      return unique;
+    },[]);
+
+    destinationsUnique.sort((a: any, b: any) => {
       if(a.destination.toLowerCase() < b.destination.toLowerCase()) { return -1; }
       if(a.destination.toLowerCase() > b.destination.toLowerCase()) { return 1; }
       return 0;
+    }),
+    this.setState({destinations : destinationsUnique, destinationsOptions: destinationsFiltered})  
+  }
+
+  handleSelectDestination = (destination: string) => {
+    const { destinationsOptions } = this.state
+    const carriersFiltered = destinationsOptions.filter((item: any) => item.destination === destination)
+    const carriersMapped = carriersFiltered.map((item: any) => ({
+      _id: item._id,
+      departure: item.departure,
+      destination: item.destination,
+      carrier: item.carrier,
+      type: item.type
+    }))
+
+    const carriersUnique = carriersMapped.reduce((unique: any, other: any) => {
+      if(!unique.some((obj: any) => obj.carrier === other.carrier)) {
+        unique.push(other);
+      }
+      return unique;
+    },[]);
+
+    carriersUnique.sort((a: any, b: any) => {
+      if(a < b) { return -1; }
+      if(a > b) { return 1; }
+      return 0;
     })
-    this.setState({destinations : destinationsMapped})  
+    this.setState({carriers : carriersUnique, carriersOptions: carriersFiltered}) 
+  }
+
+  handleSelectCarrier = (carrier: string) => {
+    const { carriersOptions } = this.state
+    const typesFiltered = carriersOptions.filter((item: any) => item.carrier === carrier)
+    const typesMapped = typesFiltered.map((item: any) => ({
+      _id: item._id,
+      departure: item.departure,
+      destination: item.destination,
+      carrier: item.carrier,
+      type: item.type
+    }))
+
+    typesMapped.sort((a: any, b: any) => {
+      if(a < b) { return -1; }
+      if(a > b) { return 1; }
+      return 0;
+    })
+    this.setState({types : typesMapped}) 
   }
 
   handleChangeFilterFrom = async(filterFrom: string[]) => {
@@ -456,7 +538,13 @@ class TicketsContainer extends React.Component<
     this.handleFetchTicketsByDate(this.state.requestInfo)
   }
 
-  
+  refillModalOptions = () => {
+    const { trip } =  this.state.modal.data
+
+    this.handleSelectDeparture(trip.departure)
+    this.handleSelectDestination(trip.destination)
+    this.handleSelectCarrier(trip.carrier)
+  }
 
   render() {
     const {
@@ -467,6 +555,8 @@ class TicketsContainer extends React.Component<
       isError,
       departures,
       destinations,
+      carriers,
+      types,
       calendarFilter,
       pagination,
     } = this.state
@@ -520,10 +610,14 @@ class TicketsContainer extends React.Component<
               tripSelected={modal.trip ? modal.trip : null}
               departures={departures}
               destinations={destinations}
+              carriers={carriers}
+              types={types}
               isLoading={isModalLoading}
               closeModal={this.handleCloseModal}
               handleSubmit={this.handleAddTicket}
-              handleSelectDeparture={this.handleSelectTicketDeparture}
+              handleSelectDeparture={this.handleSelectDeparture}
+              handleSelectDestination={this.handleSelectDestination}
+              handleSelectCarrier={this.handleSelectCarrier}
             />
           ) : null}
 
@@ -531,11 +625,15 @@ class TicketsContainer extends React.Component<
             <TicketModal
               departures={departures}
               destinations={destinations}
+              carriers={carriers}
+              types={types}
               editDate={modal.data}
               isLoading={isModalLoading}
               closeModal={this.handleCloseModal}
               handleEditTicket={this.handleEditTicket}
-              handleSelectDeparture={this.handleSelectTicketDeparture}
+              handleSelectDeparture={this.handleSelectDeparture}
+              handleSelectDestination={this.handleSelectDestination}
+              handleSelectCarrier={this.handleSelectCarrier}
             />
           ) : null}
 

@@ -67,7 +67,6 @@ class Agenda extends React.Component<IProps, IState> {
           }
           return acc
         }, {})
-        console.log('segregated', segregated)
         const row = Object.keys(segregated).map(key => {
           return segregated[key].map((ticket: ITicket, index: number) => (
             <AgendaItem
