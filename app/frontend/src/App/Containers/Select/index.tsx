@@ -167,7 +167,7 @@ class SelectContainer extends Component<
             (trip: IBookedType) => item.tripId === trip.trip
           )
           if (filteredTrip) {
-            item.price = filteredTrip.cost
+            item.adultPrice = filteredTrip.cost
           }
           return item
         })

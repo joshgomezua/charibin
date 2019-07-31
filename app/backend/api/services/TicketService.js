@@ -320,6 +320,8 @@ module.exports = {
     const trip = await Trip.findOne({ _id: data.trip, deleted: false });
     if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
     data['carrier'] = trip.carrier;
+    data['adultPrice'] = trip.adultPrice;
+    data['childPrice'] =  trip.childPrice;
     if (data.departureHours.length) {
       for (let hours of data.departureHours) {
         data.date = hours
@@ -655,7 +657,6 @@ module.exports = {
             {
               $match: {
                 deleted: false,
-                active: true,
                 'date.start': { $gte: new Date(dateStart) },
               }
             },

@@ -59,7 +59,14 @@ export const SUCCESS = {
 
 export const DEFAULT_TICKET_DATA = {
   _id: '',
-  trip: { _id: '', departure: '', destination: '', carrier: '', type:'', duration: 0 },
+  trip: { 
+    _id: '', 
+    departure: '', 
+    destination: '', 
+    carrier: '', 
+    type:'', 
+    duration: 0
+  },
   quantity: 0,
   soldTickets: 0,
   reservedQuantity: 0,
@@ -70,6 +77,8 @@ export const DEFAULT_TICKET_DATA = {
     start: '',
     end: ''
   },
+  adultPrice: 0,
+  childPrice: 0,
   active: false
 }
 

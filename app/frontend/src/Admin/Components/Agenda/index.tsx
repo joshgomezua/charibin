@@ -223,6 +223,9 @@ class Agenda extends React.Component<IProps, IState> {
             <th onClick={()=>this.setSort(SORT_TYPE.CARRIER, SORT_PROPERTY.CARRIER)} className={sortType === SORT_TYPE.CARRIER ? header : SORT_STATE.DEFAULT}>Carrier</th>
             <th onClick={()=>this.setSort(SORT_TYPE.TYPE, SORT_PROPERTY.TYPE)} className={sortType === SORT_TYPE.TYPE ? header : SORT_STATE.DEFAULT}>Type</th>
             <th className="spon-agenda__cell spon-agenda__cell--head">
+              Prices
+            </th>
+            <th className="spon-agenda__cell spon-agenda__cell--head">
               Qty of tickets
             </th>
             <th className="spon-agenda__cell spon-agenda__cell--head">

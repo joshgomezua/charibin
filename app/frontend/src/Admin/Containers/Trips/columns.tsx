@@ -130,10 +130,14 @@ export const columns = (
     width: 90,
   },
   {
-    Header: 'Price',
-    accessor: 'price',
+    Header: 'Prices',
+    style: {'white-space': 'unset'},
+    accessor: 'adultPrice',
     width: 100,
-    Cell: (props: RowRenderProps) => `£ ${props.value}`
+    Cell: (props: RowRenderProps) => (<div>
+      A: $ {props.value}<br/>C: $ {props.row._original.childPrice}
+    </div>
+    )
   },
   {
     Header: 'Offer',
