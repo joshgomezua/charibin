@@ -188,8 +188,8 @@ class TicketModal extends React.Component<IProps, IState> {
                 days: values.days as number[]
               },
               departureHours: tempDepartureHours,
-              adultPrice: 0,
-              childPrice: 0
+              adultPrice: editDate ? editDate.adultPrice : 0,
+              childPrice: editDate ? editDate.childPrice : 0
             }
             if (editDate || !values.isRecurring) {
               delete dataToSubmit.repeat

@@ -31,7 +31,6 @@ const TripModal: React.SFC<IProps> = ({
     editableData = {
       destination: editDate.destination,
       departure: editDate.departure,
-      price: editDate.price,
       adultPrice: editDate.adultPrice,
       childPrice: editDate.childPrice,
       discount: editDate.discount,
@@ -63,7 +62,6 @@ const TripModal: React.SFC<IProps> = ({
                   _id: '',
                   name: ''
                 },
-                price: 0,
                 adultPrice: 0,
                 childPrice: 0,
                 discount: 0,
@@ -81,9 +79,6 @@ const TripModal: React.SFC<IProps> = ({
         validationSchema={Yup.object().shape({
           destination: Yup.object().required(),
           departure: Yup.object().required(),
-          price: Yup.number()
-            .required()
-            .min(1),
           adultPrice: Yup.number()
             .required()
             .min(1),
@@ -200,23 +195,6 @@ const TripModal: React.SFC<IProps> = ({
             </div>
 
             <div className="spon-trip-modal__row">
-              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt">
-                <Field
-                  isPrefix
-                  type="number"
-                  name="price"
-                  label="Set Price"
-                  className="spon-trip-modal__input"
-                  component={Input}
-                />
-
-                <ErrorMessage
-                  name="price"
-                  component="div"
-                  className="spon-trip-modal__error"
-                />
-              </div>
-
               <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt">
                 <Field
                   isPrefix

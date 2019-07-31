@@ -18,6 +18,8 @@ export interface IProps {
     departure: string
     destination: string
     soldTickets: number,
+    adultPrice: number,
+    childPrice: number,
     reservedQuantity: number,
     type: string
     quantity: number

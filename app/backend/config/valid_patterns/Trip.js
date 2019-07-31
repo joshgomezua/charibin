@@ -220,7 +220,19 @@ module.exports = {
       }
     },
 
-    price: {
+    adultPrice: {
+      type: 'number',
+      required: true,
+      permission: {
+        create: [ROLE.ADMINISTRATOR],
+        update: [ROLE.ADMINISTRATOR],
+        find: [ROLE.ADMINISTRATOR, ROLE.GUEST]
+      },
+      min: 0,
+      max: 1000000,
+    },
+
+    childPrice: {
       type: 'number',
       required: true,
       permission: {
