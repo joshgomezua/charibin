@@ -35,6 +35,8 @@ const dataTemplate = {
     photo: getImage,
     type: 'Train',
     price: () => faker.random.number({ min: 100, max: 200 }) + 0.99,
+    adultPrice: () => faker.random.number({ min: 100, max: 200 }) + 0.99,
+    childPrice: () => faker.random.number({ min: 100, max: 200 }) + 0.99,
     discount: () => faker.random.number({ min: 5, max: 40 }) + 0.95,
     duration: () => faker.random.number({ min: 1, max: 100 }),
     timeSelection: {

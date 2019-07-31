@@ -9,6 +9,8 @@ const tripSchema = new Schema({
   fake: { type: Boolean, default: false },
   active: { type: Boolean, default: true },
   price: Number,
+  adultPrice: Number,
+  childPrice: Number,
   discount: Number,
   duration: Number,
   deselectionPrice: Number,

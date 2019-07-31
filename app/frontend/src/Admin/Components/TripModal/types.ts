@@ -14,6 +14,8 @@ export interface IFormValues {
   destination: ICity
   carrier: string
   price: number
+  adultPrice: number
+  childPrice: number
   discount: number
   duration: number
   type: string
