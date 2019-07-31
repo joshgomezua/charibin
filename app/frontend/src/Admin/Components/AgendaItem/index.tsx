@@ -53,8 +53,8 @@ const AgendaItem: React.SFC<IProps> = ({
         {ticket.type}
       </td>
       <td className="spon-agenda__cell spon-agenda__cell--body">
-        {`A: `+ticket.adultPrice+` $`}<br/>
-        {`C: `+ticket.childPrice+` $`}
+        {`A: $`+ticket.adultPrice}<br/>
+        {`C: $`+ticket.childPrice}
       </td>
       <td className="spon-agenda__cell spon-agenda__cell--body">
         {ticket.quantity}
