@@ -10,7 +10,10 @@ export default class Search extends Component<IProps, IState> {
   state = {
     inputValue: this.props.initialValue || '',
     buttons: false,
-    tickets: []
+    passengers: {
+      Adult: 0,
+      Youth: 0
+    }
   }
   changeInput =  (e: React.ChangeEvent<HTMLInputElement>) => {
     const { setDeparture } = this.props
@@ -27,17 +30,33 @@ export default class Search extends Component<IProps, IState> {
     }
   }
 
-  selectDecrement = (e: React.MouseEvent<HTMLInputElement>) => {
+  selectDecrement = (e: React.MouseEvent<HTMLButtonElement>, id: string) => {
     e.preventDefault()
-    if (this.props.quantity > 1) {
+    if (this.props.quantity > 0 && id === 'Adult') {
       this.props.setQuantity!(this.props.quantity - 1) 
+      this.setState({passengers:{Adult: --this.state.passengers.Adult,
+        Youth: this.state.passengers.Youth
+      }})
+    } else if (this.props.quantity > 0 && id === 'Youth') {
+      this.props.setQuantity!(this.props.quantity - 1) 
+      this.setState({passengers:{Adult: this.state.passengers.Adult,
+        Youth: --this.state.passengers.Youth
+      }})
     }
   }
 
-  selectIncrement = (e: React.MouseEvent<HTMLInputElement>) => {
+  selectIncrement = (e: React.MouseEvent<HTMLButtonElement>, id: string) => {
     e.preventDefault()
-    if (this.props.quantity < 6) {
+    if (this.props.quantity < 6 && id === 'Adult') {
       this.props.setQuantity!(this.props.quantity + 1)
+      this.setState({passengers:{Adult: ++this.state.passengers.Adult,
+        Youth: this.state.passengers.Youth
+      }})
+    } else if (this.props.quantity < 6 && id === 'Youth') {
+      this.props.setQuantity!(this.props.quantity + 1)
+      this.setState({passengers:{Adult: this.state.passengers.Adult,
+        Youth: ++this.state.passengers.Youth
+      }})
     }
   }
 
@@ -64,7 +83,7 @@ export default class Search extends Component<IProps, IState> {
   }
 
   Select = () => {
-    const { buttons } = this.state
+    const { buttons, passengers } = this.state
     const { quantity } = this.props
 
     return (
@@ -77,15 +96,17 @@ export default class Search extends Component<IProps, IState> {
         {buttons && (
           <div>
             <li>
-              <label>Adultes</label>
-              <input type="button" onClick={this.selectDecrement} value="-"/>
-              <input type="button" onClick={this.selectIncrement} value="+"/>
+              <label>{`Adult${passengers.Adult > 1 ? 's' : ''}`}</label>
+              <button onClick={(e) => this.selectDecrement(e, "Adult")}>-</button>
+              <>{passengers.Adult}</>
+              <button onClick={(e) => this.selectIncrement(e, "Adult")}>+</button>
             </li>
             
             <li>
-            <label>Enfants</label>
-            <input type="button" onClick={this.selectDecrement} value="-"/>
-            <input type="button" onClick={this.selectIncrement} value="+"/>
+              <label>{`Youth${passengers.Youth > 1 ? 's' : ''}`}</label>
+              <button onClick={(e) => this.selectDecrement(e, "Youth")}>-</button>
+              <>{passengers.Youth}</>
+              <button onClick={(e) => this.selectIncrement(e, "Youth")}>+</button>
             </li>
           </div>
         )}
