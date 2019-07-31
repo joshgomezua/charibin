@@ -71,8 +71,13 @@ module.exports = {
       deleted: false,
       active: true
      });
-     if(potentialDuplicatesTrip) throw { status: 409, message: 'TRIP.EXIST' };
-    
+     
+     if (potentialDuplicatesTrip) {
+       if (potentialDuplicatesTrip._id.toString() !== id.toString()) {
+         throw { status: 409, message: 'TRIP.EXIST' };
+       }
+     }
+     
 
     trip.tickets.forEach(async(ticketId) => {
       const ticket =  await Ticket.findByIdAndUpdate(ticketId, ticketData, {new: true});
