@@ -18,7 +18,7 @@ const owner = getFromLS('owner')
 
 const initialState = {
   departure: (owner && owner.data.departure) || 'London',
-  quantity: (owner && owner.data.quantity) || 1,
+  quantity: (owner && owner.data.quantity) || 0,
   selected: (owner && owner.data.selected) || [],
   deselected: (owner && owner.data.deselected) || [],
   finalDestination: {}

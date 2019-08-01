@@ -10,6 +10,7 @@
     width: 90%;
     box-shadow: none;
   }
+
   &-input {
     height: 4.2rem;
     width: 30rem;
@@ -112,7 +113,8 @@
     button {
       background: transparent;
       border: 0;
-      padding: 0.5rem;
+      padding: 0.1rem;
+      margin-bottom: 0;
       cursor: pointer;
 
       &:focus {
@@ -127,18 +129,19 @@
     }
 
     div {
-      height: 2rem;
+      height: 3rem;
       width: 100%;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       position: absolute;
-      bottom: -2rem;
+      bottom: -3.0rem;
       @include respond(mobile) {
         height: 4rem;
         bottom: -4rem;
         left: 0;
       }
-
+      
       button {
         width: 100%;
         background-color: $white;
@@ -156,11 +159,34 @@
           }
           &:last-of-type {
             border-bottom-right-radius: 3px;
+
           }
+        }
+      }
+      
+      li {
+        list-style-type: none;
+        display: flex;
+        justify-content: space-between;
+        background: $white;
+
+        &:last-of-type {
+          Button {
+            &:first-of-type {
+              padding-right: 10px;
+              width: 90%;
+            }
+          }
+        }
+        
+        label {
+          padding-left: 10px;
         }
       }
     }
   }
+
+ 
 
   &-button {
     background-color: $blue-light;

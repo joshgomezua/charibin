@@ -1,5 +1,3 @@
-import { ITicket } from "src/Common/Utils/globalTypes";
-
 export interface IProps {
   initialValue?: string
   departure: string
@@ -12,5 +10,11 @@ export interface IProps {
 export interface IState {
   inputValue: string
   buttons: boolean
-  tickets: ITicket[]
+  passengers: IPassenger
+
+}
+
+interface IPassenger {
+  Adult: number,
+  Youth: number
 }
