@@ -22,9 +22,9 @@ const BulkChangeModal: React.SFC<IProps> = ({
 }) => {
   let editableData = null
 
-  let fakeChoices : IOption[] = [{ _id: '0', name: 'No change' },{ _id: '1', name: 'All fake' },{ _id: '2', name: 'None fake' }]
+  const fakeChoices : IOption[] = [{ _id: '0', name: 'No change' },{ _id: '1', name: 'All fake' },{ _id: '2', name: 'None fake' }]
 
-  let activeChoices : IOption[] = [{ _id: '0', name: 'No change' },{ _id: '1', name: 'All active' },{ _id: '2', name: 'None active' }]
+  const activeChoices : IOption[] = [{ _id: '0', name: 'No change' },{ _id: '1', name: 'All active' },{ _id: '2', name: 'None active' }]
 
   return (
     <div className="spon-trip-modal">
