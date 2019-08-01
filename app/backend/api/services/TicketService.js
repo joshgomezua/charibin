@@ -288,7 +288,7 @@ async function bookWithTime ({quantity, selectedTrip, owner }) {
   },{
     owner,
     quantity: quantity,
-    $inc: { billing: (trip.price * quantity) + timePrices.total },
+    $inc: { billing: (trip.adultPrice * quantity) + timePrices.total },
     $addToSet: {
       trips: {
         trip: trip._id,
@@ -296,7 +296,7 @@ async function bookWithTime ({quantity, selectedTrip, owner }) {
         departureTicket: reservedDepartureTicket._id,
         arrivalTimePrice: timePrices.arrival,
         departureTimePrice: timePrices.departure,
-        cost: (trip.price * quantity) + global.config.custom.ticket.chooseTimePrice
+        cost: (trip.adultPrice * quantity) + global.config.custom.ticket.chooseTimePrice
       }
     }
   }, {
