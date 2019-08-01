@@ -21,25 +21,6 @@ export const columns = (
     Cell: (props: RowRenderProps) => {
 
       return (
-        // <Checkbox
-        //   id="checkbox"
-        //   className="checkbox"
-        //   isChecked={selection[props.row._original._id] === true}
-        //   handleChange={() => toggleSelection(props.row._original._id)}
-        // />
-        // <>
-        //   <div className="spon-checkbox"> 
-        //     <input
-        //       id={`isSelected${props.index}`}
-        //       type="checkbox"
-        //       className="spon-checkbox"
-        //       checked={selection[props.row._original._id] === true}
-        //       onChange={() => toggleSelection(props.row._original._id)}
-        //     />
-        //     <div className="spon-checkbox__icon" />
-        //   </div>
-        // </>
-
         <input
           id={`isSelected${props.index}`}
           type="checkbox"
@@ -53,33 +34,6 @@ export const columns = (
     },
     Header: () => {
       return (
-        // <Checkbox
-        //   id="checkbox"
-        //   className="spon-checkbox"
-        //   isChecked={selectAll === 1 ? true : false}
-        //   ref={(input: any) => {
-        //     if (input) {
-        //       input.indeterminate = selectAll === 2;
-        //     }
-        //   }}
-        //   handleChange={() => toggleAll()}
-        // />
-        // <>
-        //   <div className="spon-checkbox"> 
-        //     <input
-        //       type="checkbox"
-        //       className="spon-checkbox"
-        //       checked={selectAll === 1}
-        //       ref={input => {
-        //         if (input) {
-        //           input.indeterminate = selectAll === 2;
-        //         }
-        //       }}
-        //       onChange={() => toggleAll()}
-        //     />
-        //     <div className="spon-checkbox__icon" />
-        //   </div>
-        // </>
         <input
 				  type="checkbox"
 					checked={selectAll === 1}
@@ -210,7 +164,7 @@ export const columns = (
             }>
             Schedule
           </button>
-          <button disabled={!props.row._original.destination.isEnabled} onClick={() => openEditModal(props.row._original._id)}>
+          <button disabled={props.value} onClick={() => openEditModal(props.row._original._id)}>
             Modify
           </button>
           <button onClick={() => openDeleteModal(props.row._original._id)} disabled={props.value}>

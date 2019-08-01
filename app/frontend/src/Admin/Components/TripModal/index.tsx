@@ -126,7 +126,7 @@ const TripModal: React.SFC<IProps> = ({
             const destinationCity: ICity = {
               _id:values.destination._id,
               name: ''
-            }
+            } 
             const dataToSubmit: any = {
               ...values,
               departure: departureCity,

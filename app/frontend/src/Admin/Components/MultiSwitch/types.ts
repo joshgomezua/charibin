@@ -1,5 +1,5 @@
 export interface IProps {
-  items: Array<ICity | IDay>
+  items: Array<ICity | IDay | string>
   id?: string
   selectedValues: Array<string | number>
   className?: string
