@@ -132,6 +132,7 @@ class SelectContainer extends Component<
   handleBookTrips = () => {
     const { selected, quantity, departure } = this.props
     const token = getOwnerToken()
+    console.table(selected)
     const bookedTrips = selected.map((selectedItem: ISelectedData) => {
       if (selectedItem.arrivalTicket && selectedItem.departureTicket) {
         return {
