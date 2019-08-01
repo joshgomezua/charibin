@@ -87,22 +87,6 @@ module.exports = {
     return Trip.findByIdAndUpdate(id, data, { new: true });
   },
 
-  async updateOneField (id, data, field) {
-    let trip = await Trip.findOne({ _id: id, deleted: false });
-    if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
-
-    if(data.name) {
-      trip = await Trip.findOne({ name: data.name, deleted: false });
-      if(trip) throw { status: 409, message: 'TRIP.DESTINATION.EXIST' };
-    }
-
-    return Trip.findByIdAndUpdate(id, 
-      { $set: 
-        { [field]: data }
-      }, 
-      { new: true });
-  },
-
   async findOne (id) {
     const trip = await Trip.findOne({ _id: id, deleted: false }).populate('tickets');
     if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };

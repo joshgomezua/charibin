@@ -108,11 +108,6 @@ export const updateTrip = (id: string, data: Types.INewTrip, token: string) =>
     headers: { 'Content-type': 'application/json', token }
   })
 
-export const updateOneFieldTrip = (id: string, field: string, data: any, token: string) =>
-axios.put(`${API_URL}/trip/${id}/${field}`, data, {
-  headers: { 'Content-type': 'application/json', token }
-})
-
 export const updateTimeSelection = (id: string, data: Types.IEditTimeSelect, token: string) =>
   axios.put(`${API_URL}/trip/${id}`, data, {
     headers: { 'Content-type': 'application/json', token }

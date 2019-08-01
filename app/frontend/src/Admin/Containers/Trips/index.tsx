@@ -513,16 +513,16 @@ class TripsContainer extends React.Component<
       .then(res => {
         this.modal.current!.close()
         this.handleFetchItems(currentPage, 10)
-        this.props.showSuccess(SUCCESS.TRIP_EDIT)
         this.handleRestartModalType()
       })
       .catch(err => {
         this.setState({ isModalLoading: false })
-        this.props.showError(err, ERRORS.TRIP_EDIT)
+        this.props.showError(err, ERRORS.BULK_EDIT)
 
       })
     }
-
+    
+    this.props.showSuccess(SUCCESS.BULK_EDIT)
     return Promise.reject()
   }
 
