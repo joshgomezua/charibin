@@ -627,7 +627,8 @@ module.exports = {
           _id: 1,
           name: 1,
           photo: 1,
-          price: 1,
+          adultPrice: 1,
+          childPrice: 1,
           discount: 1,
           duration: 1,
           deselectionPrice: 1,
@@ -642,14 +643,20 @@ module.exports = {
           }
         }
       }
-
     ]);
     
     
     const res = await data.filter((trip) => this.hasEnoughTickets(trip))
+    console.log('----------------------res----------------------', res)
     for (let i = 0; i < res.length; i++) {
       const oppositeTrip = await this.hasOpposite(res[i])
-      const oppositeTickets =  await Ticket.findById({_id: oppositeTrip.tickets})
+      console.log('-----------------------1------------------------')
+      console.log('oppositeTrip.tickets', oppositeTrip)
+      oppositeTrip.tickets.forEach((ticketId) => {
+        ticketId = ticketId.toString();
+      })
+      const oppositeTickets =  await Ticket.findById({_id: oppositeTrip.tickets })
+      console.log('-----------------------2------------------------')
       res[i].tickets.push(oppositeTickets)
     }
     return res

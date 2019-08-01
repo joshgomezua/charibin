@@ -55,11 +55,10 @@ class SelectContainer extends Component<
   componentDidMount() {
     window.scrollTo(0, 0)
     const { quantity,departure } = this.props
-    console.log("component did mount")
     this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity,departure).then(
       () => {
         this.setState({ isLoading: false })
-        if(this.state.trips.length >= 5){
+        if(this.state.trips.length >= 10){
           this.attachScrollEvent()
         } 
       }
@@ -91,6 +90,7 @@ class SelectContainer extends Component<
       departure
     )
       .then(({ data }) => {
+        console.log('data', data)
         this.setState((state: IState) => ({
           isLoading: false,
           trips: [...data],
@@ -321,7 +321,7 @@ class SelectContainer extends Component<
                this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity,departure).then(
               () => {
                 this.setState({ isLoading: false })
-                if(this.state.trips.length >= 5){
+                if(this.state.trips.length >= 10){
                   this.attachScrollEvent()
                 }
               }
@@ -356,7 +356,7 @@ class SelectContainer extends Component<
                 trips.length > 0 &&
                 trips.map((trip: ITrip, index) => {
                   trip.type = 'trip'
-                  trip.price += trip.price 
+                  trip.adultPrice += trip.adultPrice 
                   const filtered = this.props.selected.filter(
                     (item: ISelectedData) => {
                       if (item.tripId === trip._id) {
