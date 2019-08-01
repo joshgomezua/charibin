@@ -21,7 +21,6 @@ export const columns = (
     Cell: (props: RowRenderProps) => {
 
       return (
-
         <input
           id={`isSelected${props.index}`}
           type="checkbox"
@@ -35,33 +34,6 @@ export const columns = (
     },
     Header: () => {
       return (
-        // <Checkbox
-        //   id="checkbox"
-        //   className="spon-checkbox"
-        //   isChecked={selectAll === 1 ? true : false}
-        //   ref={(input: any) => {
-        //     if (input) {
-        //       input.indeterminate = selectAll === 2;
-        //     }
-        //   }}
-        //   handleChange={() => toggleAll()}
-        // />
-        // <>
-        //   <div className="spon-checkbox"> 
-        //     <input
-        //       type="checkbox"
-        //       className="spon-checkbox"
-        //       checked={selectAll === 1}
-        //       ref={input => {
-        //         if (input) {
-        //           input.indeterminate = selectAll === 2;
-        //         }
-        //       }}
-        //       onChange={() => toggleAll()}
-        //     />
-        //     <div className="spon-checkbox__icon" />
-        //   </div>
-        // </>
         <input
 				  type="checkbox"
 					checked={selectAll === 1}

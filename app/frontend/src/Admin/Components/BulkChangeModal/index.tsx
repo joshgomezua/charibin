@@ -11,9 +11,8 @@ import * as Yup from 'yup'
 
 import Input from '../Input'
 import Dropdown from '../Dropdown'
-import Switch from '../Switch'
 import Button from '../../../Common/Components/Button'
-import { IProps, IFormValues } from './types'
+import { IProps, IFormValues, IOption } from './types'
 import './styles.scss'
 
 const BulkChangeModal: React.SFC<IProps> = ({
@@ -22,6 +21,10 @@ const BulkChangeModal: React.SFC<IProps> = ({
   handleSubmit
 }) => {
   let editableData = null
+
+  let fakeChoices : IOption[] = [{ _id: '0', name: 'No change' },{ _id: '1', name: 'All fake' },{ _id: '2', name: 'None fake' }]
+
+  let activeChoices : IOption[] = [{ _id: '0', name: 'No change' },{ _id: '1', name: 'All active' },{ _id: '2', name: 'None active' }]
 
   return (
     <div className="spon-trip-modal">
@@ -34,35 +37,34 @@ const BulkChangeModal: React.SFC<IProps> = ({
                 price: 0,
                 discount: 0,
                 duration: 0,
-                type: 'Train',
+                type: 'No selection',
                 carrier: '',
                 deselectionPrice: 0,
                 timeSelection: {
                   defaultPrice: 0,
                 },
-                fake: false,
-                active: false,
+                fake: 'No change',
+                active: 'No change',
               }
         }
         validationSchema={Yup.object().shape({
-          price: Yup.number(),
-          type: Yup.string(),
+          price: Yup.number().min(0),
+          type: Yup.string().required(),
           carrier: Yup.string(),
-          discount: Yup.number(),
-          duration: Yup.number(),
+          discount: Yup.number().min(0),
+          duration: Yup.number().min(0).max(100000),
           timeSelection: Yup.object().shape({
-            defaultPrice: Yup.number()
+            defaultPrice: Yup.number().min(0)
           }),
-          deselectionPrice: Yup.number(),
-          fake: Yup.bool(),
-          active: Yup.bool()
+          deselectionPrice: Yup.number().min(0),
+          fake: Yup.string().required(),
+          active: Yup.string().required()
         })}
         onSubmit={(
           values: IFormValues,
           { resetForm }: FormikActions<IFormValues>
         ) => {
           if(handleSubmit){
-            console.log(values)
             handleSubmit(values).then(() => resetForm())
           }
         }}
@@ -123,7 +125,10 @@ const BulkChangeModal: React.SFC<IProps> = ({
                 />
               </div>
 
-              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--small spon-trip-modal__input-cnt--last">
+            </div>
+
+            <div className="spon-trip-modal__row">
+              <div className="spon-trip-modal__input-cnt--small">
                 <Field
                   isSuffix
                   type="number"
@@ -135,39 +140,6 @@ const BulkChangeModal: React.SFC<IProps> = ({
 
                 <ErrorMessage
                   name="discount"
-                  component="div"
-                  className="spon-trip-modal__error"
-                />
-              </div>
-            </div>
-
-            <div className="spon-trip-modal__row  spon-trip-modal__row--bordered">
-              <div className="spon-trip-modal__input-cnt">
-                <Dropdown
-                  id="type"
-                  label="Select the Type"
-                  placeholder="Select type"
-                  className="spon-trip-modal__dropdown"
-                  selectedValue={values.type}
-                  options={[
-                    {
-                      _id: '0',
-                      name: 'No selection'
-                    },
-                    {
-                      _id: '1',
-                      name: 'Train'
-                    },
-                    {
-                      _id: '2',
-                      name: 'Bus'
-                    }
-                  ]}
-                  onChange={handleChange}
-                />
-
-                <ErrorMessage
-                  name="type"
                   component="div"
                   className="spon-trip-modal__error"
                 />
@@ -205,37 +177,74 @@ const BulkChangeModal: React.SFC<IProps> = ({
                   className="spon-trip-modal__error"
                 />
               </div>
+            </div>
 
-              <div className="spon-trip-modal__toggles">
-                <div className="spon-trip-modal__toggle-item">
-                  <p>Fake:</p>
-                  <Switch
-                    checked={values.fake}
-                    onChange={() =>
-                      handleChange({
-                        target: {
-                          id: 'fake',
-                          value: !values.fake
-                        }
-                      })
+            <div className="spon-trip-modal__row spon-trip-modal__row--bordered">
+              <div className="spon-trip-modal__input-cnt">
+                <Dropdown
+                  id="type"
+                  label="Select the type"
+                  placeholder="Select type"
+                  className="spon-trip-modal__dropdown"
+                  selectedValue={values.type}
+                  options={[
+                    {
+                      _id: '0',
+                      name: 'No selection'
+                    },
+                    {
+                      _id: '1',
+                      name: 'Train'
+                    },
+                    {
+                      _id: '2',
+                      name: 'Bus'
                     }
-                  />
-                </div>
-                <div className="spon-trip-modal__toggle-item">
-                  <p>Active:</p>
-                  <Switch
-                    checked={values.active}
-                    onChange={() =>
-                      handleChange({
-                        target: {
-                          id: 'active',
-                          value: !values.active
-                        }
-                      })
-                    }
-                  />
-                  
-                </div>
+                  ]}
+                  onChange={handleChange}
+                />
+
+                <ErrorMessage
+                  name="type"
+                  component="div"
+                  className="spon-trip-modal__error"
+                />
+              </div>
+              
+              <div className="spon-trip-modal__input-cnt">
+                <Dropdown
+                  id="active"
+                  label="Active"
+                  placeholder="Select type"
+                  className="spon-trip-modal__dropdown"
+                  selectedValue={values.active}
+                  options={activeChoices}
+                  onChange={handleChange}
+                />
+
+                <ErrorMessage
+                  name="active"
+                  component="div"
+                  className="spon-trip-modal__error"
+                />
+              </div>
+           
+              <div className="spon-trip-modal__input-cnt">
+                <Dropdown
+                  id="fake"
+                  label="Fake"
+                  placeholder="Select type"
+                  className="spon-trip-modal__dropdown"
+                  selectedValue={values.fake}
+                  options={fakeChoices}
+                  onChange={handleChange}
+                />
+
+                <ErrorMessage
+                  name="fake"
+                  component="div"
+                  className="spon-trip-modal__error"
+                />
               </div>
             </div>
 

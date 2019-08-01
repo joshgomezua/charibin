@@ -16,8 +16,8 @@ export interface IFormValues {
     defaultPrice: number
   }
   deselectionPrice: number
-  fake: boolean
-  active: boolean
+  fake: string
+  active: string
 }
 
 export interface IOption {

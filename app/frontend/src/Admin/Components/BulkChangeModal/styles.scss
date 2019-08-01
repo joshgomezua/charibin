@@ -25,6 +25,7 @@
 
     &--small {
       width: rc(75);
+      margin-right: 3rem;
     }
 
     &--big {
@@ -107,7 +108,7 @@
   &__buttons {
     display: flex;
     justify-content: center;
-    width: 100%;
+    width: 100%; 
   }
 
   &__button {

@@ -1,7 +1,7 @@
 import React from 'react'
 
 import TripHeader from '../../Components/TripHeader'
-import ExpandableTable from '../../Components/SelectExpandableTable'
+import ExpandableTable from '../../Components/ExpandableTable'
 import Modal from '../../Components/Modal'
 import TripModal from '../../Components/TripModal'
 import DeleteModal from '../../Components/DeleteModal'
@@ -496,10 +496,69 @@ class TripsContainer extends React.Component<
     }
   }
 
-  handleBulkChange = (data: IBulkChange) => {
+  handleBulkChange = async (data: IBulkChange) => {
+    const token = getToken()
+    const { currentPage } = this.state
+   
+    for(let index: number = 0; index < this.state.selection.length; index++){
+      let trip: any;
+      await getSingleTrip(this.state.selection[index].id, token).then(
+        res => trip = res.data
+      )
 
-    console.log(data)
+      let updatedTrip: INewData = this.checkforChangedData(data, trip)
+
+      this.setState({ isModalLoading: true })
+      updateTrip(this.state.selection[index].id, updatedTrip, token)
+      .then(res => {
+        this.modal.current!.close()
+        this.handleFetchItems(currentPage, 10)
+        this.props.showSuccess(SUCCESS.TRIP_EDIT)
+        this.handleRestartModalType()
+      })
+      .catch(err => {
+        this.setState({ isModalLoading: false })
+        this.props.showError(err, ERRORS.TRIP_EDIT)
+
+      })
+    }
+
     return Promise.reject()
+  }
+
+  checkforChangedData = (data: IBulkChange, trip: any) => {
+    const activeStatus: boolean | undefined = this.assignBoolean(data.active)
+    const fakeStatus: boolean | undefined  = this.assignBoolean(data.fake)
+    let updatedTrip: INewData = trip;
+    
+    if(data.price > 0){
+      updatedTrip.price = data.price
+    }
+    if(data.discount > 0){
+      updatedTrip.discount = data.discount
+    }
+    if(data.timeSelection.defaultPrice > 0){
+      updatedTrip.timeSelection.defaultPrice = data.timeSelection.defaultPrice
+    }
+    if(data.deselectionPrice > 0){
+      updatedTrip.deselectionPrice = data.deselectionPrice
+    }
+    if(data.duration > 0){
+      updatedTrip.duration = data.duration
+    }
+    if(data.carrier != ''){
+      updatedTrip.carrier = data.carrier
+    }
+    if(activeStatus != undefined){
+      updatedTrip.active = activeStatus
+    }
+    if(fakeStatus != undefined){
+      updatedTrip.fake = fakeStatus
+    }
+    if(data.type != 'No selection'){
+      updatedTrip.type = data.type
+    }
+    return updatedTrip
   }
 
   handleRedirectToCreateTicket = (trip: { _id: string; departure: string; destination: string }) => {
@@ -535,6 +594,22 @@ class TripsContainer extends React.Component<
         }
       }
     }
+  }
+
+  assignBoolean = (option: string) => {
+    switch(option) {
+      case 'No change':
+        return undefined
+      case 'All fake':
+        return true
+      case 'None fake':
+        return false
+      case 'All active':
+        return true
+      case 'None active':
+        return false
+    }
+    return undefined
   }
 
   filterTrips = (trips: ITrip[], results: ITrip[], filtersFrom: string[], filtersTo: string[]) => {
@@ -642,10 +717,6 @@ class TripsContainer extends React.Component<
       selectAll: this.state.selectAll === 0 ? 1 : 0
     })
   }
-
-  mapSelection = () => {
-    console.log(this.state.selection)
-  }
     
   render() {
     let {trips, total, selectedCheckbox} = this.state
@@ -681,7 +752,6 @@ class TripsContainer extends React.Component<
       <div className="spon-container">
         <TripHeader
           title="Routes & Prices"
-          handleBulkChange={this.mapSelection}
           handleOpenModal={this.handleOpenModal}
           filterFrom={filtersFrom}
           filterTo={filtersTo}
