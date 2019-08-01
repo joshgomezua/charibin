@@ -130,7 +130,7 @@
   },
   "409": {
     "TRIP": {
-      "EXIST": "Trip with that desittion already exist",
+      "EXIST": "Trip already exist",
       "NAME": {
         "EXIST": "Name of trip already in use"
       }

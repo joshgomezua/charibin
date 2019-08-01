@@ -547,20 +547,31 @@ module.exports = {
     return bool;
   },
 
-   hasEnoughTickets (trip) {
-    const departureTickets =  trip.tickets.filter((ticket) => {
-      return (trip.departure.name === ticket.departure && trip.destination.name === ticket.destination)
-    })
+  async hasOpposite (trip) {
+    const oppositeTrip = await Trip.findOne({destination: trip.departure, departure: trip.destination})
+    if(oppositeTrip != undefined) return oppositeTrip;
+
+    return null
+  },
+
+  async hasEnoughTickets (trip) {
+    const oppositeTrip = await this.hasOpposite(trip)
+    const oppositeTickets =  await Ticket.findById({_id: oppositeTrip.tickets})
+    if (oppositeTrip != null) {
+      const departureTickets =  trip.tickets.filter((ticket) => {
+        return (trip.departure.name === ticket.departure && trip.destination.name === ticket.destination)
+      })
+  
+      let destinationTickets = []
+      destinationTickets.push(oppositeTickets)
     
-    const destinationTickets =  trip.tickets.filter((ticket) => {
-      return (trip.departure.name === ticket.destination && trip.destination.name === ticket.departure)
-    })
-    
-    if (!(departureTickets.length && destinationTickets.length)) {
-      return false;
-    } else {
-     return this.departureBeforeDestination(departureTickets, destinationTickets)
-    }
+      if (!(departureTickets.length && destinationTickets.length)) {
+        return false;
+      } else {
+       return this.departureBeforeDestination(departureTickets, destinationTickets)
+      }
+    } else return false
+   
   },
 
   async findDashboard ({ page, limit, quantity, departure, priceStart, priceEnd , dateStart, dateEnd, timezone }) {
@@ -573,7 +584,7 @@ module.exports = {
     dateEnd = +dateEnd;
     timezone = +timezone;
     
-    const tripMatch = { active: true };
+    const tripMatch = { active: true , 'departure.name': departure};
     const ticketMatch = {
       $and: [
         { $eq: [ '$$tickets.active', true ] },
@@ -602,7 +613,6 @@ module.exports = {
       ticketMatch.$and.push(
         { $gte: [ '$$tickets.date.start', new Date(custom.TodayWithTimezone + global.config.custom.time.day) ] });
     }
-    console.log("ticketMatch, ", ticketMatch)
     let data = await Trip.aggregate([
       {
         $match: tripMatch
@@ -633,10 +643,14 @@ module.exports = {
 
     ]);
     
+    
     const res = await data.filter((trip) => this.hasEnoughTickets(trip))
-    return res.filter((trip) => 
-    trip.departure.name == departure
-    );
+    for (let i = 0; i < res.length; i++) {
+      const oppositeTrip = await this.hasOpposite(res[i])
+      const oppositeTickets =  await Ticket.findById({_id: oppositeTrip.tickets})
+      res[i].tickets.push(oppositeTickets)
+    }
+    return res
   },
 
   async findCRM ({dateStart, dateEnd, from, to, carrier, page, limit}) {
@@ -656,6 +670,7 @@ module.exports = {
             {
               $match: {
                 deleted: false,
+                active: true,
                 'date.start': { $gte: new Date(dateStart) },
               }
             },

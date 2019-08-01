@@ -12,6 +12,8 @@ export interface IProps {
       _id: string
       departure: string
       destination: string
+      carrier: string
+      type: string
     }
     departure: string
     destination: string
@@ -25,11 +27,15 @@ export interface IProps {
     }
     active: boolean
   }
-  tripSelected?: { _id: string; departure: string, destination: string } | null
+  tripSelected?: { _id: string; departure: string, destination: string, carrier: string, type: string } | null
   departures: IOptionTicket[]
   destinations: IOptionTicket[]
+  carriers: IOptionTicket[]
+  types: IOptionTicket[]
   closeModal: () => void
   handleSelectDeparture: (departure: string) => void
+  handleSelectDestination: (destination: string) => void
+  handleSelectCarrier: (carrier: string) => void
   handleSubmit?: (
     ticket: Pick<ITicket, Exclude<keyof ITicket, 'trip' | '_id' | 'date'>> & {
       trip: string
@@ -59,6 +65,8 @@ export interface IFormValues {
     _id: string
     departure: string,
     destination: string
+    carrier: string
+    type: string
   }
   type: string
   quantity: number
