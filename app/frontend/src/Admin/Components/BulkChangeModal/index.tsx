@@ -37,8 +37,6 @@ const BulkChangeModal: React.SFC<IProps> = ({
                 price: 0,
                 discount: 0,
                 duration: 0,
-                type: 'No selection',
-                carrier: '',
                 deselectionPrice: 0,
                 timeSelection: {
                   defaultPrice: 0,
@@ -49,8 +47,6 @@ const BulkChangeModal: React.SFC<IProps> = ({
         }
         validationSchema={Yup.object().shape({
           price: Yup.number().min(0),
-          type: Yup.string().required(),
-          carrier: Yup.string(),
           discount: Yup.number().min(0),
           duration: Yup.number().min(0).max(100000),
           timeSelection: Yup.object().shape({
@@ -125,10 +121,7 @@ const BulkChangeModal: React.SFC<IProps> = ({
                 />
               </div>
 
-            </div>
-
-            <div className="spon-trip-modal__row">
-              <div className="spon-trip-modal__input-cnt--small">
+              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--small">
                 <Field
                   isSuffix
                   type="number"
@@ -145,22 +138,9 @@ const BulkChangeModal: React.SFC<IProps> = ({
                 />
               </div>
 
-              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt">
-                <Field
-                  type="text"
-                  placeholder="Type name"
-                  name="carrier"
-                  label="Carrier"
-                  className="spon-trip-modal__input"
-                  component={Input}
-                />
+            </div>
 
-                <ErrorMessage
-                  name="carrier"
-                  component="div"
-                  className="spon-trip-modal__error"
-                />
-              </div>
+            <div className="spon-trip-modal__row spon-trip-modal__row--bordered">
               
               <div className="spon-trip-modal__input-cnt">
                 <Field
@@ -173,39 +153,6 @@ const BulkChangeModal: React.SFC<IProps> = ({
 
                 <ErrorMessage
                   name="duration"
-                  component="div"
-                  className="spon-trip-modal__error"
-                />
-              </div>
-            </div>
-
-            <div className="spon-trip-modal__row spon-trip-modal__row--bordered">
-              <div className="spon-trip-modal__input-cnt">
-                <Dropdown
-                  id="type"
-                  label="Select the type"
-                  placeholder="Select type"
-                  className="spon-trip-modal__dropdown"
-                  selectedValue={values.type}
-                  options={[
-                    {
-                      _id: '0',
-                      name: 'No selection'
-                    },
-                    {
-                      _id: '1',
-                      name: 'Train'
-                    },
-                    {
-                      _id: '2',
-                      name: 'Bus'
-                    }
-                  ]}
-                  onChange={handleChange}
-                />
-
-                <ErrorMessage
-                  name="type"
                   component="div"
                   className="spon-trip-modal__error"
                 />

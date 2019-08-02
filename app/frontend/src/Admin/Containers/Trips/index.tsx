@@ -546,18 +546,13 @@ class TripsContainer extends React.Component<
     if(data.duration > 0){
       updatedTrip.duration = data.duration
     }
-    if(data.carrier != ''){
-      updatedTrip.carrier = data.carrier
-    }
     if(activeStatus != undefined){
       updatedTrip.active = activeStatus
     }
     if(fakeStatus != undefined){
       updatedTrip.fake = fakeStatus
     }
-    if(data.type != 'No selection'){
-      updatedTrip.type = data.type
-    }
+  
     return updatedTrip
   }
 
