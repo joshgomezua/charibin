@@ -128,6 +128,34 @@ module.exports = {
       if(city) throw { status: 409, message: 'CITY.NAME.EXIST' };
     }
 
+    /*if (data.photo) {
+      fs.readFile(city.photo, PHOTO_ENCODING, (err, data) => {
+        if (err) {
+          console.error(err)
+        }
+        console.log('data', data);
+      });
+    } */
+    
+
+
+    if (data.photo) {
+
+      const indexOfData = data.photo.indexOf(',') + 1;
+      const photo = data.photo.substring(indexOfData);
+
+      fs.writeFile(city.photo, photo, { encoding: PHOTO_ENCODING }, (err) => {
+        if (err) {
+          console.error(err)
+        } else {
+          fs.chmodSync(city.photo, '777');
+          console.log('photo editing successful')
+        } 
+      });
+
+      data.photo = city.photo;
+    }
+
     const updatedCity = await City.findByIdAndUpdate(id, data, { new: true });
 
     const departureTrips = await Trip.find({'departure._id': ObjectId(id)});
@@ -213,5 +241,6 @@ module.exports = {
     const names = await City.find({isEnabled: true}).select("name")
 
     return names
-  }
+  },
+  
 };

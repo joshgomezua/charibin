@@ -1,10 +1,10 @@
 import React from 'react'
 import { RowRenderProps } from 'react-table'
 import Switch from '../../Components/Switch'
-//import photo from './2.png'
 
 
 let count: number = 0;
+const photoPrefix = 'data:image/png;base64,'
 export const columns = (
   openDeleteModal: (id: string) => void,
   openEditModal: (id: string) => void,
@@ -48,7 +48,7 @@ export const columns = (
     sortable: false,
     Cell: (props: RowRenderProps) => (
       <div className="spon-table__photo">        
-        <img src={props.value} alt="Avatar photo" title={props.row.name}/>
+        <img src={photoPrefix+props.value} alt="Avatar photo" title={props.row.name}/>
       </div>
     )
   },
