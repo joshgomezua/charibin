@@ -183,15 +183,16 @@ class TripsContainer extends React.Component<
     }
   }
 
-  handleBidirectionalChange = (data: IEditTimeSchedule) => {
+  handleBidirectionalChange = async (data: IEditTimeSchedule) => {
     const token = getToken();
-
+    console.log(this.state.editData._id)
     if( token ){
-      getOpposites(this.state.editData._id, token)
+      await getOpposites(this.state.editData._id, token)
         .then(res => {
           this.setState({
             oppositeTrips: res.data
           })
+          console.log(this.state.oppositeTrips)
           for(let index: number = 0; index < this.state.oppositeTrips.length; index++){
             updateTimeSelection(this.state.oppositeTrips[index]._id, data, token)
           }
@@ -280,16 +281,16 @@ class TripsContainer extends React.Component<
       ...data,
       timeSelection: {
         defaultPrice: data.timeSelection.defaultPrice,
-        _0to6AM: this.state.editData.timeSelection.defaultPrice,
-        _6to8AM: this.state.editData.timeSelection.defaultPrice,
-        _8to10AM: this.state.editData.timeSelection.defaultPrice,
-        _10to12PM: this.state.editData.timeSelection.defaultPrice,
-        _12to2PM: this.state.editData.timeSelection.defaultPrice,
-        _2to4PM: this.state.editData.timeSelection.defaultPrice,
-        _4to6PM: this.state.editData.timeSelection.defaultPrice,
-        _6to8PM: this.state.editData.timeSelection.defaultPrice,
-        _8to10PM: this.state.editData.timeSelection.defaultPrice,
-        _10to12AM: this.state.editData.timeSelection.defaultPrice,
+        _0to6AM: data.timeSelection.defaultPrice,
+        _6to8AM: data.timeSelection.defaultPrice,
+        _8to10AM: data.timeSelection.defaultPrice,
+        _10to12PM: data.timeSelection.defaultPrice,
+        _12to2PM: data.timeSelection.defaultPrice,
+        _2to4PM: data.timeSelection.defaultPrice,
+        _4to6PM: data.timeSelection.defaultPrice,
+        _6to8PM: data.timeSelection.defaultPrice,
+        _8to10PM: data.timeSelection.defaultPrice,
+        _10to12AM: data.timeSelection.defaultPrice,
       }
     }
 
@@ -318,12 +319,14 @@ class TripsContainer extends React.Component<
       modal: { id }
     } = this.state
 
+    const newTimeSelection: IEditTimeSchedule = this.checkNewDefaultTimeSelection(data)
+
     if(data.bidirectionalChange) {
-      this.handleBidirectionalChange(data)
+      this.handleBidirectionalChange(newTimeSelection)
     }
     
     this.setState({ isModalLoading: true })
-    return updateTimeSelection(id, data, token)
+    return updateTimeSelection(id, newTimeSelection, token)
       .then(res => {
         this.modal.current!.close()
         this.handleFetchItems(currentPage, 10)
@@ -589,6 +592,38 @@ class TripsContainer extends React.Component<
         }
       }
     }
+  }
+
+  checkNewDefaultTimeSelection = (data: IEditTimeSchedule) => {
+    let newDefault: boolean = true;
+    const samplePrice: number = data.timeSelection._0to6AM
+
+    for(let price in data.timeSelection){
+      if(data.timeSelection[price] != samplePrice && price != 'defaultPrice'){
+        newDefault = false;
+      }
+    }
+
+    if(newDefault){
+      const newData: IEditTimeSchedule = {
+        ...data,
+        timeSelection: {
+          defaultPrice: samplePrice,
+          _0to6AM: samplePrice,
+          _6to8AM: samplePrice,
+          _8to10AM: samplePrice,
+          _10to12PM: samplePrice,
+          _12to2PM: samplePrice,
+          _2to4PM: samplePrice,
+          _4to6PM: samplePrice,
+          _6to8PM: samplePrice,
+          _8to10PM: samplePrice,
+          _10to12AM: samplePrice,
+        }
+      }
+      return newData
+    }
+    return data
   }
 
   assignBoolean = (option: string) => {

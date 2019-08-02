@@ -108,7 +108,6 @@ module.exports = {
   },
 
   async getListOfDepartureNames () {
-    console.log("allo")
     const trips = await Trip.find({ deleted: false });
     let departuresNames = []
     for (const trip of trips) {
@@ -124,7 +123,13 @@ module.exports = {
     let trip = await Trip.findOne({ _id: id, deleted: false });
     if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
     
-    const opposites = await Trip.find({ deleted: false, departure: trip.destination, destination: trip.departure, carrier: trip.carrier }); // à indenter
+    const opposites = await Trip.find(
+      { 
+        deleted: false, 
+        departure: trip.destination, 
+        destination: trip.departure, 
+        carrier: trip.carrier
+      });
     return opposites;
   },
 
