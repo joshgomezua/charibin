@@ -747,8 +747,7 @@ class TripsContainer extends React.Component<
       trips = this.filterTrips(trips, results, filtersFrom, filtersTo)
       total = trips.length
     }
-    
-    
+
     return (
       <div className="spon-container">
         <TripHeader
