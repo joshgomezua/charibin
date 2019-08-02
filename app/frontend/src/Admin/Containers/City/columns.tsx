@@ -1,6 +1,7 @@
 import React from 'react'
 import { RowRenderProps } from 'react-table'
 import Switch from '../../Components/Switch'
+//import photo from './2.png'
 
 
 let count: number = 0;

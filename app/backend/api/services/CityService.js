@@ -3,11 +3,42 @@
 const { City, Trip, Ticket } = require('../models');
 const Aggregate = require('./Aggregate');
 var ObjectId = require('mongoose').Types.ObjectId;
+var fs = require('fs');
+
+const PHOTO_DIR_PATH = './city_photos/';
+const PHOTO_ENCODING = 'Base64';
 
 module.exports = {
   async create (data) {
     const city = await City.findOne({ name: data.name});
     if(city) throw { status: 409, message: 'CITY.EXIST' };
+
+    //photo saving
+    const indexOfData = data.photo.indexOf(',') + 1;
+    const photo = data.photo.substring(indexOfData);
+
+    const country = data.country.replace(' ', '_');
+    const name = data.name.replace(' ', '_');
+
+    const photoDirPath = PHOTO_DIR_PATH + country + '/';
+    const photoPath = photoDirPath + name + '.png';
+  
+    if (!fs.existsSync(photoDirPath)) {
+        fs.mkdirSync(photoDirPath);
+        fs.chmodSync(photoDirPath, '777');
+    }
+
+    fs.writeFile(photoPath, photo, { encoding: PHOTO_ENCODING }, (err) => {
+      if (err) {
+        console.error(err)
+      } else {
+        fs.chmodSync(photoPath, '777');
+        console.log('photo saving successful')
+      } 
+    });
+    //
+
+    data.photo = photoPath;
 
     return City.create(data);
   },
@@ -87,6 +118,7 @@ module.exports = {
   },
   
   async update (id, data) {
+    console.log('data', data)
     let city = await City.findOne({ _id: id });
     const oldName = city.name;
     if(!city) throw { status: 404, message: 'CITY.NOT.EXIST' };
