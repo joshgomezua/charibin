@@ -536,12 +536,14 @@ module.exports = {
     return ticket;
   },
 
-  departureBeforeDestination (departureTickets, destinationTickets) {
+  departureBeforeDestination (departureTickets, destinationTickets, trip) {
     let bool = false;
     departureTickets.forEach((departure) => {
       destinationTickets.forEach((destination) => {
-        if (departure.date.start.getTime() < destination.date.start.getTime())
-        bool = true;
+        if (departure.date.start.getTime() < destination.date.start.getTime()) {
+          trip.tickets.push(destination)
+          bool = true;
+        }
       })
     })
     return bool;
@@ -557,19 +559,25 @@ module.exports = {
 
   async hasEnoughTickets (trip) {
     const oppositeTrip = await this.hasOpposite(trip)
-    const oppositeTickets =  await Ticket.findById({_id: oppositeTrip.tickets})
+    let oppositeTickets = []
+
+    for (const ticket of oppositeTrip.tickets) {
+        oppositeTickets.push(await Ticket.findById({_id: ticket}))
+    }
+
     if (oppositeTrip != null) {
       const departureTickets =  trip.tickets.filter((ticket) => {
         return (trip.departure.name === ticket.departure && trip.destination.name === ticket.destination)
       })
   
-      let destinationTickets = []
-      destinationTickets.push(oppositeTickets)
-    
+      const destinationTickets = oppositeTickets.filter((ticket) => {
+          return (oppositeTrip.departure.name === ticket.departure && oppositeTrip.destination.name === ticket.destination)
+      })
+
       if (!(departureTickets.length && destinationTickets.length)) {
         return false;
       } else {
-       return this.departureBeforeDestination(departureTickets, destinationTickets)
+       return this.departureBeforeDestination(departureTickets, destinationTickets,trip)
       }
     } else return false
    
@@ -584,7 +592,6 @@ module.exports = {
     dateStart = +dateStart;
     dateEnd = +dateEnd;
     timezone = +timezone;
-    
   
     const tripMatch =  { active: true , 'departure.name': departure}; 
     
@@ -648,13 +655,15 @@ module.exports = {
       }
 
     ]);
-    
-    const res = await data.filter((trip) => this.hasEnoughTickets(trip))
-    for (let i = 0; i < res.length; i++) {
-      const oppositeTrip = await this.hasOpposite(res[i])
-      const oppositeTickets =  await Ticket.findById({_id: oppositeTrip.tickets})
-      res[i].tickets.push(oppositeTickets)
+
+    let res = []
+
+    for (const trip of data) {
+      if ( await this.hasEnoughTickets(trip)) {
+        res.push(trip)
+      }
     }
+    
 
     return res
   },

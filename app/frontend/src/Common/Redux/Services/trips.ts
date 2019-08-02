@@ -17,8 +17,8 @@ import { IStore } from '../types'
 const owner = getFromLS('owner')
 
 const initialState = {
-  departure: (owner && owner.data.departure) || 'London',
-  quantity: (owner && owner.data.quantity) || 0,
+  departure: (owner && owner.data.departure) || '',
+  quantity: (owner && owner.data.quantity) || 1,
   selected: (owner && owner.data.selected) || [],
   deselected: (owner && owner.data.deselected) || [],
   finalDestination: {}

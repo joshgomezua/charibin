@@ -13,7 +13,7 @@ export default class Search extends Component<IProps, IState> {
     inputValue: this.props.initialValue || '',
     buttons: false,
     passengers: {
-      Adult: 0,
+      Adult: 1,
       Youth: 0
     },
     departures: [],
@@ -78,7 +78,7 @@ export default class Search extends Component<IProps, IState> {
 
    getTripsDepartureNames(token)
       .then(({ data }) => {
-        this.setState({departures: data})
+        this.setState({departures: data.sort((a: string,b: string) => a > b ? 1:-1)})
       })
       .catch(err => console.log(err.response))
   }
@@ -121,7 +121,7 @@ export default class Search extends Component<IProps, IState> {
     const { inputValue } = this.state
     return (
       <div className="search-input">
-        <input type="text" value={inputValue} onClick={this.toggleListVisibility} onChange={this.changeInput} />
+        <input type="text" value={inputValue} placeholder="What is your departure city?" onClick={this.toggleListVisibility} onChange={this.changeInput} />
         <label className={inputValue.length > 0 ? 'dirty' : ''}> 
           DEPARTURE CITY
         </label>
