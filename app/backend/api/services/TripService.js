@@ -100,6 +100,26 @@ module.exports = {
     return names;
   },
 
+  async hasOpposite(trip) {
+    const oppositeTrip = await Trip.findOne({destination: trip.departure, departure: trip.destination, 
+      carrier: trip.carrier, type: trip.type})
+    
+    return (oppositeTrip) 
+  },
+
+  async getListOfDepartureNames () {
+    console.log("allo")
+    const trips = await Trip.find({ deleted: false });
+    let departuresNames = []
+    for (const trip of trips) {
+      if (this.hasOpposite(trip)){
+          departuresNames.push(trip.departure.name)
+      }
+    }
+
+    return departuresNames;
+  },
+
   async getOpposites (id) {
     let trip = await Trip.findOne({ _id: id, deleted: false });
     if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };

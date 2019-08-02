@@ -55,11 +55,10 @@ class SelectContainer extends Component<
   componentDidMount() {
     window.scrollTo(0, 0)
     const { quantity,departure } = this.props
-    console.log("component did mount")
     this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity,departure).then(
       () => {
         this.setState({ isLoading: false })
-        if(this.state.trips.length >= 5){
+        if(this.state.trips.length > 10){
           this.attachScrollEvent()
         } 
       }
@@ -317,11 +316,11 @@ class SelectContainer extends Component<
             setDeparture={this.props.setDeparture}
             setQuantity={this.props.setQuantity}
             quantity={quantity}
-            onSubmit={()=>{ console.log("on submit")
-               this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity,departure).then(
+            onSubmit={()=>{
+               this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity, departure).then(
               () => {
                 this.setState({ isLoading: false })
-                if(this.state.trips.length >= 5){
+                if(this.state.trips.length > 10){
                   this.attachScrollEvent()
                 }
               }
