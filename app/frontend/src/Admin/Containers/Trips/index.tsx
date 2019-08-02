@@ -613,40 +613,38 @@ class TripsContainer extends React.Component<
   }
 
   filterTrips = (trips: ITrip[], results: ITrip[], filtersFrom: string[], filtersTo: string[]) => {
-    if (filtersFrom.length || filtersTo.length) {
-      if(filtersFrom.length) {  
-        let filteredFromTrips: ITrip[] = [];
-        for(let tripIndex: number = 0; tripIndex < results.length; tripIndex++){
-          for(let index: number = 0; index < filtersFrom.length; index++){
-            if(results[tripIndex].departure.name.toLowerCase() == filtersFrom[index].toLowerCase()) {
-              filteredFromTrips.push(results[tripIndex]);
+    if(filtersFrom.length) {  
+      let filteredFromTrips: ITrip[] = [];
+      for(let tripIndex: number = 0; tripIndex < results.length; tripIndex++){
+        for(let index: number = 0; index < filtersFrom.length; index++){
+          if(results[tripIndex].departure.name.toLowerCase() == filtersFrom[index].toLowerCase()) {
+            filteredFromTrips.push(results[tripIndex]);
+          }
+        }
+      }
+      if(filtersTo.length) {
+        let filteredTrips: ITrip[] = [];
+        for(let tripIndex: number = 0; tripIndex < filteredFromTrips.length; tripIndex++){
+          for(let index: number = 0; index < filtersTo.length; index++){
+            if(filteredFromTrips[tripIndex].destination.name.toLowerCase() == filtersTo[index].toLowerCase()) {
+                filteredTrips.push(filteredFromTrips[tripIndex]);
             }
           }
         }
-        if(filtersTo.length) {
-          let filteredTrips: ITrip[] = [];
-          for(let tripIndex: number = 0; tripIndex < filteredFromTrips.length; tripIndex++){
-            for(let index: number = 0; index < filtersTo.length; index++){
-              if(filteredFromTrips[tripIndex].destination.name.toLowerCase() == filtersTo[index].toLowerCase()) {
-                  filteredTrips.push(filteredFromTrips[tripIndex]);
-              }
-            }
-          }
-          return filteredTrips
-        } else { return filteredFromTrips }
+        return filteredTrips
+      } else { return filteredFromTrips }
 
-      } else if ( filtersTo.length ){ 
-          let filteredToTrips: ITrip[] = [];
-          for(let tripIndex: number = 0; tripIndex < results.length; tripIndex++){
-            for(let index: number = 0; index < filtersTo.length; index++){
-              if(results[tripIndex].destination.name.toLowerCase() == filtersTo[index].toLowerCase()) {
-                filteredToTrips.push(results[tripIndex]);
-              }
+    } else if ( filtersTo.length ) { 
+        let filteredToTrips: ITrip[] = [];
+        for(let tripIndex: number = 0; tripIndex < results.length; tripIndex++){
+          for(let index: number = 0; index < filtersTo.length; index++){
+            if(results[tripIndex].destination.name.toLowerCase() == filtersTo[index].toLowerCase()) {
+              filteredToTrips.push(results[tripIndex]);
             }
           }
-          return filteredToTrips
         }
-    }
+        return filteredToTrips
+      }
     return trips
   }
 
@@ -745,8 +743,11 @@ class TripsContainer extends React.Component<
       }
     }
 
-    trips = this.filterTrips(trips, results, filtersFrom, filtersTo)
-    total = trips.length
+    if(filtersFrom.length || filtersTo.length){
+      trips = this.filterTrips(trips, results, filtersFrom, filtersTo)
+      total = trips.length
+    }
+    
     
     return (
       <div className="spon-container">
