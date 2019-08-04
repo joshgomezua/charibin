@@ -561,11 +561,12 @@ module.exports = {
     const oppositeTrip = await this.hasOpposite(trip)
     let oppositeTickets = []
 
-    for (const ticket of oppositeTrip.tickets) {
-        oppositeTickets.push(await Ticket.findById({_id: ticket}))
-    }
-
+    
     if (oppositeTrip != null) {
+      for (const ticket of oppositeTrip.tickets) {
+          oppositeTickets.push(await Ticket.findById({_id: ticket}))
+      }
+
       const departureTickets =  trip.tickets.filter((ticket) => {
         return (trip.departure.name === ticket.departure && trip.destination.name === ticket.destination)
       })
@@ -573,6 +574,8 @@ module.exports = {
       const destinationTickets = oppositeTickets.filter((ticket) => {
           return (oppositeTrip.departure.name === ticket.departure && oppositeTrip.destination.name === ticket.destination)
       })
+
+      console.log(departureTickets.length)
 
       if (!(departureTickets.length && destinationTickets.length)) {
         return false;
@@ -660,8 +663,9 @@ module.exports = {
 
     for (const trip of data) {
       if ( await this.hasEnoughTickets(trip)) {
+        trip.price += trip.price 
         res.push(trip)
-      }
+      } 
     }
     
 

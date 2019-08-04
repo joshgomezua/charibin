@@ -90,7 +90,7 @@ class SelectContainer extends Component<
       departure
     )
       .then(({ data }) => {
-        console.log("data ", data)
+        console.log(data)
         this.setState((state: IState) => ({
           isLoading: false,
           trips: [...data],
@@ -356,7 +356,6 @@ class SelectContainer extends Component<
                 trips.length > 0 &&
                 trips.map((trip: ITrip, index) => {
                   trip.type = 'trip'
-                  trip.price += trip.price 
                   const filtered = this.props.selected.filter(
                     (item: ISelectedData) => {
                       if (item.tripId === trip._id) {
