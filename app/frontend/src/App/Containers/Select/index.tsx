@@ -90,7 +90,6 @@ class SelectContainer extends Component<
       departure
     )
       .then(({ data }) => {
-        console.log('data', data)
         this.setState((state: IState) => ({
           isLoading: false,
           trips: [...data],
@@ -318,7 +317,7 @@ class SelectContainer extends Component<
             setDeparture={this.props.setDeparture}
             setQuantity={this.props.setQuantity}
             quantity={quantity}
-            onSubmit={()=>{ console.log("on submit")
+            onSubmit={()=>{
                this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity,departure).then(
               () => {
                 this.setState({ isLoading: false })
@@ -357,7 +356,6 @@ class SelectContainer extends Component<
                 trips.length > 0 &&
                 trips.map((trip: ITrip, index) => {
                   trip.type = 'trip'
-                  trip.adultPrice += trip.adultPrice 
                   const filtered = this.props.selected.filter(
                     (item: ISelectedData) => {
                       if (item.tripId === trip._id) {

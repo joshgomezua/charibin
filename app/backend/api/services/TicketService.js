@@ -152,7 +152,7 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
     'date.start': { $gte: new Date(selectedTrip.dateStart).setHours(0,0,0,0), $lte: new Date(selectedTrip.dateStart).setHours(23,59,59,999) }
   }).limit(1);
   if(!arrivalTicket) throw { status: 404, message: 'TICKET.ARRIVAL.NOT.EXIST%', args: [new Date(selectedTrip.dateStart).toDateString()] };
-  console.log('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
+
   const [departureTicket] = await Ticket.find({
     //trip: trip._id,
     active: true,
@@ -164,7 +164,7 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
   }).limit(1);
   if(!departureTicket) throw { status: 404, message: 'TICKET.DEPARTURE.NOT.EXIST%', args: [new Date(selectedTrip.dateEnd).toDateString()] };
   let reservedArrivalTicket;
-  console.log('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
+
   if (quantity <= (arrivalTicket.quantity - (arrivalTicket.soldTickets + arrivalTicket.reservedQuantity))) {
     reservedArrivalTicket = await Ticket.findOneAndUpdate({ _id: arrivalTicket._id, active: true, deleted: false, quantity: { $gte: quantity } }, {
       $inc: {reservedQuantity: quantity},
@@ -174,7 +174,7 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
   } else {
     throw {status: 404, message: 'TICKET.BOOK.NOT.ENOUGH', args:[new Date(selectedTrip.dateEnd).toDateString()] }
   }
-  console.log('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
+  
   let reservedDepartureTicket;
   if (quantity <= (departureTicket.quantity - (departureTicket.soldTickets + departureTicket.reservedQuantity))) {
     reservedDepartureTicket = await Ticket.findOneAndUpdate({ _id: departureTicket._id, active: true, deleted: false, quantity: { $gte: quantity } }, {
@@ -185,7 +185,7 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
   } else {
     throw {status: 404, message: 'TICKET.BOOK.NOT.ENOUGH', args:[new Date(selectedTrip.dateEnd).toDateString()] }
   }
-  console.log('eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
+  
   const updatedTicketOwner = await TicketOwner.findOneAndUpdate({
     owner
   },{
@@ -367,7 +367,7 @@ module.exports = {
   },
 
   async book ({ quantity, trips, ownerHash }) {
-    console.log('trips', trips)
+    
     if(ownerHash) {
       const isOwnerExist = await TicketOwner.findOne({ owner: ownerHash });
       if(isOwnerExist) return isOwnerExist;
@@ -652,16 +652,13 @@ module.exports = {
     
     
     const res = await data.filter((trip) => this.hasEnoughTickets(trip))
-    console.log('----------------------res----------------------', res)
+    
     for (let i = 0; i < res.length; i++) {
       const oppositeTrip = await this.hasOpposite(res[i])
-      console.log('-----------------------1------------------------')
-      console.log('oppositeTrip.tickets', oppositeTrip)
       oppositeTrip.tickets.forEach((ticketId) => {
         ticketId = ticketId.toString();
       })
       const oppositeTickets =  await Ticket.findById({_id: oppositeTrip.tickets })
-      console.log('-----------------------2------------------------')
       res[i].tickets.push(oppositeTickets)
     }
     return res
