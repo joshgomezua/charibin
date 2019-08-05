@@ -7,11 +7,9 @@ export interface IProps {
 }
 
 export interface IFormValues {
-  carrier: string
   price: number
   discount: number
   duration: number
-  type: string
   timeSelection: {
     defaultPrice: number
   }
