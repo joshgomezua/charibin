@@ -186,14 +186,13 @@ class TripsContainer extends React.Component<
 
   handleBidirectionalChange = async (data: IEditTimeSchedule) => {
     const token = getToken();
-    console.log(this.state.editData._id)
+
     if( token ){
       await getOpposites(this.state.editData._id, token)
         .then(res => {
           this.setState({
             oppositeTrips: res.data
           })
-          console.log(this.state.oppositeTrips)
           for(let index: number = 0; index < this.state.oppositeTrips.length; index++){
             updateTimeSelection(this.state.oppositeTrips[index]._id, data, token)
           }
