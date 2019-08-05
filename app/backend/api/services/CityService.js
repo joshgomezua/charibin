@@ -112,14 +112,12 @@ module.exports = {
     if(!city) throw { status: 404, message: 'CITY.NOT.EXIST' };
 
     if (city.photo) {
-      fs.readFile(city.photo, PHOTO_ENCODING, (err, data) => {
-        if (err) {
-          console.error(err)
-        }
-        city.photo = data;
-      });
-    }
 
+      const value = fs.readFileSync(city.photo, PHOTO_ENCODING);
+      city.photo = value;
+
+    }
+    console.log('city', city);
     return city;
   },
 
@@ -145,7 +143,6 @@ module.exports = {
   },
   
   async update (id, data) {
-    console.log('data', data)
     let city = await City.findOne({ _id: id });
     const oldName = city.name;
     if(!city) throw { status: 404, message: 'CITY.NOT.EXIST' };
