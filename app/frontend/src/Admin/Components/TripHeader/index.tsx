@@ -157,15 +157,25 @@ class TripHeader extends React.Component<IProps, IState> {
             </Select>
           </div>
         </div>
-        {handleOpenModal ? (
-          <Button
-            className="spon-admin-trip-header__bulk-button"
-            variant="blue"
-            icon="pencil"
-            text="BULK CHANGES"
-            onClick={() => handleOpenModal(MODAL_TYPE.BULK_CHANGE, 'Bulk changes')}
-          />
-        ) : null }
+        <div className="spon-admin-trip-header__button_div">
+            {handleOpenModal ? (
+              <Button
+                className="spon-admin-trip-header__button_div__bulk-button--big"
+                variant="blue"
+                icon="pencil"
+                text="BULK TIME SELECTION"
+                onClick={() => handleOpenModal(MODAL_TYPE.BULK_TIME_SELECTION, 'Bulk time selection')}
+              />
+            ) : null }
+            {handleOpenModal ? (
+              <Button
+                className="spon-admin-trip-header__button_div__bulk-button"
+                variant="blue"
+                icon="pencil"
+                text="BULK CHANGES"
+                onClick={() => handleOpenModal(MODAL_TYPE.BULK_CHANGE, 'Bulk changes')}
+              />
+            ) : null }
         {(handleOpenModal && heading && modal) ? (
           <Button
             className="spon-admin-trip-header__add-button"
@@ -183,7 +193,7 @@ class TripHeader extends React.Component<IProps, IState> {
               onClick={() => handleOpenModal(MODAL_TYPE.ADD_TRIP, 'Create trip')}
             />
         ) : null}
-
+        </div>  
       </div>
     )
   }
