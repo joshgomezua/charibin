@@ -575,8 +575,6 @@ module.exports = {
           return (oppositeTrip.departure.name === ticket.departure && oppositeTrip.destination.name === ticket.destination)
       })
 
-      console.log(departureTickets.length)
-
       if (!(departureTickets.length && destinationTickets.length)) {
         return false;
       } else {
