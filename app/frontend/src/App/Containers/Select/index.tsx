@@ -355,7 +355,6 @@ class SelectContainer extends Component<
                 trips.length > 0 &&
                 trips.map((trip: ITrip, index) => {
                   trip.type = 'trip'
-                  trip.price += trip.price 
                   const filtered = this.props.selected.filter(
                     (item: ISelectedData) => {
                       if (item.tripId === trip._id) {

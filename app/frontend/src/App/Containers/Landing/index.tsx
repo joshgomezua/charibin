@@ -50,7 +50,7 @@ class LandingContainer extends Component<RouteComponentProps<{}> & IProps> {
             quantity={this.props.quantity}
             setDeparture={this.props.setDeparture}
             onSubmit={this.onSubmit}
-            initialValue="London"
+            initialValue={this.props.departure}
             departure={this.props.departure}
           />
           <ScrollStatic onClick={this.onScrollClick} />

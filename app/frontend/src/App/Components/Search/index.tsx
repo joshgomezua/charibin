@@ -13,7 +13,7 @@ export default class Search extends Component<IProps, IState> {
     inputValue: this.props.initialValue || '',
     buttons: false,
     passengers: {
-      Adult: 0,
+      Adult: 1,
       Youth: 0
     },
     departures: [],
@@ -73,12 +73,11 @@ export default class Search extends Component<IProps, IState> {
   }
 
   handleFetchTripsNames = () => {
-
     const token = getToken()
 
    getTripsDepartureNames(token)
       .then(({ data }) => {
-        this.setState({departures: data})
+        this.setState({departures: data.sort((a: string,b: string) => a > b ? 1:-1)})
       })
       .catch(err => console.log(err.response))
   }
@@ -118,21 +117,29 @@ export default class Search extends Component<IProps, IState> {
   }
 
   Input = () => {
-    const { inputValue } = this.state
+    const { inputValue, isListVisible } = this.state
+    const dropdownElementClass = classnames('search-dropdown__element', {
+      'search-dropdown__element--active': isListVisible
+    })
     return (
-      <div className="search-input">
-        <input type="text" value={inputValue} onClick={this.toggleListVisibility} onChange={this.changeInput} />
-        <label className={inputValue.length > 0 ? 'dirty' : ''}> 
-          DEPARTURE CITY
-        </label>
+      <div className="search-dropdown">
+          <div className="search-input">
+            <input type="text" value={inputValue} placeholder="What is your departure city?" onClick={this.toggleListVisibility} onChange={this.changeInput} />
+            <label className={inputValue.length > 0 ? 'dirty' : ''}> 
+              DEPARTURE CITY
+            </label>
+          </div>
+          <div className={dropdownElementClass}>
+            <this.DropDown/>
+          </div>
       </div>
     )
   }
 
   DropDown = () => {
     const { searchResults, departures, isListVisible } = this.state 
-    const dropdownList = classnames('search__list', {
-      'search__list--active': isListVisible
+    const dropdownList = classnames('search-dropdown__list', {
+      'search-dropdown__list--active': isListVisible
     })
     return (
       <div className={dropdownList}>{!this.state.searchResults.length ? 
@@ -187,7 +194,6 @@ export default class Search extends Component<IProps, IState> {
     return (
       <div className="search">
         <this.Input />
-        <this.DropDown/>
         <this.Select />
         <this.Button />
       </div>

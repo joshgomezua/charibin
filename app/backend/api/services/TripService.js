@@ -100,20 +100,86 @@ module.exports = {
     return names;
   },
 
-  async hasOpposite(trip) {
-    const oppositeTrip = await Trip.findOne({destination: trip.departure, departure: trip.destination, 
-      carrier: trip.carrier, type: trip.type})
+  departureBeforeDestination (departureTickets, destinationTickets, trip) {
+    let bool = false;
+    departureTickets.forEach((departure) => {
+      destinationTickets.forEach((destination) => {
+        if (departure.date.start.getTime() < destination.date.start.getTime()) {
+          trip.tickets.push(destination)
+          bool = true;
+        }
+      })
+    })
+    return bool;
+  },
+
+  async hasOpposite (trip) {
+    const oppositeTrip = await Trip.find({destination: trip.departure, departure: trip.destination, 
+                      carrier: trip.carrier, type: trip.type})
+    if(oppositeTrip != undefined) {
+      return oppositeTrip;
+    }
+    return null
+  },
+
+  async hasEnoughTickets (trip) {
+    const oppositeTrip = await this.hasOpposite(trip)
+    let oppositeTickets = []
+    let tripTickets = []
+
+    for (const ticket of trip.tickets) {
+      tripTickets.push(await Ticket.findById({_id: ticket.toString()}))
+    }
+
     
-    return (oppositeTrip) 
+    if (oppositeTrip != null) {
+      for (const trip of oppositeTrip) {
+            for (const ticket of trip.tickets) {
+              
+              oppositeTickets.push(await Ticket.findById({_id: ticket}))
+            }
+      }
+
+      const departureTickets =  tripTickets.filter((ticket) => {
+        return (trip.departure.name === ticket.departure && trip.destination.name === ticket.destination)
+      })
+  
+      const destinationTickets = oppositeTickets.filter((ticket) => {
+          return (trip.departure.name === ticket.destination && trip.destination.name === ticket.departure)
+      })
+
+
+      if (!(departureTickets.length && destinationTickets.length)) {
+       
+        return false;
+      } else {
+      
+       return this.departureBeforeDestination(departureTickets, destinationTickets,trip)
+      }
+    } else {
+      return false}
+   
+  },
+
+  hasName(name, arrayName) {
+    
+    for (const value of arrayName) {
+        if (value === name) {
+            return 1
+        }
+    }
+
+    return 0
   },
 
   async getListOfDepartureNames () {
     const trips = await Trip.find({ deleted: false });
     let departuresNames = []
-    for (const trip of trips) {
-      if (this.hasOpposite(trip)){
+    
+     for (const trip of trips) {
+      if ( await this.hasEnoughTickets(trip) && !this.hasName(trip.departure.name, departuresNames)){
           departuresNames.push(trip.departure.name)
-      }
+      } 
     }
 
     return departuresNames;
