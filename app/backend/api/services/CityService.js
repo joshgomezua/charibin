@@ -233,22 +233,33 @@ module.exports = {
     const destinationTrips = await Trip.find({'destination._id':ObjectId(id)});
     await Trip.updateMany({ 'destination._id':id }, 
     { $set: { 'destination.isEnabled': data.isEnabled }},{ new: true });
-      destinationTrips.forEach((trip) => {
+      destinationTrips.forEach(async(trip) => {
         trip.tickets.forEach(async(ticketId) => {
+          await Trip.findByIdAndUpdate(trip.id, { $set: { 'active': data.isEnabled } })
+          let ticket = await Ticket.findById(ticketId)
+        if (( !ticket.soldTickets && !data.isEnabled) || data.isEnabled) {
           await Ticket.findByIdAndUpdate(ticketId, { $set: { 'active': data.isEnabled } })
+        }
         })
       })
 
     const departureTrips = await Trip.find({'departure._id':ObjectId(id)});
      await Trip.updateMany({ 'departure._id':id }, 
     { $set: { 'departure.isEnabled': data.isEnabled }},{ new: true });
-    departureTrips.forEach((trip) => {
+    departureTrips.forEach(async(trip) => {
+      await Trip.findByIdAndUpdate(trip.id, { $set: { 'active': data.isEnabled } })
       trip.tickets.forEach(async(ticketId) => {
-        await Ticket.findByIdAndUpdate(ticketId, { $set: { 'active': data.isEnabled } })
+        let ticket = await Ticket.findById(ticketId)
+        if (( !ticket.soldTickets && !data.isEnabled) || data.isEnabled) {
+          await Ticket.findByIdAndUpdate(ticketId, { $set: { 'active': data.isEnabled } })
+        }
       })
     })
    
-   return City.findByIdAndUpdate(id, data, { new: true });
+   let city = await City.findByIdAndUpdate(id, data, { new: true });
+   const value = photoPrefix + fs.readFileSync(city.photo, BASE_64_PHOTO_ENCODING);
+   city.photo = value;
+   return city;
   },
 
   async getListOfCitiesNames() {

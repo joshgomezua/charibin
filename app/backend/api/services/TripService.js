@@ -7,11 +7,17 @@ var ObjectId = require('mongoose').Types.ObjectId;
 
 module.exports = {
   async create (data) {
+
+    const departureRegex = new RegExp(["^", data.departure.name, "$"].join(""), "i");
+    const destinationRegex = new RegExp(["^", data.destination.name, "$"].join(""), "i");
+    const carrierRegex = new RegExp(["^", data.carrier, "$"].join(""), "i");
+    const typeRegex = new RegExp(["^", data.type, "$"].join(""), "i");
+
     const trip = await Trip.findOne({ 
-      'departure.name': data.departure.name,
-      'destination.name': data.destination.name, 
-      type: data.type, 
-      carrier: data.carrier, 
+      'departure.name': departureRegex,
+      'destination.name': destinationRegex, 
+      type: typeRegex, 
+      carrier: carrierRegex, 
       deleted: false,
       active: true
      });
@@ -70,20 +76,23 @@ module.exports = {
     if (data.childPrice) {
       ticketData = {...ticketData, childPrice: data.childPrice}
     }
+
+    const departureRegex = new RegExp(["^", data.departure.name, "$"].join(""), "i");
+    const destinationRegex = new RegExp(["^", data.destination.name, "$"].join(""), "i");
+    const carrierRegex = new RegExp(["^", data.carrier, "$"].join(""), "i");
+    const typeRegex = new RegExp(["^", data.type, "$"].join(""), "i");
   
     const potentialDuplicatesTrip = await Trip.findOne({ 
-      'departure.name': data.departure.name,
-      'destination.name': data.destination.name, 
-      type: data.type, 
-      carrier: data.carrier, 
+      'departure.name': departureRegex,
+      'destination.name': destinationRegex,
+      type: typeRegex,
+      carrier: carrierRegex,
       deleted: false,
       active: true
      });
      
      if (potentialDuplicatesTrip) {
-       if (potentialDuplicatesTrip._id.toString() !== id.toString()) {
          throw { status: 409, message: 'TRIP.EXIST' };
-       }
      }
      
 
@@ -188,7 +197,7 @@ module.exports = {
   async findCitiesByName(uniqueCities) {
     const cities = await Promise.all(
       uniqueCities.map(async(item) => 
-        City.findOne({isEnabled: true, name: item })
+        City.findOne({name: item })
     ));
     return cities.filter((city) => city)
   },
