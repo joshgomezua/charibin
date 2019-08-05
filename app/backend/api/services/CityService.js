@@ -90,8 +90,18 @@ module.exports = {
   },
   
   async findOne (id) {
-    const city = await City.findOne({ _id: id })
+    let city = await City.findOne({ _id: id })
     if(!city) throw { status: 404, message: 'CITY.NOT.EXIST' };
+
+    if (city.photo) {
+      fs.readFile(city.photo, PHOTO_ENCODING, (err, data) => {
+        if (err) {
+          console.error(err)
+        }
+        city.photo = data;
+        console.log('data', data);
+      });
+    }
 
     return city;
   },
@@ -127,17 +137,6 @@ module.exports = {
       city = await City.findOne({ name: data.name});
       if(city) throw { status: 409, message: 'CITY.NAME.EXIST' };
     }
-
-    /*if (data.photo) {
-      fs.readFile(city.photo, PHOTO_ENCODING, (err, data) => {
-        if (err) {
-          console.error(err)
-        }
-        console.log('data', data);
-      });
-    } */
-    
-
 
     if (data.photo) {
 
