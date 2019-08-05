@@ -7,6 +7,7 @@ var fs = require('fs');
 
 const PHOTO_DIR_PATH = './city_photos/';
 const PHOTO_ENCODING = 'Base64';
+const photoPrefix = 'data:image/png;base64,';
 
 module.exports = {
   async create (data) {
@@ -73,7 +74,7 @@ module.exports = {
       
       cities.results = cities.results.map((city) => {
         if (city.photo) {
-          const value = fs.readFileSync(city.photo, PHOTO_ENCODING);
+          const value = photoPrefix + fs.readFileSync(city.photo, PHOTO_ENCODING);
           city.photo = value;
         }
         return city;
@@ -98,7 +99,7 @@ module.exports = {
       
       cities.results = cities.results.map((city) => {
         if (city.photo) {
-          const value = fs.readFileSync(city.photo, PHOTO_ENCODING);
+          const value = photoPrefix + fs.readFileSync(city.photo, PHOTO_ENCODING);
           city.photo = value;
         }
         return city;
@@ -113,11 +114,10 @@ module.exports = {
 
     if (city.photo) {
 
-      const value = fs.readFileSync(city.photo, PHOTO_ENCODING);
+      const value = photoPrefix + fs.readFileSync(city.photo, PHOTO_ENCODING);
       city.photo = value;
 
     }
-    console.log('city', city);
     return city;
   },
 
@@ -220,9 +220,9 @@ module.exports = {
     const city = await City.findById(id);
     if(!city) throw { status: 404, message: 'CITY.NOT.EXIST' };
 
-    await Trip.updateMany({ 'destination._id': id }, { $set: { 'active': false } })
-    await Trip.updateMany({ 'departure._id': id }, { $set: { 'active': false } })
-    await City.findByIdAndDelete(id)
+    await Trip.updateMany({ 'destination._id': id }, { $set: { 'active': false } });
+    await Trip.updateMany({ 'departure._id': id }, { $set: { 'active': false } });
+    await City.findByIdAndDelete(id);
 
     return;
   },

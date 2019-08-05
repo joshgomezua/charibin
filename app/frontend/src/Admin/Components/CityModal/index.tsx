@@ -17,7 +17,6 @@ import { IProps, IFormValues, IEditValues } from './types'
 import './styles.scss' 
 import Tag from '../Tag';
 import DropDownSelect from '../DropdownSelect'
-const photoPrefix = 'data:image/png;base64,'
 
 const CityModal: React.SFC<IProps> = ({
   isLoading,
@@ -139,7 +138,7 @@ const CityModal: React.SFC<IProps> = ({
                   ) : (
                     <div
                       className="spon-trip-modal__photo-cover"
-                      style={{ backgroundImage: `url(${photoPrefix+values.photo})` }}
+                      style={{ backgroundImage: `url(${values.photo})` }}
                     />
                   )}
                 </div>

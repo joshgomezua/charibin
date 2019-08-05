@@ -4,7 +4,6 @@ import Switch from '../../Components/Switch'
 
 
 let count: number = 0;
-const photoPrefix = 'data:image/png;base64,'
 export const columns = (
   openDeleteModal: (id: string) => void,
   openEditModal: (id: string) => void,
@@ -48,8 +47,7 @@ export const columns = (
     sortable: false,
     Cell: (props: RowRenderProps) => (
       <div className="spon-table__photo"> 
-      {console.log('photo', photoPrefix+props.value)}       
-        <img src={photoPrefix+props.value} alt="Avatar photo" title={props.row.name}/>
+        <img src={props.value} alt="Avatar photo" title={props.row.name}/>
       </div>
     )
   },
