@@ -55,7 +55,7 @@ module.exports = {
     };
 
     if (sortField === undefined){
-      return City.aggregate([
+      let cities =  await City.aggregate([
         {
           $facet: {
             results: [
@@ -70,8 +70,17 @@ module.exports = {
           }
         }
       ]).then(Aggregate.parseResults);
+      
+      cities.results = cities.results.map((city) => {
+        if (city.photo) {
+          const value = fs.readFileSync(city.photo, PHOTO_ENCODING);
+          city.photo = value;
+        }
+        return city;
+      });
+      return cities;
     } else {
-      return City.aggregate([
+      let cities = await City.aggregate([
         {
           $facet: {
             results: [
@@ -86,6 +95,15 @@ module.exports = {
           }
         }
       ]).then(Aggregate.parseResults);
+      
+      cities.results = cities.results.map((city) => {
+        if (city.photo) {
+          const value = fs.readFileSync(city.photo, PHOTO_ENCODING);
+          city.photo = value;
+        }
+        return city;
+      });
+      return cities;
     }
   },
   
@@ -99,7 +117,6 @@ module.exports = {
           console.error(err)
         }
         city.photo = data;
-        console.log('data', data);
       });
     }
 
