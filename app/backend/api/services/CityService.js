@@ -6,8 +6,9 @@ var ObjectId = require('mongoose').Types.ObjectId;
 var fs = require('fs');
 
 const PHOTO_DIR_PATH = './city_photos/';
-const PHOTO_ENCODING = 'Base64';
+const BASE_64_PHOTO_ENCODING = 'Base64';
 const photoPrefix = 'data:image/png;base64,';
+
 
 module.exports = {
   async create (data) {
@@ -29,7 +30,7 @@ module.exports = {
         fs.chmodSync(photoDirPath, '777');
     }
 
-    fs.writeFile(photoPath, photo, { encoding: PHOTO_ENCODING }, (err) => {
+    fs.writeFile(photoPath, photo, { encoding: BASE_64_PHOTO_ENCODING }, (err) => {
       if (err) {
         console.error(err)
       } else {
@@ -74,7 +75,7 @@ module.exports = {
       
       cities.results = cities.results.map((city) => {
         if (city.photo) {
-          const value = photoPrefix + fs.readFileSync(city.photo, PHOTO_ENCODING);
+          const value = photoPrefix + fs.readFileSync(city.photo, BASE_64_PHOTO_ENCODING);
           city.photo = value;
         }
         return city;
@@ -99,7 +100,7 @@ module.exports = {
       
       cities.results = cities.results.map((city) => {
         if (city.photo) {
-          const value = photoPrefix + fs.readFileSync(city.photo, PHOTO_ENCODING);
+          const value = photoPrefix + fs.readFileSync(city.photo, BASE_64_PHOTO_ENCODING);
           city.photo = value;
         }
         return city;
@@ -114,7 +115,7 @@ module.exports = {
 
     if (city.photo) {
 
-      const value = photoPrefix + fs.readFileSync(city.photo, PHOTO_ENCODING);
+      const value = photoPrefix + fs.readFileSync(city.photo, BASE_64_PHOTO_ENCODING);
       city.photo = value;
 
     }
@@ -157,7 +158,7 @@ module.exports = {
       const indexOfData = data.photo.indexOf(',') + 1;
       const photo = data.photo.substring(indexOfData);
 
-      fs.writeFile(city.photo, photo, { encoding: PHOTO_ENCODING }, (err) => {
+      fs.writeFile(city.photo, photo, { encoding: BASE_64_PHOTO_ENCODING }, (err) => {
         if (err) {
           console.error(err)
         } else {

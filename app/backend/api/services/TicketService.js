@@ -11,6 +11,9 @@ const client1 = redis.createClient({ host: global.config.connection.redis.host, 
 const subscriber1 = redis.createClient({ host: global.config.connection.redis.host, db: 1 });
 const custom = require('../../config/custom')
 const ObjectId = require('mongoose').Types.ObjectId;
+const photoPrefix = 'data:image/png;base64,';
+var fs = require('fs');
+const PHOTO_ENCODING = 'Base64';
 
 client1.send_command('config', ['set','notify-keyspace-events','Ex'], onExpiredTicket);
 
@@ -646,7 +649,7 @@ module.exports = {
     ]);
     
     
-    const res = await data.filter((trip) => this.hasEnoughTickets(trip))
+    let res = await data.filter((trip) => this.hasEnoughTickets(trip))
     for (let i = 0; i < res.length; i++) {
       const oppositeTrip = await this.hasOpposite(res[i])
       oppositeTrip.tickets.forEach((ticketId) => {
@@ -655,7 +658,15 @@ module.exports = {
       const oppositeTickets =  await Ticket.findById({_id: oppositeTrip.tickets });
       res[i].tickets.push(oppositeTickets)
     }
-    return res
+
+    res.forEach((trip) => {
+      if (trip.destination.photo) {
+        const value = photoPrefix + fs.readFileSync(trip.destination.photo, PHOTO_ENCODING);
+        trip.destination.photo = value;
+      }
+    });
+
+    return res;
   },
 
   async findCRM ({dateStart, dateEnd, from, to, carrier, page, limit}) {
