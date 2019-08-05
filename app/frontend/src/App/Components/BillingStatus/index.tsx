@@ -17,11 +17,11 @@ const Bilingstatus: React.SFC<IProps> = ({
 }) => {
   const isPayment = Boolean(step)
   const approxPriceMin = Math.min(
-    ...tours.map((item: ISelectedData) => item.price)
+    ...tours.map((item: ISelectedData) => item.adultPrice)
   )
 
   const approxPriceMax = Math.max(
-    ...tours.map((item: ISelectedData) => item.price)
+    ...tours.map((item: ISelectedData) => item.adultPrice)
   )
 
   return (
@@ -33,12 +33,12 @@ const Bilingstatus: React.SFC<IProps> = ({
           selected={['randomly:']}
         />
         <div className="billing_status-tours">
-          {tours.map(({ destination, price }, i) => (
+          {tours.map(({ destination, adultPrice }, i) => (
             <p className="billing_status-tour" key={i}>
               <span>{destination.name}</span>
               <span>
-                {`£ ${price} for ${quantity} ${
-                  quantity > 1 ? ' passengers' : ' passenger'
+                {`£ ${adultPrice} for ${quantity.Adult} ${
+                  quantity.Adult > 1 ? ' passengers' : ' passenger'
                 }`}
               </span>
             </p>

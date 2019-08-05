@@ -38,14 +38,16 @@ export interface ITicket {
     departure: string,
     destination: string,
     type: string,
-    carrier: string
-    duration: number
+    carrier: string,
+    duration: number,
   }
   quantity: number
   soldTickets: number,
   reservedQuantity: number,
   destination: string,
   departure: string,
+  adultPrice: number,
+  childPrice: number,
   carrier?: string
   type: string
   date: {

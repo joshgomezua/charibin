@@ -6,7 +6,8 @@ export interface ITrip {
   deselectionPrice: number
   discount: number
   photo: string
-  price: number
+  adultPrice: number
+  childPrice: number
   duration: number
   tickets: ITicket[]
   type: 'trip'
@@ -29,7 +30,8 @@ export interface ISelectedData {
   discount: number
   duration: number
   photo: string
-  price: number
+  adultPrice: number
+  childPrice: number
   type: 'selectedTrid'
   arrivalTicket?: string
   departureTicket?: string
@@ -59,4 +61,9 @@ export interface IFinalSelected {
   }
   finalCost: number
   chargeId: string
+}
+
+export interface IPassenger {
+  Adult: number,
+  Youth: number
 }

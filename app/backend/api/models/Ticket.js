@@ -10,6 +10,8 @@ const ticketSchema = new Schema({
   reservedQuantity: Number,
   departure: String,
   destination: String,
+  adultPrice: Number,
+  childPrice: Number,
   carrier: String,
   type: { type: String, enum: global.config.custom.ticket.type },
   date: {

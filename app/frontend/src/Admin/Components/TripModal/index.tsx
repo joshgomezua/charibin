@@ -31,7 +31,8 @@ const TripModal: React.SFC<IProps> = ({
     editableData = {
       destination: editDate.destination,
       departure: editDate.departure,
-      price: editDate.price,
+      adultPrice: editDate.adultPrice,
+      childPrice: editDate.childPrice,
       discount: editDate.discount,
       duration: editDate.duration,
       type: 'Train',
@@ -61,7 +62,8 @@ const TripModal: React.SFC<IProps> = ({
                   _id: '',
                   name: ''
                 },
-                price: 0,
+                adultPrice: 0,
+                childPrice: 0,
                 discount: 0,
                 duration: 0,
                 type: 'Train',
@@ -77,7 +79,10 @@ const TripModal: React.SFC<IProps> = ({
         validationSchema={Yup.object().shape({
           destination: Yup.object().required(),
           departure: Yup.object().required(),
-          price: Yup.number()
+          adultPrice: Yup.number()
+            .required()
+            .min(1),
+          childPrice: Yup.number()
             .required()
             .min(1),
           type: Yup.string().required(),
@@ -194,14 +199,31 @@ const TripModal: React.SFC<IProps> = ({
                 <Field
                   isPrefix
                   type="number"
-                  name="price"
-                  label="Set Price"
+                  name="adultPrice"
+                  label="Set Adult Price"
                   className="spon-trip-modal__input"
                   component={Input}
                 />
 
                 <ErrorMessage
-                  name="price"
+                  name="adultPrice"
+                  component="div"
+                  className="spon-trip-modal__error"
+                />
+              </div>
+
+              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt">
+                <Field
+                  isPrefix
+                  type="number"
+                  name="childPrice"
+                  label="Set Child Price"
+                  className="spon-trip-modal__input"
+                  component={Input}
+                />
+
+                <ErrorMessage
+                  name="childPrice"
                   component="div"
                   className="spon-trip-modal__error"
                 />

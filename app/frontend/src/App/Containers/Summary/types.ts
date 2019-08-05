@@ -1,11 +1,11 @@
-import { ISelectedData, IFinalSelected } from '../../Utils/appTypes'
+import { ISelectedData, IFinalSelected, IPassenger } from '../../Utils/appTypes'
 
 export interface IState {
   completed: boolean
 }
 
 export interface IProps {
-  quantity: number
+  quantity: IPassenger
   deselectionPrice: number
   selected: ISelectedData[]
   finalSeletion: IFinalSelected

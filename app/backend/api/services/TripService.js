@@ -62,6 +62,14 @@ module.exports = {
     } else {
       data.type = trip.type;
     }
+
+    if (data.adultPrice) {
+      ticketData = {...ticketData, adultPrice: data.adultPrice}
+    }
+
+    if (data.childPrice) {
+      ticketData = {...ticketData, childPrice: data.childPrice}
+    }
   
     const potentialDuplicatesTrip = await Trip.findOne({ 
       'departure.name': data.departure.name,

@@ -72,7 +72,19 @@ module.exports = {
       }
     },
 
-    quantity: {
+    adult: {
+      type: 'number',
+      required: true,
+      permission: {
+        create: [ROLE.ADMINISTRATOR, ROLE.GUEST],
+        update: [],
+        find: []
+      },
+      min: 0,
+      max: 6,
+    },
+
+    youth: {
       type: 'number',
       required: true,
       permission: {

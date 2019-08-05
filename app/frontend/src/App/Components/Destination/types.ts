@@ -1,4 +1,4 @@
-import { ITrip, ISelectedData } from '../../Utils/appTypes'
+import { ITrip, ISelectedData, IPassenger } from '../../Utils/appTypes'
 import { IOption } from '../Dropdown/types'
 
 export interface IProps {
@@ -7,7 +7,7 @@ export interface IProps {
   deselect?: boolean
   data: ITrip | ISelectedData
   isMax: boolean
-  quantity?: number
+  quantity?: IPassenger
   onSelect?: (data: ISelectedData) => void
   onDeselect?: (data: string | ISelectedData) => void
   onModify?: (tripId: string) => void

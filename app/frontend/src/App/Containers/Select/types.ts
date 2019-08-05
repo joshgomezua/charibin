@@ -1,4 +1,4 @@
-import { ITrip, ISelectedData } from '../../../App/Utils/appTypes'
+import { ITrip, ISelectedData, IPassenger } from '../../../App/Utils/appTypes'
 import { IResponseError } from '../../../Common/Utils/globalTypes'
 
 export interface IFiltersChange {
@@ -30,12 +30,12 @@ export interface IState {
 
 export interface IProps {
   isMax: boolean
-  quantity: number
+  quantity: IPassenger
   departure: string
   selected: ISelectedData[]
   showError: (err: IResponseError, defaultText?: string) => void
   showSuccess: (msg: string) => void
-  setQuantity: (quantity: number) => void
+  setQuantity: (quantity: IPassenger) => void
   setDeparture: (departure: string) => void
   addSelected: (selected: ISelectedData) => void
   removeSelected: (tripId: string) => void

@@ -124,7 +124,9 @@ loadModels();
     const ticketArrivalTemp = { ...helpers.dataClone(globals.dataTemplate.ticket), 
       trip: ObjectId(tripArrival._id),
       departure: tripArrival.departure.name,
-      destination: tripArrival.destination.name
+      destination: tripArrival.destination.name,
+      adultPrice: tripArrival.adultPrice,
+      childPrice: tripArrival.childPrice
     };
     const ticketArrival = await helpers.createTicket(ticketArrivalTemp);
 
@@ -136,7 +138,9 @@ loadModels();
         },
         trip: ObjectId(tripDeparture._id),
         departure: tripDeparture.departure.name,
-        destination: tripDeparture.destination.name
+        destination: tripDeparture.destination.name,
+        adultPrice: tripDeparture.adultPrice,
+        childPrice: tripDeparture.childPrice
       };
     const ticketDeparture = await helpers.createTicket(ticketDepartureTemp)
 

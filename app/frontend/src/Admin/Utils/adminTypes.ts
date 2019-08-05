@@ -81,6 +81,8 @@ export interface ITrip {
   carrier: string
   photo?: string
   price: number
+  adultPrice: number
+  childPrice: number
   isFromAPI: boolean
   type: string
 }
