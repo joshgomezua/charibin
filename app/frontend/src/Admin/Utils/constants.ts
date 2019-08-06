@@ -12,6 +12,7 @@ export enum ADMIN_ROUTING {
 }
 
 export const ERRORS = {
+  BULK_EDIT: 'Error during bulk editing',
   TRIP_FETCH: `Cant't fetch trip list`,
   TRIP_DELETE: 'Error when delete trip ',
   TRIP_ADD: 'Error when submit form',
@@ -38,6 +39,7 @@ export const ERRORS = {
 }
 
 export const SUCCESS = {
+  BULK_EDIT: 'Trips edited successfully',
   TRIP_ADD: 'Trip added successfully',
   TRIP_EDIT: 'Trip edited successfully',
   TRIP_DELETE: 'Trip deleted successfully',

@@ -18,8 +18,13 @@ export const getTrips = (
     `${API_URL}/dashboard/ticket/${page}/${limit}/${priceStart}/${priceEnd}/${dateStart}/${dateEnd}/${quantity}/${departure}/${TIMEZONE_OFFSET}`
   )
   
-  export const getTickets = (date: number, page: number, limit: number) =>
+export const getTickets = (date: number, page: number, limit: number) =>
     axios.get(`${API_URL}/ticket/${page}/${limit}/${date}`)
+
+export const getTripsDepartureNames = (token: string) =>
+    axios.get(`${API_URL}/tripDeparturenames`, {
+      headers: { token }
+  })
 
 export const bookTrips = (data: IBookedData) =>
   axios.post(`${API_URL}/ticket/book`, data, {

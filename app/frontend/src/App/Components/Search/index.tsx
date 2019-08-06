@@ -4,22 +4,31 @@ import people from '../../Utils/Media/people.svg'
 import arrow from '../../../Common/Utils/Media/arrow.svg'
 import arrowRight from '../../../Common/Utils/Media/arrowRight.svg'
 import './styles.scss'
-
+import { getTripsDepartureNames } from 'src/App/Utils/api';
+import { getToken } from 'src/Common/Utils/helpers';
+import classnames from 'classnames'
 
 export default class Search extends Component<IProps, IState> {
   state = {
     inputValue: this.props.initialValue || '',
     buttons: false,
     passengers: {
-      Adult: 0,
+      Adult: 1,
       Youth: 0
-    }
+    },
+    departures: [],
+    searchResults: [],
+    isListVisible: false
   }
+
   changeInput =  (e: React.ChangeEvent<HTMLInputElement>) => {
     const { setDeparture } = this.props
     e.preventDefault()
     this.setState({ inputValue: e.target.value })
+    this.setState({isListVisible: true})
     setDeparture!(e.target.value)
+
+    this.handleSearch(e.target.value)
   }
 
   toggleButtons = () => {
@@ -30,14 +39,61 @@ export default class Search extends Component<IProps, IState> {
     }
   }
 
+  handleSearch = (departure: string) => {
+    const { departures } = this.state
+    const tableau = departures.filter((name: string) => name.toLowerCase().includes(departure.toLowerCase()))
+    
+    this.setState({searchResults: tableau})
+  }
+
+  toggleListVisibility = (): void => {
+    this.setState(prevState => ({ isListVisible: !prevState.isListVisible }))
+  }
+
+  handleSelectOption = (el: string): void => {
+    const { setDeparture} = this.props
+    this.setState({ isListVisible: false })
+    this.setState({ inputValue: el })
+    setDeparture!(el)
+  }
+
+  renderOptions = (optionsArr: string[]): JSX.Element[] => {
+    return optionsArr.map(
+      (el: string): JSX.Element => {
+        return (
+          <div
+            key={el}
+            onClick={() => this.handleSelectOption(el)}
+            className="search__list-item">
+            <p>{el}</p>
+          </div>
+        )
+      }
+    )
+  }
+
+  handleFetchTripsNames = () => {
+    const token = getToken()
+
+   getTripsDepartureNames(token)
+      .then(({ data }) => {
+        this.setState({departures: data.sort((a: string,b: string) => a > b ? 1:-1)})
+      })
+      .catch(err => console.log(err.response))
+  }
+
+  componentDidMount() {
+    this.handleFetchTripsNames()
+  }
+
   selectDecrement = (e: React.MouseEvent<HTMLButtonElement>, id: string) => {
     e.preventDefault()
-    if (this.props.quantity > 0 && id === 'Adult') {
+    if (this.props.quantity > 0 && id === 'Adult' && this.state.passengers.Adult > 0) {
       this.props.setQuantity!(this.props.quantity - 1) 
       this.setState({passengers:{Adult: --this.state.passengers.Adult,
         Youth: this.state.passengers.Youth
       }})
-    } else if (this.props.quantity > 0 && id === 'Youth') {
+    } else if (this.props.quantity > 0 && id === 'Youth' && this.state.passengers.Youth > 0) {
       this.props.setQuantity!(this.props.quantity - 1) 
       this.setState({passengers:{Adult: this.state.passengers.Adult,
         Youth: --this.state.passengers.Youth
@@ -61,13 +117,33 @@ export default class Search extends Component<IProps, IState> {
   }
 
   Input = () => {
-    const { inputValue } = this.state
+    const { inputValue, isListVisible } = this.state
+    const dropdownElementClass = classnames('search-dropdown__element', {
+      'search-dropdown__element--active': isListVisible
+    })
     return (
-      <div className="search-input">
-        <input type="text" value={inputValue} onChange={this.changeInput} />
-        <label className={inputValue.length > 0 ? 'dirty' : ''}> 
-          DEPARTURE CITY
-        </label>
+      <div className="search-dropdown">
+          <div className="search-input">
+            <input type="text" value={inputValue} placeholder="What is your departure city?" onClick={this.toggleListVisibility} onChange={this.changeInput} />
+            <label className={inputValue.length > 0 ? 'dirty' : ''}> 
+              DEPARTURE CITY
+            </label>
+          </div>
+          <div className={dropdownElementClass}>
+            <this.DropDown/>
+          </div>
+      </div>
+    )
+  }
+
+  DropDown = () => {
+    const { searchResults, departures, isListVisible } = this.state 
+    const dropdownList = classnames('search-dropdown__list', {
+      'search-dropdown__list--active': isListVisible
+    })
+    return (
+      <div className={dropdownList}>{!this.state.searchResults.length ? 
+        this.renderOptions(departures) : this.renderOptions(searchResults)}
       </div>
     )
   }

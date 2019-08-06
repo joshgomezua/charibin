@@ -11,6 +11,10 @@ export interface IState {
   inputValue: string
   buttons: boolean
   passengers: IPassenger
+  departures: string[]
+  isListVisible: boolean
+  searchResults: string[]
+  
 
 }
 

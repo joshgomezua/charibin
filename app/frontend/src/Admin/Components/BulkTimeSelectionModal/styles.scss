@@ -1,0 +1,153 @@
+@import '../../../Common/Utils/Styles/mixin.scss';
+@import '../../../Common/Utils/Styles/colors.scss';
+
+.spon-seltime-modal {
+  padding: rc(14) rc(68);
+
+  &__row {
+    display: flex;
+    margin-bottom: rc(14);
+
+    &--bordered {
+      padding-bottom: rc(30);
+      margin-bottom: rc(20);
+      border-bottom: 1px solid $gray;
+    }
+
+    &--noflex {
+      display: block;
+    }
+  }
+
+  &__input-cnt {
+    width: rc(140);
+    margin-right: 4rem;
+
+    &--small {
+      width: 6rem;
+    }
+
+    &--big {
+      width: rc(245);
+    }
+
+    &--last {
+      position: relative;
+      margin-left: auto;
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: -35px;
+        top: 30px;
+        height: rc(50);
+        width: 2px;
+        background: $gray;
+      }
+    }
+  }
+
+  &__input {
+    .spon-input__cnt {
+      border: 1px solid $gray;
+      height: rc(50);
+      border-radius: 3px;
+    }
+
+    label {
+      width: 7.5rem;
+      color: $label;
+      font-size: rc(12);
+    }
+
+    input {
+      font-size: rc(14);
+      color: $dark-blue;
+
+      @include placeholder {
+        color: $gray;
+        font-size: rc(14);
+      }
+    }
+  }
+
+  &__error {
+    color: $error-red;
+    font-size: rc(10);
+    margin-top: rc(5);
+  }
+
+  &__dropdown {
+    margin-right: rc(17);
+  }
+
+  &__toggles {
+    margin-bottom: 1rem;
+    margin-top: rc(25);
+  }
+
+  &__toggle-item {
+    display: flex;
+    justify-content: space-between;
+    width: 12.5rem;
+    margin-bottom: rc(7);
+
+    p {
+      margin: 0;
+      font-size: rc(14);
+      color: $dark-blue;
+    }
+  }
+
+  &__label {
+    margin-bottom: rc(10);
+    font-size: rc(12);
+    color: $label;
+  }
+
+  &__buttons {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  &__button {
+    width: rc(170);
+    height: rc(50);
+
+    &:first-of-type {
+      margin-right: 1rem;
+    }
+  }
+
+  &__avatar {
+    display: flex;
+  }
+
+  &__photo {
+    margin-right: rc(20);
+
+    img {
+      display: block;
+      width: rc(24);
+      height: auto;
+    }
+  }
+
+  &__photo-cover {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: rc(40);
+    height: rc(40);
+    background: $gray;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    img {
+      width: rc(24);
+      height: rc(19);
+    }
+  }
+}

@@ -119,3 +119,15 @@ export interface IEditTimeSchedule {
   price?: number
   type?: string
 }
+
+export interface IBulkChange {
+  active: string
+  price: number
+  fake: string
+  deselectionPrice: number
+  discount: number
+  duration: number
+  timeSelection: {
+    defaultPrice: number
+  }
+}

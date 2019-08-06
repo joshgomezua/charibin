@@ -12,39 +12,15 @@ import * as Yup from 'yup'
 import Input from '../Input'
 import Button from '../../../Common/Components/Button'
 
-import { IProps, IFormValues, IEditValues } from './types'
+import { IProps, IFormValues } from './types'
 import './styles.scss'
-import Switch from '../Switch';
 
-const TimeSelectionModal: React.SFC<IProps> = ({
+const BulkTimeSelectionModal: React.SFC<IProps> = ({
   isLoading,
-  isASchedule,
-  editSchedule,
   closeModal,
-  handleEditTimeSelection,
   handleSubmit
 }) => {
   let editableData = null
-
-  if (editSchedule) {
-    editableData = {
-      timeSelection: {
-        defaultPrice: editSchedule.timeSelection.defaultPrice,
-        _0to6AM: editSchedule.timeSelection._0to6AM,
-        _6to8AM: editSchedule.timeSelection._6to8AM,
-        _8to10AM: editSchedule.timeSelection._8to10AM,
-        _10to12PM: editSchedule.timeSelection._10to12PM,
-        _12to2PM: editSchedule.timeSelection._12to2PM,
-        _2to4PM: editSchedule.timeSelection._2to4PM,
-        _4to6PM: editSchedule.timeSelection._4to6PM,
-        _6to8PM: editSchedule.timeSelection._6to8PM,
-        _8to10PM: editSchedule.timeSelection._8to10PM,
-        _10to12AM: editSchedule.timeSelection._10to12AM,
-      },
-      bidirectionalChange: false,
-    }
-  }
-
   return (
     <div className="spon-seltime-modal">
       <Formik
@@ -54,7 +30,7 @@ const TimeSelectionModal: React.SFC<IProps> = ({
             ? editableData
             : {
                 timeSelection:{
-                  defaultPrice: 1,
+                  defaultPrice: 0,
                   _0to6AM: 0,
                   _6to8AM: 0,
                   _8to10AM: 0,
@@ -65,43 +41,28 @@ const TimeSelectionModal: React.SFC<IProps> = ({
                   _6to8PM: 0,
                   _8to10PM: 0,
                   _10to12AM: 0
-                },
-                bidirectionalChange: false,
+                }
               }
         }
         validationSchema={Yup.object().shape({
           timeSelection: Yup.object().shape({
-            _0to6AM: Yup.number().min(1).required(),
-            _6to8AM: Yup.number().min(1).required(),
-            _8to10AM: Yup.number().min(1).required(),
-            _10to12PM: Yup.number().min(1).required(),
-            _12to2PM: Yup.number().min(1).required(),
-            _2to4PM: Yup.number().min(1).required(),
-            _4to6PM: Yup.number().min(1).required(),
-            _6to8PM: Yup.number().min(1).required(),
-            _8to10PM: Yup.number().min(1).required(),
-            _10to12AM: Yup.number().min(1).required()
+            _0to6AM: Yup.number().min(0),
+            _6to8AM: Yup.number().min(0),
+            _8to10AM: Yup.number().min(0),
+            _10to12PM: Yup.number().min(0),
+            _12to2PM: Yup.number().min(0),
+            _2to4PM: Yup.number().min(0),
+            _4to6PM: Yup.number().min(0),
+            _6to8PM: Yup.number().min(0),
+            _8to10PM: Yup.number().min(0),
+            _10to12AM: Yup.number().min(0)
           })
         })}
         onSubmit={(
           values: IFormValues,
           { resetForm }: FormikActions<IFormValues>
         ) => {
-          const dataToUpdate: IEditValues = {}
-          if (editSchedule) {
-            for (const key in values) {
-              if (
-                values.hasOwnProperty(key) &&
-                values[key] !== editSchedule![key]
-              ) {
-                dataToUpdate[key] = values[key]
-              }
-            }
-          }
-
-          if (editSchedule && handleEditTimeSelection) {
-            handleEditTimeSelection(dataToUpdate).then(() => resetForm())
-          } else if (handleSubmit) {
+          if (handleSubmit) {
             handleSubmit(values).then(() => resetForm())
           }
         }}
@@ -284,27 +245,6 @@ const TimeSelectionModal: React.SFC<IProps> = ({
               </div>
             </div>
 
-            {isASchedule === false ? (
-              <div className="spon-seltime-modal__row">
-                <div className="spon-seltime-modal__toggles">
-                  <div className="spon-seltime-modal__toggle-item">
-                    <p>Bidirectional Change:</p>
-                    <Switch
-                      checked={values.bidirectionalChange as boolean}
-                      onChange={() =>
-                        handleChange({
-                          target: {
-                            id: 'bidirectionalChange',
-                            value: !values.bidirectionalChange
-                          }
-                        })
-                      }
-                    />
-                  </div>
-                </div>
-              </div>
-            ) : null} 
-
             <div className="spon-seltime-modal__row--bordered"/>
             <div className="spon-seltime-modal__row">
               <div className="spon-seltime-modal__buttons">
@@ -315,7 +255,7 @@ const TimeSelectionModal: React.SFC<IProps> = ({
                   className="spon-seltime-modal__button"
                 />
                 <Button
-                  text={editSchedule ? 'EDIT' : 'ADD'}
+                  text={'EDIT'}
                   disabled={isLoading}
                   isLoading={isLoading}
                   type="submit"
@@ -331,4 +271,4 @@ const TimeSelectionModal: React.SFC<IProps> = ({
   )
 }
 
-export default TimeSelectionModal
+export default BulkTimeSelectionModal

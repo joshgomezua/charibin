@@ -9,7 +9,6 @@ export interface IProps {
   heading?: string
   modal?: MODAL_TYPE
   query?: string
-  handleBulkChange: () => void
   handleOpenModal?: (type: MODAL_TYPE, heading: string) => void,
   changeFilterFrom: (filterFrom: string[]) => void
   changeFilterTo: (filterTo: string[]) => void
