@@ -116,7 +116,8 @@ export const DEFAULT_TRIP_SCHEDULE = {
   },
   discount: 0,
   duration: 0,
-  price: 0,
+  adultPrice: 0,
+  childPrice: 0,
   trip: ''
 }
 
@@ -145,7 +146,6 @@ export const DEFAULT_TRIP_DATA = {
   destination: DEFAULT_CITY_DATA,
   carrier: '',
   photo: '',
-  price: 0,
   adultPrice: 0,
   childPrice: 0,
   type: '',

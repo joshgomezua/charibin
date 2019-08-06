@@ -373,7 +373,8 @@ class TripsContainer extends React.Component<
       },
       discount: this.state.editSchedule.discount,
       duration: this.state.editSchedule.duration,
-      price: this.state.editSchedule.price,
+      adultPrice: this.state.editSchedule.adultPrice,
+      childPrice: this.state.editSchedule.childPrice
     }
     
     this.setState({ isModalLoading: true })
@@ -596,8 +597,11 @@ class TripsContainer extends React.Component<
     const fakeStatus: boolean | undefined  = this.assignBoolean(data.fake)
     let updatedTrip: INewData = trip;
     
-    if(data.price > 0){
-      updatedTrip.price = data.price
+    if(data.childPrice > 0){
+      updatedTrip.childPrice = data.childPrice
+    }
+    if(data.adultPrice > 0){
+      updatedTrip.adultPrice = data.adultPrice
     }
     if(data.discount > 0){
       updatedTrip.discount = data.discount

@@ -10,7 +10,8 @@ export interface ITrip {
   departure: ICity
   carrier: string
   photo?: string
-  price: number
+  adultPrice: number
+  childPrice: number
   discount: number
   deselectionPrice: number
   timeSelection: {
@@ -37,7 +38,8 @@ export interface INewTrip {
   destination: ICity
   departure: ICity
   carrier: string
-  price: number
+  adultPrice: number
+  childPrice: number
   discount: number
   deselectionPrice: number
   timeSelection: {
@@ -60,7 +62,8 @@ export interface INewTrip {
 }
 
 export interface INewScheduledTrip {
-  price: number
+  adultPrice: number
+  childPrice: number
   discount: number
   deselectionPrice: number
   timeSelection: {

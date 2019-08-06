@@ -80,6 +80,7 @@ export interface IScheduledTrip {
   }
   discount: number
   duration: number
-  price: number
+  adultPrice: number
+  childPrice: number
   trip: string
 }

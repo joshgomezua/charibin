@@ -7,7 +7,8 @@ export interface IProps {
 }
 
 export interface IFormValues {
-  price: number
+  adultPrice: number
+  childPrice: number
   discount: number
   duration: number
   timeSelection: {

@@ -85,7 +85,6 @@ export const columns = (
   },
   {
     Header: 'Prices',
-    style: {'white-space': 'unset'},
     accessor: 'adultPrice',
     width: 100,
     Cell: (props: RowRenderProps) => (<div>

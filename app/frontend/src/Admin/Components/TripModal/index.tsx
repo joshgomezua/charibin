@@ -143,9 +143,6 @@ const TripModal: React.SFC<IProps> = ({
         render={({
           handleChange,
           values,
-          errors,
-          touched,
-          setFieldError
         }: FormikProps<IFormValues>) => (
           <Form noValidate>
             <div className="spon-trip-modal__row">
@@ -188,6 +185,23 @@ const TripModal: React.SFC<IProps> = ({
 
                 <ErrorMessage
                   name="destination"
+                  component="div"
+                  className="spon-trip-modal__error"
+                />
+              </div>
+
+              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--small spon-trip-modal__input-cnt--last">
+                <Field
+                  isSuffix
+                  type="number"
+                  name="discount"
+                  label="Discount"
+                  className="spon-trip-modal__input"
+                  component={Input}
+                />
+
+                <ErrorMessage
+                  name="discount"
                   component="div"
                   className="spon-trip-modal__error"
                 />
@@ -258,23 +272,6 @@ const TripModal: React.SFC<IProps> = ({
 
                 <ErrorMessage
                   name="timeSelection.defaultPrice"
-                  component="div"
-                  className="spon-trip-modal__error"
-                />
-              </div>
-
-              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--small spon-trip-modal__input-cnt--last">
-                <Field
-                  isSuffix
-                  type="number"
-                  name="discount"
-                  label="Discount"
-                  className="spon-trip-modal__input"
-                  component={Input}
-                />
-
-                <ErrorMessage
-                  name="discount"
                   component="div"
                   className="spon-trip-modal__error"
                 />

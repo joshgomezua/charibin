@@ -29,7 +29,8 @@ const ScheduleModal: React.SFC<IProps> = ({
   if (editDate) {
 
     editableData = {
-      price: editDate.price,
+      adultPrice: editDate.adultPrice,
+      childPrice: editDate.childPrice,
       discount: editDate.discount,
       duration: editDate.duration,
       deselectionPrice: editDate.deselectionPrice,
@@ -52,7 +53,8 @@ const ScheduleModal: React.SFC<IProps> = ({
           editableData
             ? editableData
             : {
-                price: 0,
+                adultPrice: 0,
+                childPrice: 0,
                 discount: 0,
                 duration: 0,
                 deselectionPrice: 0,
@@ -67,7 +69,10 @@ const ScheduleModal: React.SFC<IProps> = ({
               }
         }
         validationSchema={Yup.object().shape({
-          price: Yup.number()
+          adultPrice: Yup.number()
+            .required()
+            .min(1),
+          childPrice: Yup.number()
             .required()
             .min(1),
           discount: Yup.number()
@@ -98,7 +103,8 @@ const ScheduleModal: React.SFC<IProps> = ({
           { resetForm }: FormikActions<IFormValues>
         ) => {
           const dataToUpdate = {
-            price: values.price,
+            adultPrice: values.adultPrice,
+            childPrice: values.childPrice,
             discount: values.discount,
             timeSelection: {
               defaultPrice: values.timeSelection.defaultPrice,
@@ -172,20 +178,36 @@ const ScheduleModal: React.SFC<IProps> = ({
                 <Field
                   isPrefix
                   type="number"
-                  name="price"
-                  label="Set Price"
+                  name="adultPrice"
+                  label="Set Adult Price"
                   className="spon-trip-modal__input"
                   component={Input}
                 />
 
                 <ErrorMessage
-                  name="price"
+                  name="adultPrice"
                   component="div"
                   className="spon-trip-modal__error"
                 />
               </div>
             </div>
             <div className="spon-trip-modal__row">
+              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt">
+                <Field
+                  isPrefix
+                  type="number"
+                  name="childPrice"
+                  label="Set Child Price"
+                  className="spon-trip-modal__input"
+                  component={Input}
+                />
+
+                <ErrorMessage
+                  name="childPrice"
+                  component="div"
+                  className="spon-trip-modal__error"
+                />
+              </div>
               <div className="spon-trip-modal__input-cnt">
                 <Field
                   isPrefix
@@ -218,8 +240,10 @@ const ScheduleModal: React.SFC<IProps> = ({
                   className="spon-trip-modal__error"
                 />
               </div>
+            </div>
 
-              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--small spon-trip-modal__input-cnt--last">
+            <div className="spon-trip-modal__row  spon-trip-modal__row--bordered">
+              <div className="spon-trip-modal__input-cnt">
                 <Field
                   isSuffix
                   type="number"
@@ -235,9 +259,7 @@ const ScheduleModal: React.SFC<IProps> = ({
                   className="spon-trip-modal__error"
                 />
               </div>
-            </div>
 
-            <div className="spon-trip-modal__row  spon-trip-modal__row--bordered">
               <div className="spon-trip-modal__input-cnt">
                 <Field
                   type="number"
