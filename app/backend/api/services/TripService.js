@@ -82,7 +82,8 @@ module.exports = {
     const carrierRegex = new RegExp(["^", data.carrier, "$"].join(""), "i");
     const typeRegex = new RegExp(["^", data.type, "$"].join(""), "i");
   
-    const potentialDuplicatesTrip = await Trip.findOne({ 
+    const potentialDuplicatesTrip = await Trip.findOne({
+      _id: { $ne : ObjectId(id) },
       'departure.name': departureRegex,
       'destination.name': destinationRegex,
       type: typeRegex,
