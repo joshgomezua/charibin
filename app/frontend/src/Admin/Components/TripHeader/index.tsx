@@ -160,7 +160,7 @@ class TripHeader extends React.Component<IProps, IState> {
         <div className="spon-admin-trip-header__button_div">
           {handleOpenModal ? (
             <div className="dropdown">
-            <button className="dropbtn">Bulk
+            <button className="dropbtn">Bulk ▾
               <i className="fa fa-caret-down"></i>
             </button>
             <div className="dropdown-content">
