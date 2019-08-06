@@ -11,6 +11,9 @@ const client1 = redis.createClient({ host: global.config.connection.redis.host, 
 const subscriber1 = redis.createClient({ host: global.config.connection.redis.host, db: 1 });
 const custom = require('../../config/custom')
 const ObjectId = require('mongoose').Types.ObjectId;
+const photoPrefix = 'data:image/png;base64,';
+var fs = require('fs');
+const PHOTO_ENCODING = 'Base64';
 
 client1.send_command('config', ['set','notify-keyspace-events','Ex'], onExpiredTicket);
 
@@ -140,7 +143,7 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
     throw { status: 400, message: 'TICKET.DATE.START.INVALID%', args: [new Date(Date.now() + global.config.custom.time.day).toDateString()] };
   if(new Date(selectedTrip.dateEnd) < custom.TodayWithTimezone + global.config.custom.time.day)
     throw { status: 400, message: 'TICKET.DATE.END.INVALID%', args: [new Date(Date.now() + global.config.custom.time.day).toDateString()] };
-  const trip = await Trip.findOne({ _id: selectedTrip.id, deleted: false, active: true });
+  const trip = await Trip.findOne({ _id: ObjectId(selectedTrip.id), deleted: false, active: true });
   if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
   const [arrivalTicket] = await Ticket.find({
     //trip: trip._id,
@@ -187,13 +190,13 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
   },{
     owner,
     quantity: quantity,
-    $inc: { billing: trip.price * quantity },
+    $inc: { billing: trip.adultPrice * quantity },
     $addToSet: {
       trips: {
         trip: trip._id,
         arrivalTicket: reservedArrivalTicket._id,
         departureTicket: reservedDepartureTicket._id,
-        cost: trip.price * quantity,
+        cost: trip.adultPrice * quantity,
       }
     }
   }, {
@@ -284,7 +287,7 @@ async function bookWithTime ({quantity, selectedTrip, owner }) {
   },{
     owner,
     quantity: quantity,
-    $inc: { billing: (trip.price * quantity) + timePrices.total },
+    $inc: { billing: (trip.adultPrice * quantity) + timePrices.total },
     $addToSet: {
       trips: {
         trip: trip._id,
@@ -292,7 +295,7 @@ async function bookWithTime ({quantity, selectedTrip, owner }) {
         departureTicket: reservedDepartureTicket._id,
         arrivalTimePrice: timePrices.arrival,
         departureTimePrice: timePrices.departure,
-        cost: (trip.price * quantity) + global.config.custom.ticket.chooseTimePrice
+        cost: (trip.adultPrice * quantity) + global.config.custom.ticket.chooseTimePrice
       }
     }
   }, {
@@ -320,6 +323,8 @@ module.exports = {
     const trip = await Trip.findOne({ _id: data.trip, deleted: false });
     if(!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
     data['carrier'] = trip.carrier;
+    data['adultPrice'] = trip.adultPrice;
+    data['childPrice'] =  trip.childPrice;
     if (data.departureHours.length) {
       for (let hours of data.departureHours) {
         data.date = hours
@@ -490,7 +495,7 @@ module.exports = {
       let mostExpensiveTrip;
       let vendorProfit = 0;
       for (let selectedTrip of selectedTrips) {
-        let tripProfit = selectedTrip.trip.price * quantity * 0.1;
+        let tripProfit = selectedTrip.trip.adultPrice * quantity * 0.1;
         tripProfit += selectedTrip.arrivalTimePrice + selectedTrip.departureTimePrice;
 
         if(tripProfit > vendorProfit) {
@@ -637,7 +642,8 @@ module.exports = {
           _id: 1,
           name: 1,
           photo: 1,
-          price: 1,
+          adultPrice: 1,
+          childPrice: 1,
           discount: 1,
           duration: 1,
           carrier: 1,
@@ -654,9 +660,9 @@ module.exports = {
           }
         }
       }
-
     ]);
-
+    
+    
     let res = []
 
     for (const trip of data) {
@@ -665,9 +671,23 @@ module.exports = {
         res.push(trip)
       } 
     }
-    
+    for (let i = 0; i < res.length; i++) {
+      const oppositeTrip = await this.hasOpposite(res[i])
+      oppositeTrip.tickets.forEach((ticketId) => {
+        ticketId = ticketId.toString();
+      })
+      const oppositeTickets =  await Ticket.findById({_id: oppositeTrip.tickets });
+      res[i].tickets.push(oppositeTickets)
+    }
 
-    return res
+    res.forEach((trip) => {
+      if (trip.destination.photo) {
+        const value = photoPrefix + fs.readFileSync(trip.destination.photo, PHOTO_ENCODING);
+        trip.destination.photo = value;
+      }
+    });
+
+    return res;
   },
 
   async findCRM ({dateStart, dateEnd, from, to, carrier, page, limit}) {
@@ -686,8 +706,8 @@ module.exports = {
           results: [
             {
               $match: {
-                deleted: false,
                 active: true,
+                deleted: false,
                 'date.start': { $gte: new Date(dateStart) },
               }
             },

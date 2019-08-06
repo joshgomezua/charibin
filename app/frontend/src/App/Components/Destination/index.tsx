@@ -177,7 +177,8 @@ export default class Destination extends Component<IProps, IState> {
         discount: data.discount,
         duration: data.duration,
         photo: data.destination.photo  || '',
-        price: data.price,
+        adultPrice: data.adultPrice,
+        childPrice: data.childPrice,
         departure: data.departure,
         destination: data.destination,
         type: 'selectedTrid',
@@ -313,7 +314,7 @@ export default class Destination extends Component<IProps, IState> {
 
   render() {
     const { selected, deselect, data } = this.props
-    const { discount, duration, destination, price } = data
+    const { discount, duration, destination, adultPrice, childPrice } = data
     const ticketsTypes = this.getTicketsType(
       data.type === 'trip' ? data.tickets : []
     )
@@ -381,7 +382,8 @@ export default class Destination extends Component<IProps, IState> {
           </div>
           <p className="destination-bottom-title">{`${this.props.data.departure.name} - ${this.props.data.destination.name}`}</p>
           <p className="destination-bottom-luggage">Luggage included</p>
-          <p className="destination-bottom-price">{`£ ${price}/person`}</p>
+          <p className="destination-bottom-price">{`£ ${adultPrice}/Adult`}</p>
+          <p className="destination-bottom-price">{`£ ${childPrice}/Child`}</p>
           {calendar && <this.CalendarBlock />}
           {!selected &&
             !deselect && (

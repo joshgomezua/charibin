@@ -3,11 +3,44 @@
 const { City, Trip, Ticket } = require('../models');
 const Aggregate = require('./Aggregate');
 var ObjectId = require('mongoose').Types.ObjectId;
+var fs = require('fs');
+
+const PHOTO_DIR_PATH = './city_photos/';
+const BASE_64_PHOTO_ENCODING = 'Base64';
+const photoPrefix = 'data:image/png;base64,';
+
 
 module.exports = {
   async create (data) {
     const city = await City.findOne({ name: data.name});
     if(city) throw { status: 409, message: 'CITY.EXIST' };
+
+    //photo saving
+    const indexOfData = data.photo.indexOf(',') + 1;
+    const photo = data.photo.substring(indexOfData);
+
+    const country = data.country.replace(' ', '_');
+    const name = data.name.replace(' ', '_');
+
+    const photoDirPath = PHOTO_DIR_PATH + country + '/';
+    const photoPath = photoDirPath + name + '.png';
+  
+    if (!fs.existsSync(photoDirPath)) {
+        fs.mkdirSync(photoDirPath);
+        fs.chmodSync(photoDirPath, '777');
+    }
+
+    fs.writeFile(photoPath, photo, { encoding: BASE_64_PHOTO_ENCODING }, (err) => {
+      if (err) {
+        console.error(err)
+      } else {
+        fs.chmodSync(photoPath, '777');
+        console.log('photo saving successful')
+      } 
+    });
+    //
+
+    data.photo = photoPath;
 
     return City.create(data);
   },
@@ -24,7 +57,7 @@ module.exports = {
     };
 
     if (sortField === undefined){
-      return City.aggregate([
+      let cities =  await City.aggregate([
         {
           $facet: {
             results: [
@@ -39,8 +72,17 @@ module.exports = {
           }
         }
       ]).then(Aggregate.parseResults);
+      
+      cities.results = cities.results.map((city) => {
+        if (city.photo) {
+          const value = photoPrefix + fs.readFileSync(city.photo, BASE_64_PHOTO_ENCODING);
+          city.photo = value;
+        }
+        return city;
+      });
+      return cities;
     } else {
-      return City.aggregate([
+      let cities = await City.aggregate([
         {
           $facet: {
             results: [
@@ -55,13 +97,28 @@ module.exports = {
           }
         }
       ]).then(Aggregate.parseResults);
+      
+      cities.results = cities.results.map((city) => {
+        if (city.photo) {
+          const value = photoPrefix + fs.readFileSync(city.photo, BASE_64_PHOTO_ENCODING);
+          city.photo = value;
+        }
+        return city;
+      });
+      return cities;
     }
   },
   
   async findOne (id) {
-    const city = await City.findOne({ _id: id })
+    let city = await City.findOne({ _id: id })
     if(!city) throw { status: 404, message: 'CITY.NOT.EXIST' };
 
+    if (city.photo) {
+
+      const value = photoPrefix + fs.readFileSync(city.photo, BASE_64_PHOTO_ENCODING);
+      city.photo = value;
+
+    }
     return city;
   },
 
@@ -94,6 +151,23 @@ module.exports = {
     if(data.name) {
       city = await City.findOne({ name: data.name});
       if(city) throw { status: 409, message: 'CITY.NAME.EXIST' };
+    }
+
+    if (data.photo) {
+
+      const indexOfData = data.photo.indexOf(',') + 1;
+      const photo = data.photo.substring(indexOfData);
+
+      fs.writeFile(city.photo, photo, { encoding: BASE_64_PHOTO_ENCODING }, (err) => {
+        if (err) {
+          console.error(err)
+        } else {
+          fs.chmodSync(city.photo, '777');
+          console.log('photo editing successful')
+        } 
+      });
+
+      data.photo = city.photo;
     }
 
     const updatedCity = await City.findByIdAndUpdate(id, data, { new: true });
@@ -147,9 +221,9 @@ module.exports = {
     const city = await City.findById(id);
     if(!city) throw { status: 404, message: 'CITY.NOT.EXIST' };
 
-    await Trip.updateMany({ 'destination._id': id }, { $set: { 'active': false } })
-    await Trip.updateMany({ 'departure._id': id }, { $set: { 'active': false } })
-    await City.findByIdAndDelete(id)
+    await Trip.updateMany({ 'destination._id': id }, { $set: { 'active': false } });
+    await Trip.updateMany({ 'departure._id': id }, { $set: { 'active': false } });
+    await City.findByIdAndDelete(id);
 
     return;
   },
@@ -159,27 +233,39 @@ module.exports = {
     const destinationTrips = await Trip.find({'destination._id':ObjectId(id)});
     await Trip.updateMany({ 'destination._id':id }, 
     { $set: { 'destination.isEnabled': data.isEnabled }},{ new: true });
-      destinationTrips.forEach((trip) => {
+      destinationTrips.forEach(async(trip) => {
         trip.tickets.forEach(async(ticketId) => {
+          await Trip.findByIdAndUpdate(trip.id, { $set: { 'active': data.isEnabled } })
+          let ticket = await Ticket.findById(ticketId)
+        if (( !ticket.soldTickets && !data.isEnabled) || data.isEnabled) {
           await Ticket.findByIdAndUpdate(ticketId, { $set: { 'active': data.isEnabled } })
+        }
         })
       })
 
     const departureTrips = await Trip.find({'departure._id':ObjectId(id)});
      await Trip.updateMany({ 'departure._id':id }, 
     { $set: { 'departure.isEnabled': data.isEnabled }},{ new: true });
-    departureTrips.forEach((trip) => {
+    departureTrips.forEach(async(trip) => {
+      await Trip.findByIdAndUpdate(trip.id, { $set: { 'active': data.isEnabled } })
       trip.tickets.forEach(async(ticketId) => {
-        await Ticket.findByIdAndUpdate(ticketId, { $set: { 'active': data.isEnabled } })
+        let ticket = await Ticket.findById(ticketId)
+        if (( !ticket.soldTickets && !data.isEnabled) || data.isEnabled) {
+          await Ticket.findByIdAndUpdate(ticketId, { $set: { 'active': data.isEnabled } })
+        }
       })
     })
    
-   return City.findByIdAndUpdate(id, data, { new: true });
+   let city = await City.findByIdAndUpdate(id, data, { new: true });
+   const value = photoPrefix + fs.readFileSync(city.photo, BASE_64_PHOTO_ENCODING);
+   city.photo = value;
+   return city;
   },
 
   async getListOfCitiesNames() {
     const names = await City.find({isEnabled: true}).select("name")
 
     return names
-  }
+  },
+  
 };

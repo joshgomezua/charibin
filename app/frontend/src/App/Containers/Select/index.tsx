@@ -90,6 +90,7 @@ class SelectContainer extends Component<
       departure
     )
       .then(({ data }) => {
+        console.log('data', data)
         this.setState((state: IState) => ({
           isLoading: false,
           trips: [...data],
@@ -131,6 +132,7 @@ class SelectContainer extends Component<
   handleBookTrips = () => {
     const { selected, quantity, departure } = this.props
     const token = getOwnerToken()
+    console.table(selected)
     const bookedTrips = selected.map((selectedItem: ISelectedData) => {
       if (selectedItem.arrivalTicket && selectedItem.departureTicket) {
         return {
@@ -166,7 +168,7 @@ class SelectContainer extends Component<
             (trip: IBookedType) => item.tripId === trip.trip
           )
           if (filteredTrip) {
-            item.price = filteredTrip.cost
+            item.adultPrice = filteredTrip.cost
           }
           return item
         })
@@ -355,6 +357,7 @@ class SelectContainer extends Component<
                 trips.length > 0 &&
                 trips.map((trip: ITrip, index) => {
                   trip.type = 'trip'
+                  trip.adultPrice += trip.adultPrice 
                   const filtered = this.props.selected.filter(
                     (item: ISelectedData) => {
                       if (item.tripId === trip._id) {

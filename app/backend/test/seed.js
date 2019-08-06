@@ -62,10 +62,12 @@ loadModels();
   for (let i = 0; i < 20; i++) {
 
     console.log(`Creating Cities: ${i + 1}/${20}`);
-    const city = await helpers.createCity(helpers.dataClone(globals.dataTemplate.city));
-    cities.push(city)
-    await helpers.createCity(helpers.dataClone(globals.dataTemplate.city));
-
+    let cityTemp = await helpers.dataClone(globals.dataTemplate.city);
+    cityTemp.photo = createPhoto(cityTemp);
+    console.log('city.photo', cityTemp.photo);
+    
+    const city = await helpers.createCity(cityTemp);
+    cities.push(city);
     // console.log(`Creating Users: ${i + 1}/${20}`);
     // await helpers.createUser(helpers.dataClone(globals.dataTemplate.user));
   }
@@ -124,7 +126,9 @@ loadModels();
     const ticketArrivalTemp = { ...helpers.dataClone(globals.dataTemplate.ticket), 
       trip: ObjectId(tripArrival._id),
       departure: tripArrival.departure.name,
-      destination: tripArrival.destination.name
+      destination: tripArrival.destination.name,
+      adultPrice: tripArrival.adultPrice,
+      childPrice: tripArrival.childPrice
     };
     const ticketArrival = await helpers.createTicket(ticketArrivalTemp);
 
@@ -136,7 +140,9 @@ loadModels();
         },
         trip: ObjectId(tripDeparture._id),
         departure: tripDeparture.departure.name,
-        destination: tripDeparture.destination.name
+        destination: tripDeparture.destination.name,
+        adultPrice: tripDeparture.adultPrice,
+        childPrice: tripDeparture.childPrice
       };
     const ticketDeparture = await helpers.createTicket(ticketDepartureTemp)
 
@@ -152,6 +158,10 @@ loadModels();
     console.log(`Creating Orders: ${i + 1}/${20}`);
     await helpers.createOrder(helpers.dataClone(globals.dataTemplate.order));
   }
+
+  cities.forEach((city) => {
+    console.log('city', city.photo);
+  })
   
   process.exit(0);
 })();
@@ -196,6 +206,35 @@ function loadModels () {
 
   globals.models = models;
 }
+
+function createPhoto (data) {
+  const PHOTO_DIR_PATH = './city_photos/';
+  const PHOTO_ENCODING = 'Base64';
+  const indexOfData = data.photo.indexOf(',') + 1;
+    const photo = data.photo.substring(indexOfData);
+    const country = data.country.replace(' ', '_');
+    const name = data.name.replace(' ', '_');
+
+    const photoDirPath = PHOTO_DIR_PATH + country + '/';
+    const photoPath = photoDirPath + name + '.png';
+  
+    if (!fs.existsSync(photoDirPath)) {
+        fs.mkdirSync(photoDirPath);
+        fs.chmodSync(photoDirPath, '777');
+    }
+
+    fs.writeFile(photoPath, photo, { encoding: PHOTO_ENCODING }, (err) => {
+      if (err) {
+        console.error(err)
+      } else {
+        fs.chmodSync(photoPath, '777');
+        console.log('photo saving successful')
+      } 
+    });
+
+    return photoPath;
+}
+
 
 function connect () {
   const options = { keepAlive: 1, useNewUrlParser: true };

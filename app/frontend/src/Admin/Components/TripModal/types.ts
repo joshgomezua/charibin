@@ -13,7 +13,8 @@ export interface IFormValues {
   departure: ICity
   destination: ICity
   carrier: string
-  price: number
+  adultPrice: number
+  childPrice: number
   discount: number
   duration: number
   type: string
