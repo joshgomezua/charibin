@@ -134,7 +134,7 @@ class SelectContainer extends Component<
   handleBookTrips = () => {
     const { selected, quantity, departure } = this.props
     const token = getOwnerToken()
-    console.table(selected)
+  
     const bookedTrips = selected.map((selectedItem: ISelectedData) => {
       if (selectedItem.arrivalTicket && selectedItem.departureTicket) {
         return {
@@ -152,16 +152,17 @@ class SelectContainer extends Component<
       }
     })
 
+
     const data: IBookedData = {
       departure,
-      quantity,
+      quantity: quantity.Adult + quantity.Youth,
       trips: bookedTrips
     }
 
     if (token) {
       data.ownerHash = token
     }
-
+    console.log("data ", data)
     API.bookTrips(data)
       .then(res => {
         const bookedTrips = res.data.trips

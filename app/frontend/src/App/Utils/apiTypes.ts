@@ -16,7 +16,7 @@ interface ISelectedTickets {
 
 export interface IBookedData {
   departure?: string
-  quantity: IPassenger
+  quantity: number
   ownerHash?: string
   trips: Array<ISelectedTrips | ISelectedTickets>
 }

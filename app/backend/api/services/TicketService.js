@@ -367,6 +367,8 @@ module.exports = {
   },
 
   async book ({ quantity, trips, ownerHash }) {
+
+    console.log('quantity ', quantity)
     
     if(ownerHash) {
       const isOwnerExist = await TicketOwner.findOne({ owner: ownerHash });
@@ -591,18 +593,19 @@ module.exports = {
    
   },
 
-  async findDashboard ({ page, limit, quantity, adult,youth, priceStart, priceEnd , dateStart, dateEnd, timezone }) {
+  async findDashboard ({ page, limit, adult,youth, priceStart, priceEnd , dateStart, dateEnd ,departure, timezone }) {
     page = +page;
-    quantity = +quantity;
     limit = +limit;
+    adult = +adult;
+    youth = +youth;
     priceStart = +priceStart;
     priceEnd = +priceEnd;
     dateStart = +dateStart;
     dateEnd = +dateEnd;
     timezone = +timezone;
-  
-    console.log("adult ", adult)
-    console.log("youth", adult)
+
+    const quantity =  adult + youth
+
     const tripMatch =  { active: true , 'departure.name': departure}; 
     
     const ticketMatch = {
@@ -670,8 +673,8 @@ module.exports = {
 
     for (const trip of data) {
       if ( await this.hasEnoughTickets(trip)) {
-        trip.adultPrice += trip.adultPrice
-        trip.childPrice += trip.childPrice 
+        trip["Adult"] = adult
+        trip["Youth"] = youth
         res.push(trip)
       } 
     }

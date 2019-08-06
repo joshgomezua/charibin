@@ -110,7 +110,6 @@ export const selectIsMaxSelected = (state: IStore) =>
 export const selectIsMaxDeselected = (state: IStore) =>
   state.trips.deselected.length >= 2
 export const selectQuantity = (state: IStore) => {
-  console.log(state.trips.quantity)
    return state.trips.quantity
 } 
 export const selectDeparture = (state: IStore) => {
