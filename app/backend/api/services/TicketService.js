@@ -706,6 +706,7 @@ module.exports = {
           results: [
             {
               $match: {
+                active: true,
                 deleted: false,
                 'date.start': { $gte: new Date(dateStart) },
               }

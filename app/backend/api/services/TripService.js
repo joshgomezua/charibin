@@ -230,7 +230,7 @@ module.exports = {
         {
           $facet: {
             results: [
-              { $match: { deleted: false } },
+              { $match: { deleted: false, active: true } },
               { $sort: { [query.sortField]: query.sortOrder} },
               ...Aggregate.skipAndLimit(query.page, query.limit)
             ],
@@ -248,7 +248,7 @@ module.exports = {
         {
           $facet: {
             results: [
-              { $match: { deleted: false } },
+              { $match: { deleted: false, active: true } },
               { $sort: { "departure.name": 1, "destination.name": 1, carrier: 1, type: 1} },
               ...Aggregate.skipAndLimit(page, limit)
             ],
