@@ -28,7 +28,7 @@ module.exports = {
     if (!fs.existsSync(PHOTO_DIR_PATH)) {
       fs.mkdirSync(PHOTO_DIR_PATH);
       fs.chmodSync(PHOTO_DIR_PATH, '777');
-  }
+    }
   
     if (!fs.existsSync(photoDirPath)) {
         fs.mkdirSync(photoDirPath);

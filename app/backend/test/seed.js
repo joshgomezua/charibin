@@ -44,6 +44,12 @@ const cities = [];
 let usedCities = [];
 loadServices();
 loadModels();
+const PHOTO_DIR_PATH = './city_photos/';
+
+if (!fs.existsSync(PHOTO_DIR_PATH)) {
+  fs.mkdirSync(PHOTO_DIR_PATH);
+  fs.chmodSync(PHOTO_DIR_PATH, '777');
+}
 
 (async function () {
   // Clean up
