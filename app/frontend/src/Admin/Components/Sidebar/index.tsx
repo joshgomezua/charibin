@@ -93,19 +93,18 @@ class Sidebar extends React.Component<IProps, IState> {
   
   customItemRenderer = (option: IOptions) => 
     (<StyledItem 
-      color={this.isCountry(option) ? '#4142a6' : '#dbdcf1'}
+      color={this.isCountry(option) ? '#ce3f3f' : '#60fffb'}
     >
       <div onClick={() => {option.methods.addItem(option.item)}}>
       <input type="checkbox" checked={option.methods.isSelected(option.item)} />
-        <span id='country'>{(this.isCountry(option) ? 'Country ' : option.item.country) || 'Carrier'} </span> 
-        <span id='label'>&emsp;<b>{option.item.label}</b>
+        <span id='label'><b>{option.item.label}</b>
         </span>
       </div>
     </StyledItem>);
 
 
   customOptionRenderer = (option: IOption) => (
-    <StyledOption color={option.item.country && (option.item.country === 'country') ? '#4142a6' : '#dbdcf1'} >
+    <StyledOption color={option.item.country && (option.item.country === 'country') ? '#ce3f3f' : '#60fffb'} >
       {option.item.label}
       <span
         onClick={() => option.methods.removeItem(null, option.item)}
@@ -248,15 +247,15 @@ const StyledItem = styled.div`
   cursor: pointer;
 
   span#label {
-    color: #2e4053;
-  }
-
-  span#country {
     padding: 5px;
     color: white;
     background: ${(props: any) => props.color};
     border-radius: 5px;
     box-shadow 5px 10pxs: 
+  }
+
+  span#country {
+    
   }
 
   div#tab {
