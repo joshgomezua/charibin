@@ -8,6 +8,7 @@ var fs = require('fs');
 const PHOTO_DIR_PATH = './city_photos/';
 const BASE_64_PHOTO_ENCODING = 'Base64';
 const photoPrefix = 'data:image/png;base64,';
+const DEFAULT_PHOTO = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==';
 
 
 module.exports = {
@@ -80,8 +81,7 @@ module.exports = {
       
       cities.results = cities.results.map((city) => {
         if (city.photo) {
-          const value = photoPrefix + fs.readFileSync(city.photo, BASE_64_PHOTO_ENCODING);
-          city.photo = value;
+          city.photo = this.readCityPhoto(city);
         }
         return city;
       });
@@ -105,8 +105,7 @@ module.exports = {
       
       cities.results = cities.results.map((city) => {
         if (city.photo) {
-          const value = photoPrefix + fs.readFileSync(city.photo, BASE_64_PHOTO_ENCODING);
-          city.photo = value;
+          city.photo = this.readCityPhoto(city);
         }
         return city;
       });
@@ -265,6 +264,36 @@ module.exports = {
    const value = photoPrefix + fs.readFileSync(city.photo, BASE_64_PHOTO_ENCODING);
    city.photo = value;
    return city;
+  },
+
+  readCityPhoto (city) {
+    let value = '';
+    try {
+      value = photoPrefix + fs.readFileSync(city.photo, BASE_64_PHOTO_ENCODING);
+    } catch (err) {
+
+    const country = city.country.replace(' ', '_');
+    const name = city.name.replace(' ', '_');
+
+    const photoDirPath = PHOTO_DIR_PATH + country + '/';
+    const photoPath = photoDirPath + name + '.png';
+
+    if (!fs.existsSync(PHOTO_DIR_PATH)) {
+      fs.mkdirSync(PHOTO_DIR_PATH);
+      fs.chmodSync(PHOTO_DIR_PATH, '777');
+    }
+  
+    if (!fs.existsSync(photoDirPath)) {
+        fs.mkdirSync(photoDirPath);
+        fs.chmodSync(photoDirPath, '777');
+    }
+
+    fs.writeFileSync(photoPath, DEFAULT_PHOTO, { encoding: BASE_64_PHOTO_ENCODING });
+    fs.chmodSync(photoPath, '777');
+    value = photoPrefix+ DEFAULT_PHOTO;
+    }
+
+    return value;
   },
 
   async getListOfCitiesNames() {
