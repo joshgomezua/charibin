@@ -522,11 +522,12 @@ class TripsContainer extends React.Component<
         this.setState({ isModalLoading: false })
         this.props.showError(err, ERRORS.BULK_EDIT)
 
+        return Promise.reject()
       })
     }
-    
     this.props.showSuccess(SUCCESS.BULK_EDIT)
-    return Promise.reject()
+
+    return Promise.resolve()
   }
 
   handleBulkTimeSelection = async (data: IEditTimeSchedule) => {
@@ -552,11 +553,42 @@ class TripsContainer extends React.Component<
         this.setState({ isModalLoading: false })
         this.props.showError(err, ERRORS.BULK_EDIT)
 
+        return Promise.reject()
       })
     }
-    
     this.props.showSuccess(SUCCESS.BULK_EDIT)
-    return Promise.reject()
+
+    return Promise.resolve()
+  }
+
+  handleBulkScheduleCreation = async (data: INewSchedule) => {
+    const token = getToken()
+    const { currentPage } = this.state
+   
+    for(let index: number = 0; index < this.state.selection.length; index++){
+      
+      let newSchedule: INewSchedule = {
+        ...data,
+        trip: this.state.selection[index].id
+      }
+
+      this.setState({ isModalLoading: true })
+      addSchedule(newSchedule, token)
+      .then(res => {
+        this.modal.current!.close()
+        this.handleFetchItems(currentPage, 10)
+        this.handleRestartModalType()
+      })
+      .catch(err => {
+        this.setState({ isModalLoading: false })
+        this.props.showError(err, ERRORS.BULK_EDIT)
+
+        return Promise.reject()
+      })
+    }
+    this.props.showSuccess(SUCCESS.BULK_EDIT)
+
+    return Promise.resolve()
   }
 
   checkforChangedData = (data: IBulkChange, trip: any) => {
@@ -951,6 +983,14 @@ class TripsContainer extends React.Component<
               isLoading={isModalLoading}
               closeModal={this.handleCloseModal}
               handleSubmit={this.handleBulkTimeSelection}
+            />
+          ) : null}
+
+          {modalType === MODAL_TYPE.BULK_SCHEDULE ? (
+            <ScheduleModal
+              isLoading={isModalLoading}
+              closeModal={this.handleCloseModal}
+              handleSubmit={this.handleBulkScheduleCreation}
             />
           ) : null}
         </Modal>

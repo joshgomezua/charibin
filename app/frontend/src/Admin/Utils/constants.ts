@@ -12,6 +12,7 @@ export enum ADMIN_ROUTING {
 }
 
 export const ERRORS = {
+  BULK_SCHEDULE: 'Error while creating range',
   BULK_EDIT: 'Error during bulk editing',
   TRIP_FETCH: `Cant't fetch trip list`,
   TRIP_DELETE: 'Error when delete trip ',
