@@ -59,7 +59,8 @@ export interface INewData {
   destination: ICity
   carrier: string
   photo: string
-  price: number
+  adultPrice: number
+  childPrice: number
   type: string
   isFromAPI: boolean
 }
@@ -87,7 +88,8 @@ export interface INewSchedule {
   }
   discount: number
   duration: number
-  price: number
+  adultPrice: number
+  childPrice: number
   trip?: string
 }
 
@@ -116,13 +118,15 @@ export interface IEditTimeSchedule {
   destination?: ICity
   carrier?: string
   photo?: string
-  price?: number
+  adultPrice?: number
+  childPrice?: number
   type?: string
 }
 
 export interface IBulkChange {
   active: string
-  price: number
+  adultPrice: number
+  childPrice: number
   fake: string
   deselectionPrice: number
   discount: number

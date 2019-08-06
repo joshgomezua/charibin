@@ -2,7 +2,8 @@ import { INewSchedule } from "src/Admin/Containers/Trips/types";
 
 export interface IProps {
   editDate?: {
-    price: number
+    adultPrice: number
+    childPrice: number
     discount: number
     duration: number
     timeSelection: {
@@ -24,7 +25,8 @@ export interface IProps {
 }
 
 export interface IFormValues {
-  price: number
+  adultPrice: number
+  childPrice: number
   discount: number
   duration: number
   timeSelection: {

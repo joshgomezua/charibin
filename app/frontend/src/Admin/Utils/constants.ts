@@ -12,6 +12,7 @@ export enum ADMIN_ROUTING {
 }
 
 export const ERRORS = {
+  BULK_SCHEDULE: 'Error while creating range',
   BULK_EDIT: 'Error during bulk editing',
   TRIP_FETCH: `Cant't fetch trip list`,
   TRIP_DELETE: 'Error when delete trip ',
@@ -115,7 +116,8 @@ export const DEFAULT_TRIP_SCHEDULE = {
   },
   discount: 0,
   duration: 0,
-  price: 0,
+  adultPrice: 0,
+  childPrice: 0,
   trip: ''
 }
 
@@ -144,7 +146,6 @@ export const DEFAULT_TRIP_DATA = {
   destination: DEFAULT_CITY_DATA,
   carrier: '',
   photo: '',
-  price: 0,
   adultPrice: 0,
   childPrice: 0,
   type: '',
