@@ -96,7 +96,6 @@ class CityContainer extends React.Component<
     if (token) {
       getCities(page, limit, token,sort)
         .then(res => {
-          console.log('res', res);
           this.setState({
             isLoading: false,
             cities: res.data.results,

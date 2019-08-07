@@ -14,6 +14,9 @@ const ObjectId = require('mongoose').Types.ObjectId;
 const photoPrefix = 'data:image/png;base64,';
 var fs = require('fs');
 const PHOTO_ENCODING = 'Base64';
+const PHOTO_DIR_PATH = './city_photos/';
+const BASE_64_PHOTO_ENCODING = 'Base64';
+const DEFAULT_PHOTO = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==';
 
 client1.send_command('config', ['set','notify-keyspace-events','Ex'], onExpiredTicket);
 
@@ -464,7 +467,7 @@ module.exports = {
 
     return {
       name: selectedTrip.trip.destination.name,
-      photo: selectedTrip.trip.photo,
+      photo: this.readCityPhoto(selectedTrip.trip.destination),
       email: buyerInfo.email,
       arrivalTicket: {
         _id: selectedTrip.arrivalTicket._id,
@@ -543,18 +546,17 @@ module.exports = {
   },
 
   departureBeforeDestination (departureTickets, destinationTickets, trip) {
-    console.log("3")
     let bool = false;
     departureTickets.forEach((departure) => {
       destinationTickets.forEach((destination) => {
         if (departure.date.start.getTime() < destination.date.start.getTime()) {
           trip.tickets.push(destination)
-          console.log("4")
+          
           bool = true;
         }
       })
     })
-    console.log("5")
+    
     return bool;
   },
 
@@ -570,26 +572,22 @@ module.exports = {
     const oppositeTrip = await this.hasOpposite(trip)
     let oppositeTickets = []
     let tripTickets = []
-    console.log()
+
     for (const ticket of trip.tickets) {
       tripTickets.push(await Ticket.findById({_id: ticket._id.toString()}))
     }
-
-    console.log("trip ticket---------------------------", tripTickets)
 
     if (oppositeTrip != null) {
       
       for (const ticket of oppositeTrip.tickets) {
         oppositeTickets.push(await Ticket.findById({_id: ticket.toString()}))
       }
-
-    console.log("opposite ticket-------------------------- ", oppositeTickets )
       
       if (!(tripTickets.length && oppositeTickets.length)) {
-        console.log("1")
+  
         return false;
       } else {
-        console.log("2")
+        
        return this.departureBeforeDestination(tripTickets, oppositeTickets,trip)
       }
     } else {
@@ -810,5 +808,35 @@ module.exports = {
         }
       }
     ]).then(Aggregate.parseResults);
-  }
+  },
+
+  readCityPhoto (city) {
+    let value = '';
+    try {
+      value = photoPrefix + fs.readFileSync(city.photo, BASE_64_PHOTO_ENCODING);
+    } catch (err) {
+
+    const country = city.country.replace(' ', '_');
+    const name = city.name.replace(' ', '_');
+
+    const photoDirPath = PHOTO_DIR_PATH + country + '/';
+    const photoPath = photoDirPath + name + '.png';
+
+    if (!fs.existsSync(PHOTO_DIR_PATH)) {
+      fs.mkdirSync(PHOTO_DIR_PATH);
+      fs.chmodSync(PHOTO_DIR_PATH, '777');
+    }
+  
+    if (!fs.existsSync(photoDirPath)) {
+        fs.mkdirSync(photoDirPath);
+        fs.chmodSync(photoDirPath, '777');
+    }
+
+    fs.writeFileSync(photoPath, DEFAULT_PHOTO, { encoding: BASE_64_PHOTO_ENCODING });
+    fs.chmodSync(photoPath, '777');
+    value = photoPrefix+ DEFAULT_PHOTO;
+    }
+
+    return value;
+  },
 };
