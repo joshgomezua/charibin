@@ -42,8 +42,8 @@ export default class Search extends Component<IProps, IState> {
   handleSearch = (departure: string) => {
     const { departures } = this.state
     const tableau = departures.filter((name: string) => name.toLowerCase().includes(departure.toLowerCase()))
-    
-    this.setState({searchResults: tableau})
+    tableau.length !== 0 ? this.setState({searchResults: tableau}) : this.setState({searchResults:["No trips found"]})
+  
   }
 
   toggleListVisibility = (): void => {
@@ -53,11 +53,16 @@ export default class Search extends Component<IProps, IState> {
   handleSelectOption = (el: string): void => {
     const { setDeparture} = this.props
     this.setState({ isListVisible: false })
-    this.setState({ inputValue: el })
-    setDeparture!(el)
+    if (el !== "No trips found " && el !== "No trips available") {
+        this.setState({ inputValue: el })
+        setDeparture!(el)
+    }
   }
 
   renderOptions = (optionsArr: string[]): JSX.Element[] => {
+    if (optionsArr.length === 0) {
+        optionsArr.push("No trips available")
+    }
     return optionsArr.map(
       (el: string): JSX.Element => {
         return (
@@ -88,13 +93,13 @@ export default class Search extends Component<IProps, IState> {
 
   selectDecrement = (e: React.MouseEvent<HTMLButtonElement>, id: string) => {
     e.preventDefault()
-    if (this.props.quantity > 0 && id === 'Adult' && this.state.passengers.Adult > 0) {
-      this.props.setQuantity!(this.props.quantity - 1) 
+    if (this.props.quantity.Adult > 0 && id === 'Adult' && this.state.passengers.Adult > 0) {
+      this.props.setQuantity!({Adult:this.props.quantity.Adult - 1, Youth:this.props.quantity.Youth}) 
       this.setState({passengers:{Adult: --this.state.passengers.Adult,
         Youth: this.state.passengers.Youth
       }})
-    } else if (this.props.quantity > 0 && id === 'Youth' && this.state.passengers.Youth > 0) {
-      this.props.setQuantity!(this.props.quantity - 1) 
+    } else if (this.props.quantity.Youth > 0 && id === 'Youth' && this.state.passengers.Youth > 0) {
+      this.props.setQuantity!({Adult: this.props.quantity.Adult, Youth:this.props.quantity.Youth - 1}) 
       this.setState({passengers:{Adult: this.state.passengers.Adult,
         Youth: --this.state.passengers.Youth
       }})
@@ -103,13 +108,13 @@ export default class Search extends Component<IProps, IState> {
 
   selectIncrement = (e: React.MouseEvent<HTMLButtonElement>, id: string) => {
     e.preventDefault()
-    if (this.props.quantity < 6 && id === 'Adult') {
-      this.props.setQuantity!(this.props.quantity + 1)
+    if (this.props.quantity.Adult < 6 && id === 'Adult') {
+      this.props.setQuantity!({Adult:this.props.quantity.Adult + 1, Youth:this.props.quantity.Youth})
       this.setState({passengers:{Adult: ++this.state.passengers.Adult,
         Youth: this.state.passengers.Youth
       }})
-    } else if (this.props.quantity < 6 && id === 'Youth') {
-      this.props.setQuantity!(this.props.quantity + 1)
+    } else if (this.props.quantity.Youth < 6 && id === 'Youth') {
+      this.props.setQuantity!({Adult:this.props.quantity.Adult, Youth:this.props.quantity.Youth + 1})
       this.setState({passengers:{Adult: this.state.passengers.Adult,
         Youth: ++this.state.passengers.Youth
       }})
@@ -165,7 +170,7 @@ export default class Search extends Component<IProps, IState> {
     return (
       <div className={`search-select ${buttons ? 'buttons' : ''}`}>
         <img src={people} alt="people" />
-        <span>{`${quantity} passenger${quantity > 1 ? 's' : ''}`}</span>
+        <span>{`${quantity.Adult + quantity.Youth} passenger${quantity.Adult > 1 || quantity.Youth > 1 ? 's' : ''}`}</span>
         <button onClick={this.toggleButtons}>
           <img src={arrow} alt="change passanger quantity" />
         </button>

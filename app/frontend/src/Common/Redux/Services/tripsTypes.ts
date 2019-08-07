@@ -1,4 +1,4 @@
-import { ISelectedData, IFinalSelected } from '../../../App/Utils/appTypes'
+import { ISelectedData, IFinalSelected, IPassenger } from '../../../App/Utils/appTypes'
 
 export enum TRIPS_ACTIONS {
   ADD_SELECTED = 'ADD_SELECTED',
@@ -35,7 +35,7 @@ export interface IAddDeselected {
 
 export interface ISetQuantity {
   type: TRIPS_ACTIONS.SET_QUANTITY
-  quantity: number
+  quantity: IPassenger
 }
 
 export interface IClearDeselected {

@@ -62,3 +62,8 @@ export interface IFinalSelected {
   finalCost: number
   chargeId: string
 }
+
+export interface IPassenger {
+  Adult: number,
+  Youth: number
+}

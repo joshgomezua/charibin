@@ -37,8 +37,8 @@ const Bilingstatus: React.SFC<IProps> = ({
             <p className="billing_status-tour" key={i}>
               <span>{destination.name}</span>
               <span>
-                {`£ ${adultPrice} for ${quantity} ${
-                  quantity > 1 ? ' passengers' : ' passenger'
+                {`£ ${adultPrice} for ${quantity.Adult} ${
+                  quantity.Adult > 1 ? ' passengers' : ' passenger'
                 }`}
               </span>
             </p>

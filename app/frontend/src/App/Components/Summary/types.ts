@@ -1,7 +1,7 @@
-import { IFinalSelected } from '../../Utils/appTypes'
+import { IFinalSelected, IPassenger } from '../../Utils/appTypes'
 
 export interface IProps {
-  quantity: number
+  quantity: IPassenger
   deselectionPrice: number
   selected: IFinalSelected
 }

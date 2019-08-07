@@ -9,7 +9,7 @@ import {
   IClearSelected,
   IsetDeparture
 } from './tripsTypes'
-import { ISelectedData, IFinalSelected } from '../../../App/Utils/appTypes'
+import { ISelectedData, IFinalSelected, IPassenger } from '../../../App/Utils/appTypes'
 import { getFromLS } from '../../Utils/helpers'
 import { IStore } from '../types'
 
@@ -18,7 +18,7 @@ const owner = getFromLS('owner')
 
 const initialState = {
   departure: (owner && owner.data.departure) || '',
-  quantity: (owner && owner.data.quantity) || 1,
+  quantity: (owner && owner.data.quantity) || {Adult: 1, Youth: 0},
   selected: (owner && owner.data.selected) || [],
   deselected: (owner && owner.data.deselected) || [],
   finalDestination: {}
@@ -79,7 +79,7 @@ export const clearDeselected = (): IClearDeselected => ({
   type: TRIPS_ACTIONS.CLEAR_DESELECTED
 })
 
-export const setQuantity = (quantity: number): ISetQuantity => ({
+export const setQuantity = (quantity: IPassenger): ISetQuantity => ({
   type: TRIPS_ACTIONS.SET_QUANTITY,
   quantity
 })

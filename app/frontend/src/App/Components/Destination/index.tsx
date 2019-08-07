@@ -58,7 +58,7 @@ export default class Destination extends Component<IProps, IState> {
               .utc(item.date.start)
               .set({ hour: 0, minutes: 0, seconds: 0, milliseconds: 0 })
               .isAfter() &&
-            item.quantity >= quantity!
+            item.adultPrice + item.childPrice >= quantity!.Adult + quantity!.Youth
         )
         .map((item: ITicket) =>
           moment.utc(item.date.start).format('YYYY-MM-DD')
@@ -75,7 +75,7 @@ export default class Destination extends Component<IProps, IState> {
               .utc(item.date.start)
               .set({ hour: 0, minutes: 0, seconds: 0, milliseconds: 0 })
               .isAfter() &&
-            item.quantity >= quantity!
+              item.adultPrice + item.childPrice >= quantity!.Adult + quantity!.Youth
         )
         .map((item: ITicket) =>
           moment.utc(item.date.start).format('YYYY-MM-DD')
@@ -380,10 +380,10 @@ export default class Destination extends Component<IProps, IState> {
               approx. {formatedDuration}
             </p>
           </div>
-          <p className="destination-bottom-title">{`${this.props.data.departure.name} - ${this.props.data.destination.name}`}</p>
+          <p className="destination-bottom-title">{`${this.props.data.destination.name}`}</p>
           <p className="destination-bottom-luggage">Luggage included</p>
-          <p className="destination-bottom-price">{`£ ${adultPrice}/Adult`}</p>
-          <p className="destination-bottom-price">{`£ ${childPrice}/Child`}</p>
+          <p className="destination-bottom-price">{`£ ${adultPrice * this.props.data["Adult"] + childPrice * this.props.data["Youth"] }${" "} 
+                                                            (${" "}${this.props.data["Adult"] + this.props.data["Youth"]}${this.props.data["Adult"] + this.props.data["Youth"] > 1 ? " personnes" : " personne"} )`}</p>
           {calendar && <this.CalendarBlock />}
           {!selected &&
             !deselect && (

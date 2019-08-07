@@ -11,18 +11,19 @@ export const getTrips = (
   priceEnd: number,
   dateStart: number,
   dateEnd: number,
-  quantity: number,
+  adult: number,
+  youth: number,
   departure: string,
 ) =>
   axios.get(
-    `${API_URL}/dashboard/ticket/${page}/${limit}/${priceStart}/${priceEnd}/${dateStart}/${dateEnd}/${quantity}/${departure}/${TIMEZONE_OFFSET}`
+    `${API_URL}/dashboard/ticket/${page}/${limit}/${priceStart}/${priceEnd}/${dateStart}/${dateEnd}/${adult}/${youth}/${departure}/${TIMEZONE_OFFSET}`
   )
   
 export const getTickets = (date: number, page: number, limit: number) =>
     axios.get(`${API_URL}/ticket/${page}/${limit}/${date}`)
 
 export const getTripsDepartureNames = (token: string) =>
-    axios.get(`${API_URL}/tripDeparturenames`, {
+    axios.get(`${API_URL}/tripDeparturenames/${TIMEZONE_OFFSET}`, {
       headers: { token }
   })
 

@@ -41,7 +41,6 @@ class ExpandableTable extends React.Component<IProps, IState> {
           pages={pages}
           onFetchData={handleFetchData}
           SubComponent={(row: RowInfo) => { 
-            console.log(row.original.scheduledTrips)
             return(
             <div className={subComponentClassName}>
               <TripTable

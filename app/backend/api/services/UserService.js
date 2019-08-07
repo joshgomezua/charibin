@@ -31,7 +31,6 @@ module.exports = {
     const user = await User.findOne({ email: data.email});
     if(user) throw { status: 409, message: 'USER.EXIST' };
     data.password = faker.internet.password(6); // à remplacer par des vrais passwords dans add new users
-    console.log(data.password)
     await User.create(data);
     await EmailService.AddingNotif(data.name, data.email, data.password); //  remplacer par data dans les paramètres et déstructurer la methode signature
     

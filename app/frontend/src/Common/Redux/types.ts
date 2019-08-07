@@ -16,7 +16,7 @@ interface IUser {
 
 interface ITips {
   departure: string
-  quantity: number
+  quantity: IPassenger
   selected: ISelectedData[]
   deselected: ISelectedData[]
   finalDestination: IFinalSelected
@@ -27,4 +27,9 @@ interface IAdminTickets {
   filterFrom: string[]
   filterTo: string[]
   selectedDate: Date
+}
+
+interface IPassenger {
+  Adult: number,
+  Youth: number
 }

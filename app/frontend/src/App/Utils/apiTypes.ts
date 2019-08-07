@@ -8,6 +8,7 @@ interface ISelectedTrips {
   destination: string
 }
 
+
 interface ISelectedTickets {
   arrivalTicket: string
   departureTicket: string
@@ -20,6 +21,10 @@ export interface IBookedData {
   trips: Array<ISelectedTrips | ISelectedTickets>
 }
 
+export interface IPassenger {
+  Adult: number,
+  Youth: number
+}
 export interface IUnbookedData {
   owner: string
   trips: string[]

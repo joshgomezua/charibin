@@ -28,7 +28,7 @@ import { IBookedData } from '../../Utils/apiTypes'
 import { IStore } from '../../../Common/Redux/types'
 import { STEP_IDS } from '../../Utils/constants'
 import { RouteComponentProps } from 'react-router-dom'
-import { ISelectedData, ITrip } from '../../Utils/appTypes'
+import { ISelectedData, ITrip} from '../../Utils/appTypes'
 import { IState, IProps, IFiltersChange, IBookedType } from './types'
 import './styles.scss'
 import Title from 'src/App/Components/Title'
@@ -55,7 +55,7 @@ class SelectContainer extends Component<
   componentDidMount() {
     window.scrollTo(0, 0)
     const { quantity,departure } = this.props
-    this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity,departure).then(
+    this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity.Adult,quantity.Youth,departure).then(
       () => {
         this.setState({ isLoading: false })
         if(this.state.trips.length > 10){
@@ -76,7 +76,8 @@ class SelectContainer extends Component<
     priceEnd: number,
     dateStart: number,
     dateEnd: number,
-    qunatity: number,
+    adult: number,
+    youth: number,
     departure: string
   ) => {
     return API.getTrips(
@@ -86,11 +87,11 @@ class SelectContainer extends Component<
       priceEnd,
       dateStart,
       dateEnd,
-      qunatity,
+      adult,
+      youth,
       departure
     )
       .then(({ data }) => {
-        console.log('data', data)
         this.setState((state: IState) => ({
           isLoading: false,
           trips: [...data],
@@ -122,7 +123,8 @@ class SelectContainer extends Component<
           max,
           start !== undefined ? +moment(start).format('x') : 0,
           end !== undefined ? +moment(end).format('x') : 0,
-          quantity,
+          quantity.Adult,
+          quantity.Youth,
           departure
         )
       }
@@ -132,7 +134,7 @@ class SelectContainer extends Component<
   handleBookTrips = () => {
     const { selected, quantity, departure } = this.props
     const token = getOwnerToken()
-    console.table(selected)
+  
     const bookedTrips = selected.map((selectedItem: ISelectedData) => {
       if (selectedItem.arrivalTicket && selectedItem.departureTicket) {
         return {
@@ -150,9 +152,10 @@ class SelectContainer extends Component<
       }
     })
 
+
     const data: IBookedData = {
       departure,
-      quantity,
+      quantity: quantity.Adult + quantity.Youth,
       trips: bookedTrips
     }
 
@@ -231,7 +234,8 @@ class SelectContainer extends Component<
             max,
             start !== undefined ? +moment(start).format('x') : 0,
             end !== undefined ? +moment(end).format('x') : 0,
-            quantity,
+            quantity.Adult,
+            quantity.Youth,
             departure
           ).then((dataLength: number) => {
             if (dataLength > 0) {
@@ -319,7 +323,7 @@ class SelectContainer extends Component<
             setQuantity={this.props.setQuantity}
             quantity={quantity}
             onSubmit={()=>{
-               this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity, departure).then(
+               this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity.Adult,quantity.Youth, departure).then(
               () => {
                 this.setState({ isLoading: false })
                 if(this.state.trips.length > 10){
@@ -357,7 +361,6 @@ class SelectContainer extends Component<
                 trips.length > 0 &&
                 trips.map((trip: ITrip, index) => {
                   trip.type = 'trip'
-                  trip.adultPrice += trip.adultPrice 
                   const filtered = this.props.selected.filter(
                     (item: ISelectedData) => {
                       if (item.tripId === trip._id) {

@@ -1,5 +1,5 @@
 import { IResponseError } from '../../../Common/Utils/globalTypes'
-import { ISelectedData, IFinalSelected } from '../../Utils/appTypes'
+import { ISelectedData, IFinalSelected, IPassenger } from '../../Utils/appTypes'
 
 export interface IState {
   step: Steps
@@ -15,7 +15,7 @@ export enum Steps {
 export interface ISuccessData {}
 
 export interface IProps {
-  quantity: number
+  quantity: IPassenger
   selected: ISelectedData[]
   deselectionPrice: number
   setFinalDestination: (selected: IFinalSelected) => void
