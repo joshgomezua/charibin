@@ -93,7 +93,7 @@ class Sidebar extends React.Component<IProps, IState> {
   
   customItemRenderer = (option: IOptions) => 
     (<StyledItem 
-      color={this.isCountry(option) ? '#ce3f3f' : '#60fffb'}
+      color={this.isCountry(option) ? '#4142a6' : '#5dc3fd'}
     >
       <div onClick={() => {option.methods.addItem(option.item)}}>
       <input type="checkbox" checked={option.methods.isSelected(option.item)} />
@@ -104,7 +104,7 @@ class Sidebar extends React.Component<IProps, IState> {
 
 
   customOptionRenderer = (option: IOption) => (
-    <StyledOption color={option.item.country && (option.item.country === 'country') ? '#ce3f3f' : '#60fffb'} >
+    <StyledOption color={option.item.country && (option.item.country === 'country') ? '#4142a6' : '#5dc3fd'} >
       {option.item.label}
       <span
         onClick={() => option.methods.removeItem(null, option.item)}
