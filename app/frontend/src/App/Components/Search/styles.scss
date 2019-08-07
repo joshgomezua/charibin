@@ -403,6 +403,10 @@
     height: rc(22);
     border: none;
     border-radius: 3px;
+
+    &::placeholder {
+      text-transform: none;
+    }
     
     &:focus {
       outline: none;

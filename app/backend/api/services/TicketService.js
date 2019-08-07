@@ -543,15 +543,18 @@ module.exports = {
   },
 
   departureBeforeDestination (departureTickets, destinationTickets, trip) {
+    console.log("3")
     let bool = false;
     departureTickets.forEach((departure) => {
       destinationTickets.forEach((destination) => {
         if (departure.date.start.getTime() < destination.date.start.getTime()) {
           trip.tickets.push(destination)
+          console.log("4")
           bool = true;
         }
       })
     })
+    console.log("5")
     return bool;
   },
 
@@ -567,21 +570,26 @@ module.exports = {
     const oppositeTrip = await this.hasOpposite(trip)
     let oppositeTickets = []
     let tripTickets = []
-
+    console.log()
     for (const ticket of trip.tickets) {
       tripTickets.push(await Ticket.findById({_id: ticket._id.toString()}))
     }
+
+    console.log("trip ticket---------------------------", tripTickets)
 
     if (oppositeTrip != null) {
       
       for (const ticket of oppositeTrip.tickets) {
         oppositeTickets.push(await Ticket.findById({_id: ticket.toString()}))
       }
+
+    console.log("opposite ticket-------------------------- ", oppositeTickets )
       
       if (!(tripTickets.length && oppositeTickets.length)) {
+        console.log("1")
         return false;
       } else {
-        
+        console.log("2")
        return this.departureBeforeDestination(tripTickets, oppositeTickets,trip)
       }
     } else {
@@ -601,7 +609,7 @@ module.exports = {
     timezone = +timezone;
 
     const quantity =  adult + youth
-
+    
     const tripMatch =  { active: true , 'departure.name': departure}; 
     
     const ticketMatch = {
@@ -665,21 +673,12 @@ module.exports = {
       }
     ]);
     let res = []
-
     for (const trip of data) {
       if ( await this.hasEnoughTickets(trip)) {
         trip["Adult"] = adult
         trip["Youth"] = youth
         res.push(trip)
       } 
-    }
-    for (let i = 0; i < res.length; i++) {
-      const oppositeTrip = await this.hasOpposite(res[i])
-      oppositeTrip.tickets.forEach((ticketId) => {
-        ticketId = ticketId.toString();
-      })
-      const oppositeTickets =  await Ticket.findById({_id: oppositeTrip.tickets });
-      res[i].tickets.push(oppositeTickets)
     }
 
     res.forEach((trip) => {

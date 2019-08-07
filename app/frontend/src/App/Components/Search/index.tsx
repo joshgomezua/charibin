@@ -42,8 +42,8 @@ export default class Search extends Component<IProps, IState> {
   handleSearch = (departure: string) => {
     const { departures } = this.state
     const tableau = departures.filter((name: string) => name.toLowerCase().includes(departure.toLowerCase()))
-    
-    this.setState({searchResults: tableau})
+    tableau.length !== 0 ? this.setState({searchResults: tableau}) : this.setState({searchResults:["No trips found"]})
+  
   }
 
   toggleListVisibility = (): void => {
@@ -53,11 +53,16 @@ export default class Search extends Component<IProps, IState> {
   handleSelectOption = (el: string): void => {
     const { setDeparture} = this.props
     this.setState({ isListVisible: false })
-    this.setState({ inputValue: el })
-    setDeparture!(el)
+    if (el !== "No trips found " && el !== "No trips available") {
+        this.setState({ inputValue: el })
+        setDeparture!(el)
+    }
   }
 
   renderOptions = (optionsArr: string[]): JSX.Element[] => {
+    if (optionsArr.length === 0) {
+        optionsArr.push("No trips available")
+    }
     return optionsArr.map(
       (el: string): JSX.Element => {
         return (
