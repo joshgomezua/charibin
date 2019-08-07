@@ -59,6 +59,11 @@
       @include respond(tab) {
         font-size: 1.4rem;
       }
+      
+      &::placeholder {
+        text-transform: none;
+      }
+
       &:focus ~ label {
         position: relative;
       }
@@ -404,9 +409,6 @@
     border: none;
     border-radius: 3px;
 
-    &::placeholder {
-      text-transform: none;
-    }
     
     &:focus {
       outline: none;
