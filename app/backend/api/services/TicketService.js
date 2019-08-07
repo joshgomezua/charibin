@@ -671,14 +671,6 @@ module.exports = {
         res.push(trip)
       } 
     }
-    for (let i = 0; i < res.length; i++) {
-      const oppositeTrip = await this.hasOpposite(res[i])
-      oppositeTrip.tickets.forEach((ticketId) => {
-        ticketId = ticketId.toString();
-      })
-      const oppositeTickets =  await Ticket.findById({_id: oppositeTrip.tickets });
-      res[i].tickets.push(oppositeTickets)
-    }
 
     res.forEach((trip) => {
       if (trip.destination.photo) {
