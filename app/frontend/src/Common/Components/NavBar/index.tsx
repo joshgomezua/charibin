@@ -112,14 +112,16 @@ class NavBar extends Component<IProps, IState> {
 
         {isAdminPage ? (
           <div className="navbar__admin">
-            <div className="navbar__admin-email">
+            {/* <div className="navbar__admin-email">
               <img src={userIcon} alt="" />
               <span>{email.toUpperCase()}</span>
-            </div>
+            </div> */}
+            
             <NavLink
-              className={classWithBurger('navbar__link')}
+              className={classWithBurger('navbar__admin-email')}
               to={`${ADMIN_ROUTING.MAIN}${ADMIN_ROUTING.ACCOUNT}`}>
-              ACCOUNT
+              <img src={userIcon} alt="" />
+              <span>{email.toUpperCase()}</span>
             </NavLink>
             <button
               onClick={openPopup}
