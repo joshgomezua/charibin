@@ -97,7 +97,7 @@ class Sidebar extends React.Component<IProps, IState> {
     >
       <div onClick={() => {option.methods.addItem(option.item)}}>
       <input type="checkbox" checked={option.methods.isSelected(option.item)} />
-        <span id='label'><b>{option.item.label}</b>
+        <span id='label'>{option.item.label}
         </span>
       </div>
     </StyledItem>);
