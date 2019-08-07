@@ -23,7 +23,7 @@ export const getTickets = (date: number, page: number, limit: number) =>
     axios.get(`${API_URL}/ticket/${page}/${limit}/${date}`)
 
 export const getTripsDepartureNames = (token: string) =>
-    axios.get(`${API_URL}/tripDeparturenames`, {
+    axios.get(`${API_URL}/tripDeparturenames/${TIMEZONE_OFFSET}`, {
       headers: { token }
   })
 

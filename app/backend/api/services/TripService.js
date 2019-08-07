@@ -3,6 +3,7 @@
 const { Trip, Ticket, City } = require('../models');
 const Aggregate = require('./Aggregate');
 const Utilities = require('./Utilities');
+const custom = require('../../config/custom')
 var ObjectId = require('mongoose').Types.ObjectId;
 
 module.exports = {
@@ -130,16 +131,20 @@ module.exports = {
     return null
   },
 
-  async hasEnoughTickets (trip) {
+  async hasEnoughTickets (trip,timezone) {
     const oppositeTrip = await this.hasOpposite(trip)
     let oppositeTickets = []
     let tripTickets = []
+
+    custom.TodayWithTimezone = Date.now() - timezone;
 
     for (const ticket of trip.tickets) {
       tripTickets.push(await Ticket.findById({_id: ticket.toString()}))
     }
 
-    
+    tripTickets = tripTickets.filter((ticket) => 
+         ticket.date.start > new Date(custom.TodayWithTimezone + global.config.custom.time.day))
+
     if (oppositeTrip != null) {
       for (const trip of oppositeTrip) {
             for (const ticket of trip.tickets) {
@@ -148,21 +153,13 @@ module.exports = {
             }
       }
 
-      const departureTickets =  tripTickets.filter((ticket) => {
-        return (trip.departure.name === ticket.departure && trip.destination.name === ticket.destination)
-      })
-  
-      const destinationTickets = oppositeTickets.filter((ticket) => {
-          return (trip.departure.name === ticket.destination && trip.destination.name === ticket.departure)
-      })
-
-
-      if (!(departureTickets.length && destinationTickets.length)) {
+      
+      if (!(tripTickets.length && oppositeTickets.length)) {
        
         return false;
       } else {
-      
-       return this.departureBeforeDestination(departureTickets, destinationTickets,trip)
+        
+       return this.departureBeforeDestination(tripTickets, oppositeTickets,trip)
       }
     } else {
       return false}
@@ -180,12 +177,13 @@ module.exports = {
     return 0
   },
 
-  async getListOfDepartureNames () {
+  async getListOfDepartureNames ({timezone}) {
+    timezone = +timezone
     const trips = await Trip.find({ deleted: false });
     let departuresNames = []
     
      for (const trip of trips) {
-      if ( await this.hasEnoughTickets(trip) && !this.hasName(trip.departure.name, departuresNames)){
+      if ( await this.hasEnoughTickets(trip, timezone) && !this.hasName(trip.departure.name, departuresNames)){
           departuresNames.push(trip.departure.name)
       } 
     }
