@@ -34,7 +34,8 @@ const BulkChangeModal: React.SFC<IProps> = ({
           editableData
             ? editableData
             : {
-                price: 0,
+                adultPrice: 0,
+                childPrice: 0,
                 discount: 0,
                 duration: 0,
                 deselectionPrice: 0,
@@ -46,7 +47,10 @@ const BulkChangeModal: React.SFC<IProps> = ({
               }
         }
         validationSchema={Yup.object().shape({
-          price: Yup.number().min(0),
+          adultPrice: Yup.number()
+            .min(0),
+          childPrice: Yup.number()
+            .min(0),
           discount: Yup.number().min(0),
           duration: Yup.number().min(0).max(100000),
           timeSelection: Yup.object().shape({
@@ -74,19 +78,55 @@ const BulkChangeModal: React.SFC<IProps> = ({
                 <Field
                   isPrefix
                   type="number"
-                  name="price"
-                  label="Set Price"
+                  name="adultPrice"
+                  label="Set Adult Price"
                   className="spon-trip-modal__input"
                   component={Input}
                 />
 
                 <ErrorMessage
-                  name="price"
+                  name="adultPrice"
                   component="div"
                   className="spon-trip-modal__error"
                 />
               </div>
 
+              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt">
+                <Field
+                  isPrefix
+                  type="number"
+                  name="childPrice"
+                  label="Set Child Price"
+                  className="spon-trip-modal__input"
+                  component={Input}
+                />
+
+                <ErrorMessage
+                  name="childPrice"
+                  component="div"
+                  className="spon-trip-modal__error"
+                />
+              </div>
+
+              <div className="spon-trip-modal__input-cnt">
+                <Field
+                  isSuffix
+                  type="number"
+                  name="discount"
+                  label="Discount"
+                  className="spon-trip-modal__input"
+                  component={Input}
+                />
+
+                <ErrorMessage
+                  name="discount"
+                  component="div"
+                  className="spon-trip-modal__error"
+                />
+              </div>
+            </div>
+
+            <div className="spon-trip-modal__row">  
               <div className="spon-trip-modal__input-cnt">
                 <Field
                   isPrefix
@@ -120,28 +160,9 @@ const BulkChangeModal: React.SFC<IProps> = ({
                   className="spon-trip-modal__error"
                 />
               </div>
-
-              <div className="spon-trip-modal__input-cnt spon-trip-modal__input-cnt--small">
-                <Field
-                  isSuffix
-                  type="number"
-                  name="discount"
-                  label="Discount"
-                  className="spon-trip-modal__input"
-                  component={Input}
-                />
-
-                <ErrorMessage
-                  name="discount"
-                  component="div"
-                  className="spon-trip-modal__error"
-                />
-              </div>
-
             </div>
 
             <div className="spon-trip-modal__row spon-trip-modal__row--bordered">
-              
               <div className="spon-trip-modal__input-cnt">
                 <Field
                   type="number"

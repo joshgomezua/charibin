@@ -50,7 +50,8 @@ export interface IScheduledTrip {
   }
   discount: number
   duration: number
-  price: number
+  adultPrice: number
+  childPrice: number
   trip: string
 
 }
@@ -80,7 +81,6 @@ export interface ITrip {
   destination: ICity
   carrier: string
   photo?: string
-  price: number
   adultPrice: number
   childPrice: number
   isFromAPI: boolean

@@ -12,6 +12,9 @@ export const rangeColumns = (
   redirectToCreateTicket: (trip: { _id: string; departure: string; destination: string }) => void
 ) => [
   {
+    width: 5,
+  },
+  {
     accessor: 'date.start',
     width: 142,
     Cell: (props: RowRenderProps) => moment(props.value).format('MMM DD, YYYY')
@@ -33,9 +36,13 @@ export const rangeColumns = (
     width: 210,
   },
   {
-    accessor: 'price',
+    Header: 'Prices',
+    accessor: 'adultPrice',
     width: 100,
-    Cell: (props: RowRenderProps) => `£ ${props.value}`
+    Cell: (props: RowRenderProps) => (<div>
+      A: $ {props.value}<br/>C: $ {props.row._original.childPrice}
+    </div>
+    )
   },
   {
     accessor: 'discount',

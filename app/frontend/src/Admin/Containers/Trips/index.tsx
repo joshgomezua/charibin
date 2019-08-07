@@ -39,6 +39,7 @@ import { columns } from './columns'
 import { rangeColumns } from './rangeColumns';
 import { SortingRule, ControlledStateOverrideProps } from 'react-table';
 import BulkChangeModal from 'src/Admin/Components/BulkChangeModal';
+import BulkTimeSelectionModal from 'src/Admin/Components/BulkTimeSelectionModal';
 
 class TripsContainer extends React.Component<
   RouteComponentProps<{}> & IProps,
@@ -372,7 +373,8 @@ class TripsContainer extends React.Component<
       },
       discount: this.state.editSchedule.discount,
       duration: this.state.editSchedule.duration,
-      price: this.state.editSchedule.price,
+      adultPrice: this.state.editSchedule.adultPrice,
+      childPrice: this.state.editSchedule.childPrice
     }
     
     this.setState({ isModalLoading: true })
@@ -521,11 +523,73 @@ class TripsContainer extends React.Component<
         this.setState({ isModalLoading: false })
         this.props.showError(err, ERRORS.BULK_EDIT)
 
+        return Promise.reject()
       })
     }
-    
     this.props.showSuccess(SUCCESS.BULK_EDIT)
-    return Promise.reject()
+
+    return Promise.resolve()
+  }
+
+  handleBulkTimeSelection = async (data: IEditTimeSchedule) => {
+    const token = getToken()
+    const { currentPage } = this.state
+   
+    for(let index: number = 0; index < this.state.selection.length; index++){
+      let trip: any;
+      await getSingleTrip(this.state.selection[index].id, token).then(
+        res => trip = res.data
+      )
+
+      let updatedTrip: IEditTimeSchedule = this.checkforChangedTimeSelection(data, trip)
+
+      this.setState({ isModalLoading: true })
+      updateTimeSelection(this.state.selection[index].id, updatedTrip, token)
+      .then(res => {
+        this.modal.current!.close()
+        this.handleFetchItems(currentPage, 10)
+        this.handleRestartModalType()
+      })
+      .catch(err => {
+        this.setState({ isModalLoading: false })
+        this.props.showError(err, ERRORS.BULK_EDIT)
+
+        return Promise.reject()
+      })
+    }
+    this.props.showSuccess(SUCCESS.BULK_EDIT)
+
+    return Promise.resolve()
+  }
+
+  handleBulkScheduleCreation = async (data: INewSchedule) => {
+    const token = getToken()
+    const { currentPage } = this.state
+   
+    for(let index: number = 0; index < this.state.selection.length; index++){
+      
+      let newSchedule: INewSchedule = {
+        ...data,
+        trip: this.state.selection[index].id
+      }
+
+      this.setState({ isModalLoading: true })
+      addSchedule(newSchedule, token)
+      .then(res => {
+        this.modal.current!.close()
+        this.handleFetchItems(currentPage, 10)
+        this.handleRestartModalType()
+      })
+      .catch(err => {
+        this.setState({ isModalLoading: false })
+        this.props.showError(err, ERRORS.BULK_EDIT)
+
+        return Promise.reject()
+      })
+    }
+    this.props.showSuccess(SUCCESS.BULK_EDIT)
+
+    return Promise.resolve()
   }
 
   checkforChangedData = (data: IBulkChange, trip: any) => {
@@ -533,8 +597,11 @@ class TripsContainer extends React.Component<
     const fakeStatus: boolean | undefined  = this.assignBoolean(data.fake)
     let updatedTrip: INewData = trip;
     
-    if(data.price > 0){
-      updatedTrip.price = data.price
+    if(data.childPrice > 0){
+      updatedTrip.childPrice = data.childPrice
+    }
+    if(data.adultPrice > 0){
+      updatedTrip.adultPrice = data.adultPrice
     }
     if(data.discount > 0){
       updatedTrip.discount = data.discount
@@ -556,6 +623,19 @@ class TripsContainer extends React.Component<
     }
   
     return updatedTrip
+  }
+
+  checkforChangedTimeSelection = (data: IEditTimeSchedule, trip: any) => {
+    let updatedTS: IEditTimeSchedule = trip;
+
+    for(let range in data.timeSelection){
+      if(data.timeSelection[range] > 0){
+        updatedTS.timeSelection[range] = data.timeSelection[range]
+      }
+    }
+    updatedTS = this.checkNewDefaultTimeSelection(updatedTS)
+    
+    return updatedTS
   }
 
   handleRedirectToCreateTicket = (trip: { _id: string; departure: string; destination: string }) => {
@@ -899,6 +979,22 @@ class TripsContainer extends React.Component<
               isLoading={isModalLoading}
               closeModal={this.handleCloseModal}
               handleSubmit={this.handleBulkChange}
+            />
+          ) : null}
+
+          {modalType === MODAL_TYPE.BULK_TIME_SELECTION ? (
+            <BulkTimeSelectionModal
+              isLoading={isModalLoading}
+              closeModal={this.handleCloseModal}
+              handleSubmit={this.handleBulkTimeSelection}
+            />
+          ) : null}
+
+          {modalType === MODAL_TYPE.BULK_SCHEDULE ? (
+            <ScheduleModal
+              isLoading={isModalLoading}
+              closeModal={this.handleCloseModal}
+              handleSubmit={this.handleBulkScheduleCreation}
             />
           ) : null}
         </Modal>

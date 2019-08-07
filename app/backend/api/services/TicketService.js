@@ -11,6 +11,9 @@ const client1 = redis.createClient({ host: global.config.connection.redis.host, 
 const subscriber1 = redis.createClient({ host: global.config.connection.redis.host, db: 1 });
 const custom = require('../../config/custom')
 const ObjectId = require('mongoose').Types.ObjectId;
+const photoPrefix = 'data:image/png;base64,';
+var fs = require('fs');
+const PHOTO_ENCODING = 'Base64';
 
 client1.send_command('config', ['set','notify-keyspace-events','Ex'], onExpiredTicket);
 
@@ -152,7 +155,6 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
     'date.start': { $gte: new Date(selectedTrip.dateStart).setHours(0,0,0,0), $lte: new Date(selectedTrip.dateStart).setHours(23,59,59,999) }
   }).limit(1);
   if(!arrivalTicket) throw { status: 404, message: 'TICKET.ARRIVAL.NOT.EXIST%', args: [new Date(selectedTrip.dateStart).toDateString()] };
-
   const [departureTicket] = await Ticket.find({
     //trip: trip._id,
     active: true,
@@ -164,7 +166,6 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
   }).limit(1);
   if(!departureTicket) throw { status: 404, message: 'TICKET.DEPARTURE.NOT.EXIST%', args: [new Date(selectedTrip.dateEnd).toDateString()] };
   let reservedArrivalTicket;
-
   if (quantity <= (arrivalTicket.quantity - (arrivalTicket.soldTickets + arrivalTicket.reservedQuantity))) {
     reservedArrivalTicket = await Ticket.findOneAndUpdate({ _id: arrivalTicket._id, active: true, deleted: false, quantity: { $gte: quantity } }, {
       $inc: {reservedQuantity: quantity},
@@ -174,7 +175,6 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
   } else {
     throw {status: 404, message: 'TICKET.BOOK.NOT.ENOUGH', args:[new Date(selectedTrip.dateEnd).toDateString()] }
   }
-  
   let reservedDepartureTicket;
   if (quantity <= (departureTicket.quantity - (departureTicket.soldTickets + departureTicket.reservedQuantity))) {
     reservedDepartureTicket = await Ticket.findOneAndUpdate({ _id: departureTicket._id, active: true, deleted: false, quantity: { $gte: quantity } }, {
@@ -367,9 +367,6 @@ module.exports = {
   },
 
   async book ({ quantity, trips, ownerHash }) {
-
-    console.log('quantity ', quantity)
-    
     if(ownerHash) {
       const isOwnerExist = await TicketOwner.findOne({ owner: ownerHash });
       if(isOwnerExist) return isOwnerExist;
@@ -667,7 +664,6 @@ module.exports = {
         }
       }
     ]);
-
     let res = []
 
     for (const trip of data) {
@@ -677,9 +673,23 @@ module.exports = {
         res.push(trip)
       } 
     }
-    
+    for (let i = 0; i < res.length; i++) {
+      const oppositeTrip = await this.hasOpposite(res[i])
+      oppositeTrip.tickets.forEach((ticketId) => {
+        ticketId = ticketId.toString();
+      })
+      const oppositeTickets =  await Ticket.findById({_id: oppositeTrip.tickets });
+      res[i].tickets.push(oppositeTickets)
+    }
 
-    return res
+    res.forEach((trip) => {
+      if (trip.destination.photo) {
+        const value = photoPrefix + fs.readFileSync(trip.destination.photo, PHOTO_ENCODING);
+        trip.destination.photo = value;
+      }
+    });
+
+    return res;
   },
 
   async findCRM ({dateStart, dateEnd, from, to, carrier, page, limit}) {
@@ -698,6 +708,7 @@ module.exports = {
           results: [
             {
               $match: {
+                active: true,
                 deleted: false,
                 'date.start': { $gte: new Date(dateStart) },
               }

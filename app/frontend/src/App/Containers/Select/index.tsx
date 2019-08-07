@@ -162,7 +162,7 @@ class SelectContainer extends Component<
     if (token) {
       data.ownerHash = token
     }
-    console.log("data ", data)
+
     API.bookTrips(data)
       .then(res => {
         const bookedTrips = res.data.trips
