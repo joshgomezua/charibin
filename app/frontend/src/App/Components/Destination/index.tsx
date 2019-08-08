@@ -181,6 +181,7 @@ export default class Destination extends Component<IProps, IState> {
         childPrice: data.childPrice,
         departure: data.departure,
         destination: data.destination,
+        typeOfTransport: data.typeOfTransport,
         type: 'selectedTrid',
         dateStart: +moment.utc(dates.start).add(offset, 'minutes'),
         dateEnd: +moment
@@ -301,23 +302,9 @@ export default class Destination extends Component<IProps, IState> {
     }))
   }
 
-  getTicketsType = (tickets: ITicket[]) => {
-    return tickets
-      .reduce((types: string[], ticket: ITicket) => {
-        if (!types.includes(ticket.type)) {
-          return [...types, ticket.type]
-        }
-        return types
-      }, [])
-      .sort()
-  }
-
   render() {
     const { selected, deselect, data } = this.props
-    const { discount, duration, destination, adultPrice, childPrice } = data
-    const ticketsTypes = this.getTicketsType(
-      data.type === 'trip' ? data.tickets : []
-    )
+    const { discount, duration, destination, adultPrice, childPrice, typeOfTransport } = data
     const { calendar, dates } = this.state
 
     const durationTime = moment.duration({ minutes: duration }) as IDuration
@@ -336,13 +323,13 @@ export default class Destination extends Component<IProps, IState> {
           <div className="destination-bottom-row">
             {!deselect && (
               <div destination-bottom-types>
-                {ticketsTypes.map(
+                {typeOfTransport.map(
                   (type: string, index: number) =>
                     (
                       <span
                         key={index}
                         className={`destination-bottom-type ${
-                          index === 0
+                          type === 'Train'
                             ? 'destination-bottom-type--left'
                             : 'destination-bottom-type--right'
                         }`}
@@ -358,22 +345,24 @@ export default class Destination extends Component<IProps, IState> {
             )}
             {deselect && (
               <div destination-bottom-types>
-                {<span
-                  className={`destination-bottom-type destination-bottom-type--left`}
-                  style={{
-                    borderColor: '#12b459',
-                    color: '#12b459'
-                  }}>
-                  Bus
-                </span>}
-                {<span
-                  className={`destination-bottom-type destination-bottom-type--right`}
-                  style={{
-                    borderColor: '#12b459',
-                    color: '#12b459'
-                  }}>
-                  Train
-                </span>}
+               {typeOfTransport.map(
+                  (type: string, index: number) =>
+                    (
+                      <span
+                        key={index}
+                        className={`destination-bottom-type ${
+                          type === 'Train'
+                            ? 'destination-bottom-type--left'
+                            : 'destination-bottom-type--right'
+                        }`}
+                        style={{
+                          borderColor: '#12b459',
+                          color: '#12b459'
+                        }}>
+                        {type}
+                      </span>
+                    )
+                )}
               </div>
             )}
             <p className="destination-bottom-duration">

@@ -32,6 +32,7 @@ import { ISelectedData, ITrip} from '../../Utils/appTypes'
 import { IState, IProps, IFiltersChange, IBookedType } from './types'
 import './styles.scss'
 import Title from 'src/App/Components/Title'
+import { ITicket } from 'src/Common/Utils/globalTypes';
 
 const MAX = 5
 
@@ -92,14 +93,27 @@ class SelectContainer extends Component<
       departure
     )
       .then(({ data }) => {
+        data.forEach((trip: any) => {
+          trip['typeOfTransport'] = this.getTicketsType(trip.tickets);
+        })
         this.setState((state: IState) => ({
           isLoading: false,
           trips: [...data],
         }))
-
         return data.length
       })
       .catch(err => console.log(err.response))
+  }
+
+  getTicketsType = (tickets: ITicket[]) => {
+    return tickets
+      .reduce((types: string[], ticket: ITicket) => {
+        if (!types.includes(ticket.type)) {
+          return [...types, ticket.type]
+        }
+        return types
+      }, [])
+      .sort()
   }
 
   handleFetchInitialTripsWithFilter = () => {
