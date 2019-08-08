@@ -338,7 +338,7 @@ export default class Destination extends Component<IProps, IState> {
               <div destination-bottom-types>
                 {ticketsTypes.map(
                   (type: string, index: number) =>
-                    index !== 0 && (
+                    (
                       <span
                         key={index}
                         className={`destination-bottom-type ${
