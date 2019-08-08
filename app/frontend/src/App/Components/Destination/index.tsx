@@ -315,7 +315,8 @@ export default class Destination extends Component<IProps, IState> {
   render() {
     const { selected, deselect, data } = this.props
     const { discount, duration, destination, adultPrice, childPrice } = data
-  
+
+    
     const ticketsTypes = this.getTicketsType(
       data.type === 'trip' ? data.tickets : []
     )
@@ -381,6 +382,7 @@ export default class Destination extends Component<IProps, IState> {
               approx. {formatedDuration}
             </p>
           </div>
+          {console.log(adultPrice, childPrice)}
           <p className="destination-bottom-title">{`${this.props.data.destination.name}`}</p>
           <p className="destination-bottom-luggage">Luggage included</p>
           <p className="destination-bottom-price">{`£ ${2*(adultPrice * this.props.data["Adult"] + childPrice * this.props.data["Youth"]) }${" "} 

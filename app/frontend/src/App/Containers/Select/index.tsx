@@ -195,6 +195,7 @@ class SelectContainer extends Component<
           trip["Youth"] = data.Youth
         })
         
+        console.log(selectedTrips)
         this.props.updateSelected(selectedTrips)
         this.props.history.push('/destinations/deselect')
       })
