@@ -168,7 +168,7 @@ const ScheduleModal: React.SFC<IProps> = ({
                     })
                   }}
                 />
-      {console.log(values.date.end)}
+
                 <ErrorMessage
                   name="date.end"
                   component="div"
