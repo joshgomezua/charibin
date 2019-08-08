@@ -19,6 +19,7 @@ export interface ITrip {
     arrivalTicketsQty: number
     departureTicketsQty: number
   }
+  typeOfTransport: string
   
 }
 
@@ -35,6 +36,7 @@ export interface ISelectedData {
   type: 'selectedTrid'
   arrivalTicket?: string
   departureTicket?: string
+  typeOfTransport: string
   departure: ICity,
   destination: ICity
 }

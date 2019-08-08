@@ -32,6 +32,7 @@ import { ISelectedData, ITrip} from '../../Utils/appTypes'
 import { IState, IProps, IFiltersChange, IBookedType } from './types'
 import './styles.scss'
 import Title from 'src/App/Components/Title'
+import { ITicket } from 'src/Common/Utils/globalTypes';
 
 const MAX = 5
 
@@ -96,10 +97,20 @@ class SelectContainer extends Component<
           isLoading: false,
           trips: [...data],
         }))
-
         return data.length
       })
       .catch(err => console.log(err.response))
+  }
+
+  getTicketsType = (tickets: ITicket[]) => {
+    return tickets
+      .reduce((types: string[], ticket: ITicket) => {
+        if (!types.includes(ticket.type)) {
+          return [...types, ticket.type]
+        }
+        return types
+      }, [])
+      .sort()
   }
 
   handleFetchInitialTripsWithFilter = () => {
@@ -166,8 +177,6 @@ class SelectContainer extends Component<
 
     API.bookTrips(data)
       .then(res => {
-        console.log('data ' ,data)
-        console.log('res ', res.data)
         const bookedTrips = res.data.trips
         const selectedTrips = this.props.selected.map((item: ISelectedData) => {
           const filteredTrip: IBookedType = bookedTrips.find(
@@ -195,7 +204,6 @@ class SelectContainer extends Component<
           trip["Youth"] = data.Youth
         })
         
-        console.log(selectedTrips)
         this.props.updateSelected(selectedTrips)
         this.props.history.push('/destinations/deselect')
       })

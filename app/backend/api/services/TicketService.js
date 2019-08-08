@@ -680,6 +680,7 @@ module.exports = {
       if ( await this.hasEnoughTickets(trip)) {
         trip["Adult"] = adult
         trip["Youth"] = youth
+        trip["typeOfTransport"] = trip.type
         res.push(trip)
       } 
     }
