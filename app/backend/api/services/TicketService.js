@@ -670,7 +670,6 @@ module.exports = {
         }
       }
     ]);
-    console.log('data', data)
     let res = []
     for (const trip of data) {
       if ( await this.hasEnoughTickets(trip)) {
