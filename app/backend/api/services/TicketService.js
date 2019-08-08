@@ -670,11 +670,13 @@ module.exports = {
         }
       }
     ]);
+    console.log('data', data)
     let res = []
     for (const trip of data) {
       if ( await this.hasEnoughTickets(trip)) {
         trip["Adult"] = adult
         trip["Youth"] = youth
+        trip["typeOfTransport"] = trip.type
         res.push(trip)
       } 
     }

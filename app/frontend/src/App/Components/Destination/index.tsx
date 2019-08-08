@@ -323,13 +323,11 @@ export default class Destination extends Component<IProps, IState> {
           <div className="destination-bottom-row">
             {!deselect && (
               <div destination-bottom-types>
-                {typeOfTransport.map(
-                  (type: string, index: number) =>
+                {
                     (
                       <span
-                        key={index}
                         className={`destination-bottom-type ${
-                          type === 'Train'
+                          typeOfTransport === 'Train'
                             ? 'destination-bottom-type--left'
                             : 'destination-bottom-type--right'
                         }`}
@@ -337,21 +335,19 @@ export default class Destination extends Component<IProps, IState> {
                           borderColor: '#12b459',
                           color: '#12b459'
                         }}>
-                        {type}
+                        {typeOfTransport}
                       </span>
                     )
-                )}
+                }
               </div>
             )}
             {deselect && (
               <div destination-bottom-types>
-               {typeOfTransport.map(
-                  (type: string, index: number) =>
+               {
                     (
                       <span
-                        key={index}
                         className={`destination-bottom-type ${
-                          type === 'Train'
+                          typeOfTransport === 'Train'
                             ? 'destination-bottom-type--left'
                             : 'destination-bottom-type--right'
                         }`}
@@ -359,10 +355,10 @@ export default class Destination extends Component<IProps, IState> {
                           borderColor: '#12b459',
                           color: '#12b459'
                         }}>
-                        {type}
+                        {typeOfTransport}
                       </span>
                     )
-                )}
+                }
               </div>
             )}
             <p className="destination-bottom-duration">

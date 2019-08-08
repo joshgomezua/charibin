@@ -93,9 +93,7 @@ class SelectContainer extends Component<
       departure
     )
       .then(({ data }) => {
-        data.forEach((trip: any) => {
-          trip['typeOfTransport'] = this.getTicketsType(trip.tickets);
-        })
+        console.log('data', data)
         this.setState((state: IState) => ({
           isLoading: false,
           trips: [...data],
