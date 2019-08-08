@@ -369,7 +369,11 @@ module.exports = {
     }
   },
 
-  async book ({ quantity, trips, ownerHash }) {
+  async book ({ Adult,Youth, trips, ownerHash }) {
+    Adult = +Adult
+    Youth = +Youth
+    const quantity = Adult + Youth 
+    
     if(ownerHash) {
       const isOwnerExist = await TicketOwner.findOne({ owner: ownerHash });
       if(isOwnerExist) return isOwnerExist;
@@ -386,6 +390,7 @@ module.exports = {
 
     const ownerInfo = await TicketOwner.findOne({ owner });
     await RedisService.set(client1, `${owner}`, '', 30);
+    
     return ownerInfo;
   },
 

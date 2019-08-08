@@ -15,7 +15,17 @@ module.exports = {
       maxLength: 100
     },
 
-    quantity: {
+    Adult: {
+      type: 'number',
+      required: true,
+      permission: {
+        create: [ROLE.ADMINISTRATOR, ROLE.GUEST],
+        update: [],
+        find: []
+      },
+    },
+
+    Youth: {
       type: 'number',
       required: true,
       permission: {

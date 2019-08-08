@@ -141,7 +141,7 @@ class DeselectContainer extends Component<
   render() {
     const { selected, deselected, isMax } = this.props
     const { remainingTime } = this.state
-
+    
     return (
       <section className="deselect-cnt">
         <MainBlock className="deselect-cnt-block">
@@ -168,12 +168,14 @@ class DeselectContainer extends Component<
           )}
         </div>
         <section className="deselect-cnt-destinations">
-          {selected.map((item: ISelectedData) => {
+          {selected.map((item: any) => {
+            
             const isSome = deselected.some(
               (deselected: ISelectedData) => deselected.tripId === item.tripId
             )
 
             return !isSome ? (
+              
               <Destination
                 index={item.tripId}
                 key={item.tripId}

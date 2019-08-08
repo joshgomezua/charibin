@@ -28,6 +28,11 @@ class LandingContainer extends Component<RouteComponentProps<{}> & IProps> {
     window.scrollTo(0, 0)
   }
 
+  componentWillMount() {
+    this.props.setQuantity({Adult:1, Youth:0})
+    this.props.setDeparture("")
+  }
+
   onSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     this.props.history.push('/destinations/select')
@@ -37,6 +42,7 @@ class LandingContainer extends Component<RouteComponentProps<{}> & IProps> {
     document.getElementById('slider')!.scrollIntoView({ behavior: 'smooth' })
   }
 
+  
   render() {
     return (
       <section className="landing-cnt">
