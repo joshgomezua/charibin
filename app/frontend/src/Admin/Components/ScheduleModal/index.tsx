@@ -38,8 +38,8 @@ const ScheduleModal: React.SFC<IProps> = ({
         defaultPrice: editDate.timeSelection.defaultPrice,
       },
       date: {
-        start: undefined,
-        end: undefined
+        start: new Date(new Date(editDate.date.start).getTime()+(new Date(editDate.date.start).getTimezoneOffset() * 60000)),
+        end: new Date(new Date(editDate.date.end).getTime()+(new Date(editDate.date.end).getTimezoneOffset() * 60000)),
       },
       active: editDate.active,
     }
@@ -135,6 +135,7 @@ const ScheduleModal: React.SFC<IProps> = ({
                   id="date.start"
                   label="Start date"
                   placeholder="Select date"
+                  isInTicketModal={true}
                   selectedDate={editDate ? (values.date.start as Date) : undefined}
                   onChange={(date: Date) => {
                     handleChange({
@@ -157,7 +158,7 @@ const ScheduleModal: React.SFC<IProps> = ({
                   id="date.end"
                   label="End date"
                   placeholder="Select date"
-                  selectedDate={editDate ? (values.date.end as Date) : undefined}
+                  selectedDate={values.date.end ? (values.date.end as Date) : (values.date.start as Date)}
                   onChange={(date: Date) => {
                     handleChange({
                       target: {
@@ -167,7 +168,7 @@ const ScheduleModal: React.SFC<IProps> = ({
                     })
                   }}
                 />
-
+      {console.log(values.date.end)}
                 <ErrorMessage
                   name="date.end"
                   component="div"

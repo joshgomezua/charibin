@@ -321,6 +321,7 @@ class TicketModal extends React.Component<IProps, IState> {
                     isInTicketModal={true}
                     selectedDate={editDate ? (values.date as Date) : undefined}
                     onChange={(date: Date) => {
+                      console.log(values)
                       handleChange({
                         target: {
                           id: 'date',
@@ -413,6 +414,7 @@ class TicketModal extends React.Component<IProps, IState> {
                             selectedDate={values.date as Date}
                             placeholder="Select date"
                             onChange={(date: Date) => {
+                              console.log(values)
                               handleChange({
                                 target: {
                                   id: 'endDate',
