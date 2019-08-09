@@ -54,14 +54,12 @@ export default class Filters extends React.Component<IProps, IState> {
     const {
       filters: { min, max, start, end }
     } = this.props
-    console.log(start)
-    console.log(end)
 
     const startText = start
-      ? start.toDateString().replace(/(^\w+|\d+$)/g, '')
+      ? new Date(start!.getTime()+(start!.getTimezoneOffset() * 60000)).toDateString().replace(/(^\w+|\d+$)/g, '')
       : 'Departure'
     const endText = end
-      ? end.toDateString().replace(/(^\w+|\d+$)/g, '')
+      ? new Date(end!.getTime()+(end!.getTimezoneOffset() * 60000)).toDateString().replace(/(^\w+|\d+$)/g, '')
       : 'Return'
     const priceText = priceTouched ? `${min} - ${max}` : 'Price'
 
