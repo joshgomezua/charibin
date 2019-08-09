@@ -699,7 +699,7 @@ module.exports = {
   },
 
   isInPriceRange(trip, adult, youth, priceStart, priceEnd) {
-    const totalPrice = (trip.adultPrice * adult) + (trip.childPrice * youth);
+    const totalPrice = 2* ((trip.adultPrice * adult) + (trip.childPrice * youth));
     return totalPrice <= priceEnd && totalPrice >= priceStart;
   },
 

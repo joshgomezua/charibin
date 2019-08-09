@@ -46,7 +46,7 @@ class SelectContainer extends Component<
       start: undefined,
       end: undefined,
       min: 0,
-      max: 300
+      max: 2000
     },
     page: 0,
     isLoading: true,
