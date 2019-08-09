@@ -53,6 +53,8 @@ class SelectContainer extends Component<
     isCalendarOpen: false,
   }
 
+  private filters = React.createRef<Filters>()
+
   componentDidMount() {
     window.scrollTo(0, 0)
     const { quantity,departure } = this.props
@@ -343,6 +345,7 @@ class SelectContainer extends Component<
             setQuantity={this.props.setQuantity}
             quantity={quantity}
             onSubmit={()=>{
+                this.filters.current!.handleClearFilters()
                this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity.Adult,quantity.Youth, departure).then(
               () => {
                 this.setState({ isLoading: false })
@@ -350,7 +353,9 @@ class SelectContainer extends Component<
                   this.attachScrollEvent()
                 }
               }
-            )}}
+            )}
+            
+            }
             initialValue={departure}
           />
           <Steps />
@@ -358,6 +363,7 @@ class SelectContainer extends Component<
         <section className="select-cnt-inner">
           <section className="select-cnt-inner-filters">
             <Filters
+              ref={this.filters}
               onChange={this.handleFilterChange}
               fetchTrips={this.handleFetchInitialTripsWithFilter}
               clearDates={this.handleClearFilterDates}
