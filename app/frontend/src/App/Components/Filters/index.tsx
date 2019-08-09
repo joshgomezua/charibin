@@ -54,6 +54,8 @@ export default class Filters extends React.Component<IProps, IState> {
     const {
       filters: { min, max, start, end }
     } = this.props
+    console.log(start)
+    console.log(end)
 
     const startText = start
       ? start.toDateString().replace(/(^\w+|\d+$)/g, '')
