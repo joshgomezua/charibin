@@ -121,7 +121,6 @@ const ScheduleModal: React.SFC<IProps> = ({
           if (editDate && handleEditSchedule) {
             handleEditSchedule(dataToUpdate).then(() => resetForm())
           } else if (handleSubmit) {
-            console.log(values)
             handleSubmit(values).then(() => resetForm())
           }
         }}
