@@ -38,8 +38,8 @@ const ScheduleModal: React.SFC<IProps> = ({
         defaultPrice: editDate.timeSelection.defaultPrice,
       },
       date: {
-        start: new Date(new Date(editDate.date.start).getTime()+(new Date(editDate.date.start).getTimezoneOffset() * 60000)),
-        end: new Date(new Date(editDate.date.end).getTime()+(new Date(editDate.date.end).getTimezoneOffset() * 60000)),
+        start: undefined,
+        end: undefined
       },
       active: editDate.active,
     }
@@ -121,6 +121,7 @@ const ScheduleModal: React.SFC<IProps> = ({
           if (editDate && handleEditSchedule) {
             handleEditSchedule(dataToUpdate).then(() => resetForm())
           } else if (handleSubmit) {
+            console.log(values)
             handleSubmit(values).then(() => resetForm())
           }
         }}

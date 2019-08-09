@@ -292,6 +292,7 @@ module.exports = {
 
     scheduledTrips: {
       type: 'array',
+      subType: 'object',
       required: false,
       permission: {
         create: [ROLE.ADMINISTRATOR],
@@ -302,6 +303,7 @@ module.exports = {
 
     tickets: {
       type: 'array',
+      subType: 'string',
       required: false,
       permission: {
         create: [],
