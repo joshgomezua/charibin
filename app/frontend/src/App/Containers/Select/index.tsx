@@ -349,7 +349,7 @@ class SelectContainer extends Component<
                this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity.Adult,quantity.Youth, departure).then(
               () => {
                 this.setState({ isLoading: false })
-                if(this.state.trips.length > 10){
+                if(this.state.trips.length >= 10 && this.state.trips.length > 0){
                   this.attachScrollEvent()
                 }
               }
