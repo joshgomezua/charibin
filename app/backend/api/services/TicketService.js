@@ -606,17 +606,6 @@ module.exports = {
     dateEnd = +dateEnd;
     timezone = +timezone;
 
-    console.log('page', page)
-    console.log('limit', limit)
-    console.log('adult', adult)
-    console.log('youth', youth)
-    console.log('priceStart', priceStart)
-    console.log('priceEnd', priceEnd)
-    console.log('dateStart', dateStart)
-    console.log('dateEnd', dateEnd)
-    console.log('timezone', timezone)
-    console.log('departure', departure)
-
     const quantity =  adult + youth
     
     const tripMatch =  { active: true , 'departure.name': departure}; 
@@ -634,14 +623,7 @@ module.exports = {
     else
     {
       ticketMatch.$and.push({ $gt: [ '$$tickets.quantity', 0 ] });
-    }
-
-    // priceEnd >= trip.adultPrice * adult + trip.childPrice * youth
-
-    /* if (priceEnd > 0) {
-      tripMatch.price = { $gte: priceStart, $lte: priceEnd };
-    } */
-      
+    } 
 
     custom.TodayWithTimezone = Date.now() - timezone;
 
@@ -686,7 +668,6 @@ module.exports = {
       }
     ]);
     let res = []
-    console.log('data', data)
     for (const trip of data) {
       if ( await this.hasEnoughTickets(trip)) {
         trip["Adult"] = adult

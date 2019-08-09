@@ -126,7 +126,6 @@ class SelectContainer extends Component<
           filters: { min, max, start, end }
         } = this.state
         const { quantity,departure } = this.props
-        console.log('test')
 
         this.handleFetchTrips(
           page,
