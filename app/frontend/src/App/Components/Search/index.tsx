@@ -87,7 +87,7 @@ export default class Search extends Component<IProps, IState> {
       .catch(err => console.log(err.response))
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.handleFetchTripsNames()
   }
 
