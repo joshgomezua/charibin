@@ -55,6 +55,7 @@
       background-color: transparent;
       z-index: 2;
       text-transform: capitalize;
+      width: 100%;
 
       @include respond(tab) {
         font-size: 1.4rem;
@@ -62,6 +63,7 @@
       
       &::placeholder {
         text-transform: none;
+        color: 	#909090;
       }
 
       &:focus ~ label {

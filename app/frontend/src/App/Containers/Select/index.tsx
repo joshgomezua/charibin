@@ -166,7 +166,8 @@ class SelectContainer extends Component<
 
     const data: IBookedData = {
       departure,
-      quantity: quantity.Adult + quantity.Youth,
+      Adult: quantity.Adult, 
+      Youth: quantity.Youth,
       trips: bookedTrips
     }
 
@@ -197,7 +198,12 @@ class SelectContainer extends Component<
             selected: selectedTrips
           }
         })
-
+        
+        selectedTrips.forEach((trip) => {
+          trip["Adult"] = data.Adult
+          trip["Youth"] = data.Youth
+        })
+        
         this.props.updateSelected(selectedTrips)
         this.props.history.push('/destinations/deselect')
       })

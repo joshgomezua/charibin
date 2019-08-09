@@ -20,7 +20,7 @@ export default class Search extends Component<IProps, IState> {
     searchResults: [],
     isListVisible: false
   }
-
+  
   changeInput =  (e: React.ChangeEvent<HTMLInputElement>) => {
     const { setDeparture } = this.props
     e.preventDefault()
@@ -87,7 +87,7 @@ export default class Search extends Component<IProps, IState> {
       .catch(err => console.log(err.response))
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.handleFetchTripsNames()
   }
 
@@ -107,13 +107,14 @@ export default class Search extends Component<IProps, IState> {
   }
 
   selectIncrement = (e: React.MouseEvent<HTMLButtonElement>, id: string) => {
+
     e.preventDefault()
-    if (this.props.quantity.Adult < 6 && id === 'Adult') {
+    if (this.props.quantity.Youth + this.props.quantity.Adult < 6 && id === 'Adult') {
       this.props.setQuantity!({Adult:this.props.quantity.Adult + 1, Youth:this.props.quantity.Youth})
       this.setState({passengers:{Adult: ++this.state.passengers.Adult,
         Youth: this.state.passengers.Youth
       }})
-    } else if (this.props.quantity.Youth < 6 && id === 'Youth') {
+    } else if (this.props.quantity.Youth + this.props.quantity.Adult < 6 && id === 'Youth') {
       this.props.setQuantity!({Adult:this.props.quantity.Adult, Youth:this.props.quantity.Youth + 1})
       this.setState({passengers:{Adult: this.state.passengers.Adult,
         Youth: ++this.state.passengers.Youth
@@ -122,7 +123,14 @@ export default class Search extends Component<IProps, IState> {
   }
 
   Input = () => {
-    const { inputValue, isListVisible } = this.state
+    const { inputValue, isListVisible, passengers} = this.state
+    if ( inputValue !== this.props.initialValue as string ) {
+      this.setState({inputValue: this.props.initialValue as string})
+    }
+
+    if (passengers !== this.props.quantity) {
+      this.setState({passengers: this.props.quantity})
+    }
     const dropdownElementClass = classnames('search-dropdown__element', {
       'search-dropdown__element--active': isListVisible
     })

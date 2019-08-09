@@ -25,6 +25,7 @@ const initialState = {
 }
 
 export const tripsReducer = (state = initialState, action: ITipsActions) => {
+
   switch (action.type) {
     case TRIPS_ACTIONS.ADD_SELECTED:
       return { ...state, selected: [...state.selected, action.selected] }

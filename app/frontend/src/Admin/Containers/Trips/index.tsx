@@ -130,10 +130,10 @@ class TripsContainer extends React.Component<
     }
   }
 
-  handleFetchTripSchedule = (id: string) => {
+  handleFetchTripSchedule = async (id: string) => {
     const token = getToken()
     if (token) {
-      getSingleScheduledTrip(id, token)
+      await getSingleScheduledTrip(id, token)
         .then(res => {
           this.setState({ editSchedule: res.data })
         })
@@ -141,6 +141,7 @@ class TripsContainer extends React.Component<
           this.modal.current!.close()
           this.props.showError(err)
         })
+      console.log('Fetch:',this.state.editSchedule)
     }
   }
 
@@ -418,6 +419,7 @@ class TripsContainer extends React.Component<
       },
       trip: this.state.editData._id,
     }
+    console.log('addSchedule:', newSchedule)
     this.setState({ isModalLoading: true })
     return addSchedule(newSchedule, token)
       .then(res => {
@@ -511,7 +513,7 @@ class TripsContainer extends React.Component<
       )
 
       let updatedTrip: INewData = this.checkforChangedData(data, trip)
-
+      console.log(updatedTrip)
       this.setState({ isModalLoading: true })
       updateTrip(this.state.selection[index].id, updatedTrip, token)
       .then(res => {
@@ -839,6 +841,8 @@ class TripsContainer extends React.Component<
       editSchedule,
       modal: { type: modalType, heading: modalHeading }
     } = this.state
+
+    console.log(trips)
 
     const usedDeparture: string[] = [];
     const usedDestination: string[] = [];

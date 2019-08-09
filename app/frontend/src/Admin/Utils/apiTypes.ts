@@ -1,3 +1,4 @@
+import { IScheduledTrip } from "src/Common/Utils/globalTypes";
 
 
 export interface ILoginForm {
@@ -55,6 +56,7 @@ export interface INewTrip {
     _8to10PM?: number
     _10to12AM?: number
   }
+  scheduledTrips?: IScheduledTrip[]
   fake: boolean
   active: boolean
   type: string

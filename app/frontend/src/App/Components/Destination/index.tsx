@@ -365,10 +365,12 @@ export default class Destination extends Component<IProps, IState> {
               approx. {formatedDuration}
             </p>
           </div>
+  
           <p className="destination-bottom-title">{`${this.props.data.destination.name}`}</p>
           <p className="destination-bottom-luggage">Luggage included</p>
-          <p className="destination-bottom-price">{`£ ${adultPrice * this.props.data["Adult"] + childPrice * this.props.data["Youth"] }${" "} 
-                                                            (${" "}${this.props.data["Adult"] + this.props.data["Youth"]}${this.props.data["Adult"] + this.props.data["Youth"] > 1 ? " personnes" : " personne"} )`}</p>
+          <p className="destination-bottom-price">{`£ ${2*(adultPrice * this.props.data["Adult"] + childPrice * this.props.data["Youth"]) }${" "} 
+                                                            /${" "}${this.props.data["Adult"] + this.props.data["Youth"] > 1 ?  `${this.props.data["Adult"] + this.props.data["Youth"]} passengers`  :
+                                                                                               " passenger"}`}</p>
           {calendar && <this.CalendarBlock />}
           {!selected &&
             !deselect && (
