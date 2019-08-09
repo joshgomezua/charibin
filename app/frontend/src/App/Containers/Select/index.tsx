@@ -46,12 +46,14 @@ class SelectContainer extends Component<
       start: undefined,
       end: undefined,
       min: 0,
-      max: 300
+      max: 2000
     },
     page: 0,
     isLoading: true,
     isCalendarOpen: false,
   }
+
+  private filters = React.createRef<Filters>()
 
   componentDidMount() {
     window.scrollTo(0, 0)
@@ -59,9 +61,9 @@ class SelectContainer extends Component<
     this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity.Adult,quantity.Youth,departure).then(
       () => {
         this.setState({ isLoading: false })
-        if(this.state.trips.length > 11){
+        if(this.state.trips.length >= 10 && this.state.trips.length > 0){
           this.attachScrollEvent()
-        } 
+        }
       }
     )
   }
@@ -266,8 +268,11 @@ class SelectContainer extends Component<
   }
 
   handleFilterChange = (filters: IFiltersChange, callback?: () => void) => {
-    const start = filters.start ? new Date(filters.start.getTime() - (filters.start.getTimezoneOffset() * 60000)) : undefined
-    const end = filters.end ? new Date(filters.end.getTime() - (filters.end.getTimezoneOffset() * 60000)) : undefined
+    const start = filters.start ? new Date(filters.start.getTime() - (filters.start.getTimezoneOffset() * 60000)) : 
+                  new Date()
+    const starto = moment(start.getTime()).endOf('month')
+    const end = filters.end ? new Date(filters.end.getTime() - (filters.end.getTimezoneOffset() * 60000)) : new Date(starto.toString())
+                  
 
     filters.start = start
     filters.end = end
@@ -341,14 +346,17 @@ class SelectContainer extends Component<
             setQuantity={this.props.setQuantity}
             quantity={quantity}
             onSubmit={()=>{
+                this.filters.current!.handleClearFilters()
                this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity.Adult,quantity.Youth, departure).then(
               () => {
                 this.setState({ isLoading: false })
-                if(this.state.trips.length > 11){
+                if(this.state.trips.length >= 10 && this.state.trips.length > 0){
                   this.attachScrollEvent()
                 }
               }
-            )}}
+            )}
+            
+            }
             initialValue={departure}
           />
           <Steps />
@@ -356,6 +364,7 @@ class SelectContainer extends Component<
         <section className="select-cnt-inner">
           <section className="select-cnt-inner-filters">
             <Filters
+              ref={this.filters}
               onChange={this.handleFilterChange}
               fetchTrips={this.handleFetchInitialTripsWithFilter}
               clearDates={this.handleClearFilterDates}

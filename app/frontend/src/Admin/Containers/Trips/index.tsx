@@ -130,10 +130,10 @@ class TripsContainer extends React.Component<
     }
   }
 
-  handleFetchTripSchedule = (id: string) => {
+  handleFetchTripSchedule = async (id: string) => {
     const token = getToken()
     if (token) {
-      getSingleScheduledTrip(id, token)
+      await getSingleScheduledTrip(id, token)
         .then(res => {
           this.setState({ editSchedule: res.data })
         })

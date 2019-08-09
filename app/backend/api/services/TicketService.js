@@ -615,7 +615,7 @@ module.exports = {
 
     const quantity =  adult + youth
     
-    const tripMatch =  { active: true , 'departure.name': departure}; 
+    const tripMatch =  { active: true , 'departure.name': departure, }; 
     
     const ticketMatch = {
       $and: [
@@ -630,10 +630,7 @@ module.exports = {
     else
     {
       ticketMatch.$and.push({ $gt: [ '$$tickets.quantity', 0 ] });
-    }
-
-    if(priceEnd > 0)
-      tripMatch.price = { $gte: priceStart, $lte: priceEnd };
+    } 
 
     custom.TodayWithTimezone = Date.now() - timezone;
 
@@ -652,7 +649,6 @@ module.exports = {
       },
       { $sort: { _id: -1 } },
       Aggregate.populateOne('tickets', 'tickets', '_id'),
-      ...Aggregate.skipAndLimit(page, limit),
       {
         $project: {
           _id: 1,
@@ -687,14 +683,37 @@ module.exports = {
       } 
     }
 
+    if (priceEnd > 0) {
+      const finalRes = res.filter((trip) => this.isInPriceRange(trip, adult, youth, priceStart, priceEnd))
+      res = [];
+      res = [...finalRes];
+    }
+
+    const size = ((page+1) * limit);
+
+    let preRes = [];
+    res.forEach((trip, i) => {
+      if (i < size) {
+        preRes.push(trip);
+      }
+    });
+
+    res = preRes;
+
     res.forEach((trip) => {
       if (trip.destination.photo) {
         const value = photoPrefix + fs.readFileSync(trip.destination.photo, PHOTO_ENCODING);
         trip.destination.photo = value;
       }
     });
+    
 
     return res;
+  },
+
+  isInPriceRange(trip, adult, youth, priceStart, priceEnd) {
+    const totalPrice = 2* ((trip.adultPrice * adult) + (trip.childPrice * youth));
+    return totalPrice <= priceEnd && totalPrice >= priceStart;
   },
 
   async findCRM ({dateStart, dateEnd, from, to, carrier, page, limit}) {

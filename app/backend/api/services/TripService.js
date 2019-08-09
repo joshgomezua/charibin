@@ -26,6 +26,9 @@ module.exports = {
      data.destination._id = ObjectId(data.destination._id);
     if(trip) throw { status: 409, message: 'TRIP.EXIST' };
 
+    data.departure = await City.findById(data.departure._id);
+    data.destination = await City.findById(data.destination._id);
+
     if(data.fake) {
       const fakedTripsCount = await Trip.countDocuments({ fake: true });
       if(fakedTripsCount === 2) throw { status: 403, message: 'TRIP.FAKE.LIMIT' };
@@ -46,7 +49,7 @@ module.exports = {
       data.departure =  city;
       ticketData = {...ticketData, departure: data.departure.name}
     } else {
-      data.departure = trip.departure;
+      data.departure = await City.findById(trip.departure._id);
     }
 
     if (data.destination) {
@@ -55,7 +58,7 @@ module.exports = {
       data.destination = city;
       ticketData = {...ticketData, destination: data.destination.name}
     } else {
-      data.destination = trip.destination;
+      data.destination = await City.findById(trip.destination._id);
     }
 
     if (data.carrier) {
