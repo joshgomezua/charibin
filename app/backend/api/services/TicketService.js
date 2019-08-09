@@ -606,6 +606,17 @@ module.exports = {
     dateEnd = +dateEnd;
     timezone = +timezone;
 
+    console.log('page', page)
+    console.log('limit', limit)
+    console.log('adult', adult)
+    console.log('youth', youth)
+    console.log('priceStart', priceStart)
+    console.log('priceEnd', priceEnd)
+    console.log('dateStart', dateStart)
+    console.log('dateEnd', dateEnd)
+    console.log('timezone', timezone)
+    console.log('departure', departure)
+
     const quantity =  adult + youth
     
     const tripMatch =  { active: true , 'departure.name': departure}; 
@@ -625,8 +636,12 @@ module.exports = {
       ticketMatch.$and.push({ $gt: [ '$$tickets.quantity', 0 ] });
     }
 
-    if(priceEnd > 0)
+    // priceEnd >= trip.adultPrice * adult + trip.childPrice * youth
+
+    /* if (priceEnd > 0) {
       tripMatch.price = { $gte: priceStart, $lte: priceEnd };
+    } */
+      
 
     custom.TodayWithTimezone = Date.now() - timezone;
 
@@ -671,6 +686,7 @@ module.exports = {
       }
     ]);
     let res = []
+    console.log('data', data)
     for (const trip of data) {
       if ( await this.hasEnoughTickets(trip)) {
         trip["Adult"] = adult
@@ -678,6 +694,12 @@ module.exports = {
         trip["typeOfTransport"] = trip.type
         res.push(trip)
       } 
+    }
+
+    if (priceEnd > 0) {
+      const finalRes = res.filter((trip) => this.isInPriceRange(trip, adult, youth, priceStart, priceEnd))
+      res = [];
+      res = [...finalRes];
     }
 
     res.forEach((trip) => {
@@ -688,6 +710,11 @@ module.exports = {
     });
 
     return res;
+  },
+
+  isInPriceRange(trip, adult, youth, priceStart, priceEnd) {
+    const totalPrice = (trip.adultPrice * adult) + (trip.childPrice * youth);
+    return totalPrice <= priceEnd && totalPrice >= priceStart;
   },
 
   async findCRM ({dateStart, dateEnd, from, to, carrier, page, limit}) {

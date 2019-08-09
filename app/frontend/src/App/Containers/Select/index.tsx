@@ -126,6 +126,7 @@ class SelectContainer extends Component<
           filters: { min, max, start, end }
         } = this.state
         const { quantity,departure } = this.props
+        console.log('test')
 
         this.handleFetchTrips(
           page,
@@ -259,8 +260,11 @@ class SelectContainer extends Component<
   }
 
   handleFilterChange = (filters: IFiltersChange, callback?: () => void) => {
-    const start = filters.start ? new Date(filters.start.getTime() - (filters.start.getTimezoneOffset() * 60000)) : undefined
-    const end = filters.end ? new Date(filters.end.getTime() - (filters.end.getTimezoneOffset() * 60000)) : undefined
+    const start = filters.start ? new Date(filters.start.getTime() - (filters.start.getTimezoneOffset() * 60000)) : 
+                  new Date()
+    const starto = moment(start.getTime()).endOf('month')
+    const end = filters.end ? new Date(filters.end.getTime() - (filters.end.getTimezoneOffset() * 60000)) : new Date(starto.toString())
+                  
 
     filters.start = start
     filters.end = end
