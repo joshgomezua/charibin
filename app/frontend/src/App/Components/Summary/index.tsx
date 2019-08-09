@@ -34,12 +34,8 @@ const Summary: React.SFC<IProps> = ({
       <div className="trip-right-name">
         <span>{selected.name}</span>
         <span>
-          {`£ ${selected.finalCost - deselectionPrice}
-          for ${quantity.Adult} ${quantity.Adult > 1 ? 'Adults' : 'Adult'}`}
-        </span>
-        <span>
-          {`£ ${selected.finalCost - deselectionPrice}
-          for ${quantity.Youth} ${quantity.Youth > 1 ? 'Youths' : 'Youth'}`}
+          {`£ ${selected.finalCost * (quantity.Adult + quantity.Youth) - deselectionPrice}
+          for ${quantity.Adult + quantity.Youth} ${quantity.Adult + quantity.Youth > 1 ? 'passengers' : 'passenger'}`}
         </span>
       </div>
       <div className="trip-right-deselect">
@@ -49,7 +45,7 @@ const Summary: React.SFC<IProps> = ({
       <div className="trip-right-total">
         <span>Total</span>
         <span>
-          {`£ ${selected.finalCost.toFixed(2)}
+          {`£ ${(selected.finalCost * (quantity.Adult + quantity.Youth)).toFixed(2)}
           for ${quantity.Adult + quantity.Youth} ${quantity.Adult > 1 || quantity.Youth > 1 ? 'passengers' : 'passenger'}`}
         </span>
       </div>

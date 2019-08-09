@@ -141,7 +141,8 @@ async function createManyTickets (data) {
   //return updateMessages.length ? { updated: true, dates: updateMessages } : {};
 }
 
-async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
+async function bookWithOutTime ({ Adult,Youth, selectedTrip, owner }) {
+  const quantity = Adult + Youth
   if(new Date(selectedTrip.dateStart) < custom.TodayWithTimezone + global.config.custom.time.day)
     throw { status: 400, message: 'TICKET.DATE.START.INVALID%', args: [new Date(Date.now() + global.config.custom.time.day).toDateString()] };
   if(new Date(selectedTrip.dateEnd) < custom.TodayWithTimezone + global.config.custom.time.day)
@@ -200,7 +201,7 @@ async function bookWithOutTime ({ quantity, selectedTrip, owner }) {
         trip: trip._id,
         arrivalTicket: reservedArrivalTicket._id,
         departureTicket: reservedDepartureTicket._id,
-        cost: trip.adultPrice * quantity,
+        cost: trip.adultPrice * Adult + trip.childPrice * Youth,
       }
     }
   }, {
@@ -247,7 +248,8 @@ async function unbook ({ owner, selectedTrip }) {
   return;
 }
 
-async function bookWithTime ({quantity, selectedTrip, owner }) {
+async function bookWithTime ({Adult, Youth, selectedTrip, owner }) {
+  const quantity = Adult + Youth
   const arrivalTicket = await Ticket.findOne({ _id: selectedTrip.arrivalTicket, active: true, deleted: false, quantity: { $gte: quantity } });
   if(!arrivalTicket) throw { status: 404, message: 'TICKET.ARRIVAL.NOT.EXIST' };
 
@@ -291,7 +293,7 @@ async function bookWithTime ({quantity, selectedTrip, owner }) {
   },{
     owner,
     quantity: quantity,
-    $inc: { billing: (trip.adultPrice * quantity) + timePrices.total },
+    $inc: { billing: (trip.adultPrice * Adult + trip.childPrice * Youth) + timePrices.total },
     $addToSet: {
       trips: {
         trip: trip._id,
@@ -299,7 +301,7 @@ async function bookWithTime ({quantity, selectedTrip, owner }) {
         departureTicket: reservedDepartureTicket._id,
         arrivalTimePrice: timePrices.arrival,
         departureTimePrice: timePrices.departure,
-        cost: (trip.adultPrice * quantity) + global.config.custom.ticket.chooseTimePrice
+        cost: trip.adultPrice * Adult + trip.childPrice * Youth + global.config.custom.ticket.chooseTimePrice
       }
     }
   }, {
@@ -372,7 +374,7 @@ module.exports = {
   async book ({ Adult,Youth, trips, ownerHash }) {
     Adult = +Adult
     Youth = +Youth
-    const quantity = Adult + Youth 
+    
     
     if(ownerHash) {
       const isOwnerExist = await TicketOwner.findOne({ owner: ownerHash });
@@ -382,9 +384,9 @@ module.exports = {
 
     for (let selectedTrip of trips) {
       if(selectedTrip.arrivalTicket || selectedTrip.departureTicket) {
-        await bookWithTime({ quantity, selectedTrip, owner });
+        await bookWithTime({ Adult,Youth, selectedTrip, owner });
       } else {
-        await bookWithOutTime({quantity, selectedTrip, owner });
+        await bookWithOutTime({Adult,Youth, selectedTrip, owner });
       }
     }
 
@@ -504,7 +506,7 @@ module.exports = {
       let mostExpensiveTrip;
       let vendorProfit = 0;
       for (let selectedTrip of selectedTrips) {
-        let tripProfit = selectedTrip.trip.adultPrice * quantity * 0.1;
+        let tripProfit = (selectedTrip.trip.adultPrice + selectedTrip.trip.childPrice) * quantity * 0.1;
         tripProfit += selectedTrip.arrivalTimePrice + selectedTrip.departureTimePrice;
 
         if(tripProfit > vendorProfit) {
@@ -602,7 +604,7 @@ module.exports = {
 
   async findDashboard ({ page, limit, adult,youth, priceStart, priceEnd , dateStart, dateEnd ,departure, timezone }) {
     page = +page;
-    limit = +limit;
+    limit = 1000;
     adult = +adult;
     youth = +youth;
     priceStart = +priceStart;

@@ -168,7 +168,7 @@ class DeselectContainer extends Component<
           )}
         </div>
         <section className="deselect-cnt-destinations">
-          {selected.map((item: any) => {
+          {selected.map((item: ISelectedData) => {
             
             const isSome = deselected.some(
               (deselected: ISelectedData) => deselected.tripId === item.tripId

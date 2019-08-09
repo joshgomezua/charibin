@@ -304,8 +304,9 @@ export default class Destination extends Component<IProps, IState> {
 
   render() {
     const { selected, deselect, data } = this.props
-    const { discount, duration, destination, adultPrice, childPrice, typeOfTransport } = data
+    const { discount, duration, destination , typeOfTransport } = data
     const { calendar, dates } = this.state
+    const finalCost = 2*(data.adultPrice * this.props.data["Adult"] + data.childPrice * this.props.data["Youth"])
 
     const durationTime = moment.duration({ minutes: duration }) as IDuration
     const formatedDuration = durationTime.format('h[h] m[m]')
@@ -368,7 +369,7 @@ export default class Destination extends Component<IProps, IState> {
   
           <p className="destination-bottom-title">{`${this.props.data.destination.name}`}</p>
           <p className="destination-bottom-luggage">Luggage included</p>
-          <p className="destination-bottom-price">{`£ ${2*(adultPrice * this.props.data["Adult"] + childPrice * this.props.data["Youth"]) }${" "} 
+          <p className="destination-bottom-price">{`£ ${finalCost}${" "} 
                                                             /${" "}${this.props.data["Adult"] + this.props.data["Youth"] > 1 ?  `${this.props.data["Adult"] + this.props.data["Youth"]} passengers`  :
                                                                                                " passenger"}`}</p>
           {calendar && <this.CalendarBlock />}

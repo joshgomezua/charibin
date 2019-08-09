@@ -59,7 +59,7 @@ class SelectContainer extends Component<
     this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity.Adult,quantity.Youth,departure).then(
       () => {
         this.setState({ isLoading: false })
-        if(this.state.trips.length > 10){
+        if(this.state.trips.length > 11){
           this.attachScrollEvent()
         } 
       }
@@ -183,7 +183,8 @@ class SelectContainer extends Component<
             (trip: IBookedType) => item.tripId === trip.trip
           )
           if (filteredTrip) {
-            item.adultPrice = filteredTrip.cost
+            console.log("")
+            //item.adultPrice = filteredTrip.cost
           }
           return item
         })
@@ -343,7 +344,7 @@ class SelectContainer extends Component<
                this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity.Adult,quantity.Youth, departure).then(
               () => {
                 this.setState({ isLoading: false })
-                if(this.state.trips.length > 10){
+                if(this.state.trips.length > 11){
                   this.attachScrollEvent()
                 }
               }
