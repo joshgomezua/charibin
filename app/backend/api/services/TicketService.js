@@ -615,7 +615,7 @@ module.exports = {
 
     const quantity =  adult + youth
     
-    const tripMatch =  { active: true , 'departure.name': departure, }; 
+    const tripMatch =  { active: true , 'departure.name': {'$regex': departure,$options:'i'}, }; 
     
     const ticketMatch = {
       $and: [

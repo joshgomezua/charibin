@@ -4,8 +4,9 @@ import people from '../../Utils/Media/people.svg'
 import arrow from '../../../Common/Utils/Media/arrow.svg'
 import arrowRight from '../../../Common/Utils/Media/arrowRight.svg'
 import './styles.scss'
-import { getTripsDepartureNames } from 'src/App/Utils/api';
-import { getToken } from 'src/Common/Utils/helpers';
+import { getTripsDepartureNames } from '../../../App/Utils/api';
+// import { getTripsDepartureNames } from 'src/';
+import { getToken } from '../../../Common/Utils/helpers';
 import classnames from 'classnames'
 
 export default class Search extends Component<IProps, IState> {
@@ -23,6 +24,7 @@ export default class Search extends Component<IProps, IState> {
   
   changeInput =  (e: React.ChangeEvent<HTMLInputElement>) => {
     const { setDeparture } = this.props
+    // debugger
     e.preventDefault()
     this.setState({ inputValue: e.target.value })
     this.setState({isListVisible: true})
@@ -41,6 +43,7 @@ export default class Search extends Component<IProps, IState> {
 
   handleSearch = (departure: string) => {
     const { departures } = this.state
+    // debugger
     const tableau = departures.filter((name: string) => name.toLowerCase().includes(departure.toLowerCase()))
     tableau.length !== 0 ? this.setState({searchResults: tableau}) : this.setState({searchResults:["No trips found"]})
   
@@ -82,12 +85,17 @@ export default class Search extends Component<IProps, IState> {
 
    getTripsDepartureNames(token)
       .then(({ data }) => {
+        debugger
         this.setState({departures: data.sort((a: string,b: string) => a > b ? 1:-1)})
       })
       .catch(err => console.log(err.response))
   }
 
-  componentWillMount() {
+  // componentWillMount() {
+  //   this.handleFetchTripsNames()
+  // }
+
+  componentDidMount() {
     this.handleFetchTripsNames()
   }
 

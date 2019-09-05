@@ -196,9 +196,10 @@ module.exports = {
     let departuresNames = []
     
      for (const trip of trips) {
-      if ( await this.hasEnoughTickets(trip, timezone) && !this.hasName(trip.departure.name, departuresNames)){
+      // if ( await this.hasEnoughTickets(trip, timezone) && !this.hasName(trip.departure.name, departuresNames)){
+        if(departuresNames.indexOf(trip.departure.name) == -1)
           departuresNames.push(trip.departure.name)
-      } 
+      // } 
     }
 
     return departuresNames;
