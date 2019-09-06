@@ -318,7 +318,10 @@ export default class Destination extends Component<IProps, IState> {
             calendar ? 'shortest' : ''
           }`}>
           <span>{`SAVE ${discount}%`}</span>
-          <img src={destination.photo} alt="bg" />
+          <img src={destination.photo} alt="bg"   style={{
+                          minHeight: '12rem',
+                          maxHeight: '12rem'
+                        }} />
         </div>
         <div className="destination-bottom">
           <div className="destination-bottom-row">
