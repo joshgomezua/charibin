@@ -17,6 +17,7 @@ export interface IFilters {
 
 export interface IState {
   trips: ITrip[]
+  tripsLocal:ITrip[]
   filters: {
     start: Date | undefined
     end: Date | undefined

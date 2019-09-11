@@ -28,7 +28,7 @@ import { IBookedData } from '../../Utils/apiTypes'
 import { IStore } from '../../../Common/Redux/types'
 import { STEP_IDS } from '../../Utils/constants'
 import { RouteComponentProps } from 'react-router-dom'
-import { ISelectedData, ITrip} from '../../Utils/appTypes'
+import { ISelectedData, ITrip } from '../../Utils/appTypes'
 import { IState, IProps, IFiltersChange, IBookedType } from './types'
 import './styles.scss'
 import Title from 'src/App/Components/Title'
@@ -39,9 +39,10 @@ const MAX = 5
 class SelectContainer extends Component<
   RouteComponentProps<{}> & IProps,
   IState
-> {
+  > {
   readonly state: IState = {
     trips: [],
+    tripsLocal: [],
     filters: {
       start: undefined,
       end: undefined,
@@ -57,11 +58,11 @@ class SelectContainer extends Component<
 
   componentDidMount() {
     window.scrollTo(0, 0)
-    const { quantity,departure } = this.props
-    this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity.Adult,quantity.Youth,departure).then(
+    const { quantity, departure } = this.props
+    this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity.Adult, quantity.Youth, departure).then(
       () => {
         this.setState({ isLoading: false })
-        if(this.state.trips.length >= 10 && this.state.trips.length > 0){
+        if (this.state.trips.length >= 10 && this.state.trips.length > 0) {
           this.attachScrollEvent()
         }
       }
@@ -98,6 +99,7 @@ class SelectContainer extends Component<
         this.setState((state: IState) => ({
           isLoading: false,
           trips: [...data],
+          tripsLocal: [...data]
         }))
         return data.length
       })
@@ -114,8 +116,35 @@ class SelectContainer extends Component<
       }, [])
       .sort()
   }
-
+//   isInPriceRange = (trip: any, adult: any, youth: any, priceStart: any, priceEnd: any) => {
+//     const totalPrice = 2 * ((trip.adultPrice * adult) + (trip.childPrice * youth));
+//     return totalPrice <= priceEnd && totalPrice >= priceStart;
+//   }
+//   isInDateRange = (tickets: any, dateStart: any, dateEnd: any) => {
+//     let filteredTicket
+//     filteredTicket = tickets.filter((ticket: any) => this.checkDateRange(ticket, dateStart, dateEnd))
+//     console.log("filteredTicket",filteredTicket)
+//     return filteredTicket;
+//   }
+//   checkDateRange = (ticket: any, dateStart: any, dateEnd: any) => {
+// let filetrData
+//     return dateStart <= ticket.date.start && dateEnd >= ticket.date.end;
+//   }
   handleFetchInitialTripsWithFilter = () => {
+    // this.state.trips = this.state.tripsLocal;
+    // const { trips, tripsLocal,
+    //   filters: { min, max, start, end }
+    // } = this.state
+    // console.log('tripsLocal', tripsLocal)
+    // console.log('trips', trips)
+    // let pricefilter = trips.filter((trip: any) => this.isInPriceRange(trip, trip.Adult, trip.Youth, min, max))
+    // let dateFilter = pricefilter.filter((trip: any) => this.isInDateRange(trip.tickets, start, end))
+    // console.log('dateFilter', dateFilter)
+    // this.setState({ trips: pricefilter })
+
+    // const {finalRes}=this.props
+    // this.setState({ trips:finalRes})
+
     this.setState(
       {
         page: 0,
@@ -128,7 +157,6 @@ class SelectContainer extends Component<
           filters: { min, max, start, end }
         } = this.state
         const { quantity,departure } = this.props
-
         this.handleFetchTrips(
           page,
           1000,
@@ -147,7 +175,7 @@ class SelectContainer extends Component<
   handleBookTrips = () => {
     const { selected, quantity, departure } = this.props
     const token = getOwnerToken()
-  
+
     const bookedTrips = selected.map((selectedItem: ISelectedData) => {
       if (selectedItem.arrivalTicket && selectedItem.departureTicket) {
         return {
@@ -168,7 +196,7 @@ class SelectContainer extends Component<
 
     const data: IBookedData = {
       departure,
-      Adult: quantity.Adult, 
+      Adult: quantity.Adult,
       Youth: quantity.Youth,
       trips: bookedTrips
     }
@@ -201,12 +229,12 @@ class SelectContainer extends Component<
             selected: selectedTrips
           }
         })
-        
+
         selectedTrips.forEach((trip) => {
           trip["Adult"] = data.Adult
           trip["Youth"] = data.Youth
         })
-        
+
         this.props.updateSelected(selectedTrips)
         this.props.history.push('/destinations/deselect')
       })
@@ -268,11 +296,11 @@ class SelectContainer extends Component<
   }
 
   handleFilterChange = (filters: IFiltersChange, callback?: () => void) => {
-    const start = filters.start ? new Date(filters.start.getTime() - (filters.start.getTimezoneOffset() * 60000)) : 
-                  new Date()
+    const start = filters.start ? new Date(filters.start.getTime() - (filters.start.getTimezoneOffset() * 60000)) :
+      new Date()
     const starto = moment(start.getTime()).endOf('month')
     const end = filters.end ? new Date(filters.end.getTime() - (filters.end.getTimezoneOffset() * 60000)) : new Date(starto.toString())
-                  
+
 
     filters.start = start
     filters.end = end
@@ -287,7 +315,7 @@ class SelectContainer extends Component<
       ,
       () => callback && callback()
     )
-    
+
   }
 
   handleClearFilterDates = () => {
@@ -333,10 +361,8 @@ class SelectContainer extends Component<
   calendarClosed = () => this.setState({ isCalendarOpen: false })
 
   render() {
-    const { isCalendarOpen, isLoading, trips, filters } = this.state
-    const { isMax, quantity, selected,departure } = this.props
-    
-
+    const { isCalendarOpen, filters } = this.state
+    const { isMax, quantity, selected, departure } = this.props
     return (
       <section className={`select-cnt ${isCalendarOpen ? 'calendar' : ''}`}>
         <MainBlock className="select-cnt-block">
@@ -345,17 +371,23 @@ class SelectContainer extends Component<
             setDeparture={this.props.setDeparture}
             setQuantity={this.props.setQuantity}
             quantity={quantity}
-            onSubmit={()=>{
-                this.filters.current!.handleClearFilters()
-               this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity.Adult,quantity.Youth, departure).then(
-              () => {
-                this.setState({ isLoading: false })
-                if(this.state.trips.length >= 10 && this.state.trips.length > 0){
-                  this.attachScrollEvent()
+            onSubmit={() => {
+              this.setState({ isLoading: true })
+              this.setState({ tripsLocal: [] })
+              this.setState({ trips: [] })
+              console.log("isLoading", this.state.isLoading);
+              console.log("data change", this.state.trips);
+              this.filters.current!.handleClearFilters()
+              this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity.Adult, quantity.Youth, departure).then(
+                () => {
+                  this.setState({ isLoading: false })
+                  if (this.state.trips.length >= 10 && this.state.trips.length > 0) {
+                    this.attachScrollEvent()
+                  }
                 }
-              }
-            )}
-            
+              )
+            }
+
             }
             initialValue={departure}
           />
@@ -375,23 +407,23 @@ class SelectContainer extends Component<
           <section className="select-cnt-inner-destinations">
             <Title
               className="select-cnt-inner-title"
-              text={`We found ${trips.length} destinations for you`}
-              selected={[`${trips.length} destinations`]}
+              text={`We found ${this.state.trips.length} destinations for you`}
+              selected={[`${this.state.trips.length} destinations`]}
             />
             <div className="select-cnt-inner-destination-list">
-              {isLoading ? <div>Loading..</div> : null}
-              {!isLoading && trips.length === 0 ? (
+              {this.state.isLoading ? <div>Loading..</div> : null}
+              {!this.state.isLoading && this.state.trips.length === 0 ? (
                 <div>No ticket found</div>
               ) : null}
 
-              {!isLoading &&
-                trips.length > 0 &&
-                trips.map((trip: ITrip, index) => {
+              {!this.state.isLoading &&
+                this.state.trips.length > 0 &&
+                this.state.trips.map((trip: ITrip, index) => {
                   trip.type = 'trip'
                   const filtered = this.props.selected.filter(
                     (item: ISelectedData) => {
                       if (item.tripId === trip._id) {
-                        ;(trip.dateStart = item.dateStart),
+                        ; (trip.dateStart = item.dateStart),
                           (trip.dateEnd = item.dateEnd)
 
                         return true
@@ -402,7 +434,7 @@ class SelectContainer extends Component<
                   )
                   const isSelected = filtered.length > 0
                   return (
-                  
+
                     <Destination
                       key={index}
                       index={trip._id}
@@ -440,6 +472,8 @@ const mapStateToProps = (state: IStore) => ({
 
 export default connect(
   mapStateToProps,
-  { addSelected, removeSelected, updateSelected, clearSelected, setQuantity,
-    setDeparture}
+  {
+    addSelected, removeSelected, updateSelected, clearSelected, setQuantity,
+    setDeparture
+  }
 )(withToast(SelectContainer))

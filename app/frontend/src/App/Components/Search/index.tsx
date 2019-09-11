@@ -59,7 +59,9 @@ export default class Search extends Component<IProps, IState> {
     if (el !== "No trips found " && el !== "No trips available") {
         this.setState({ inputValue: el })
         setDeparture!(el)
-    }
+       
+      }
+     
   }
 
   renderOptions = (optionsArr: string[]): JSX.Element[] => {
@@ -79,13 +81,22 @@ export default class Search extends Component<IProps, IState> {
       }
     )
   }
+selectedLngth=(departure: string[],inputValue:string)=>{
+  let index=departure.indexOf(inputValue)
+  if (index===-1) {
+    return true;
+}
+else 
+{   
+  return false}
+}
 
   handleFetchTripsNames = () => {
     const token = getToken()
 
    getTripsDepartureNames(token)
       .then(({ data }) => {
-        debugger
+        // debugger
         this.setState({departures: data.sort((a: string,b: string) => a > b ? 1:-1)})
       })
       .catch(err => console.log(err.response))
@@ -162,6 +173,7 @@ export default class Search extends Component<IProps, IState> {
     const dropdownList = classnames('search-dropdown__list', {
       'search-dropdown__list--active': isListVisible
     })
+  
     return (
       <div className={dropdownList}>{!this.state.searchResults.length ? 
         this.renderOptions(departures) : this.renderOptions(searchResults)}
@@ -170,8 +182,9 @@ export default class Search extends Component<IProps, IState> {
   }
 
   Button = () => {
+    const {  departures,inputValue } = this.state 
     return (
-      <button className="search-button" onClick={this.props.onSubmit}>
+      <button className="search-button" onClick={this.props.onSubmit} disabled={this.selectedLngth(departures,inputValue)}>
         <div>
           <img src={arrowRight} alt="arrow" className="button-arrow" />
         </div>

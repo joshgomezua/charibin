@@ -16,10 +16,17 @@ module.exports = (req, res, next) => {
     req.token = { id: null, role: 'Guest' };
     return next();
   }
-
+  let url = req.url.split('/')
+  let index = url.findIndex(k => k == "tripDeparturenames")
   jwToken.verify(token, function (err, token) {
-    if (err) return res.error({ status: 400, message: 'ERROR.INVALID_TOKEN' });
-    req.token = token; // This is the decrypted token or the payload you provided
-    next();
+    if (req.headers && req.headers.token != "false" && index == -1) {
+      if (err) return res.error({ status: 400, message: 'ERROR.INVALID_TOKEN' });
+      req.token = token; // This is the decrypted token or the payload you provided
+      next();
+    }
+    else {
+      req.token = { id: null, role: 'Guest' };
+      next();
+    }
   });
 };
