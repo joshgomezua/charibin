@@ -558,7 +558,7 @@ module.exports = {
       // trip.tickets = [];
       destinationTickets.forEach((destination) => {
         if (departure.date.start.getTime() < destination.date.start.getTime()) {
-          trip.tickets.push(destination)
+          if(trip.tickets.indexOf(destination) < 0) trip.tickets.push(destination)
           
           bool = true;
         }

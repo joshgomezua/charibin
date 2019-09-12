@@ -116,60 +116,72 @@ class SelectContainer extends Component<
       }, [])
       .sort()
   }
-//   isInPriceRange = (trip: any, adult: any, youth: any, priceStart: any, priceEnd: any) => {
-//     const totalPrice = 2 * ((trip.adultPrice * adult) + (trip.childPrice * youth));
-//     return totalPrice <= priceEnd && totalPrice >= priceStart;
-//   }
-//   isInDateRange = (tickets: any, dateStart: any, dateEnd: any) => {
-//     let filteredTicket
-//     filteredTicket = tickets.filter((ticket: any) => this.checkDateRange(ticket, dateStart, dateEnd))
-//     console.log("filteredTicket",filteredTicket)
-//     return filteredTicket;
-//   }
-//   checkDateRange = (ticket: any, dateStart: any, dateEnd: any) => {
-// let filetrData
-//     return dateStart <= ticket.date.start && dateEnd >= ticket.date.end;
-//   }
+  isInPriceRange = (trip: any, adult: any, youth: any, priceStart: any, priceEnd: any) => {
+    const totalPrice = 2 * ((trip.adultPrice * adult) + (trip.childPrice * youth));
+    return totalPrice <= priceEnd && totalPrice >= priceStart;
+  }
+  isInDateRange = (tickets: any, dateStart: any, dateEnd: any) => {
+    let filteredTicket
+    filteredTicket = tickets.filter((ticket: any) => this.checkDateRange(ticket, dateStart, dateEnd))
+    console.log("filteredTicket",filteredTicket)
+    return filteredTicket;
+  }
+  checkDateRange = (ticket: any, dateStart: any, dateEnd: any) => {
+    console.log(+moment(dateStart).format('x'));
+    let start=new Date(ticket.date.start).getTime()
+     let end=new Date(ticket.date.end).getTime()
+    console.log(start);
+    return +moment(dateStart).format('x')<=start  && +moment(dateEnd).format('x') >= end
+  }
   handleFetchInitialTripsWithFilter = () => {
-    // this.state.trips = this.state.tripsLocal;
-    // const { trips, tripsLocal,
-    //   filters: { min, max, start, end }
-    // } = this.state
-    // console.log('tripsLocal', tripsLocal)
-    // console.log('trips', trips)
-    // let pricefilter = trips.filter((trip: any) => this.isInPriceRange(trip, trip.Adult, trip.Youth, min, max))
-    // let dateFilter = pricefilter.filter((trip: any) => this.isInDateRange(trip.tickets, start, end))
-    // console.log('dateFilter', dateFilter)
-    // this.setState({ trips: pricefilter })
+    this.state.trips = this.state.tripsLocal;
+    const { trips, tripsLocal,
+      filters: { min, max, start, end }
+    } = this.state
+    console.log('tripsLocal', tripsLocal)
+    console.log('trips', trips)
+    let pricefilter = trips.filter((trip: any) => this.isInPriceRange(trip, trip.Adult, trip.Youth, min, max))
+    let dateFilter:any=[] ;
+     pricefilter.filter((trip: any) => {
+   let ticket= this.isInDateRange(trip.tickets, start, end)
+     pricefilter.forEach(item=>{
+       console.log(ticket)
+       if(ticket.length!==0)
+       if(item._id===ticket[0].trip)
+       dateFilter.push(item);
+     })
+    
+    })
+    console.log('dateFilter', dateFilter)
+    this.setState({ trips: pricefilter })
 
-    // const {finalRes}=this.props
-    // this.setState({ trips:finalRes})
+    this.setState({ trips:dateFilter})
 
-    this.setState(
-      {
-        page: 0,
-        isLoading: true,
-        trips: []
-      },
-      () => {
-        const {
-          page,
-          filters: { min, max, start, end }
-        } = this.state
-        const { quantity,departure } = this.props
-        this.handleFetchTrips(
-          page,
-          1000,
-          min,
-          max,
-          start !== undefined ? +moment(start).format('x') : 0,
-          end !== undefined ? +moment(end).format('x') : 0,
-          quantity.Adult,
-          quantity.Youth,
-          departure
-        )
-      }
-    )
+  //   this.setState(
+  //     {
+  //       page: 0,
+  //       isLoading: true,
+  //       trips: []
+  //     },
+  //     () => {
+  //       const {
+  //         page,
+  //         filters: { min, max, start, end }
+  //       } = this.state
+  //       const { quantity,departure } = this.props
+  //       this.handleFetchTrips(
+  //         page,
+  //         1000,
+  //         min,
+  //         max,
+  //         start !== undefined ? +moment(start).format('x') : 0,
+  //         end !== undefined ? +moment(end).format('x') : 0,
+  //         quantity.Adult,
+  //         quantity.Youth,
+  //         departure
+  //       )
+  //     }
+  //   )
   }
 
   handleBookTrips = () => {
