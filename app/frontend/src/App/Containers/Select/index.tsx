@@ -387,8 +387,6 @@ class SelectContainer extends Component<
               this.setState({ isLoading: true })
               this.setState({ tripsLocal: [] })
               this.setState({ trips: [] })
-              console.log("isLoading", this.state.isLoading);
-              console.log("data change", this.state.trips);
               this.filters.current!.handleClearFilters()
               this.handleFetchTrips(this.state.page, 10, 0, 0, 0, 0, quantity.Adult, quantity.Youth, departure).then(
                 () => {
@@ -427,8 +425,7 @@ class SelectContainer extends Component<
               {!this.state.isLoading && this.state.trips.length === 0 ? (
                 <div>No ticket found</div>
               ) : null}
-
-              {!this.state.isLoading &&
+              {!this.state.isLoading &&(this.state.trips!=undefined)&&
                 this.state.trips.length > 0 &&
                 this.state.trips.map((trip: ITrip, index) => {
                   trip.type = 'trip'

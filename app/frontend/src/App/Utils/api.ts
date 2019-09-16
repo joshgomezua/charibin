@@ -2,7 +2,7 @@ import axios from 'axios'
 import { IBookedData, IUnbookedData, ISupportData, IBuyData } from './apiTypes'
 
 const API_URL = process.env.REACT_APP_API_URL
-const TIMEZONE_OFFSET = (new Date()).getTimezoneOffset() * 60000 
+const TIMEZONE_OFFSET = (new Date()).getTimezoneOffset() * 60000
 
 export const getTrips = (
   page: number,
@@ -14,17 +14,18 @@ export const getTrips = (
   adult: number,
   youth: number,
   departure: string,
-) =>
+) => 
   axios.get(
-    `${API_URL}/dashboard/ticket/${page}/${limit}/${priceStart}/${priceEnd}/${dateStart}/${dateEnd}/${adult}/${youth}/${departure}/${TIMEZONE_OFFSET}`
+    `${API_URL}/dashboard/ticket/${page}/${limit}/${priceStart}/${priceEnd}/${dateStart}/${dateEnd}/${adult}/${youth}/${departure?departure:"No_departure_found"}/${TIMEZONE_OFFSET}`
   )
-  
+
+
 export const getTickets = (date: number, page: number, limit: number) =>
-    axios.get(`${API_URL}/ticket/${page}/${limit}/${date}`)
+  axios.get(`${API_URL}/ticket/${page}/${limit}/${date}`)
 
 export const getTripsDepartureNames = (token: string) =>
-    axios.get(`${API_URL}/tripDeparturenames/${TIMEZONE_OFFSET}`, {
-      headers: { token }
+  axios.get(`${API_URL}/tripDeparturenames/${TIMEZONE_OFFSET}`, {
+    headers: { token }
   })
 
 export const bookTrips = (data: IBookedData) =>

@@ -21,13 +21,13 @@ export default class Search extends Component<IProps, IState> {
     searchResults: [],
     isListVisible: false
   }
-  
-  changeInput =  (e: React.ChangeEvent<HTMLInputElement>) => {
+
+  changeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { setDeparture } = this.props
-    // debugger
     e.preventDefault()
     this.setState({ inputValue: e.target.value })
-    this.setState({isListVisible: true})
+    if (this.state.inputValue != '')
+      this.setState({ isListVisible: true })
     setDeparture!(e.target.value)
 
     this.handleSearch(e.target.value)
@@ -42,11 +42,18 @@ export default class Search extends Component<IProps, IState> {
   }
 
   handleSearch = (departure: string) => {
-    const { departures } = this.state
-    // debugger
-    const tableau = departures.filter((name: string) => name.toLowerCase().includes(departure.toLowerCase()))
-    tableau.length !== 0 ? this.setState({searchResults: tableau}) : this.setState({searchResults:["No trips found"]})
-  
+    if (departure == '') {
+      this.setState({ searchResults: [] })
+      this.setState({ isListVisible: false })
+    }
+    else {
+      const { departures } = this.state
+      const tableau = departures.filter((name: string) => name.toLowerCase().startsWith(departure.toLowerCase()))
+      tableau.length !== 0 ? this.setState({ searchResults: tableau }) : this.setState({ searchResults: ["No trips found"] })
+      this.setState({ isListVisible: true })
+    }
+
+
   }
 
   toggleListVisibility = (): void => {
@@ -54,50 +61,54 @@ export default class Search extends Component<IProps, IState> {
   }
 
   handleSelectOption = (el: string): void => {
-    const { setDeparture} = this.props
+    const { setDeparture } = this.props
     this.setState({ isListVisible: false })
-    if (el !== "No trips found " && el !== "No trips available") {
-        this.setState({ inputValue: el })
-        setDeparture!(el)
-       
-      }
-     
+    if (el !== "No trips found" && el !== "No trips available") {
+      this.setState({ inputValue: el })
+      setDeparture!(el)
+
+    }
+
   }
 
   renderOptions = (optionsArr: string[]): JSX.Element[] => {
     if (optionsArr.length === 0) {
-        optionsArr.push("No trips available")
+      optionsArr.push("No trips available")
     }
     return optionsArr.map(
       (el: string): JSX.Element => {
         return (
           <div
             key={el}
-            onClick={() => this.handleSelectOption(el)}
+            onClick={() => {
+              if (el !== "No trips found" && el !== "No trips available") {
+                this.handleSelectOption(el)
+              }
+            }}
             className="search__list-item">
-            <p>{el}</p>
+            <p >{el}</p>
           </div>
         )
       }
     )
   }
-selectedLngth=(departure: string[],inputValue:string)=>{
-  let index=departure.indexOf(inputValue)
-  if (index===-1) {
-    return true;
-}
-else 
-{   
-  return false}
-}
+  selectedLngth = (departure: string[], inputValue: string) => {
+    let index = departure.indexOf(inputValue)
+    if (index === -1) {
+      return true;
+    }
+    else {
+      return false
+    }
+  }
 
   handleFetchTripsNames = () => {
     const token = getToken()
 
-   getTripsDepartureNames(token)
+    getTripsDepartureNames(token)
       .then(({ data }) => {
         // debugger
-        this.setState({departures: data.sort((a: string,b: string) => a > b ? 1:-1)})
+        this.setState({ departures: data.sort((a: string, b: string) => a > b ? 1 : -1) })
       })
       .catch(err => console.log(err.response))
   }
@@ -113,15 +124,21 @@ else
   selectDecrement = (e: React.MouseEvent<HTMLButtonElement>, id: string) => {
     e.preventDefault()
     if (this.props.quantity.Adult > 0 && id === 'Adult' && this.state.passengers.Adult > 0) {
-      this.props.setQuantity!({Adult:this.props.quantity.Adult - 1, Youth:this.props.quantity.Youth}) 
-      this.setState({passengers:{Adult: --this.state.passengers.Adult,
-        Youth: this.state.passengers.Youth
-      }})
+      this.props.setQuantity!({ Adult: this.props.quantity.Adult - 1, Youth: this.props.quantity.Youth })
+      this.setState({
+        passengers: {
+          Adult: --this.state.passengers.Adult,
+          Youth: this.state.passengers.Youth
+        }
+      })
     } else if (this.props.quantity.Youth > 0 && id === 'Youth' && this.state.passengers.Youth > 0) {
-      this.props.setQuantity!({Adult: this.props.quantity.Adult, Youth:this.props.quantity.Youth - 1}) 
-      this.setState({passengers:{Adult: this.state.passengers.Adult,
-        Youth: --this.state.passengers.Youth
-      }})
+      this.props.setQuantity!({ Adult: this.props.quantity.Adult, Youth: this.props.quantity.Youth - 1 })
+      this.setState({
+        passengers: {
+          Adult: this.state.passengers.Adult,
+          Youth: --this.state.passengers.Youth
+        }
+      })
     }
   }
 
@@ -129,62 +146,67 @@ else
 
     e.preventDefault()
     if (this.props.quantity.Youth + this.props.quantity.Adult < 6 && id === 'Adult') {
-      this.props.setQuantity!({Adult:this.props.quantity.Adult + 1, Youth:this.props.quantity.Youth})
-      this.setState({passengers:{Adult: ++this.state.passengers.Adult,
-        Youth: this.state.passengers.Youth
-      }})
+      this.props.setQuantity!({ Adult: this.props.quantity.Adult + 1, Youth: this.props.quantity.Youth })
+      this.setState({
+        passengers: {
+          Adult: ++this.state.passengers.Adult,
+          Youth: this.state.passengers.Youth
+        }
+      })
     } else if (this.props.quantity.Youth + this.props.quantity.Adult < 6 && id === 'Youth') {
-      this.props.setQuantity!({Adult:this.props.quantity.Adult, Youth:this.props.quantity.Youth + 1})
-      this.setState({passengers:{Adult: this.state.passengers.Adult,
-        Youth: ++this.state.passengers.Youth
-      }})
+      this.props.setQuantity!({ Adult: this.props.quantity.Adult, Youth: this.props.quantity.Youth + 1 })
+      this.setState({
+        passengers: {
+          Adult: this.state.passengers.Adult,
+          Youth: ++this.state.passengers.Youth
+        }
+      })
     }
   }
 
   Input = () => {
-    const { inputValue, isListVisible, passengers} = this.state
-    if ( inputValue !== this.props.initialValue as string ) {
-      this.setState({inputValue: this.props.initialValue as string})
+    const { inputValue, isListVisible, passengers } = this.state
+    if (inputValue !== this.props.initialValue as string) {
+      this.setState({ inputValue: this.props.initialValue as string })
     }
 
     if (passengers !== this.props.quantity) {
-      this.setState({passengers: this.props.quantity})
+      this.setState({ passengers: this.props.quantity })
     }
     const dropdownElementClass = classnames('search-dropdown__element', {
       'search-dropdown__element--active': isListVisible
     })
     return (
       <div className="search-dropdown">
-          <div className="search-input">
-            <input type="text" value={inputValue} placeholder="What is your departure city?" onClick={this.toggleListVisibility} onChange={this.changeInput} />
-            <label className={inputValue.length > 0 ? 'dirty' : ''}> 
-              DEPARTURE CITY
+        <div className="search-input">
+          <input type="text" value={inputValue} placeholder="What is your departure city?" onChange={this.changeInput} />
+          <label className={inputValue.length > 0 ? 'dirty' : ''}>
+            DEPARTURE CITY
             </label>
-          </div>
-          <div className={dropdownElementClass}>
-            <this.DropDown/>
-          </div>
+        </div>
+        <div className={dropdownElementClass}>
+          <this.DropDown />
+        </div>
       </div>
     )
   }
 
   DropDown = () => {
-    const { searchResults, departures, isListVisible } = this.state 
+    const { searchResults, isListVisible } = this.state
     const dropdownList = classnames('search-dropdown__list', {
       'search-dropdown__list--active': isListVisible
     })
-  
     return (
-      <div className={dropdownList}>{!this.state.searchResults.length ? 
-        this.renderOptions(departures) : this.renderOptions(searchResults)}
+      <div className={dropdownList}>{!this.state.searchResults.length ?
+        this.renderOptions(searchResults) : this.renderOptions(searchResults)}
       </div>
     )
   }
 
   Button = () => {
-    const {  departures,inputValue } = this.state 
+    const { departures, inputValue } = this.state
     return (
-      <button className="search-button" onClick={this.props.onSubmit} disabled={this.selectedLngth(departures,inputValue)}>
+      <button className="search-button" onClick={this.props.onSubmit} disabled={this.selectedLngth(departures, inputValue)}>
         <div>
           <img src={arrowRight} alt="arrow" className="button-arrow" />
         </div>
@@ -211,7 +233,7 @@ else
               <>{passengers.Adult}</>
               <button onClick={(e) => this.selectIncrement(e, "Adult")}>+</button>
             </li>
-            
+
             <li>
               <label>{`Youth${passengers.Youth > 1 ? 's' : ''}`}</label>
               <button onClick={(e) => this.selectDecrement(e, "Youth")}>-</button>
