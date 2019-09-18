@@ -45,6 +45,9 @@ export default class Destination extends Component<IProps, IState> {
       hours,
       hoursToSelect: { start, end },
     } = this.state
+    this.state.hoursToSelect.start.sort((a, b) => parseInt( a.name.split(':')[0]) - parseInt( b.name.split(':')[0]))
+    this.state.hoursToSelect.end.sort((a, b) => parseInt( a.name.split(':')[0]) - parseInt( b.name.split(':')[0]))
+    console.log("start",start,"end",end)
     const { data, quantity } = this.props
     const HOURS_SET_PRICE = process.env.REACT_APP_TICKET_CHOOSE_TIME_PRICE
 

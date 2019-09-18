@@ -17,6 +17,9 @@ const PHOTO_ENCODING = 'Base64';
 const PHOTO_DIR_PATH = './city_photos/';
 const BASE_64_PHOTO_ENCODING = 'Base64';
 const DEFAULT_PHOTO = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==';
+var Agenda = require('agenda');
+const { user, password, host, port, name } = global.config.connection.database;
+const agenda = new Agenda({ db: { address: `mongodb+srv://${user}:${password}@${host}/${name}` } });
 
 client1.send_command('config', ['set', 'notify-keyspace-events', 'Ex'], onExpiredTicket);
 
@@ -264,17 +267,13 @@ async function bookWithTime({ Adult, Youth, selectedTrip, owner }) {
   if (+new Date(departureTicket.date.start) < custom.TodayWithTimezone + global.config.custom.time.day)
     throw { status: 400, message: 'TICKET.DATE.END.INVALID%', args: [new Date(Date.now() + global.config.custom.time.day).toDateString()] };
   let reservedArrivalTicket;
-  if (quantity <= arrivalTicket.quantity - (arrivalTicket.soldTickets + arrivalTicket.reservedQuantity)) {
+  let reservedDepartureTicket;
+  if (quantity <= arrivalTicket.quantity - (arrivalTicket.soldTickets + arrivalTicket.reservedQuantity) && quantity <= departureTicket.quantity - (departureTicket.soldTickets + departureTicket.reservedQuantity)) {
     reservedArrivalTicket = await Ticket.findOneAndUpdate({ _id: selectedTrip.arrivalTicket, active: true, deleted: false, quantity: { $gte: quantity /*+ reservedQuantity + soldTickets*/ } }, {
       $inc: { reservedQuantity: quantity },
       $addToSet: { blockedQuantity: { owner, quantity } }
     }, { new: true });
-  } else {
-    throw { status: 404, message: 'TICKET.BOOK.NOT.ENOUGH', args: [new Date(Date.now() + global.config.custom.time.day).toDateString()] };
-  }
 
-  let reservedDepartureTicket;
-  if (quantity <= departureTicket.quantity - (departureTicket.soldTickets + departureTicket.reservedQuantity)) {
     reservedDepartureTicket = await Ticket.findOneAndUpdate({ _id: selectedTrip.departureTicket, active: true, deleted: false, quantity: { $gte: quantity /*+ reservedQuantity + soldTickets*/ } }, {
       $inc: { reservedQuantity: quantity },
       $addToSet: { blockedQuantity: { owner, quantity } }
@@ -321,6 +320,38 @@ async function bookWithTime({ Adult, Youth, selectedTrip, owner }) {
     return prices;
   }
 }
+
+/*
+  Remove Ticket from Reserved Tickets If User didnt Book
+*/
+agenda.define('remove-ticket', job => {
+  TicketOwner.findById(job.attrs.data.data, (err, owner) => {
+    let ownerId = owner.owner;
+    let quantity = owner.quantity;
+
+    if (!owner.paid) {
+      owner.trips.forEach(trip => {
+        let departureTicket = trip.departureTicket;
+        let arrivalTicket = trip.arrivalTicket;
+
+        Ticket.findById(departureTicket, _ticketHandle);
+        Ticket.findById(arrivalTicket, _ticketHandle);
+      })
+    }
+
+    function _ticketHandle(err, ticket) {
+      if (err) {
+        return console.error(err);
+      }
+      
+      let ifFound = ticket.blockedQuantity.filter(x => x.owner == ownerId);
+      if (ifFound.length > 0) {
+        ticket.reservedQuantity = ticket.reservedQuantity - quantity;
+        ticket.save({});
+      }
+    }
+  });
+});
 
 module.exports = {
   async create(data) {
@@ -373,7 +404,6 @@ module.exports = {
     Adult = +Adult
     Youth = +Youth
 
-
     if (ownerHash) {
       const isOwnerExist = await TicketOwner.findOne({ owner: ownerHash });
       if (isOwnerExist) return isOwnerExist;
@@ -390,6 +420,9 @@ module.exports = {
 
     const ownerInfo = await TicketOwner.findOne({ owner });
     await RedisService.set(client1, `${owner}`, '', 30);
+
+    agenda.start();
+    agenda.schedule('in 16 minutes', 'remove-ticket', { data: ownerInfo.id });
 
     return ownerInfo;
   },
@@ -469,6 +502,8 @@ module.exports = {
     await EmailService.clientOrder(order, charge.receipt_url);
     await EmailService.adminOrder(admin, order);
 
+    ownerInfo.paid = true;
+    ownerInfo.save({});
 
     return {
       name: selectedTrip.trip.destination.name,
@@ -620,9 +655,10 @@ module.exports = {
   },
 
   async findDashboard({ page, limit, adult, youth, priceStart, priceEnd, dateStart, dateEnd, departure, timezone }) {
-    if(departure==="No_departure_found") {
+    if (departure === "No_departure_found") {
       return [];
     }
+
     page = +page;
     limit = 1000;
     adult = +adult;
@@ -632,8 +668,6 @@ module.exports = {
     dateStart = +dateStart;
     dateEnd = +dateEnd;
     timezone = +timezone;
-
-   
 
     Trip.ensureIndexes({ 'destination': 1 });
     Ticket.ensureIndexes({ '_id': 1 });
