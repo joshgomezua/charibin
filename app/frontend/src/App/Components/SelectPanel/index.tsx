@@ -44,13 +44,20 @@ const SelectPanel: React.SFC<IProps> = ({
         })}
 
         {isSelect && (
+          <div>
           <span>{`${selected.length}/${max} destinations selected`}</span>
+          <br hidden={selected.length!==5}></br><span hidden={selected.length!==5} className="editselect"> {selected.length===5?`Edit Selection`:''}</span>
+          </div>
         )}
+      
         {isDeselect && (
           <div className="selectpanel-images-text">
             <span>{`${selected.length - deselected!.length}/${
               selected.length
-            } destinations selected`}</span>
+            } destinations selected`}
+            
+            </span>
+           
             {deselected!.length > 0 && (
               <span className="selectpanel-images-text-red">{`+ £${totalDeselectionConst} for deselection`}</span>
             )}

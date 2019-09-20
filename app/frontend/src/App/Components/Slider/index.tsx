@@ -5,6 +5,8 @@ import Title from '../../Components/Title'
 import { STEPS } from '../../Utils/constants'
 import { State, IProps } from './types'
 import './styles.scss'
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.scss';
 
 const RADIUS = 35
 const STROKE = 3
@@ -84,87 +86,240 @@ export default class Slider extends Component<IProps, State> {
   }
 
   render() {
+    const responsive = {
+      superLargeDesktop: {
+        // the naming can be any, depends on you.
+        breakpoint: { max: 4000, min: 3000 },
+        items: 1,
+      },
+      desktop: {
+        breakpoint: { max: 3000, min: 1024 },
+        items: 1,
+      },
+      tablet: {
+        breakpoint: { max: 1024, min: 464 },
+        items: 1,
+      },
+      mobile: {
+        breakpoint: { max: 464, min: 0 },
+        items: 1,
+      },
+    };
+
     const { currentStep, progress, animation } = this.state
     const { sliderRef } = this.props
     const strokeDashoffset =
-      this.circumference - (progress / 700) * this.circumference
-    return (
-      <Swipeable onSwipeLeft={this.forward} onSwipeRight={this.back}>
-        <section id="slider" className="slider">
-          <div ref={sliderRef} className="slider-info">
-            <p>
-              how it works: <span>{STEPS[currentStep].name}</span>
-            </p>
-            <Title
-              left
-              className="slider-info-title"
-              text={STEPS[currentStep].title}
-              selected={STEPS[currentStep].selected}
-            />
-            <p>{STEPS[currentStep].description}</p>
-            <div
-              className="slider-info-buttons"
-              onMouseEnter={this.clearTimer}
-              onMouseLeave={this.setTimer}>
-              <button onClick={this.back}>
-                <svg height={RADIUS * 2} width={RADIUS * 2}>
-                  <circle
-                    className="slider-info-button-normal"
-                    strokeWidth={STROKE}
-                    r={this.normalizedRadius}
-                    cx={RADIUS}
-                    cy={RADIUS}
-                  />
-                </svg>
-                <span>{'<'}</span>
-              </button>
-              <button onClick={this.forward}>
-                <svg height={RADIUS * 2} width={RADIUS * 2}>
-                  <circle
-                    className="slider-info-button-normal"
-                    strokeWidth={STROKE}
-                    r={this.normalizedRadius}
-                    cx={RADIUS}
-                    cy={RADIUS}
-                  />
-                  <circle
-                    className="slider-info-button-progress"
-                    strokeWidth={STROKE}
-                    strokeDasharray={
-                      this.circumference + ' ' + this.circumference
-                    }
-                    style={{ strokeDashoffset }}
-                    r={this.normalizedRadius}
-                    cx={RADIUS}
-                    cy={RADIUS}
-                  />
-                </svg>
-                <span>{'>'}</span>
-              </button>
+      this.circumference - (progress / 500) * this.circumference
+    var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (isMobile)
+      return (
+
+        <div className="margine">
+          <Carousel responsive={responsive}
+            swipeable={true}
+            draggable={true}
+            showDots={true}
+            focusOnSelect={false}
+            infinite={true}
+            autoPlay={true}
+            autoPlaySpeed={3000}
+            removeArrowOnDeviceType={["tablet", "mobile", "desktop"]}
+
+          >
+            <div> <section id="slider" className="slider">
+              <div ref={sliderRef} className="slider-info">
+                <p>
+                  how it works: <span>{STEPS[0].name}</span>
+                </p>
+                <Title
+                  left
+                  className="slider-info-title"
+                  text={STEPS[0].title}
+                  selected={STEPS[0].selected}
+                />
+                <p>{STEPS[0].description}</p>
+                <div
+                  className="slider-info-buttons"
+                  onMouseEnter={this.clearTimer}
+                  onMouseLeave={this.setTimer}>
+                </div>
+              </div>
+              <div className="slider-img">
+                <CSSTransition
+                  in={animation}
+                  classNames="slider-animation"
+                  onEntered={this.resetAnimation}>
+                  <img src={STEPS[0].image} alt="step" />
+                </CSSTransition>
+              </div>
+            </section>
+
             </div>
-          </div>
-          <div className="slider-img">
-            <CSSTransition
-              in={animation}
-              classNames="slider-animation"
-              timeout={700}
-              onEntered={this.resetAnimation}>
-              <img src={STEPS[currentStep].image} alt="step" />
-            </CSSTransition>
-          </div>
-          <div className="slider-dots">
-            {STEPS.map((step, index: number) => (
-              <div
-                onClick={() => this.setCurrent(index)}
-                key={step.name}
-                className={`slider-dot ${
-                  currentStep === index ? 'slider-dot--active' : ''
-                }`}
+            <div><section id="slider" className="slider">
+              <div ref={sliderRef} className="slider-info">
+                <p>
+                  how it works: <span>{STEPS[1].name}</span>
+                </p>
+                <Title
+                  left
+                  className="slider-info-title"
+                  text={STEPS[1].title}
+                  selected={STEPS[1].selected}
+                />
+                <p>{STEPS[1].description}</p>
+                <div
+                  className="slider-info-buttons"
+                  onMouseEnter={this.clearTimer}
+                  onMouseLeave={this.setTimer}>
+                </div>
+              </div>
+              <div className="slider-img">
+                <CSSTransition
+                  in={animation}
+                  classNames="slider-animation"
+                  onEntered={this.resetAnimation}>
+                  <img src={STEPS[1].image} alt="step" />
+                </CSSTransition>
+              </div>
+            </section></div>
+            <div><section id="slider" className="slider">
+              <div ref={sliderRef} className="slider-info">
+                <p>
+                  how it works: <span>{STEPS[2].name}</span>
+                </p>
+                <Title
+                  left
+                  className="slider-info-title"
+                  text={STEPS[2].title}
+                  selected={STEPS[2].selected}
+                />
+                <p>{STEPS[2].description}</p>
+                <div
+                  className="slider-info-buttons"
+                  onMouseEnter={this.clearTimer}
+                  onMouseLeave={this.setTimer}>
+                </div>
+              </div>
+              <div className="slider-img">
+                <CSSTransition
+                  in={animation}
+                  classNames="slider-animation"
+                  onEntered={this.resetAnimation}>
+                  <img src={STEPS[2].image} alt="step" />
+                </CSSTransition>
+              </div>
+            </section></div>
+            <div><section id="slider" className="slider">
+              <div ref={sliderRef} className="slider-info">
+                <p>
+                  how it works: <span>{STEPS[3].name}</span>
+                </p>
+                <Title
+                  left
+                  className="slider-info-title"
+                  text={STEPS[3].title}
+                  selected={STEPS[3].selected}
+                />
+                <p>{STEPS[3].description}</p>
+                <div
+                  className="slider-info-buttons"
+                  onMouseEnter={this.clearTimer}
+                  onMouseLeave={this.setTimer}>
+                </div>
+              </div>
+              <div className="slider-img">
+                <CSSTransition
+                  in={animation}
+                  classNames="slider-animation"
+                  onEntered={this.resetAnimation}>
+                  <img src={STEPS[3].image} alt="step" />
+                </CSSTransition>
+              </div>
+            </section></div>
+          </Carousel>
+        </div>
+
+      )
+    else
+      return (
+        <Swipeable onSwipeLeft={this.forward} onSwipeRight={this.back}>
+          <section id="slider" className="slider">
+            <div ref={sliderRef} className="slider-info">
+              <p>
+                how it works: <span>{STEPS[currentStep].name}</span>
+              </p>
+              <Title
+                left
+                className="slider-info-title"
+                text={STEPS[currentStep].title}
+                selected={STEPS[currentStep].selected}
               />
-            ))}
-          </div>
-        </section>
-      </Swipeable>
-    )
+              <p>{STEPS[currentStep].description}</p>
+              <div
+                className="slider-info-buttons"
+                onMouseEnter={this.clearTimer}
+                onMouseLeave={this.setTimer}>
+                <button onClick={this.back}>
+                  <svg height={RADIUS * 2} width={RADIUS * 2}>
+                    <circle
+                      className="slider-info-button-normal"
+                      strokeWidth={STROKE}
+                      r={this.normalizedRadius}
+                      cx={RADIUS}
+                      cy={RADIUS}
+                    />
+                  </svg>
+                  <span>{'<'}</span>
+                </button>
+                <button onClick={this.forward}>
+                  <svg height={RADIUS * 2} width={RADIUS * 2}>
+                    <circle
+                      className="slider-info-button-normal"
+                      strokeWidth={STROKE}
+                      r={this.normalizedRadius}
+                      cx={RADIUS}
+                      cy={RADIUS}
+                    />
+                    <circle
+                      className="slider-info-button-progress"
+                      strokeWidth={STROKE}
+                      strokeDasharray={
+                        this.circumference + ' ' + this.circumference
+                      }
+                      style={{ strokeDashoffset }}
+                      r={this.normalizedRadius}
+                      cx={RADIUS}
+                      cy={RADIUS}
+                    />
+                  </svg>
+                  <span>{'>'}</span>
+                </button>
+              </div>
+            </div>
+            <div className="slider-img">
+              <CSSTransition
+                in={animation}
+                classNames="slider-animation"
+                timeout={700}
+                onEntered={this.resetAnimation}>
+                <img src={STEPS[currentStep].image} alt="step" />
+              </CSSTransition>
+            </div>
+            <div className="slider-dots">
+              {STEPS.map((step, index: number) => (
+                <div
+                  onClick={() => this.setCurrent(index)}
+                  key={step.name}
+                  className={`slider-dot ${
+                    currentStep === index ? 'slider-dot--active' : ''
+                    }`}
+                />
+              ))}
+            </div>
+          </section>
+        </Swipeable>
+      )
+
+
   }
 }
