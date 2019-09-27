@@ -22,6 +22,7 @@ import {
 
 import {
   getFromLS,
+  removeFromLS,
   saveToLS,
   getOwnerToken
 } from '../../../Common/Utils/helpers'
@@ -61,6 +62,8 @@ class DeselectContainer extends Component<
         this.interval
       )
     }, 1000)
+
+    removeFromLS('owner')
   }
 
   setRemainingTime = (time: string) => {
