@@ -1,5 +1,6 @@
 'use strict';
-
+var express = require('express');
+var path = require('path');
 const app = require('express')();
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -52,6 +53,7 @@ app.use(helmet({
 app.use(cors());
 app.use(formidable);
 app.use(isLoggedIn);
+app.use('/destinations/city_photos', express.static(path.join(__dirname, './city_photos/')));
 
 mongoose.set('useCreateIndex', true); //force to use proper methods for index
 mongoose.set('useFindAndModify', false); //force to use proper methods for find

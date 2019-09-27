@@ -146,9 +146,11 @@ async function createManyTickets(data) {
 
 async function bookWithOutTime({ Adult, Youth, selectedTrip, owner }) {
   const quantity = Adult + Youth
-  if (new Date(selectedTrip.dateStart) < custom.TodayWithTimezone + global.config.custom.time.day)
+  // if (new Date(selectedTrip.dateStart) < custom.TodayWithTimezone + global.config.custom.time.day)
+  if (new Date(selectedTrip.dateStart) < custom.TodayWithTimezone)
     throw { status: 400, message: 'TICKET.DATE.START.INVALID%', args: [new Date(Date.now() + global.config.custom.time.day).toDateString()] };
-  if (new Date(selectedTrip.dateEnd) < custom.TodayWithTimezone + global.config.custom.time.day)
+  // if (new Date(selectedTrip.dateEnd) < custom.TodayWithTimezone + global.config.custom.time.day)
+  if (new Date(selectedTrip.dateEnd) < custom.TodayWithTimezone)
     throw { status: 400, message: 'TICKET.DATE.END.INVALID%', args: [new Date(Date.now() + global.config.custom.time.day).toDateString()] };
   const trip = await Trip.findOne({ _id: ObjectId(selectedTrip.id), deleted: false, active: true });
   if (!trip) throw { status: 404, message: 'TRIP.NOT.EXIST' };
@@ -343,7 +345,7 @@ agenda.define('remove-ticket', job => {
       if (err) {
         return console.error(err);
       }
-      
+
       let ifFound = ticket.blockedQuantity.filter(x => x.owner == ownerId);
       if (ifFound.length > 0) {
         ticket.reservedQuantity = ticket.reservedQuantity - quantity;
@@ -690,7 +692,8 @@ module.exports = {
       ticketMatch.$and.push({ $gt: ['$$tickets.quantity', 0] });
     }
 
-    custom.TodayWithTimezone = Date.now() - timezone;
+    // custom.TodayWithTimezone = Date.now() - timezone;  // changed 11
+    custom.TodayWithTimezone = new Date(new Date().setHours(0, 0, 0, 0));
 
     if (dateStart > 0 && dateEnd > 0) {
       ticketMatch.$and.push({ $gte: ['$$tickets.date.start', new Date(dateStart)] });
@@ -698,7 +701,8 @@ module.exports = {
       ticketMatch.$and.push({ $gte: ['$$tickets.date.start', new Date(custom.TodayWithTimezone + global.config.custom.time.day)] });
     } else {
       ticketMatch.$and.push(
-        { $gte: ['$$tickets.date.start', new Date(custom.TodayWithTimezone + global.config.custom.time.day)] });
+        { $gte: ['$$tickets.date.start', new Date(custom.TodayWithTimezone)] });
+      // { $gte: ['$$tickets.date.start', new Date(custom.TodayWithTimezone + global.config.custom.time.day)] });  // changed 11
     }
 
     let data = await Trip.aggregate([
@@ -761,7 +765,10 @@ module.exports = {
     res.forEach((trip) => {
       if (trip.destination.photo) {
         try {
-          const value = photoPrefix + fs.readFileSync(trip.destination.photo, PHOTO_ENCODING);
+          // const value = photoPrefix + fs.readFileSync(trip.destination.photo, PHOTO_ENCODING);
+          //trip.destination.photo = value;
+          // fs.existsSync(trip.destination.photo)
+          const value = photoPrefix + fs.readFileSync('./city_photos/ina.jpg', PHOTO_ENCODING);
           trip.destination.photo = value;
         }
         catch (ex) {
