@@ -14,7 +14,8 @@ const SelectPanel: React.SFC<IProps> = ({
   isMax,
   max,
   onNext,
-  onBack
+  onBack,
+  onEdit
 }) => {
   const totalDeselectionConst = deselected
     ? deselected.reduce(
@@ -46,7 +47,13 @@ const SelectPanel: React.SFC<IProps> = ({
         {isSelect && (
           <div>
           <span>{`${selected.length}/${max} destinations selected`}</span>
-          <br hidden={selected.length!==5}></br><span hidden={selected.length!==5} className="editselect"> {selected.length===5?`Edit Selection`:''}</span>
+          <br hidden={selected.length==0}></br> 
+          {/* <Button 
+          disabled={  selected.length!==0}
+          text={selected.length===5?`Edit Selection`:''}
+          onClick={onEdit}
+          />   */}
+          <a hidden={selected.length==0} onClick={onEdit} href="javascript:void(0)" id="editselect">EDIT SELECTION</a>
           </div>
         )}
       

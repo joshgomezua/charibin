@@ -190,25 +190,59 @@
     }
   }
 }
+
 .slide-container {
   margin-bottom: 11px;
 }
+
 .react-multi-carousel-dot button {
   border-width: 0 !important;
 }
+
 .react-multi-carousel-dot button{width: 1.2rem;
   border-width:0px;
   height: 1.2rem;
   border-radius: 50%;
-  background: $gray;}
-  .react-multi-carousel-dot-list{display: none;
-    margin-top: 4rem;
-    justify-content: center;
-    align-items: center;
-    height: 1.2rem;
-    width: 100%;}
-    .react-multi-carousel-dot button:hover{background:#61dafb}
-    .react-multi-carousel-dot--active button{background:#61dafb}
-    .margine{
-      margin-bottom: 3rem;
-    }
+  background: $gray;
+}
+
+.react-multi-carousel-dot-list {
+  display: none;
+  margin-top: 4rem;
+  justify-content: center;
+  align-items: center;
+  height: 1.2rem;
+  width: 100%;
+}
+
+.react-multi-carousel-dot button:hover {
+  background:#61dafb !important
+}
+
+.react-multi-carousel-dot--active button {
+  background:#61dafb !important
+}
+
+.margine {
+  margin-bottom: 3rem;
+}
+
+.disable-v-scroll {
+  overflow-y: hidden;
+  position: relative;
+}
+
+.slick-dots li button:before {
+  font-size: 53px;
+}
+
+.slick-dots li.slick-active button:before {
+  color: #61dafb !important;
+}
+
+html, body {
+  overflow-x: hidden;
+}
+body {
+  position: relative
+}

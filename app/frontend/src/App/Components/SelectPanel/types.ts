@@ -8,4 +8,5 @@ export interface IProps {
   max: number
   onNext?: (e: any) => void
   onBack?: (e: any) => void
+  onEdit?: (e: any) => void
 }

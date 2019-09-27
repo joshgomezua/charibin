@@ -36,7 +36,7 @@ class DropDown extends React.Component<IProps, IState> {
           <div
             key={el.name}
             onClick={() => this.handleSelectOption(el)}
-            className="spon-dropdown__list-item">
+            className={`spon-dropdown__list-item ${el.isDisabled ? 'hide-it' : ''}`}>
             <p>{el.name}</p>
           </div>
         )

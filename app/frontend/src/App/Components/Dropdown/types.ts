@@ -20,4 +20,5 @@ export interface IProps {
 export interface IOption {
   id: string
   name: string
+  isDisabled?: boolean
 }

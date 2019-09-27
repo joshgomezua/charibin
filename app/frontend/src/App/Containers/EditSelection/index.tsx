@@ -9,7 +9,7 @@ import SelectPanel from '../../Components/SelectPanel'
 import Button from '../../../Common/Components/Button'
 
 import withToast from '../../../Common/HOC/withToast'
-import withCountdown from '../../../App/HOC/withCountdown'
+import withCountdown from '../../HOC/withCountdown'
 import { compose } from '../../../Common/HOC/compose'
 import { IStore } from '../../../Common/Redux/types'
 import {
@@ -44,6 +44,7 @@ class DeselectContainer extends Component<
   }
 
   componentDidMount() {
+    debugger
     window.scrollTo(0, 0)
     const owner = getFromLS('owner')
 
@@ -137,7 +138,7 @@ class DeselectContainer extends Component<
     e.preventDefault()
     this.props.history.push('/destinations/select')
   }
-  
+
   render() {
     const { selected, deselected, isMax } = this.props
     const { remainingTime } = this.state
@@ -154,7 +155,7 @@ class DeselectContainer extends Component<
 
           {remainingTime ? (
             <p>
-              Remainging time: <span>{remainingTime}</span>
+              Remaiccnging time: <span>{remainingTime}</span>
             </p>
           ) : null}
 

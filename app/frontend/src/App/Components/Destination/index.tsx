@@ -47,9 +47,11 @@ export default class Destination extends Component<IProps, IState> {
     } = this.state
     this.state.hoursToSelect.start.sort((a, b) => parseInt( a.name.split(':')[0]) - parseInt( b.name.split(':')[0]))
     this.state.hoursToSelect.end.sort((a, b) => parseInt( a.name.split(':')[0]) - parseInt( b.name.split(':')[0]))
-    console.log("start",start,"end",end)
+
     const { data, quantity } = this.props
     const HOURS_SET_PRICE = process.env.REACT_APP_TICKET_CHOOSE_TIME_PRICE
+
+    const tmpDate = new Date(new Date().setHours(0, 0, 0, 0))
 
     const startDates =
       data.type === 'trip'
@@ -60,7 +62,7 @@ export default class Destination extends Component<IProps, IState> {
             moment
               .utc(item.date.start)
               .set({ hour: 0, minutes: 0, seconds: 0, milliseconds: 0 })
-              .isAfter() &&
+              .isAfter(tmpDate.getFullYear() + '-' + (tmpDate.getMonth() + 1).toString().padStart(2, '0') + '-' + tmpDate.getDate().toString().padStart(2, '0')) &&
             item.adultPrice + item.childPrice >= quantity!.Adult + quantity!.Youth
         )
         .map((item: ITicket) =>
@@ -77,7 +79,7 @@ export default class Destination extends Component<IProps, IState> {
             moment
               .utc(item.date.start)
               .set({ hour: 0, minutes: 0, seconds: 0, milliseconds: 0 })
-              .isAfter() &&
+              .isAfter(tmpDate.getFullYear() + '-' + (tmpDate.getMonth() + 1).toString().padStart(2, '0') + '-' + tmpDate.getDate().toString().padStart(2, '0')) &&
               item.adultPrice + item.childPrice >= quantity!.Adult + quantity!.Youth
         )
         .map((item: ITicket) =>
@@ -277,6 +279,17 @@ export default class Destination extends Component<IProps, IState> {
       { start: [], end: [] } as { start: IOption[]; end: IOption[] }
     )
 
+    if (this.isSameDateAs(dates[0], dates[1])) {
+      for (var i = 0; i < hours.start.length; i++) {
+        const a = hours.start[i].name.split(' - ')[0].split(':')[0]
+        const indx = hours.end.indexOf(hours.end.filter(x => parseInt(x.name.split(' - ')[0].split(':')[0]) >= parseInt(a))[0])
+        if (indx == -1) {
+          const rmvbleIndx = hours.start.indexOf(hours.start[i])
+          hours.start.splice(rmvbleIndx, 1)
+        }
+      }
+    }
+
     this.setState({
       dates: {
         start: dates[0],
@@ -293,10 +306,45 @@ export default class Destination extends Component<IProps, IState> {
     })
   }
 
+  isSameDateAs = (a: any, b: any) => {
+    return (
+      a.getFullYear() === b.getFullYear() &&
+      a.getMonth() === b.getMonth() &&
+      a.getDate() === b.getDate()
+    );
+  }
+
   handleSelectHour = (data: {
     id: string
     value: { id: string; name: string }
   }) => {
+    if (data.id == 'start') {
+      this.setState((state: IState) => ({
+        hours: {
+          ...state.hours,
+          'end': {id: '', name: 'Select'}
+        }
+      }))
+
+      const { hoursToSelect } = this.state
+      const tmpHTS = hoursToSelect
+      const indx = tmpHTS.end.indexOf(tmpHTS.end.filter(x => parseInt(x.name.split(' - ')[0].split(':')[0]) >= parseInt(data.value.name.split(' - ')[0].split(':')[0]))[0]);
+      for (var i = 0; i < indx; i++) {
+        hoursToSelect.end[i].isDisabled = true
+      }
+      for (var i = indx == -1 ? 0 : indx; i < hoursToSelect.end.length; i++) {
+        if (indx == -1) hoursToSelect.end[i].isDisabled = true
+        else hoursToSelect.end[i].isDisabled = false
+      }
+
+      this.setState({
+        hoursToSelect: {
+          start: hoursToSelect.start,
+          end: hoursToSelect.end
+        }
+      })
+    }
+
     this.setState((state: IState) => ({
       hours: {
         ...state.hours,
@@ -314,10 +362,12 @@ export default class Destination extends Component<IProps, IState> {
     const durationTime = moment.duration({ minutes: duration }) as IDuration
     const formatedDuration = durationTime.format('h[h] m[m]')
 
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+
     return (
-      <div className={`destination ${calendar ? 'overlay' : ''}`}>
+      <div className={`destination ${calendar ? 'overlay' : ''} ${!selected && isMobile ? 'destination-when-not-selected' : ''}`}>
         <div
-          className={`destination-top ${selected || deselect ? 'short' : ''}  ${
+          className={`destination-top ${selected || deselect ? 'short' : isMobile ? 'short' : ''}  ${
             calendar ? 'shortest' : ''
           }`}>
           <span>{`SAVE ${discount}%`}</span>

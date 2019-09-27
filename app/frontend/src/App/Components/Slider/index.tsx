@@ -5,11 +5,12 @@ import Title from '../../Components/Title'
 import { STEPS } from '../../Utils/constants'
 import { State, IProps } from './types'
 import './styles.scss'
-import Carousel from 'react-multi-carousel';
-import 'react-multi-carousel/lib/styles.scss';
+// import Carousel from 'react-multi-carousel';
+// import 'react-multi-carousel/lib/styles.css';
 
 const RADIUS = 35
 const STROKE = 3
+declare var $: any;
 
 export default class Slider extends Component<IProps, State> {
   state = {
@@ -24,6 +25,12 @@ export default class Slider extends Component<IProps, State> {
 
   componentDidMount() {
     this.setTimer()
+    if ($('.jq-slider').slick) $('.jq-slider').slick({
+      autoplay: true,
+      autoplaySpeed: 3000,
+      dots: true,
+      infinite: true
+    });
   }
 
   componentWillUnmount() {
@@ -85,37 +92,171 @@ export default class Slider extends Component<IProps, State> {
     this.setState({ currentStep: step })
   }
 
+  onSlide = () => {
+    this.disableScroll()
+  }
+
+  slideEnd = () => {
+    setTimeout(() => {
+      this.enableScroll()
+    }, 100);
+  }
+
+  preventDefault = (e: any) => {
+    e.preventDefault();
+  }
+
+  disableScroll = () => {
+    document.body.addEventListener('touchmove', this.preventDefault, { passive: false });
+  }
+  
+  enableScroll = () => {
+    document.body.removeEventListener('touchmove', this.preventDefault);
+  }
+
   render() {
-    const responsive = {
-      superLargeDesktop: {
-        // the naming can be any, depends on you.
-        breakpoint: { max: 4000, min: 3000 },
-        items: 1,
-      },
-      desktop: {
-        breakpoint: { max: 3000, min: 1024 },
-        items: 1,
-      },
-      tablet: {
-        breakpoint: { max: 1024, min: 464 },
-        items: 1,
-      },
-      mobile: {
-        breakpoint: { max: 464, min: 0 },
-        items: 1,
-      },
-    };
+    // const responsive = {
+    //   superLargeDesktop: {
+    //     // the naming can be any, depends on you.
+    //     breakpoint: { max: 4000, min: 3000 },
+    //     items: 1,
+    //   },
+    //   desktop: {
+    //     breakpoint: { max: 3000, min: 1024 },
+    //     items: 1,
+    //   },
+    //   tablet: {
+    //     breakpoint: { max: 1024, min: 464 },
+    //     items: 1,
+    //   },
+    //   mobile: {
+    //     breakpoint: { max: 464, min: 0 },
+    //     items: 1,
+    //   },
+    // };
 
     const { currentStep, progress, animation } = this.state
     const { sliderRef } = this.props
     const strokeDashoffset =
-      this.circumference - (progress / 500) * this.circumference
+      this.circumference - (progress / 700) * this.circumference
     var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
     if (isMobile)
       return (
 
         <div className="margine">
-          <Carousel responsive={responsive}
+          <div className="jq-slider">
+            <div> <section id="slider" className="slider">
+              <div ref={sliderRef} className="slider-info">
+                <p>
+                  how it works: <span>{STEPS[0].name}</span>
+                </p>
+                <Title
+                  left
+                  className="slider-info-title"
+                  text={STEPS[0].title}
+                  selected={STEPS[0].selected}
+                />
+                <p>{STEPS[0].description}</p>
+                <div
+                  className="slider-info-buttons"
+                  onMouseEnter={this.clearTimer}
+                  onMouseLeave={this.setTimer}>
+                </div>
+              </div>
+              <div className="slider-img">
+                <CSSTransition
+                  in={animation}
+                  classNames="slider-animation"
+                  onEntered={this.resetAnimation}>
+                  <img src={STEPS[0].image} alt="step" />
+                </CSSTransition>
+              </div>
+            </section>
+
+            </div>
+            <div><section id="slider" className="slider">
+              <div ref={sliderRef} className="slider-info">
+                <p>
+                  how it works: <span>{STEPS[1].name}</span>
+                </p>
+                <Title
+                  left
+                  className="slider-info-title"
+                  text={STEPS[1].title}
+                  selected={STEPS[1].selected}
+                />
+                <p>{STEPS[1].description}</p>
+                <div
+                  className="slider-info-buttons"
+                  onMouseEnter={this.clearTimer}
+                  onMouseLeave={this.setTimer}>
+                </div>
+              </div>
+              <div className="slider-img">
+                <CSSTransition
+                  in={animation}
+                  classNames="slider-animation"
+                  onEntered={this.resetAnimation}>
+                  <img src={STEPS[1].image} alt="step" />
+                </CSSTransition>
+              </div>
+            </section></div>
+            <div><section id="slider" className="slider">
+              <div ref={sliderRef} className="slider-info">
+                <p>
+                  how it works: <span>{STEPS[2].name}</span>
+                </p>
+                <Title
+                  left
+                  className="slider-info-title"
+                  text={STEPS[2].title}
+                  selected={STEPS[2].selected}
+                />
+                <p>{STEPS[2].description}</p>
+                <div
+                  className="slider-info-buttons"
+                  onMouseEnter={this.clearTimer}
+                  onMouseLeave={this.setTimer}>
+                </div>
+              </div>
+              <div className="slider-img">
+                <CSSTransition
+                  in={animation}
+                  classNames="slider-animation"
+                  onEntered={this.resetAnimation}>
+                  <img src={STEPS[2].image} alt="step" />
+                </CSSTransition>
+              </div>
+            </section></div>
+            <div><section id="slider" className="slider">
+              <div ref={sliderRef} className="slider-info">
+                <p>
+                  how it works: <span>{STEPS[3].name}</span>
+                </p>
+                <Title
+                  left
+                  className="slider-info-title"
+                  text={STEPS[3].title}
+                  selected={STEPS[3].selected}
+                />
+                <p>{STEPS[3].description}</p>
+                <div
+                  className="slider-info-buttons"
+                  onMouseEnter={this.clearTimer}
+                  onMouseLeave={this.setTimer}>
+                </div>
+              </div>
+              <div className="slider-img">
+                <CSSTransition
+                  in={animation}
+                  classNames="slider-animation"
+                  onEntered={this.resetAnimation}>
+                  <img src={STEPS[3].image} alt="step" />
+                </CSSTransition>
+              </div>
+            </section></div>
+          </div>
+          {/* <Carousel  react-multi-carousel-dot--active  responsive={responsive} 
             swipeable={true}
             draggable={true}
             showDots={true}
@@ -124,7 +265,8 @@ export default class Slider extends Component<IProps, State> {
             autoPlay={true}
             autoPlaySpeed={3000}
             removeArrowOnDeviceType={["tablet", "mobile", "desktop"]}
-
+            beforeChange={this.onSlide}
+            afterChange={this.slideEnd}
           >
             <div> <section id="slider" className="slider">
               <div ref={sliderRef} className="slider-info">
@@ -236,7 +378,7 @@ export default class Slider extends Component<IProps, State> {
                 </CSSTransition>
               </div>
             </section></div>
-          </Carousel>
+          </Carousel> */}
         </div>
 
       )

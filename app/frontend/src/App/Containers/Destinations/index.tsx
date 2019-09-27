@@ -5,6 +5,7 @@ import DynamicSelectContainer from '../Select/dynamic'
 import DynamicDeselectContainer from '../Deselect/dynamic'
 import DynamicPaymentContainer from '../Payment/dynamic'
 import DynamicSummaryContainer from '../Summary/dynamic'
+import EditSelectionContainer from  '../EditSelection/dynamic'
 
 import './styles.scss'
 
@@ -40,6 +41,11 @@ export default class DestinationsContainer extends Component<
             exact
             path={`${match.url}/summary`}
             component={DynamicSummaryContainer}
+          />
+             <Route
+            exact
+            path={`${match.url}/editSelection`}
+            component={EditSelectionContainer}
           />
         </Switch>
       </section>

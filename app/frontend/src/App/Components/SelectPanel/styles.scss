@@ -129,7 +129,7 @@
       }
     }
   }
-  .editselect {
+  #editselect {
     z-index: 7;
     width: 110px;
     height: 18px;
@@ -140,5 +140,14 @@
     line-height: 18px;
     text-transform: uppercase;
     letter-spacing: 1px;
+    margin-left: 2rem;
+    text-decoration: none;
   }
+
+  #editselect:hover, #editselect:focus {
+    text-decoration: none;
+  }
+}
+.mouse{
+  cursor: pointer;
 }
