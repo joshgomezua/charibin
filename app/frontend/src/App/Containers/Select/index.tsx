@@ -34,6 +34,7 @@ import './styles.scss'
 import Title from 'src/App/Components/Title'
 import { ITicket } from 'src/Common/Utils/globalTypes';
 
+
 const MAX = 5
 
 class SelectContainer extends Component<
@@ -249,7 +250,7 @@ class SelectContainer extends Component<
         })
 
         this.props.updateSelected(selectedTrips)
-        this.props.history.push('/destinations/deselect')
+      this.props.history.push('/destinations/deselect')
       })
       .catch(err => this.props.showError(err))
   }
@@ -330,7 +331,7 @@ class SelectContainer extends Component<
     )
 
   }
-
+  
   handleClearFilterDates = () => {
     const {
       filters: { start, end }
@@ -374,73 +375,17 @@ class SelectContainer extends Component<
   calendarClosed = () => this.setState({ isCalendarOpen: false })
   
   editTrips=()=>{
-    const { selected, quantity, departure } = this.props
-    const token = getOwnerToken()
+    const { selected, quantity } = this.props
 
-    const bookedTrips = selected.map((selectedItem: ISelectedData) => {
-      if (selectedItem.arrivalTicket && selectedItem.departureTicket) {
-        return {
-          arrivalTicket: selectedItem.arrivalTicket,
-          departureTicket: selectedItem.departureTicket
-        }
-      } else {
-        return {
-          id: selectedItem.tripId,
-          departure: selectedItem.departure.name,
-          destination: selectedItem.destination.name,
-          dateStart: selectedItem.dateStart,
-          dateEnd: selectedItem.dateEnd
-        }
-      }
-    })
-
-
-    const data: IBookedData = {
-      departure,
-      Adult: quantity.Adult,
-      Youth: quantity.Youth,
-      trips: bookedTrips
+    for (var i = 0; i < selected.length; i++) {
+      selected[i]['Adult'] = quantity.Adult;
+      selected[i]['Youth'] = quantity.Youth;
     }
 
-    if (token) {
-      data.ownerHash = token
-    }
+    saveToLS('editSelection', selected)
 
-    API.bookTrips(data)
-      .then(res => {
-        console.log('this.editTrips',res.data)
-        const bookedTrips = res.data.trips
-        const selectedTrips = this.props.selected.map((item: ISelectedData) => {
-          const filteredTrip: IBookedType = bookedTrips.find(
-            (trip: IBookedType) => item.tripId === trip.trip
-          )
-          if (filteredTrip) {
-            console.log("")
-            //item.adultPrice = filteredTrip.cost
-          }
-          return item
-        })
-
-        saveToLS('owner', {
-          billing: res.data.billing,
-          createdAt: res.data.createdAt,
-          token: res.data.owner,
-          data: {
-            departure,
-            quantity,
-            selected: selectedTrips
-          }
-        })
-
-        selectedTrips.forEach((trip) => {
-          trip["Adult"] = data.Adult
-          trip["Youth"] = data.Youth
-        })
-
-        this.props.updateSelected(selectedTrips)
-        this.props.history.push('/destinations/editSelection')
-      })
-      .catch(err => this.props.showError(err))
+    // this.props.updateSelected(bookedTrips)
+    this.props.history.push('/destinations/editSelection')
   }
   render() {
     const { isCalendarOpen, filters } = this.state
@@ -463,7 +408,7 @@ class SelectContainer extends Component<
                   this.setState({ isLoading: false })
                   if (this.state.trips.length >= 10 && this.state.trips.length > 0) {
                     this.attachScrollEvent()
-                  }
+                  } 
                 }
               )
             }
@@ -548,7 +493,7 @@ const mapStateToProps = (state: IStore) => ({
   quantity: selectQuantity(state),
   selected: selectSelected(state),
   departure: selectDeparture(state)
-})
+}) 
 
 export default connect(
   mapStateToProps,

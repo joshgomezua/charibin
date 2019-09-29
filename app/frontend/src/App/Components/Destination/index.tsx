@@ -212,7 +212,7 @@ export default class Destination extends Component<IProps, IState> {
     if (data.type === 'selectedTrid') {
       this.props.onDeselect && this.props.onDeselect(data)
     } else {
-      this.props.onDeselect && this.props.onDeselect(this.props.index)
+      this.props.onDeselect && this.props.onDeselect(this.props.index || data._id)
     }
 
     this.setInitialState()

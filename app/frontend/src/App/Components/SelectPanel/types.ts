@@ -9,4 +9,5 @@ export interface IProps {
   onNext?: (e: any) => void
   onBack?: (e: any) => void
   onEdit?: (e: any) => void
+  isEdit?: boolean
 }

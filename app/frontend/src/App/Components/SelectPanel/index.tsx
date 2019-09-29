@@ -15,7 +15,8 @@ const SelectPanel: React.SFC<IProps> = ({
   max,
   onNext,
   onBack,
-  onEdit
+  onEdit,
+  isEdit
 }) => {
   const totalDeselectionConst = deselected
     ? deselected.reduce(
@@ -53,7 +54,12 @@ const SelectPanel: React.SFC<IProps> = ({
           text={selected.length===5?`Edit Selection`:''}
           onClick={onEdit}
           />   */}
-          <a hidden={selected.length==0} onClick={onEdit} href="javascript:void(0)" id="editselect">EDIT SELECTION</a>
+          {isEdit && (
+            <a hidden={selected.length==0} onClick={onEdit} href="javascript:void(0)" id="editselect">RETURN TO ALL DESTINATIONS</a>
+          )}
+          {!isEdit && (
+            <a hidden={selected.length==0} onClick={onEdit} href="javascript:void(0)" id="editselect">EDIT SELECTION</a>
+          )}
           </div>
         )}
       
