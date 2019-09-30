@@ -471,7 +471,7 @@ class EditSelectContainer extends Component<
               <Button
                 text="return to all destinations"
                 variant="gray"
-                icon="arrowRight"
+                icon="arrowLeftUpdated"
                 className="edit-select-cnt-back-btn"
                 onClick={this.backBtn}
               />
@@ -488,7 +488,7 @@ class EditSelectContainer extends Component<
                   console.log('this.props.selected', this.state.trips)
                   const filtered = this.state.trips.filter(
                     (item: any) => {
-                      trip._id = item.tripId
+                      // trip._id = item.tripId
                       if (item.tripId === trip._id) {
                         ; (trip.dateStart = item.dateStart),
                           (trip.dateEnd = item.dateEnd)

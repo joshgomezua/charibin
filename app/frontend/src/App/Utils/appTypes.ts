@@ -39,6 +39,7 @@ export interface ISelectedData {
   typeOfTransport: string
   departure: ICity,
   destination: ICity
+  _id?: string
 }
 
 export interface IFinalSelected {

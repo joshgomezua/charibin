@@ -178,6 +178,7 @@ export default class Destination extends Component<IProps, IState> {
     if (dates.start && dates.end) {
       const selectedData: ISelectedData = {
         tripId: data._id,
+        _id: data._id,
         deselectionPrice: data.deselectionPrice,
         discount: data.discount,
         duration: data.duration,
@@ -212,6 +213,7 @@ export default class Destination extends Component<IProps, IState> {
     if (data.type === 'selectedTrid') {
       this.props.onDeselect && this.props.onDeselect(data)
     } else {
+      console.log(this.props)
       this.props.onDeselect && this.props.onDeselect(this.props.index || data._id)
     }
 

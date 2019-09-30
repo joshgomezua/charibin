@@ -15,6 +15,7 @@ const ICONS = {
   undo: require('../../Utils/Media/undo.svg'),
   trash: require('../../Utils/Media/trash.svg'),
   pencil: require('../../Utils/Media/pencil.svg'),
+  arrowLeftUpdated: require('../../Utils/Media/arrowLeftUpdated.svg')
 }
 
 const Button = ({
