@@ -17,6 +17,7 @@
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
+    margin-bottom: 105px;
 
     img {
       pointer-events: none;
@@ -53,6 +54,72 @@
       position: relative;
       perspective: 2000;
       animation: rotate 2s infinite;
+    }
+  }
+
+
+  &-spon-loader {
+    
+    &__container {
+      position: relative;
+      display: inline-block;
+      width: rc(64);
+      
+      div {
+        position: absolute;
+        top: 27px;
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+        background: #ffffff;
+        animation-timing-function: cubic-bezier(0, 1, 1, 0);
+
+        &:nth-child(1) {
+          left: 6px;
+          animation: loader-animation1 0.6s infinite;
+        }
+
+        &:nth-child(2) {
+          left: 6px;
+          animation: loader-animation2 0.6s infinite;
+        }
+
+        &:nth-child(3) {
+          left: 26px;
+          animation: loader-animation2 0.6s infinite;
+        }
+        &:nth-child(4) {
+          left: 45px;
+          animation: loader-animation3 0.6s infinite;
+        }
+      }
+    }
+  }
+
+  @keyframes loader-animation1 {
+    0% {
+      transform: scale(0);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes loader-animation3 {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(0);
+    }
+  }
+
+  @keyframes loader-animation2 {
+    0% {
+      transform: translate(0, 0);
+    }
+    100% {
+      transform: translate(19px, 0);
     }
   }
 }
