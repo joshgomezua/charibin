@@ -63,6 +63,7 @@ class DeselectContainer extends Component<
       )
     }, 1000)
 
+    saveToLS('ownerTemp', owner)
     removeFromLS('owner')
   }
 
@@ -71,7 +72,7 @@ class DeselectContainer extends Component<
   }
 
   onDeselect = (deselectedItem: ISelectedData) => {
-    const owner = getFromLS('owner')
+    const owner = getFromLS('ownerTemp')
     const { isMax, addDeselected } = this.props
     if (isMax) {
       return
@@ -95,7 +96,7 @@ class DeselectContainer extends Component<
   }
 
   onClear = () => {
-    const owner = getFromLS('owner')
+    const owner = getFromLS('ownerTemp')
 
     if (owner) {
       const newLSData = {
@@ -113,6 +114,9 @@ class DeselectContainer extends Component<
   }
 
   onNext = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const owner = getFromLS('ownerTemp')
+    removeFromLS('ownerTemp')
+    saveToLS('owner', owner)
     e.preventDefault()
     const token = getOwnerToken()
     const deselectedTripsId = this.props.deselected.map(
@@ -137,6 +141,7 @@ class DeselectContainer extends Component<
   }
 
   onBack = (e: React.MouseEvent<HTMLButtonElement>) => {
+    removeFromLS('ownerTemp')
     e.preventDefault()
     this.props.history.push('/destinations/select')
   }
