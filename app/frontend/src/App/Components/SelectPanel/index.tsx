@@ -6,6 +6,7 @@ import { STEP_IDS } from '../../Utils/constants'
 import { ISelectedData } from '../../Utils/appTypes'
 import { IProps } from './types'
 import './styles.scss'
+import pencilUpdated from '../../Utils/Media/pencilUpdated.png'
 
 const SelectPanel: React.SFC<IProps> = ({
   step,
@@ -58,7 +59,10 @@ const SelectPanel: React.SFC<IProps> = ({
             <a hidden={selected.length==0} onClick={onEdit} href="javascript:void(0)" id="editselect">RETURN TO ALL DESTINATIONS</a>
           )}
           {!isEdit && (
-            <a hidden={selected.length==0} onClick={onEdit} href="javascript:void(0)" id="editselect">EDIT SELECTION</a>
+            <a hidden={selected.length==0} onClick={onEdit} href="javascript:void(0)" id="editselect">
+              <img src={pencilUpdated} className="pencilImg" alt="icon" />
+              EDIT SELECTION
+            </a>
           )}
           </div>
         )}
