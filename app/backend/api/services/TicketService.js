@@ -19,7 +19,7 @@ const BASE_64_PHOTO_ENCODING = 'Base64';
 const DEFAULT_PHOTO = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==';
 var Agenda = require('agenda');
 const { user, password, host, port, name } = global.config.connection.database;
-const agenda = new Agenda({ db: { address: `mongodb+srv://${user}:${password}@${host}/${name}` } });
+const agenda = new Agenda({ db: { address: `mongodb+srv://SponteousDevManager:1HPzKllHbPlDkzPt@sponteous-dev-rjoqe.mongodb.net/Sponteous` } });
 
 client1.send_command('config', ['set', 'notify-keyspace-events', 'Ex'], onExpiredTicket);
 
