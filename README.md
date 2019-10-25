@@ -1,7 +1,7 @@
 In this project we're using our custom [Redvike Git Flow](https://github.com/Redvike/redvike-git-flow).
 
 To run the project in the `development` environment you should:
-1. `cp env.development.example .env` - go to the project's `./` folder and copy the environment variables.  
+1. Go to the project's `./` folder and copy the environment variables. - `cp env.development.example .env`  
 2. Fill the `.env` file. For example, I have:
 
 ```
@@ -23,7 +23,7 @@ MONGO_INITDB_ROOT_USERNAME=username
 MONGO_INITDB_ROOT_PASSWORD=password
 ```
 
-3. `cp env.development.example .env.development` - go to the project's `./app/backend/` folder and copy the environment variables.
+3. Go to the project's `./app/backend/` folder and copy the environment variables. - `cp env.development.example .env.development` 
 4. Fill the `.env.development` file. For example, I have:
 ```
 
@@ -50,7 +50,7 @@ DB_NAME=admin
 
 Take into attention that `DB_NAME` must be set to `admin`.
 
-5. `cp env.development.example .env.development` - go to the project's `./app/frontend/` folder and copy the environment variables.
+5. Go to the project's `./app/frontend/` folder and copy the environment variables- `cp env.development.example .env.development` .
 6. Fill the `.env.development` file. For example, I have:
 
 ```
