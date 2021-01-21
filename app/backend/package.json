@@ -25,7 +25,7 @@
     "mongoose": "~5.3.14",
     "redis": "~2.8.0",
     "rn-tri-toggle-switch": "^1.0.4",
-    "socket.io": "~2.1.1",
+    "socket.io": "~2.4.0",
     "stripe": "~6.20.1",
     "winston": "~2.4.4"
   },
