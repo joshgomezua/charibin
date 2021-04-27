@@ -23,7 +23,7 @@
     "lodash": "~4.17.11",
     "mailgun-js": "~0.17.0",
     "mongoose": "~5.3.14",
-    "redis": "~2.8.0",
+    "redis": "~3.1.1",
     "rn-tri-toggle-switch": "^1.0.4",
     "socket.io": "~2.1.1",
     "stripe": "~6.20.1",
