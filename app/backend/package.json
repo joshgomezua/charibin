@@ -22,7 +22,7 @@
     "jsonwebtoken": "~8.4.0",
     "lodash": "~4.17.11",
     "mailgun-js": "~0.17.0",
-    "mongoose": "~5.3.14",
+    "mongoose": "~5.7.5",
     "redis": "~2.8.0",
     "rn-tri-toggle-switch": "^1.0.4",
     "socket.io": "~2.1.1",
